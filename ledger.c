@@ -4,7 +4,7 @@
  @web http://will-landau.com
  @date December 1, 2013
  @license GPL 3.0
- @about Personal accounting software. More documentation to come.
+ @about Personal accounting software. More documentation to come. 
 */
 
 #include <errno.h>
