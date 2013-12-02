@@ -403,7 +403,7 @@ int condense(const char* infile, const char *outfile){
        !mycmp(ledger->text_content[0][i], CREDIT_CLEARED) ||
        !mycmp(ledger->text_content[0][i], NOTTHEREYET) || 
        !mycmp(ledger->text_content[0][i], PENDING)){
-      fprintf(fp, "%s\t%s\t%s\t%s\t%s\t%s", ledger->text_content[0][i],
+      fprintf(fp, "%s\t%s\t%s\t%s\t%s\t%s\n", ledger->text_content[0][i],
               ledger->text_content[1][i], ledger->text_content[2][i],
               ledger->text_content[3][i], ledger->text_content[4][i],
               ledger->text_content[5][i]);
@@ -417,11 +417,15 @@ int condense(const char* infile, const char *outfile){
   } 
   
   for(i = 0; i < ledger->nbank; ++i)
-    for(j = 0; j < ledger->npartition[i]; ++j)
-      if(abs(ledger->partition_totals[i][j]) > eps)
-        fprintf(fp, "\n\t%0.2f\t\t%s\t%s\tcondensed", ledger->partition_totals[i][j], 
-                ledger->bank[i], ledger->partition[i][j]);
-      
+    if(ledger->npartition[i] <= 1 && ledger->bank_totals[i][2]){
+      fprintf(fp, "\t%0.2f\t\t%s\t\tcondensed\n", ledger->bank_totals[i][2], 
+                  ledger->bank[i]);
+    } else {
+      for(j = 0; j < ledger->npartition[i]; ++j)
+        if(abs(ledger->partition_totals[i][j]) > eps)
+          fprintf(fp, "\t%0.2f\t\t%s\t%s\tcondensed\n", ledger->partition_totals[i][j], 
+                  ledger->bank[i], ledger->partition[i][j]);
+    }  
   fclose(fp);
   free_ledger(ledger);
   return 0;
