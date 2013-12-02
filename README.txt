@@ -1,1 +1,1 @@
-Coming soon…
+A little personal accounting software package written in C. More documentation to come.

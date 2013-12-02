@@ -1,5 +1,7 @@
 /*
  @author Will Landau
+ @email will.landau@gmail.com
+ @web http://will-landau.com
  @date December 1, 2013
  @license GPL 3.0
  @about Personal accounting software. More documentation to come.

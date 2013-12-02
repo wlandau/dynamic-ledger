@@ -1,0 +1,4 @@
+GPL 3.0
+Copyright Will Landau (will.landau@gmail.com)
+http://will-landau.com
+Iowa State University
