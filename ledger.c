@@ -567,7 +567,7 @@ int standalone(int argc, char **argv){
   } else if(argc == 3){
    
     if(condense(argv[1], argv[2])){
-      printf("Exiting due to failure.\n");
+      printf("No output produce.\nExiting due to failure.\n");
       return 1;
     }
   } else{
