@@ -174,8 +174,6 @@ int get_text_content(Ledger *ledger){
     }
   }
   
-  ledger->n = nlines;
-  
   free(entry);
   fclose(fp);
   return 0;
