@@ -253,7 +253,7 @@ void get_totals(Ledger *ledger){
   for(i = 0; i < ledger->nbank; ++i)
     ledger->partition_totals[i] = calloc(ledger->npartition[i], sizeof(double));
     
-  for(i = 1; i < ledger->n; ++i){
+  for(i = 0; i < ledger->n; ++i){
     status = ledger->text_content[0][i];
     amount = atof(ledger->text_content[1][i]);
 
