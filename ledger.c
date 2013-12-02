@@ -417,7 +417,7 @@ int condense(const char* infile, const char *outfile){
   fp = fopen(outfile, "w");
   
   fprintf(fp, "status\tamount\tcredit\tbank\tpartition\tmemo\n");
-  for(i = 1; i < ledger->n; ++i){
+  for(i = 0; i < ledger->n; ++i){
     if(!mycmp(ledger->text_content[0][i], CREDIT_NOTTHEREYET) || 
        !mycmp(ledger->text_content[0][i], CREDIT_PENDING) || 
        !mycmp(ledger->text_content[0][i], CREDIT_CLEARED) ||
@@ -427,11 +427,12 @@ int condense(const char* infile, const char *outfile){
               ledger->text_content[1][i], ledger->text_content[2][i],
               ledger->text_content[3][i], ledger->text_content[4][i],
               ledger->text_content[5][i]);
-      for(j = 0; j < ledger->nbank; ++j)
+
+   /*   for(j = 0; j < ledger->nbank; ++j)
         if(!mycmp(ledger->text_content[3][i], ledger->bank[j]))
           for(k = 0; k < ledger->npartition[i]; ++k)
             if(!mycmp(ledger->text_content[4][i], ledger->partition[j][k]))
-              ledger->partition_totals[j][k] -= atof(ledger->text_content[1][i]);
+              ledger->partition_totals[j][k] -= atof(ledger->text_content[1][i]); */
       
     }
   } 
