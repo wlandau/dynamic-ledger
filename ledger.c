@@ -21,7 +21,8 @@
 
 #define NFIELDS 6
 #define FIELDSIZE 128
-#define FILENAMESIZE 128
+#define LINESIZE 512
+#define FILENAMESIZE 256
 
 typedef struct {
   char *filename, **credit, **bank, ***partition, ***text_content;
@@ -89,11 +90,10 @@ void unique(char **s, int n, char ***ret, int *nunique){
     }  
 }
 
-void emergency_free(Ledger *ledger, FILE *fp, char *entry){
+void emergency_free(Ledger *ledger, FILE *fp){
   int i, j;
   
   fclose(fp);
-  free(entry);
   
   for(i = 0; i < NFIELDS; ++i){
     for(j = 0; j < ledger->n; ++j)
@@ -105,76 +105,101 @@ void emergency_free(Ledger *ledger, FILE *fp, char *entry){
   free(ledger);
 }
 
-int get_text_content(Ledger *ledger){
-  int i = 0, field = 0, ntabs = 0, nlines = 0;
-  char c = '0', *entry, *testbufref, testbuf[FIELDSIZE];
-  FILE *fp = fopen(ledger->filename, "r");
+int check_legal_float(char *s, int row){
+  char *testbufref, testbuf[FIELDSIZE];
   
-  ledger->n = 0;
-  while(!feof(fp)){
-    c = fgetc(fp);
-    if(c == '\n' || c == EOF)
-      ++ledger->n;
-  }
-  rewind(fp);
-
-  entry = malloc(FIELDSIZE * sizeof(char));
-  sprintf(entry, "%s", "");
-  alloc_text_content(ledger);
-
-  while(!feof(fp)){
-    c = fgetc(fp);
-    if(c == '\n' || c == '\t' || c == EOF){
-      strcpy(ledger->text_content[field][i], entry);
-      
-      ++field;
-      if(c == '\t'){
-        ++ntabs;
-        if(ntabs >= NFIELDS){
-          sprintf(entry, "Error: wrong number of tab delimiters near line %d. \
-                          \nFix your ledger file.\n", nlines);
-          fprintf(stderr, "%s", entry);
-          emergency_free(ledger, fp, entry);
-          return 1;
-        }
-        
-      } else if(c == '\n' && ntabs > 0){
-        ++i;
-        ++nlines;
-        
-        if(ntabs != NFIELDS - 1 && ntabs != 0){
-          sprintf(entry, "Error: wrong number of tab delimiters near line %d. \
-                          \nFix your ledger file.\n", nlines);
-          fprintf(stderr, "%s", entry);
-          emergency_free(ledger, fp, entry);
-          return 1;
-        }
-        
-        ntabs = 0;
-        field = 0;
-      }
-      
-      sprintf(entry, "%s", ""); 
-    } else{
-      sprintf(entry, "%s%c", entry, c);
-    }
-  }
-  
-  for(i = 1; i < ledger->n; ++i){
-    errno = 0;
-    strcpy(testbuf, ledger->text_content[1][i]);
+  errno = 0;
+  strcpy(testbuf, s);
     testbufref = testbuf;
     strtod(testbuf, &testbufref); 
     if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf)){
-      sprintf(entry, "Error: bad number in \"amount\" field near line %d. \
-                      \nFix your ledger file.\n", i);
-      fprintf(stderr, "%s", entry);
-      emergency_free(ledger, fp, entry);
+      fprintf(stderr, "Error: bad number, %s, in second column near row %d.\n", 
+              s, row);
+      fprintf(stderr, "Fix your ledger file.\n");
       return 1;   
     }
+  return 0;
+}
+
+int is_space(char c){
+  return (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == 'v');
+}
+
+void strstrip(char *s){ /* taken from a stackoverflow forum */
+  char *start;
+  char *end;
+
+  /* Exit if param is NULL pointer */
+  if (s == NULL)
+    return;
+
+  /* Skip over leading whitespace */
+  start = s;
+  while ((*start) && is_space(*start))
+    start++;      
+
+  /* Is string just whitespace? */
+  if (!(*start)){         
+    *s = 0x00; /* Truncate entire string */
+    return;     
+  }     
+
+  /* Find end of string */
+  end = start;
+  while (*end)         
+    end++;     
+
+  /* Step back from NULL */
+  end--;      
+
+  /* Step backward until first non-whitespace */
+  while ((end != start) && is_space(*end))         
+    end--;     
+
+  /* Chop off trailing whitespace */
+  *(end + 1) = 0x00;
+
+  /* If had leading whitespace, then move entire string back to beginning */
+  if (s != start)
+    memmove(s, start, end-start+1);      
+
+  return; 
+} 
+
+int get_text_content(Ledger *ledger){
+  int row, field; 
+  char line[LINESIZE], *str, *token;
+  FILE *fp = fopen(ledger->filename, "r");
+  
+  ledger->n = 0;
+  while(fgets(line, LINESIZE, fp))
+    ++ledger->n;
+    
+  rewind(fp);
+  alloc_text_content(ledger);
+  
+  row = 0;
+  field = 0;
+
+  while(fgets(line, LINESIZE, fp)){
+    str = line;
+    for(field = 0; field < NFIELDS; ++field){
+      token = strsep(&str, "\f\n\r\t\v");
+      if(token == NULL)
+        continue;
+      
+      if(field == 1) 
+        if(check_legal_float(token, row)){
+          emergency_free(ledger, fp);
+          return 1;
+        }
+    
+      strstrip(token);
+      strcpy(ledger->text_content[field][row], token);
+    }
+    ++row;
   }
   
-  free(entry);
   fclose(fp);
   return 0;
 }
