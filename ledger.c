@@ -35,7 +35,7 @@ void alloc_text_content(Ledger *ledger){
   for(i = 0; i < NFIELDS; ++i){
     ledger->text_content[i] = calloc(ledger->n, sizeof(char*));
     for(j = 0; j < ledger->n; ++j)
-      ledger->text_content[i][j] = malloc(FIELDSIZE * sizeof(char));
+      ledger->text_content[i][j] = calloc(FIELDSIZE, sizeof(char));
   }
 }
 
