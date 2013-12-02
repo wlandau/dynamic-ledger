@@ -453,19 +453,15 @@ int condense(const char* infile, const char *outfile){
 }
 
 void usage(){
-  printf("\nUsage:\n$ ./ledger [REQUIRED_INPUT_LEDGER] [OPTIONAL_OUTPUT_CONDENSED_LEDGER]\n\n");
-  printf("See README.txt for details.\n");
+  printf("\nUsage: to summarize the ledger,\n$ ./ledger [LEDGER_FILE]\n");
+  printf("\nTo condense the ledger,\n$ ./ledger [INTPUT_LEDGER_FILE] [OUTTPUT_LEDGER_FILE]\n");
+  printf("\nSee README.txt for details.\n");
 }
 
 int standalone(int argc, char **argv){
   FILE *fp;
   
-  if(argc < 2){
-    usage();
-    return 0;
-  }
-  
-  if(argc >= 2){
+  if(argc == 2){
     fp = fopen(argv[1], "r");
     if(fp == NULL){
       fprintf(stderr, "Error: cannot open input file, %s.\nPossible reason: file does not exist.\n", argv[1]);
@@ -477,9 +473,7 @@ int standalone(int argc, char **argv){
       printf("Exiting due to failure.\n\n");
       return 1;
     }
-  }
-  
-  if(argc == 3){
+  } else if(argc == 3){
     fp = fopen(argv[2], "r");
     if(fp == NULL){
       fprintf(stderr, "Error: cannot open output file, %s.\nPossible reason: inadequate permissions.\n", argv[2]);
@@ -491,6 +485,8 @@ int standalone(int argc, char **argv){
       printf("Exiting due to failure.\n\n");
       return 1;
     }
+  } else{
+    usage();
   }
   
   return 0;
