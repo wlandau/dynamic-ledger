@@ -473,7 +473,7 @@ int standalone(int argc, char **argv){
   }
   
   if(argc == 3){
-    fp = fopen(argv[2], "w");
+    fp = fopen(argv[2], "r");
     if(fp == NULL){
       fprintf(stderr, "Error: cannot open output file, %s.\nPossible reason: inadequate permissions.\n", argv[2]);
       return 1;
