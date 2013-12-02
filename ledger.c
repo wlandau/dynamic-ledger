@@ -438,15 +438,10 @@ int condense(const char* infile, const char *outfile){
   } 
 
   for(i = 0; i < ledger->nbank; ++i){
-    if(ledger->npartition[i] < 1 && ledger->bank_totals[i][2]){
-      fprintf(fp, "\t%0.2f\t\t%s\t\tcondensed\n", ledger->bank_totals[i][2], 
-                  ledger->bank[i]);
-    } else {
-      for(j = 0; j < ledger->npartition[i]; ++j)
-        if(abs(ledger->partition_totals[i][j]) > eps)
-          fprintf(fp, "\t%0.2f\t\t%s\t%s\tcondensed\n", ledger->partition_totals[i][j], 
-                  ledger->bank[i], ledger->partition[i][j]);
-    } 
+    for(j = 0; j < ledger->npartition[i]; ++j)
+      if(abs(ledger->partition_totals[i][j]) > eps)
+        fprintf(fp, "\t%0.2f\t\t%s\t%s\tcondensed\n", ledger->partition_totals[i][j], 
+                ledger->bank[i], ledger->partition[i][j]); 
     
     leftover = ledger->bank_totals[i][2];
     
@@ -454,7 +449,6 @@ int condense(const char* infile, const char *outfile){
     for(j = 0; j < ledger->npartition[i]; ++j){
       if(abs(ledger->partition_totals[i][j]) > eps){
         if(!k){
-          printf("\n");
           ++k;
         }
         leftover -= ledger->partition_totals[i][j];
