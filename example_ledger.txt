@@ -1,0 +1,8 @@
+status	amount	credit	bank	partition	memo
+cp	-27	card	checking	rent	electric bill
+cp	-51.25	card	checking	travel	travel expenses
+c	-500		checking	rent	rent
+	800		checking	rent	paycheck
+	500		checking	food	paycheck
+	100		savings		paycheck
+	50		savings	travel	saving for next trip
