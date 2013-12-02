@@ -428,12 +428,13 @@ int condense(const char* infile, const char *outfile){
               ledger->text_content[3][i], ledger->text_content[4][i],
               ledger->text_content[5][i]);
 
-   /*   for(j = 0; j < ledger->nbank; ++j)
-        if(!mycmp(ledger->text_content[3][i], ledger->bank[j]))
-          for(k = 0; k < ledger->npartition[i]; ++k)
+      for(j = 0; j < ledger->nbank; ++j)
+        if(!mycmp(ledger->text_content[3][i], ledger->bank[j])){
+/*          ledger->bank_totals[j][2] -= atof(ledger->text_content[1][i]); */
+          for(k = 0; k < ledger->npartition[j]; ++k)
             if(!mycmp(ledger->text_content[4][i], ledger->partition[j][k]))
-              ledger->partition_totals[j][k] -= atof(ledger->text_content[1][i]); */
-      
+              ledger->partition_totals[j][k] -= atof(ledger->text_content[1][i]); 
+        }
     }
   } 
   
