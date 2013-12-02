@@ -1,0 +1,8 @@
+status	amount	credit	bank	partition	memo
+cp	-27	card	checking	rent	electric bill
+cp	-51.25	card	checking	travel	travel expenses
+c	-500		checking	rent	rent
+	500.00		checking	food	condensed
+	300.00		checking	rent	condensed
+	-51.25		checking	travel	condensed
+	50.00		savings	travel	condensed

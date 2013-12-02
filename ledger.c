@@ -446,61 +446,49 @@ int condense(const char* infile, const char *outfile){
 }
 
 void usage(){
-  printf("\nUsage:\n$ ./ledger -f [REQUIRED_INPUT_LEDGER] -c [OPTIONAL_OUTPUT_CONDENSED_LEDGER]\n\n");
+  printf("\nUsage:\n$ ./ledger [REQUIRED_INPUT_LEDGER] [OPTIONAL_OUTPUT_CONDENSED_LEDGER]\n\n");
   printf("See README.txt for details.\n");
 }
 
-int main(int argc, char **argv){
-  int cflag = 0, fflag = 0;
+int standalone(int argc, char **argv){
   FILE *fp;
-  char opt, infile[FILENAMESIZE], outfile[FILENAMESIZE];
   
-  if(argc > 1){
-    while((opt = getopt(argc, argv, "c:f:")) != -1){
-  
-      if(opt == 'c'){ /* cbins_file */
-        strcpy(outfile, optarg);
-        fp = fopen(outfile, "w");
-        if(fp == NULL){
-          fprintf(stderr, "Error: cannot open output file, %s.\nPossible reason: file does not exist.\n", outfile);
-          return EXIT_FAILURE;
-        } else {
-          ++cflag;
-        }
-        fclose(fp);
-      } else if(opt == 'f'){
-        strcpy(infile, optarg);
-        fp = fopen(infile, "r");
-        if(fp == NULL){
-          fprintf(stderr, "Error: cannot open input file, %s.\nPossible reason: inadequate permission settings.\n", infile);
-          exit(EXIT_FAILURE);
-        } else {
-          ++fflag;
-        }
-        fclose(fp);
-      } else {
-        usage();
-        return EXIT_SUCCESS;
-      }
-    }
-  } else {
+  if(argc < 2){
     usage();
-    return EXIT_SUCCESS;  
+    return 0;
   }
-
-  if(fflag){
-    if(summarize(infile)){
+  
+  if(argc >= 2){
+    fp = fopen(argv[1], "r");
+    if(fp == NULL){
+      fprintf(stderr, "Error: cannot open input file, %s.\nPossible reason: file does not exist.\n", argv[1]);
+      return 1;
+    } 
+    fclose(fp);
+   
+    if(summarize(argv[1])){
       printf("Exiting due to failure.\n\n");
-      return EXIT_FAILURE;
-    
+      return 1;
     }
-    
-    if(cflag)  
-      if(condense(infile, outfile)){
-        printf("Exiting due to failure.\n\n");
-        return EXIT_FAILURE;
-      }
-  } 
-    
-  return EXIT_SUCCESS;
+  }
+  
+  if(argc == 3){
+    fp = fopen(argv[2], "w");
+    if(fp == NULL){
+      fprintf(stderr, "Error: cannot open output file, %s.\nPossible reason: inadequate permissions.\n", argv[2]);
+      return 1;
+    } 
+    fclose(fp);
+   
+    if(condense(argv[1], argv[2])){
+      printf("Exiting due to failure.\n\n");
+      return 1;
+    }
+  }
+  
+  return 0;
+}
+
+int main(int argc, char **argv){
+  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
 }
