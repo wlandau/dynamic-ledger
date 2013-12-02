@@ -160,8 +160,6 @@ int get_text_content(Ledger *ledger){
     }
   }
   
-  ledger->n = nlines;
-  
   for(i = 1; i < ledger->n; ++i){
     errno = 0;
     strcpy(testbuf, ledger->text_content[1][i]);
