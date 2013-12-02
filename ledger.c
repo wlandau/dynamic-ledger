@@ -113,8 +113,8 @@ int check_legal_float(char *s, int row){
     testbufref = testbuf;
     strtod(testbuf, &testbufref); 
     if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf)){
-      fprintf(stderr, "Error: bad number, %s, in the second column near row %d.\n", 
-              s, row);
+      fprintf(stderr, "Error: bad number %s at row %d column 2.\n", 
+              s, row + 1);
       fprintf(stderr, "Fix your ledger file.\n");
       return 1;   
     }
@@ -476,7 +476,7 @@ void free_ledger(Ledger *ledger){
 int summarize(const char* filename){
   Ledger *ledger = make_ledger(filename);
   if(ledger == NULL){
-    printf("\nFailed to read ledger.\n");
+    printf("Failed to read ledger.\n");
     return 1;
   }
   print_summary(ledger);
@@ -491,7 +491,7 @@ int condense(const char* infile, const char *outfile){
   Ledger *ledger = make_ledger(infile);
   
   if(ledger == NULL){
-    printf("\nFailed to read ledger.\n");
+    printf("Failed to read ledger.\n");
     return 1;
   }  
   
@@ -561,13 +561,13 @@ int standalone(int argc, char **argv){
   
   if(argc == 2){
     if(summarize(argv[1])){
-      printf("Exiting due to failure.\n\n");
+      printf("Exiting due to failure.\n");
       return 1;
     }
   } else if(argc == 3){
    
     if(condense(argv[1], argv[2])){
-      printf("Exiting due to failure.\n\n");
+      printf("Exiting due to failure.\n");
       return 1;
     }
   } else{
