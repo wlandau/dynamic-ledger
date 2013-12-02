@@ -558,7 +558,7 @@ int standalone(int argc, char **argv){
     } 
     fclose(fp);
   }
-  
+
   if(argc == 2){
     if(summarize(argv[1])){
       printf("Exiting due to failure.\n");
