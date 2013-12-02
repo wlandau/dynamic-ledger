@@ -89,23 +89,6 @@ void unique(char **s, int n, char ***ret, int *nunique){
     }  
 }
 
-void emergency_free(Ledger *ledger, FILE *fp, char *entry, const char *message){
-  int i, j;
-  
-  fprintf(stderr, "%s", message);
-  fclose(fp);
-  free(entry);
-  
-  for(i = 0; i < NFIELDS; ++i){
-    for(j = 0; j < ledger->n; ++j)
-      free(ledger->text_content[i][j]);
-    free(ledger->text_content[i]);
-  }
-  free(ledger->text_content);  
-  free(ledger->filename);
-  free(ledger);
-}
-
 int get_text_content(Ledger *ledger){
   int i = 0, field = 0, ntabs = 0, nlines = 0;
   char c = '0', *entry, *testbufref, testbuf[FIELDSIZE];
@@ -134,18 +117,16 @@ int get_text_content(Ledger *ledger){
         if(ntabs >= NFIELDS){
           sprintf(entry, "Error: wrong number of tab delimiters near line %d. \
                           \nFix your ledger file.\n", nlines);
-          emergency_free(ledger, fp, entry, entry);
           return 1;
         }
         
-      } else if(c == '\n'){
+      } else if(c == '\n' && ntabs > 0){
         ++i;
         ++nlines;
         
-        if(ntabs != NFIELDS - 1){
+        if(ntabs != NFIELDS - 1 && ntabs != 0){
           sprintf(entry, "Error: wrong number of tab delimiters near line %d. \
                           \nFix your ledger file.\n", nlines);
-          emergency_free(ledger, fp, entry, entry);
           return 1;
         }
         
@@ -159,16 +140,17 @@ int get_text_content(Ledger *ledger){
     }
   }
   
+  ledger->n = nlines;
+  
   for(i = 1; i < ledger->n; ++i){
     errno = 0;
     strcpy(testbuf, ledger->text_content[1][i]);
     testbufref = testbuf;
     strtod(testbuf, &testbufref); 
-    if(errno || testbuf == testbufref || *testbufref != 0){
+    if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf)){
       sprintf(entry, "Error: bad number in \"amount\" field near line %d. \
                       \nFix your ledger file.\n", i);
-      emergency_free(ledger, fp, entry, entry);
-      return 1;    
+      return 1;   
     }
   }
   
@@ -421,7 +403,7 @@ int condense(const char* infile, const char *outfile){
        !mycmp(ledger->text_content[0][i], CREDIT_CLEARED) ||
        !mycmp(ledger->text_content[0][i], NOTTHEREYET) || 
        !mycmp(ledger->text_content[0][i], PENDING)){
-      fprintf(fp, "%s\t%s\t%s\t%s\t%s\t%s\n", ledger->text_content[0][i],
+      fprintf(fp, "%s\t%s\t%s\t%s\t%s\t%s", ledger->text_content[0][i],
               ledger->text_content[1][i], ledger->text_content[2][i],
               ledger->text_content[3][i], ledger->text_content[4][i],
               ledger->text_content[5][i]);
@@ -437,7 +419,7 @@ int condense(const char* infile, const char *outfile){
   for(i = 0; i < ledger->nbank; ++i)
     for(j = 0; j < ledger->npartition[i]; ++j)
       if(abs(ledger->partition_totals[i][j]) > eps)
-        fprintf(fp, "\t%0.2f\t\t%s\t%s\tcondensed\n", ledger->partition_totals[i][j], 
+        fprintf(fp, "\n\t%0.2f\t\t%s\t%s\tcondensed", ledger->partition_totals[i][j], 
                 ledger->bank[i], ledger->partition[i][j]);
       
   fclose(fp);
