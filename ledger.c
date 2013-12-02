@@ -436,7 +436,7 @@ int condense(const char* infile, const char *outfile){
        }
     }
   } 
-  
+
   for(i = 0; i < ledger->nbank; ++i){
     if(ledger->npartition[i] < 1 && ledger->bank_totals[i][2]){
       fprintf(fp, "\t%0.2f\t\t%s\t\tcondensed\n", ledger->bank_totals[i][2], 
