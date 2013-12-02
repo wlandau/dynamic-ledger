@@ -405,7 +405,7 @@ int summarize(const char* filename){
 
 int condense(const char* infile, const char *outfile){
   int i, j, k;
-  double eps = 0.004;
+  double eps = 0.004, leftover;
   FILE *fp;
   Ledger *ledger = make_ledger(infile);
   
@@ -431,18 +431,13 @@ int condense(const char* infile, const char *outfile){
       for(j = 0; j < ledger->nbank; ++j)
         if(!mycmp(ledger->text_content[3][i], ledger->bank[j])){
           for(k = 0; k < ledger->npartition[j]; ++k)
-            if(!mycmp(ledger->text_content[4][i], ledger->partition[j][k])){
+            if(!mycmp(ledger->text_content[4][i], ledger->partition[j][k]))
               ledger->partition_totals[j][k] -= atof(ledger->text_content[1][i]);
-              break;
-            } else{
-              ledger->partition_totals[j][ledger->npartition[j] - 1]
-                -= atof(ledger->text_content[1][i]);
-            }
-        }
+       }
     }
   } 
   
-  for(i = 0; i < ledger->nbank; ++i)
+  for(i = 0; i < ledger->nbank; ++i){
     if(ledger->npartition[i] < 1 && ledger->bank_totals[i][2]){
       fprintf(fp, "\t%0.2f\t\t%s\t\tcondensed\n", ledger->bank_totals[i][2], 
                   ledger->bank[i]);
@@ -451,7 +446,25 @@ int condense(const char* infile, const char *outfile){
         if(abs(ledger->partition_totals[i][j]) > eps)
           fprintf(fp, "\t%0.2f\t\t%s\t%s\tcondensed\n", ledger->partition_totals[i][j], 
                   ledger->bank[i], ledger->partition[i][j]);
-    }  
+    } 
+    
+    leftover = ledger->bank_totals[i][2];
+    
+    k = 0;
+    for(j = 0; j < ledger->npartition[i]; ++j){
+      if(abs(ledger->partition_totals[i][j]) > eps){
+        if(!k){
+          printf("\n");
+          ++k;
+        }
+        leftover -= ledger->partition_totals[i][j];
+      }
+    }
+    
+    if(abs(leftover) > eps)
+      fprintf(fp, "\t%0.2f\t\t%s\t\tcondensed\n", leftover, ledger->bank[i]);
+  }
+    
   fclose(fp);
   free_ledger(ledger);
   return 0;
