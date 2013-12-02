@@ -21,7 +21,7 @@
 
 #define NFIELDS 6
 #define FIELDSIZE 128
-#define LINESIZE 512
+#define LINESIZE 4096
 #define FILENAMESIZE 256
 
 typedef struct {
@@ -147,7 +147,7 @@ void strstrip(char *s){ /* taken from a stackoverflow forum */
   /* Find end of string */
   end = start;
   while (*end)         
-    end++;     
+    end++;
 
   /* Step back from NULL */
   end--;      
@@ -161,7 +161,7 @@ void strstrip(char *s){ /* taken from a stackoverflow forum */
 
   /* If had leading whitespace, then move entire string back to beginning */
   if (s != start)
-    memmove(s, start, end-start+1);      
+    memmove(s, start, end-start+2);      
 
   return; 
 } 
