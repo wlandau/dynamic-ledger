@@ -113,7 +113,7 @@ int check_legal_float(char *s, int row){
     testbufref = testbuf;
     strtod(testbuf, &testbufref); 
     if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf)){
-      fprintf(stderr, "Error: bad number, %s, in second column near row %d.\n", 
+      fprintf(stderr, "Error: bad number, %s, in the second column near row %d.\n", 
               s, row);
       fprintf(stderr, "Fix your ledger file.\n");
       return 1;   
