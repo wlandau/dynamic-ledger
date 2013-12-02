@@ -89,6 +89,22 @@ void unique(char **s, int n, char ***ret, int *nunique){
     }  
 }
 
+void emergency_free(Ledger *ledger, FILE *fp, char *entry){
+  int i, j;
+  
+  fclose(fp);
+  free(entry);
+  
+  for(i = 0; i < NFIELDS; ++i){
+    for(j = 0; j < ledger->n; ++j)
+      free(ledger->text_content[i][j]);
+    free(ledger->text_content[i]);
+  }
+  free(ledger->text_content);  
+  free(ledger->filename);
+  free(ledger);
+}
+
 int get_text_content(Ledger *ledger){
   int i = 0, field = 0, ntabs = 0, nlines = 0;
   char c = '0', *entry, *testbufref, testbuf[FIELDSIZE];
@@ -117,6 +133,8 @@ int get_text_content(Ledger *ledger){
         if(ntabs >= NFIELDS){
           sprintf(entry, "Error: wrong number of tab delimiters near line %d. \
                           \nFix your ledger file.\n", nlines);
+          fprintf(stderr, "%s", entry);
+          emergency_free(ledger, fp, entry);
           return 1;
         }
         
@@ -127,6 +145,8 @@ int get_text_content(Ledger *ledger){
         if(ntabs != NFIELDS - 1 && ntabs != 0){
           sprintf(entry, "Error: wrong number of tab delimiters near line %d. \
                           \nFix your ledger file.\n", nlines);
+          fprintf(stderr, "%s", entry);
+          emergency_free(ledger, fp, entry);
           return 1;
         }
         
@@ -150,6 +170,8 @@ int get_text_content(Ledger *ledger){
     if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf)){
       sprintf(entry, "Error: bad number in \"amount\" field near line %d. \
                       \nFix your ledger file.\n", i);
+      fprintf(stderr, "%s", entry);
+      emergency_free(ledger, fp, entry);
       return 1;   
     }
   }
