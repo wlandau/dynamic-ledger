@@ -460,26 +460,21 @@ void usage(){
 
 int standalone(int argc, char **argv){
   FILE *fp;
-  
-  if(argc == 2){
+  if(argc == 2 || argc == 3){
     fp = fopen(argv[1], "r");
     if(fp == NULL){
       fprintf(stderr, "Error: cannot open input file, %s.\nPossible reason: file does not exist.\n", argv[1]);
       return 1;
     } 
     fclose(fp);
-   
+  }
+  
+  if(argc == 2){
     if(summarize(argv[1])){
       printf("Exiting due to failure.\n\n");
       return 1;
     }
   } else if(argc == 3){
-    fp = fopen(argv[2], "r");
-    if(fp == NULL){
-      fprintf(stderr, "Error: cannot open output file, %s.\nPossible reason: inadequate permissions.\n", argv[2]);
-      return 1;
-    } 
-    fclose(fp);
    
     if(condense(argv[1], argv[2])){
       printf("Exiting due to failure.\n\n");
