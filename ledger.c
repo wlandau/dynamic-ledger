@@ -441,7 +441,6 @@ int condense(const char* infile, const char *outfile){
   
   fp = fopen(outfile, "w");
   
-  fprintf(fp, "status\tamount\tcredit\tbank\tpartition\tmemo\n");
   for(i = 0; i < ledger->n; ++i){
     if(!mycmp(ledger->text_content[0][i], CREDIT_NOTTHEREYET) || 
        !mycmp(ledger->text_content[0][i], CREDIT_PENDING) || 
