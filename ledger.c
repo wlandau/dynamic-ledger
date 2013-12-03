@@ -27,7 +27,7 @@
 typedef struct {
   char *filename, **credit, **bank, ***partition, ***text_content;
   int n, ncredit, nbank, *npartition;
-  double  **credit_totals, **bank_totals, **partition_totals;
+  double *leftover, **credit_totals, **bank_totals, **partition_totals;
 } Ledger;
 
 void alloc_text_content(Ledger *ledger){
@@ -297,13 +297,15 @@ void get_totals(Ledger *ledger){
   double amount;
   char *status;
 
+  ledger->leftover = calloc(ledger->nbank, sizeof(double));
+
   ledger->credit_totals = calloc(ledger->ncredit, sizeof(double*));
   for(i = 0; i < ledger->ncredit; ++i)
-    ledger->credit_totals[i] = calloc(3, sizeof(double));
+    ledger->credit_totals[i] = calloc(4, sizeof(double));
       
   ledger->bank_totals = calloc(ledger->nbank, sizeof(double*));  
   for(i = 0; i < ledger->nbank; ++i)
-    ledger->bank_totals[i] = calloc(3, sizeof(double));
+    ledger->bank_totals[i] = calloc(4, sizeof(double));
   
   ledger->partition_totals = malloc(ledger->nbank * sizeof(double*));
   for(i = 0; i < ledger->nbank; ++i)
@@ -354,6 +356,20 @@ void get_totals(Ledger *ledger){
         break;
       }
     }
+  }
+  
+  for(j = 0; j < ledger->ncredit; ++j)
+    for(k = 0; k < 3; ++k)
+      ledger->credit_totals[j][3] += ledger->credit_totals[j][k];
+
+  for(j = 0; j < ledger->nbank; ++j)
+    for(k = 0; k < 3; ++k)
+      ledger->bank_totals[j][3] += ledger->bank_totals[j][k];
+  
+  for(j = 0; j < ledger->nbank; ++j){
+    ledger->leftover[j] = ledger->bank_totals[j][3];
+    for(k = 0; k < ledger->npartition[j]; ++k)
+      ledger->leftover[j] -= ledger->partition_totals[j][k];
   }  
 }
 
@@ -369,8 +385,8 @@ Ledger *make_ledger(const char* filename){
 }
 
 void print_summary(Ledger *ledger){
-  int i, j, k, l0, l1, l2;
-  double eps = 0.004, leftover;
+  int i, j, l0, l1, l2;
+  double eps = 0.004;
 
   for(i = 0; i < ledger->ncredit; ++i){
     l0 = (abs(ledger->credit_totals[i][0]) > eps);
@@ -386,9 +402,7 @@ void print_summary(Ledger *ledger){
       if(l0)
         printf("%0.2f\tnot arrived\n", ledger->credit_totals[i][0]); 
       if((l0 && l1) || (l1 && l2) || (l0 && l2))
-        printf("%0.2f\ttotal\n", ledger->credit_totals[i][0] 
-               + ledger->credit_totals[i][1] 
-               + ledger->credit_totals[i][2]);
+        printf("%0.2f\ttotal\n", ledger->credit_totals[i][3]);
     }
   }
   
@@ -400,9 +414,7 @@ void print_summary(Ledger *ledger){
     if(l0 || l1 || l2)
       printf("\n----- Bank account: %s -----\n\n", ledger->bank[i]);
     if(!l0 && !l1 && l2){
-      printf("%0.2f\ttrue balance\n", ledger->bank_totals[i][0] 
-                                    + ledger->bank_totals[i][1] 
-                                    + ledger->bank_totals[i][2]);
+      printf("%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
       printf("\tAll charges cleared.\n");
     } else {
        if(l2)
@@ -411,30 +423,18 @@ void print_summary(Ledger *ledger){
          printf("%0.2f\tcleared or pending\n", 
                 ledger->bank_totals[i][1] + ledger->bank_totals[i][2]); 
        if(l0 && (l1 || l2))
-         printf("%0.2f\ttrue balance\n", ledger->bank_totals[i][0] 
-                                       + ledger->bank_totals[i][1] 
-                                       + ledger->bank_totals[i][2]);
+         printf("%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
     }
+    printf("\n");
 
-    leftover = ledger->bank_totals[i][0] 
-             + ledger->bank_totals[i][1] 
-             + ledger->bank_totals[i][2];
-    
-    k = 0;
-    for(j = 0; j < ledger->npartition[i]; ++j){
+    for(j = 0; j < ledger->npartition[i]; ++j)
       if(abs(ledger->partition_totals[i][j]) > eps){
-        if(!k){
-          printf("\n");
-          ++k;
-        }
         printf("%0.2f\t%s partition\n", ledger->partition_totals[i][j], 
                                         ledger->partition[i][j]);
-        leftover -= ledger->partition_totals[i][j];
       }
-    }
     
-    if(ledger->npartition[i] && (abs(leftover) > eps))
-      printf("%0.2f\tunpartitioned\n", leftover);  
+    if(ledger->npartition[i] && (abs(ledger->leftover[i]) > eps))
+      printf("%0.2f\tunpartitioned\n", ledger->leftover[i]);  
   }
   printf("\n");
 }
@@ -497,7 +497,7 @@ int summarize(const char* filename){
 
 int condense(const char* infile, const char *outfile){
   int i, j, k;
-  double eps = 0.004, leftover;
+  double eps = 0.004;
   FILE *fp;
   Ledger *ledger;
   
@@ -530,33 +530,33 @@ int condense(const char* infile, const char *outfile){
 
       for(j = 0; j < ledger->nbank; ++j)
         if(!mycmp(ledger->text_content[3][i], ledger->bank[j])){
-          for(k = 0; k < ledger->npartition[j]; ++k)
-            if(!mycmp(ledger->text_content[4][i], ledger->partition[j][k]))
+         for(k = 0; k < ledger->npartition[j]; ++k){
+            if(!mycmp(ledger->text_content[4][i], ledger->partition[j][k])){
               ledger->partition_totals[j][k] -= atof(ledger->text_content[1][i]);
-       }
+              break;
+            } 
+          }
+          break;
+        }
     }
   } 
-
-  for(i = 0; i < ledger->nbank; ++i){
-    leftover = ledger->bank_totals[i][2];
-    k = 0;
+  
+  for(j = 0; j < ledger->nbank; ++j){
+    ledger->leftover[j] = ledger->bank_totals[j][2];
+    for(k = 0; k < ledger->npartition[j]; ++k)
+      ledger->leftover[j] -= ledger->partition_totals[j][k];
+  }  
     
-    for(j = 0; j < ledger->npartition[i]; ++j){
-      if(abs(ledger->partition_totals[i][j]) > eps){
+  for(i = 0; i < ledger->nbank; ++i){
+    if(abs(ledger->leftover[i]) > eps)
+      fprintf(fp, "\t%0.2f\t\t%s\t\tcondensed\n", ledger->leftover[i], ledger->bank[i]);
+    
+    for(j = 0; j < ledger->npartition[i]; ++j)
+      if(abs(ledger->partition_totals[i][j]) > eps)
         fprintf(fp, "\t%0.2f\t\t%s\t%s\tcondensed\n", ledger->partition_totals[i][j], 
                 ledger->bank[i], ledger->partition[i][j]); 
-                
-        if(!k){
-          ++k;
-        }
-        leftover -= ledger->partition_totals[i][j];
-      }
-    }
-    
-    if(abs(leftover) > eps)
-      fprintf(fp, "\t%0.2f\t\t%s\t\tcondensed\n", leftover, ledger->bank[i]);
-  }
-    
+  }      
+
   fclose(fp);
   free_ledger(ledger);
   return 0;
