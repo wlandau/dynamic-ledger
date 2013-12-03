@@ -416,10 +416,8 @@ void print_summary(Ledger *ledger){
           printf("%0.2f\tnot arrived\n", ledger->credit_totals[i][0]); 
         if(l1)
           printf("%0.2f\tpending\n", ledger->credit_totals[i][1]); 
-        
+        printf("\n");
       } 
-      
-      printf("\n");
       
       printf("%0.2f\ttrue balance\n", ledger->credit_totals[i][3]);
       if(abs(ledger->credit_totals[i][2] - ledger->credit_totals[i][3]) < eps){
@@ -427,7 +425,7 @@ void print_summary(Ledger *ledger){
         if(l1)
           printf("%0.2f\tpending balance\n", ledger->credit_totals[i][1] 
                                            + ledger->credit_totals[i][2]);   
-        if(l2)
+        if(l0)
           printf("%0.2f\tcleared balance\n", ledger->credit_totals[i][2]);  
       }        
 
@@ -458,7 +456,7 @@ void print_summary(Ledger *ledger){
         if(l1)
           printf("%0.2f\tpending balance\n", ledger->bank_totals[i][1] 
                                            + ledger->bank_totals[i][2]);   
-        if(l2)
+        if(l0)
           printf("%0.2f\tcleared balance\n", ledger->bank_totals[i][2]);  
       }        
 
