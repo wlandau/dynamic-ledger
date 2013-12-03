@@ -6,7 +6,7 @@
  @license GPL 3.0
  @about Personal accounting software. More documentation to come. 
 */
-
+ 
 #include <errno.h>
 #include <getopt.h>
 #include <stdio.h>
