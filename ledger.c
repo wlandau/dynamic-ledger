@@ -467,9 +467,11 @@ void free_ledger(Ledger *ledger){
       free(ledger->text_content[i][j]);
     free(ledger->text_content[i]);
   }
-  free(ledger->text_content);  
-  free(ledger->npartition);
+  
   free(ledger->filename);
+  free(ledger->npartition);
+  free(ledger->leftover);
+  free(ledger->text_content);  
   free(ledger);
 }
 
