@@ -425,7 +425,7 @@ void print_summary(Ledger *ledger){
         if(l1)
           printf("%0.2f\tpending balance\n", ledger->credit_totals[i][1] 
                                            + ledger->credit_totals[i][2]);   
-        if(l0)
+        if(l2)
           printf("%0.2f\tcleared balance\n", ledger->credit_totals[i][2]);  
       }        
 
