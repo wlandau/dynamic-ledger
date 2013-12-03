@@ -34,6 +34,9 @@ typedef struct {
 void free_ledger(Ledger *ledger){
   int i, j;
 
+  if(ledger == NULL)
+    return;
+
   if(ledger->text_content != NULL){
     for(i = 0; i < NFIELDS; ++i){
       if(ledger->text_content[i] != NULL){
@@ -94,10 +97,18 @@ void free_ledger(Ledger *ledger){
     free(ledger->bank_totals);
   }
 
-  fclose(ledger->fp);
-  free(ledger->filename);
-  free(ledger->npartition);
-  free(ledger->leftover);
+  if(ledger->fp != NULL)
+    fclose(ledger->fp);
+
+  if(ledger->filename != NULL)
+    free(ledger->filename);
+
+  if(ledger->npartition != NULL)
+    free(ledger->npartition);
+
+  if(ledger->leftover != NULL)
+    free(ledger->leftover);
+
   free(ledger);
 }
 
@@ -452,7 +463,7 @@ void get_totals(Ledger *ledger){
 }
 
 Ledger *get_ledger_from_stream(FILE *fp){
-  Ledger *ledger = calloc(sizeof(Ledger));
+  Ledger *ledger = malloc(sizeof(Ledger));
   ledger->fp = fp;
   if(get_text_content(ledger))
     return NULL;
