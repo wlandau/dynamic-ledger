@@ -120,7 +120,7 @@ int check_legal_float(char *s, int row){
     }
   return 0;
 }
-
+ 
 int is_space(char c){
   return (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == 'v');
 }
