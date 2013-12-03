@@ -231,6 +231,7 @@ int get_text_content(Ledger *ledger){
   
   if(!ledger->n){
     fprintf(stderr, "Ledger file is empty.\n");
+    fclose(fp);
     return 1;
   }
     
