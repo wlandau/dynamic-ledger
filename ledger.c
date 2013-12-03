@@ -452,7 +452,7 @@ void get_totals(Ledger *ledger){
 }
 
 Ledger *get_ledger_from_stream(FILE *fp){
-  Ledger *ledger = malloc(sizeof(Ledger));
+  Ledger *ledger = calloc(sizeof(Ledger));
   ledger->fp = fp;
   if(get_text_content(ledger))
     return NULL;
