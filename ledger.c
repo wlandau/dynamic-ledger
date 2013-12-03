@@ -474,7 +474,18 @@ void free_ledger(Ledger *ledger){
 }
 
 int summarize(const char* filename){
-  Ledger *ledger = make_ledger(filename);
+  FILE *fp;
+  Ledger *ledger;
+  
+  fp = fopen(filename, "r");
+  if(fp == NULL){
+    fprintf(stderr, "Error: cannot open input file, %s.", filename);
+    fprintf(stderr, "\nPossible reason: file does not exist.\n");
+    return 1;
+  } 
+  fclose(fp);
+  
+  ledger = make_ledger(filename);
   if(ledger == NULL){
     printf("Failed to read ledger.\n");
     return 1;
@@ -488,8 +499,17 @@ int condense(const char* infile, const char *outfile){
   int i, j, k;
   double eps = 0.004, leftover;
   FILE *fp;
-  Ledger *ledger = make_ledger(infile);
+  Ledger *ledger;
   
+  fp = fopen(infile, "r");
+  if(fp == NULL){
+    fprintf(stderr, "Error: cannot open input file, %s.", infile);
+    fprintf(stderr, "\nPossible reason: file does not exist.\n");
+    return 1;
+  } 
+  fclose(fp);
+  
+  ledger = make_ledger(infile);
   if(ledger == NULL){
     printf("Failed to read ledger.\n");
     return 1;
@@ -549,23 +569,12 @@ void usage(){
 }
 
 int standalone(int argc, char **argv){
-  FILE *fp;
-  if(argc == 2 || argc == 3){
-    fp = fopen(argv[1], "r");
-    if(fp == NULL){
-      fprintf(stderr, "Error: cannot open input file, %s.\nPossible reason: file does not exist.\n", argv[1]);
-      return 1;
-    } 
-    fclose(fp);
-  }
-
   if(argc == 2){
     if(summarize(argv[1])){
       printf("Exiting due to failure.\n");
       return 1;
     }
   } else if(argc == 3){
-   
     if(condense(argv[1], argv[2])){
       printf("No output produce.\nExiting due to failure.\n");
       return 1;
