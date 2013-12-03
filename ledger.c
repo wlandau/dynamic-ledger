@@ -611,7 +611,7 @@ int standalone(int argc, char **argv){
     }
   } else if(argc == 3){
     if(condense(argv[1], argv[2])){
-      printf("No output produce.\nExiting.\n");
+      printf("No output produced.\nExiting.\n");
       return 1;
     }
   } else{
