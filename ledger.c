@@ -427,7 +427,7 @@ void print_summary(Ledger *ledger){
       } 
     }
   }
-  
+
   for(i = 0; i < ledger->nbank; ++i){
     l0 = (abs(ledger->bank_totals[i][0]) > eps);
     l1 = (abs(ledger->bank_totals[i][1]) > eps);
@@ -463,8 +463,8 @@ void print_summary(Ledger *ledger){
     if(ledger->npartition[i] && (abs(ledger->leftover[i]) > eps))
       printf("%0.2f\tunpartitioned\n", ledger->leftover[i]); 
       
-    if(i == (ledger->nbank - 1))
-        printf("\n");   
+    if(i == (ledger->nbank - 1) && (l0 || l1 || l2))
+      printf("\n");   
   }
 }
 
