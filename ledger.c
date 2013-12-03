@@ -28,7 +28,78 @@ typedef struct {
   char *filename, **credit, **bank, ***partition, ***text_content;
   int n, ncredit, nbank, *npartition;
   double *leftover, **credit_totals, **bank_totals, **partition_totals;
+  FILE *fp;
 } Ledger;
+
+void free_ledger(Ledger *ledger){
+  int i, j;
+
+  if(ledger->text_content != NULL){
+    for(i = 0; i < NFIELDS; ++i){
+      if(ledger->text_content[i] != NULL){
+        for(j = 0; j < ledger->n; ++j)
+          if(ledger->text_content[i][j] != NULL)
+            free(ledger->text_content[i][j]);
+        free(ledger->text_content[i]);
+      }
+    }
+    free(ledger->text_content);
+  }
+  
+  if(ledger->partition != NULL){
+    for(i = 0; i < ledger->nbank; ++i){
+      if(ledger->partition[i] != NULL){
+        for(j = 0; j < ledger->npartition[i]; ++j)
+          if(ledger->partition[i][j] != NULL)
+            free(ledger->partition[i][j]);
+        free(ledger->partition[i]);
+      }
+    }
+    free(ledger->partition);
+  }
+  
+  if(ledger->partition_totals != NULL){
+    for(i = 0; i < ledger->nbank; ++i)
+      if(ledger->partition_totals[i] != NULL)
+        free(ledger->partition_totals[i]);
+    free(ledger->partition_totals);
+  }
+
+  if(ledger->credit != NULL){
+    for(i = 0; i < ledger->ncredit; ++i)
+      if(ledger->credit[i] != NULL)
+        free(ledger->credit[i]);
+    free(ledger->credit); 
+  }
+
+  if(ledger->credit_totals != NULL){
+    for(i = 0; i < ledger->ncredit; ++i)
+      if(ledger->credit_totals[i] != NULL)
+        free(ledger->credit_totals[i]);
+    free(ledger->credit_totals); 
+  }    
+
+  if(ledger->bank != NULL){
+    for(i = 0; i < ledger->nbank; ++i)
+      if(ledger->bank[i] != NULL)
+        free(ledger->bank[i]);
+    free(ledger->bank);
+  }
+
+
+  if(ledger->bank_totals != NULL){
+    for(i = 0; i < ledger->nbank; ++i)
+      if(ledger->bank_totals[i] != NULL)
+        free(ledger->bank_totals[i]);
+    free(ledger->bank_totals);
+  }
+
+  fclose(ledger->fp);
+  free(ledger->filename);
+  free(ledger->npartition);
+  free(ledger->leftover);
+  free(ledger);
+}
 
 void alloc_text_content(Ledger *ledger){
   int i, j;
@@ -38,6 +109,16 @@ void alloc_text_content(Ledger *ledger){
     for(j = 0; j < ledger->n; ++j)
       ledger->text_content[i][j] = calloc(FIELDSIZE, sizeof(char));
   }
+}
+
+int badfile(const char *filename){
+  FILE *fp = fopen(filename, "r");
+  if(fp == NULL){
+    fprintf(stderr, "Error: cannot open file, %s.", filename);
+    return 1;
+  }
+  fclose(fp);
+  return 0;
 }
 
 int qcmp(const void *a, const void *b){ 
@@ -86,21 +167,6 @@ void unique(char **s, int n, char ***ret, int *nunique){
         ++k;
       }
     }  
-}
-
-void emergency_free(Ledger *ledger, FILE *fp){
-  int i, j;
-  
-  fclose(fp);
-  
-  for(i = 0; i < NFIELDS; ++i){
-    for(j = 0; j < ledger->n; ++j)
-      free(ledger->text_content[i][j]);
-    free(ledger->text_content[i]);
-  }
-  free(ledger->text_content);  
-  free(ledger->filename);
-  free(ledger);
 }
 
 int check_legal_float(char *s, int row){
@@ -223,27 +289,24 @@ char *local_strsep(char **stringp, const char *delim){
 int get_text_content(Ledger *ledger){
   int row, field; 
   char line[LINESIZE], *str, *token;
-  FILE *fp = fopen(ledger->filename, "r");
   
   ledger->n = 0;
-  while(fgets(line, LINESIZE, fp))
+  while(fgets(line, LINESIZE, ledger->fp))
     ++ledger->n;
   
   if(!ledger->n){
     fprintf(stderr, "Ledger file is empty.\n");
-    fclose(fp);
-    free(ledger->filename);
-    free(ledger);
+    free_ledger(ledger);
     return 1;
   }
     
-  rewind(fp);
+  rewind(ledger->fp);
   alloc_text_content(ledger);
   
   row = 0;
   field = 0;
 
-  while(fgets(line, LINESIZE, fp)){
+  while(fgets(line, LINESIZE, ledger->fp)){
     str = line;
     for(field = 0; field < NFIELDS; ++field){
       token = local_strsep(&str, "\f\n\r\t\v");
@@ -252,7 +315,7 @@ int get_text_content(Ledger *ledger){
       
       if(field == 0) 
         if(check_legal_float(token, row)){
-          emergency_free(ledger, fp);
+          free_ledger(ledger);
           return 1;
         }
     
@@ -262,7 +325,7 @@ int get_text_content(Ledger *ledger){
     ++row;
   }
   
-  fclose(fp);
+  rewind(ledger->fp);
   return 0;
 }
 
@@ -388,14 +451,28 @@ void get_totals(Ledger *ledger){
   }  
 }
 
-Ledger *make_ledger(const char* filename){
+Ledger *get_ledger_from_stream(FILE *fp){
   Ledger *ledger = malloc(sizeof(Ledger));
-  ledger->filename = malloc(FILENAMESIZE * sizeof(char));
-  strcpy(ledger->filename, filename);
+  ledger->fp = fp;
   if(get_text_content(ledger))
     return NULL;
   get_names(ledger);
   get_totals(ledger); 
+  return ledger;
+}
+
+Ledger *get_ledger_from_filename(const char* filename){
+  FILE *fp;
+  Ledger *ledger;
+  
+  if(badfile(filename))
+    return NULL;
+  
+  fp = fopen(filename, "r");
+  ledger = get_ledger_from_stream(fp);
+  ledger->filename = malloc(FILENAMESIZE * sizeof(char));
+  strcpy(ledger->filename, filename);
+  
   return ledger;
 }
 
@@ -468,59 +545,13 @@ void print_summary(Ledger *ledger){
   }
 }
 
-void free_ledger(Ledger *ledger){
-  int i, j;
-
-  for(i = 0; i < ledger->ncredit; ++i){
-    free(ledger->credit[i]);
-    free(ledger->credit_totals[i]);
-  }
-  free(ledger->credit);
-  free(ledger->credit_totals);
-
-  for(i = 0; i < ledger->nbank; ++i){
-    free(ledger->bank[i]);
-    free(ledger->bank_totals[i]);
-    for(j = 0; j < ledger->npartition[i]; ++j)
-      free(ledger->partition[i][j]);
-    free(ledger->partition[i]);
-    free(ledger->partition_totals[i]);
-  } 
-  free(ledger->bank);
-  free(ledger->bank_totals);
-  free(ledger->partition);
-  free(ledger->partition_totals); 
-  
-  for(i = 0; i < NFIELDS; ++i){
-    for(j = 0; j < ledger->n; ++j)
-      free(ledger->text_content[i][j]);
-    free(ledger->text_content[i]);
-  }
-  
-  free(ledger->filename);
-  free(ledger->npartition);
-  free(ledger->leftover);
-  free(ledger->text_content);
-  free(ledger);
-}
-
 int summarize(const char* filename){
-  FILE *fp;
-  Ledger *ledger;
+  Ledger *ledger = get_ledger_from_filename(filename);
+  int ind = (ledger == NULL);
   
-  fp = fopen(filename, "r");
-  if(fp == NULL){
-    fprintf(stderr, "Error: cannot open input file, %s.", filename);
-    fprintf(stderr, "\nPossible reason: file does not exist.\n");
+  if(ind)
     return 1;
-  } 
-  fclose(fp);
-  
-  ledger = make_ledger(filename);
-  if(ledger == NULL){
-    printf("No ledger read.\n");
-    return 1;
-  }
+
   print_summary(ledger);
   free_ledger(ledger);
   return 0;
@@ -541,7 +572,7 @@ int condense(const char* infile, const char *outfile){
   } 
   fclose(fp);
   
-  ledger = make_ledger(infile);
+  ledger = get_ledger_from_filename(infile);
   if(ledger == NULL){
     printf("Failed to read ledger.\n");
     return 1;
