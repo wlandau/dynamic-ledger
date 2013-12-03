@@ -114,7 +114,7 @@ void alloc_text_content(Ledger *ledger){
 int badfile(const char *filename){
   FILE *fp = fopen(filename, "r");
   if(fp == NULL){
-    fprintf(stderr, "Error: cannot open file, %s.", filename);
+    fprintf(stderr, "Error: cannot open file, %s.\n", filename);
     return 1;
   }
   fclose(fp);
@@ -501,7 +501,7 @@ void print_summary(Ledger *ledger){
       } else {
         printf("%0.2f\ttrue balance\n", ledger->credit_totals[i][3]); 
         printf("\tAll charges cleared.\n");
-      } 
+      }
     }
   }
 
@@ -538,10 +538,10 @@ void print_summary(Ledger *ledger){
       }
     
     if(ledger->npartition[i] && (abs(ledger->leftover[i]) > eps))
-      printf("%0.2f\tunpartitioned\n", ledger->leftover[i]); 
- 
-    if(!(ledger->npartition[i]) && (l0 || l1 || l2))
-      printf("\n");   
+      printf("%0.2f\tunpartitioned\n", ledger->leftover[i]);    
+      
+    if(i == (ledger->nbank - 1))
+      printf("\n");
   }
 }
 
@@ -566,7 +566,7 @@ int condense(const char* infile, const char *outfile){
   
   fp = fopen(infile, "r");
   if(fp == NULL){
-    fprintf(stderr, "Error: cannot open input file, %s.", infile);
+    fprintf(stderr, "Error: cannot open input file, %s.\n", infile);
     fprintf(stderr, "\nPossible reason: file does not exist.\n");
     return 1;
   } 
