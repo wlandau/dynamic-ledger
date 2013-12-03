@@ -465,10 +465,6 @@ void get_totals(Ledger *ledger){
 
 Ledger *get_ledger_from_stream(FILE *fp){
   Ledger *ledger = calloc(1, sizeof(Ledger));
-  
-  
-  
-  
   ledger->fp = fp;
   if(get_text_content(ledger))
     return NULL;
@@ -486,6 +482,10 @@ Ledger *get_ledger_from_filename(const char* filename){
   
   fp = fopen(filename, "r");
   ledger = get_ledger_from_stream(fp);
+  
+  if(ledger == NULL)
+    return NULL;
+    
   ledger->filename = malloc(FILENAMESIZE * sizeof(char));
   strcpy(ledger->filename, filename);
   
