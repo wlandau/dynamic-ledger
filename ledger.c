@@ -47,9 +47,7 @@ int qcmp(const void *a, const void *b){
 } 
 
 int mycmp(const char *s1, const char *s2){
-  int ret;
-  ret = strcmp(s1, s2) || (strlen(s1) != strlen(s2));
-  return ret;
+  return strcmp(s1, s2) || (strlen(s1) != strlen(s2));
 }
 
 void unique(char **s, int n, char ***ret, int *nunique){
@@ -230,6 +228,11 @@ int get_text_content(Ledger *ledger){
   ledger->n = 0;
   while(fgets(line, LINESIZE, fp))
     ++ledger->n;
+  
+  if(!ledger->n){
+    fprintf(stderr, "Ledger file is empty.\n");
+    return 1;
+  }
     
   rewind(fp);
   alloc_text_content(ledger);
@@ -270,9 +273,17 @@ void get_names(Ledger *ledger){
   }
      
   unique(s, ledger->n, &ledger->credit, &ledger->ncredit);
+  ++ledger->ncredit;
+  ledger->credit = realloc(ledger->credit, ledger->ncredit*sizeof(char*));
+  ledger->credit[ledger->ncredit - 1] = calloc(1, sizeof(char));
+  
   for(i = 0; i < ledger->n; ++i)
      strcpy(s[i], ledger->text_content[3][i]);
+     
   unique(s, ledger->n, &ledger->bank, &ledger->nbank);
+  ++ledger->nbank;
+  ledger->bank = realloc(ledger->bank, ledger->nbank*sizeof(char*));
+  ledger->bank[ledger->nbank - 1] = calloc(1, sizeof(char));
   
   ledger->npartition = calloc(ledger->nbank, sizeof(int*));
   ledger->partition = malloc(ledger->nbank * sizeof(char***));
@@ -346,7 +357,7 @@ void get_totals(Ledger *ledger){
       if(!mycmp(ledger->text_content[3][i], ledger->bank[j])){
         ledger->bank_totals[j][k] += amount;
 
-       for(k = 0; k < ledger->npartition[j]; ++k){
+        for(k = 0; k < ledger->npartition[j]; ++k){
           if(!mycmp(ledger->text_content[4][i], ledger->partition[j][k])){
             ledger->partition_totals[j][k] += amount;
             break;
@@ -363,8 +374,9 @@ void get_totals(Ledger *ledger){
       ledger->credit_totals[j][3] += ledger->credit_totals[j][k];
 
   for(j = 0; j < ledger->nbank; ++j)
-    for(k = 0; k < 3; ++k)
+    for(k = 0; k < 3; ++k){
       ledger->bank_totals[j][3] += ledger->bank_totals[j][k];
+    }  
   
   for(j = 0; j < ledger->nbank; ++j){
     ledger->leftover[j] = ledger->bank_totals[j][3];
@@ -401,8 +413,7 @@ void print_summary(Ledger *ledger){
         printf("%0.2f\tpending\n", ledger->credit_totals[i][1]); 
       if(l0)
         printf("%0.2f\tnot arrived\n", ledger->credit_totals[i][0]); 
-      if((l0 && l1) || (l1 && l2) || (l0 && l2))
-        printf("%0.2f\ttotal\n", ledger->credit_totals[i][3]);
+      printf("\n%0.2f\ttrue balance\n", ledger->credit_totals[i][3]);
     }
   }
   
@@ -422,8 +433,9 @@ void print_summary(Ledger *ledger){
        if(l1 && l2)
          printf("%0.2f\tcleared or pending\n", 
                 ledger->bank_totals[i][1] + ledger->bank_totals[i][2]); 
-       if(l0 && (l1 || l2))
-         printf("%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
+       if(l0)
+         printf("%0.2f\tnot arrived\n", 
+                ledger->bank_totals[i][0]); 
     }
 
     for(j = 0; j < ledger->npartition[i]; ++j)
@@ -435,9 +447,11 @@ void print_summary(Ledger *ledger){
       }
     
     if(ledger->npartition[i] && (abs(ledger->leftover[i]) > eps))
-      printf("%0.2f\tunpartitioned\n", ledger->leftover[i]);  
+      printf("%0.2f\tunpartitioned\n", ledger->leftover[i]); 
+      
+    if(i == (ledger->nbank - 1))
+        printf("\n");   
   }
-  printf("\n");
 }
 
 void free_ledger(Ledger *ledger){
@@ -490,7 +504,7 @@ int summarize(const char* filename){
   
   ledger = make_ledger(filename);
   if(ledger == NULL){
-    printf("Failed to read ledger.\n");
+    printf("No ledger read.\n");
     return 1;
   }
   print_summary(ledger);
@@ -574,12 +588,12 @@ void usage(){
 int standalone(int argc, char **argv){
   if(argc == 2){
     if(summarize(argv[1])){
-      printf("Exiting due to failure.\n");
+      printf("Exiting.\n");
       return 1;
     }
   } else if(argc == 3){
     if(condense(argv[1], argv[2])){
-      printf("No output produce.\nExiting due to failure.\n");
+      printf("No output produce.\nExiting.\n");
       return 1;
     }
   } else{
