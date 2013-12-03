@@ -462,7 +462,7 @@ void print_summary(Ledger *ledger){
     
     if(ledger->npartition[i] && (abs(ledger->leftover[i]) > eps))
       printf("%0.2f\tunpartitioned\n", ledger->leftover[i]); 
-
+ 
     if(l0 || l1 || l2)
       printf("\n");   
   }
