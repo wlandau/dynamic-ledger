@@ -1,7 +1,7 @@
-cp	-27	card	checking	rent	electric bill
-cp	-51.25	card	checking	travel	travel expenses
-c	-500	card	checking	rent	rent
-	800		checking	rent	paycheck
-	500		checking	food	paycheck
-	100		savings		paycheck
-	50		savings	travel	saving for next trip
+-27	cp	card	checking	rent	electric bill
+-51.25	cp	card	checking	travel	travel expenses
+-500	c	card	checking	rent	rent
+800			checking	rent	paycheck
+500			checking	food	paycheck
+100			savings		paycheck
+50			savings	travel	saving for next trip

@@ -247,7 +247,7 @@ int get_text_content(Ledger *ledger){
       if(token == NULL)
         continue;
       
-      if(field == 1) 
+      if(field == 0) 
         if(check_legal_float(token, row)){
           emergency_free(ledger, fp);
           return 1;
@@ -323,8 +323,8 @@ void get_totals(Ledger *ledger){
     ledger->partition_totals[i] = calloc(ledger->npartition[i], sizeof(double));
     
   for(i = 0; i < ledger->n; ++i){
-    status = ledger->text_content[0][i];
-    amount = atof(ledger->text_content[1][i]);
+    status = ledger->text_content[1][i];
+    amount = atof(ledger->text_content[0][i]);
 
     k = -1;
     if(!mycmp(status, CREDIT_NOTTHEREYET)){
@@ -406,14 +406,28 @@ void print_summary(Ledger *ledger){
     l2 = (abs(ledger->credit_totals[i][2]) > eps);      
   
     if(l0 || l1 || l2){
-      printf("\n----- Credit card: %s -----\n\n", ledger->credit[i]);
-      if(l2)
-        printf("%0.2f\tcharged\n", ledger->credit_totals[i][2]);
-      if(l1)
-        printf("%0.2f\tpending\n", ledger->credit_totals[i][1]); 
-      if(l0)
-        printf("%0.2f\tnot arrived\n", ledger->credit_totals[i][0]); 
-      printf("\n%0.2f\ttrue balance\n", ledger->credit_totals[i][3]);
+      printf("\n----- Credit account: %s -----\n\n", ledger->credit[i]);
+      
+      if(l0 || l1){
+        if(l0)
+          printf("%0.2f\tnot arrived\n", ledger->credit_totals[i][0]); 
+        if(l1)
+          printf("%0.2f\tpending\n", ledger->credit_totals[i][1]); 
+        printf("\n");
+      } 
+      
+      printf("%0.2f\ttrue balance\n", ledger->credit_totals[i][3]);
+      if(abs(ledger->credit_totals[i][2] - ledger->credit_totals[i][3]) < eps){
+
+        if(l1)
+          printf("%0.2f\tpending balance\n", ledger->credit_totals[i][1] 
+                                           + ledger->credit_totals[i][2]);   
+        if(l0)
+          printf("%0.2f\tcleared balance\n", ledger->credit_totals[i][2]);  
+      }        
+
+      if(!l0 && !l1 && l2)
+        printf("\tAll charges cleared.\n");
     }
   }
   
@@ -422,20 +436,29 @@ void print_summary(Ledger *ledger){
     l1 = (abs(ledger->bank_totals[i][1]) > eps);
     l2 = (abs(ledger->bank_totals[i][2]) > eps); 
   
-    if(l0 || l1 || l2)
+    if(l0 || l1 || l2){
       printf("\n----- Bank account: %s -----\n\n", ledger->bank[i]);
-    if(!l0 && !l1 && l2){
+      
+      if(l0 || l1){
+        if(l0)
+          printf("%0.2f\tnot arrived\n", ledger->bank_totals[i][0]); 
+        if(l1)
+          printf("%0.2f\tpending\n", ledger->bank_totals[i][1]); 
+        printf("\n");
+      } 
+      
       printf("%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
-      printf("\tAll charges cleared.\n");
-    } else {
-       if(l2)
-         printf("%0.2f\tcleared\n", ledger->bank_totals[i][2]);
-       if(l1 && l2)
-         printf("%0.2f\tcleared or pending\n", 
-                ledger->bank_totals[i][1] + ledger->bank_totals[i][2]); 
-       if(l0)
-         printf("%0.2f\tnot arrived\n", 
-                ledger->bank_totals[i][0]); 
+      if(abs(ledger->bank_totals[i][2] - ledger->bank_totals[i][3]) < eps){
+
+        if(l1)
+          printf("%0.2f\tpending balance\n", ledger->bank_totals[i][1] 
+                                           + ledger->bank_totals[i][2]);   
+        if(l0)
+          printf("%0.2f\tcleared balance\n", ledger->bank_totals[i][2]);  
+      }        
+
+      if(!l0 && !l1 && l2)
+        printf("\tAll charges cleared.\n");
     }
 
     for(j = 0; j < ledger->npartition[i]; ++j)
@@ -514,7 +537,8 @@ int summarize(const char* filename){
 
 int condense(const char* infile, const char *outfile){
   int i, j, k;
-  double eps = 0.004;
+  double eps = 0.004, amount;
+  char status[FIELDSIZE];
   FILE *fp;
   Ledger *ledger;
   
@@ -535,11 +559,14 @@ int condense(const char* infile, const char *outfile){
   fp = fopen(outfile, "w");
   
   for(i = 0; i < ledger->n; ++i){
-    if(!mycmp(ledger->text_content[0][i], CREDIT_NOTTHEREYET) || 
-       !mycmp(ledger->text_content[0][i], CREDIT_PENDING) || 
-       !mycmp(ledger->text_content[0][i], CREDIT_CLEARED) ||
-       !mycmp(ledger->text_content[0][i], NOTTHEREYET) || 
-       !mycmp(ledger->text_content[0][i], PENDING)){
+    strcpy(status, ledger->text_content[1][i]);
+    amount = atof(ledger->text_content[0][i]);
+  
+    if(!mycmp(status, CREDIT_NOTTHEREYET) || 
+       !mycmp(status, CREDIT_PENDING) || 
+       !mycmp(status, CREDIT_CLEARED) ||
+       !mycmp(status, NOTTHEREYET) || 
+       !mycmp(status, PENDING)){ 
       fprintf(fp, "%s\t%s\t%s\t%s\t%s\t%s\n", ledger->text_content[0][i],
               ledger->text_content[1][i], ledger->text_content[2][i],
               ledger->text_content[3][i], ledger->text_content[4][i],
@@ -549,7 +576,7 @@ int condense(const char* infile, const char *outfile){
         if(!mycmp(ledger->text_content[3][i], ledger->bank[j])){
          for(k = 0; k < ledger->npartition[j]; ++k){
             if(!mycmp(ledger->text_content[4][i], ledger->partition[j][k])){
-              ledger->partition_totals[j][k] -= atof(ledger->text_content[1][i]);
+              ledger->partition_totals[j][k] -= amount;
               break;
             } 
           }
@@ -566,11 +593,11 @@ int condense(const char* infile, const char *outfile){
     
   for(i = 0; i < ledger->nbank; ++i){
     if(abs(ledger->leftover[i]) > eps)
-      fprintf(fp, "\t%0.2f\t\t%s\t\tcondensed\n", ledger->leftover[i], ledger->bank[i]);
+      fprintf(fp, "%0.2f\t\t\t%s\t\tcondensed\n", ledger->leftover[i], ledger->bank[i]);
     
     for(j = 0; j < ledger->npartition[i]; ++j)
       if(abs(ledger->partition_totals[i][j]) > eps)
-        fprintf(fp, "\t%0.2f\t\t%s\t%s\tcondensed\n", ledger->partition_totals[i][j], 
+        fprintf(fp, "%0.2f\t\t\t%s\t%s\tcondensed\n", ledger->partition_totals[i][j], 
                 ledger->bank[i], ledger->partition[i][j]); 
   }      
 
