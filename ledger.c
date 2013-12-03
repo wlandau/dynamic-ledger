@@ -425,10 +425,11 @@ void print_summary(Ledger *ledger){
        if(l0 && (l1 || l2))
          printf("%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
     }
-    printf("\n");
 
     for(j = 0; j < ledger->npartition[i]; ++j)
       if(abs(ledger->partition_totals[i][j]) > eps){
+        if(!j)
+          printf("\n");
         printf("%0.2f\t%s partition\n", ledger->partition_totals[i][j], 
                                         ledger->partition[i][j]);
       }
@@ -471,7 +472,7 @@ void free_ledger(Ledger *ledger){
   free(ledger->filename);
   free(ledger->npartition);
   free(ledger->leftover);
-  free(ledger->text_content);  
+  free(ledger->text_content);
   free(ledger);
 }
 
