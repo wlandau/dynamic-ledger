@@ -417,7 +417,7 @@ void print_summary(Ledger *ledger){
         if(l1)
           printf("%0.2f\tpending\n", ledger->credit_totals[i][1]);
         printf("\n%0.2f\tavailable\n", ledger->credit_totals[i][2]);
-        if(l1)
+        if(l1 && l0)
           printf("%0.2f\tpending balance\n", ledger->credit_totals[i][1] 
                                            + ledger->credit_totals[i][2]);
         printf("%0.2f\ttrue balance\n", ledger->credit_totals[i][3]);
@@ -442,7 +442,7 @@ void print_summary(Ledger *ledger){
         if(l1)
           printf("%0.2f\tpending\n", ledger->bank_totals[i][1]); 
         printf("\n%0.2f\tavailable\n", ledger->bank_totals[i][2]);
-        if(l1)
+        if(l1 && l0)
           printf("%0.2f\tpending balance\n", ledger->bank_totals[i][1] 
                                            + ledger->bank_totals[i][2]);
         printf("%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
