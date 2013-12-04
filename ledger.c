@@ -655,7 +655,8 @@ void insert_row(Ledger *ledger, int row){
 }
 
 void remove_row(Ledger *ledger, int row){
-  int i, j;
+  int i, j, recalculate;
+  float eps = 0.004;
   
   if(ledger == NULL)
     return;
@@ -670,24 +671,36 @@ void remove_row(Ledger *ledger, int row){
     return;  
   }
 
+  recalculate = (atof(ledger->text_content[0][row]) > eps);
+
   if(ledger->n == 1){
     printf("Warning: trying to remove the last row. Leaving a blank line.\n");
     for(i = 0; i < NFIELDS; ++i)
       strcpy(ledger->text_content[i][0], NIL);
-    return;
-  }
-  
-  for(i = 0; i < NFIELDS; ++i){
-    for(j = row; j < (ledger->n - 1); ++j)
-      strcpy(ledger->text_content[i][j], ledger->text_content[i][j + 1]);
-    free(ledger->text_content[i][ledger->n - 1]);
+  } else {
+    for(i = 0; i < NFIELDS; ++i){
+      for(j = row; j < (ledger->n - 1); ++j)
+        strcpy(ledger->text_content[i][j], ledger->text_content[i][j + 1]);
+      free(ledger->text_content[i][ledger->n - 1]);
+    }
   }
   
   --(ledger->n);
 
-  free_for_retotal(ledger);
-  get_names(ledger);
-  get_totals(ledger); 
+  if(recalculate){
+    free_for_retotal(ledger);
+    get_names(ledger);
+    get_totals(ledger); 
+  }
+}
+
+void trim_ledger(Ledger *ledger){
+  int i;
+  float eps = 0.004;
+  
+  for(i = (ledger->n - 1); i >= 0; --i)
+    if(abs(atof(ledger->text_content[0][i])) < eps)
+      remove_row(ledger, i);
 }
 
 Ledger *condense(Ledger *ledger){
@@ -777,6 +790,7 @@ Ledger *condense(Ledger *ledger){
 
   get_names(newledger);
   get_totals(newledger); 
+  trim_ledger(newledger);
 
   return newledger;
 }
