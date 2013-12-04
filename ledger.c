@@ -333,7 +333,47 @@ char *local_strsep(char **stringp, const char *delim){
   }
 }
 
-int get_text_content(Ledger *ledger){
+int get_text_content_from_string(Ledger *ledger, char *s){
+  int i, row, field;
+  char *linetoken = NULL, *entrytoken = NULL;
+
+  ledger->n = 1;
+  for(i = 0; i < strlen(s); ++i)
+    if(s[i] == '\n' || s[i] == '\r')
+      ++ledger->n;
+      
+  alloc_text_content(ledger);
+  
+  row = 0;
+  field = 0;
+
+  for(row = 0; row < ledger->n; ++row){
+    linetoken = local_strsep(&s, "\n\r");
+    
+    if(linetoken == NULL)
+      continue;
+    
+    for(field = 0; field < NFIELDS; ++field){
+      entrytoken = local_strsep(&linetoken, "\t");
+      if(entrytoken == NULL)
+        continue;
+      
+      strstrip(entrytoken);
+      if(field == 0) 
+        if(check_legal_double(entrytoken, row)){
+          free_ledger(ledger);
+          return 1;
+        }
+    
+      strcpy(ledger->text_content[field][row], entrytoken);    
+      
+    }
+  }
+
+  return 0;
+}
+
+int get_text_content_from_stream(Ledger *ledger){
   int row, field; 
   char line[LINESIZE], *str, *token;
   
@@ -360,13 +400,13 @@ int get_text_content(Ledger *ledger){
       if(token == NULL)
         continue;
       
+      strstrip(token);
       if(field == 0) 
         if(check_legal_double(token, row)){
           free_ledger(ledger);
           return 1;
         }
     
-      strstrip(token);
       strcpy(ledger->text_content[field][row], token);
     }
     ++row;
@@ -484,10 +524,20 @@ void get_totals(Ledger *ledger){
     }  
 }
 
+Ledger *get_ledger_from_string(char *s){
+  Ledger *ledger = calloc(1, sizeof(Ledger));
+  ledger->fp = NULL;
+  if(get_text_content_from_string(ledger, s))
+    return NULL;
+  get_names(ledger);
+  get_totals(ledger); 
+  return ledger;
+}
+
 Ledger *get_ledger_from_stream(FILE *fp){
   Ledger *ledger = calloc(1, sizeof(Ledger));
   ledger->fp = fp;
-  if(get_text_content(ledger))
+  if(get_text_content_from_stream(ledger))
     return NULL;
   get_names(ledger);
   get_totals(ledger); 
@@ -948,5 +998,21 @@ int standalone(int argc, char **argv){
 }
  
 int main(int argc, char **argv){
+
+/*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
+  
+  */
+  
+  Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger;
+  char *s = print_ledger_to_string(ledger);
+  free(ledger);
+  
+
+  newledger = get_ledger_from_string(s);
+  
+  print_ledger_verbose(newledger, stdout);
+
+  free(newledger);
+  free(s);
 }
