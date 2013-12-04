@@ -917,7 +917,7 @@ int main(int argc, char **argv){ /*
   if(ledger != NULL){
     print_ledger_verbose(ledger, stdout);
   
-    insert_row(ledger, 0);
+    remove_row(ledger, 0);
     
     printf("\n\n===========\n\n");
     
