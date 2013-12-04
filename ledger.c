@@ -992,7 +992,7 @@ int condense_and_print(const char* infile, const char *outfile){
   return 0;
 }
 
-int summarize(const char* filename, FILE *fp){
+int summarize_file(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_filename(filename);
   int ind = (ledger == NULL);
   
@@ -1007,7 +1007,7 @@ int summarize(const char* filename, FILE *fp){
 
 int standalone(int argc, char **argv){
   if(argc == 2){
-    if(summarize(argv[1], stdout)){
+    if(summarize_file(argv[1], stdout)){
       printf("Exiting.\n");
       return 1;
     }
@@ -1036,13 +1036,19 @@ void condense_str(char **s){
   free(tmp);
 }
 
+void summarize_str2stream(char *s, FILE *fp){
+  Ledger *ledger = get_ledger_from_string(s);
+  print_summary(ledger, fp);
+  free_ledger(ledger);
+}
+
 int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; 
   */
   
   Ledger *ledger = get_ledger_from_filename(argv[1]);
   char *s = print_ledger_to_string(ledger);
-  condense_str(&s);
+  summarize_str2stream(s, stdout);
   printf("%s", s);
   
   free(s);
