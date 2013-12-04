@@ -401,7 +401,7 @@ int get_text_content_from_string(Ledger *ledger, char *str){
   if(ledger == NULL || str == NULL)
     return 1;
   
-  s = calloc(strlen(str) + 1, sizeof(char));
+  s = calloc(strlen(str), sizeof(char));
   strcpy(s, str);
 
   ledger->n = 1;
