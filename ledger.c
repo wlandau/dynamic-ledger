@@ -537,6 +537,8 @@ Ledger *get_ledger_from_stream(FILE *fp){
   
   
   ledger = calloc(1, sizeof(Ledger));
+  free(ledger);
+  return NULL;
   
   /*
   if(get_text_content_from_stream(ledger, fp)){ 
