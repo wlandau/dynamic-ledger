@@ -1014,13 +1014,14 @@ int main(int argc, char **argv){
 
   
   
-
-  newledger = get_ledger_from_string(s);
   /*
-  print_ledger_verbose(newledger, stdout);
-*/
-  free_ledger(newledger); 
+  newledger = get_ledger_from_string(s);
+
   
+  print_ledger_verbose(newledger, stdout);
+
+  free_ledger(newledger); 
+  */
   free(s); 
   return 0;
 }
