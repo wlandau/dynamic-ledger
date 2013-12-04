@@ -590,7 +590,7 @@ void get_totals(Ledger *ledger){
 }
 
 Ledger *get_ledger_from_string(char *s){
-  Ledger *ledger = malloc( sizeof(Ledger));
+  Ledger *ledger = calloc(1, sizeof(Ledger));
   if(get_text_content_from_string(ledger, s))
     return NULL;
   get_names(ledger);
@@ -1094,7 +1094,9 @@ void summarize_str2stream(char *s, FILE *fp){
 
 char *summarize_str2str(char *s){
   Ledger *ledger = get_ledger_from_string(s);  
-  return print_summary_str(ledger);
+  char *ret = print_summary_str(ledger);
+  free_ledger(ledger);
+  return ret;
 }
 
 int standalone(int argc, char **argv){
