@@ -559,6 +559,10 @@ Ledger *get_ledger_from_filename(const char* filename){
   
   fp = fopen(filename, "r");
   ledger = get_ledger_from_stream(fp); 
+  fclose(fp);
+  return NULL; /*
+  
+  
   
   if(ledger == NULL){
     if(fp != NULL)
@@ -571,7 +575,7 @@ Ledger *get_ledger_from_filename(const char* filename){
   
   if(fp != NULL)
     fclose(fp);
-  return ledger;
+  return ledger; */
 }
 
 void print_summary(Ledger *ledger){
