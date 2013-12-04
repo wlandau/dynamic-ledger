@@ -1014,11 +1014,11 @@ int main(int argc, char **argv){
     remove_row(ledger, 0);
   
   s = print_ledger_to_string(ledger);
-/*
+
   
   printf("%s", s);
 
-
+/*
   
   
   newledger = get_ledger_from_string(s);
