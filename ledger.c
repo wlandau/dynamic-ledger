@@ -1016,26 +1016,24 @@ int main(int argc, char **argv){
   s = print_ledger_to_string(ledger);
 
   
-  printf("%s", s);
+    free_ledger(ledger);
 
 
   
   
   newledger = get_ledger_from_string(s);
-/*  if(newledger == NULL)
+  if(newledger == NULL)
     return 0;
 
-  print_ledger_verbose(ledger, stdout);  
-  printf("\n\n===\n\n");
   print_ledger_verbose(newledger, stdout);
   
   
   
     printf("\n\n===\n\n");
   print_ledger_verbose(newledger, stdout);
-*/
+
   free_ledger(newledger);  
-    free_ledger(ledger);
+
   free(s); 
   return 0;
 }
