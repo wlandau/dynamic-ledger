@@ -19,6 +19,7 @@
 #define NOTTHEREYET "n"
 #define PENDING "p"
 
+#define NIL "\0"
 #define NFIELDS 6
 #define FIELDSIZE 128
 #define LINESIZE 4096
@@ -371,7 +372,7 @@ int get_text_content(Ledger *ledger){
 
 void get_names(Ledger *ledger){
   int i, j;
-  char nil[] = "\0", **s = malloc(ledger->n * sizeof(char*));
+  char **s = malloc(ledger->n * sizeof(char*));
 
   for(i = 0; i < ledger->n; ++i){
     s[i] = calloc(FIELDSIZE, sizeof(char));
@@ -392,7 +393,7 @@ void get_names(Ledger *ledger){
     for(j = 0; j < ledger->n; ++j){         
       strcpy(s[j], ledger->text_content[4][j]);
       if(!str_equal(ledger->bank[i], ledger->text_content[3][j]))
-        strcpy(s[j], nil);
+        strcpy(s[j], NIL);
     }
      
     unique(s, ledger->n, &(ledger->partition[i]), &(ledger->npartition[i]));
@@ -578,6 +579,69 @@ void print_summary(Ledger *ledger){
   }
 }
 
+void modify(Ledger *ledger, int row, int col, char *next){
+
+  if(row < 0 || row >= ledger->n){
+    printf("Error: illegal row index in modify().\n");
+    return;
+  }
+  
+  if(col < 0 || col >= NFIELDS){
+    printf("Error: illegal column index in modify().\n");
+    return;
+  }
+  
+  if(!col)
+    if(check_legal_double_modify(next))
+      return;
+      
+  strcpy(ledger->text_content[col][row], next);
+
+  free_for_retotal(ledger);
+  get_names(ledger);
+  get_totals(ledger); 
+}
+
+void insert_in_array(char **a, int at, int *n){
+
+}
+
+void remove_from_array(char **a, int at, int *n){
+
+}
+
+void insert_row(Ledger *ledger, int row){
+  int i;
+  
+  if(row < 0 || row > ledger->n){
+    printf("Error: illegal row index in modify().\n");
+    return;
+  }
+  
+  for(i = 0; i < NFIELDS; ++i)
+    insert_in_array(ledger->text_content[i], row, &(ledger->n));
+
+  free_for_retotal(ledger);
+  get_names(ledger);
+  get_totals(ledger); 
+}
+
+void remove_row(Ledger *ledger, int row){
+  int i;
+  
+  if(row < 0 || row > ledger->n){
+    printf("Error: illegal row index in modify().\n");
+    return;
+  }
+  
+  for(i = 0; i < NFIELDS; ++i)
+    remove_from_array(ledger->text_content[i], row, &(ledger->n));
+
+  free_for_retotal(ledger);
+  get_names(ledger);
+  get_totals(ledger); 
+}
+
 Ledger *condense(Ledger *ledger){
   int i, j, k, new_n, row = 0;
   double eps = 0.004, **local_partition_totals;
@@ -757,6 +821,9 @@ int condense_and_print(const char* infile, const char *outfile){
   return 0;
 }
 
+
+
+
 int summarize(const char* filename){
   Ledger *ledger = get_ledger_from_filename(filename);
   int ind = (ledger == NULL);
@@ -775,30 +842,6 @@ void usage(){
   printf("\nTo condense the ledger,\n$ ./ledger [INTPUT_LEDGER_FILE] [OUTTPUT_LEDGER_FILE]\n");
   printf("\nSee README.txt for details.\n");
 }
-
-void modify(Ledger *ledger, int row, int col, char *next){
-
-  if(row < 0 || row > NFIELDS){
-    printf("Error: illegal row index in modify().\n");
-    return;
-  }
-  
-  if(col < 0 || col > NFIELDS){
-    printf("Error: illegal column index in modify().\n");
-    return;
-  }
-  
-  if(!col)
-    if(check_legal_double_modify(next))
-      return;
-      
-  strcpy(ledger->text_content[col][row], next);
-
-  free_for_retotal(ledger);
-  get_names(ledger);
-  get_totals(ledger); 
-}
-
 
 int standalone(int argc, char **argv){
   if(argc == 2){
