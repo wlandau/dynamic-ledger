@@ -748,11 +748,6 @@ int condense_and_print(const char* infile, const char *outfile){
     print_ledger(newledger, fp);
     fclose(fp);
   }
-
-      print_ledger_verbose(ledger, stdout);  
-      
-      printf("----\n\n\n----\n\n");
-      print_ledger_verbose(newledger, stdout);
   
   free_ledger(ledger);
   free_ledger(newledger);
