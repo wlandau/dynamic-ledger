@@ -1065,12 +1065,14 @@ int main(int argc, char **argv){ /*
 
   s = print_ledger_to_string(ledger);
 
-        
+
         
   fp = fopen("summ.txt", "w");
 
 
+        printf("%s\n\n==\n\n", s);
   summarize_str2stream(s, fp);
+          printf("%s", s);
   fclose(fp);
 
   
