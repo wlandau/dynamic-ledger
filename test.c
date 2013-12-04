@@ -39,10 +39,14 @@ void insert_in_array(char ***a, int at, int *n){
   for(i = at + 1; i < *n + 1; ++i)
     strcpy(b[i], (*a)[i - 1]);
 
-  ++(*n);  
+   
   tmp = *a;
   *a = b;
+  
+  for(i = 0; i < *n; ++i)
+    free(tmp[i]);
   free(tmp);
+  ++(*n); 
 }
 
 void remove_from_array(char **a, int at, int *n){
