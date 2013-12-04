@@ -697,11 +697,12 @@ void remove_row(Ledger *ledger, int row){
     return;
   }
   
-  for(i = 0; i < NFIELDS; ++i)
-    for(j = row; j < ledger->n - 1; ++j)
+  for(i = 0; i < NFIELDS; ++i){
+    for(j = row; j < (ledger->n - 1); ++j)
       strcpy(ledger->text_content[i][j], ledger->text_content[i][j + 1]);
     free(ledger->text_content[i][ledger->n - 1]);
- 
+  }
+  
   --(ledger->n);
 
   free_for_retotal(ledger);
