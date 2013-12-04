@@ -125,7 +125,18 @@ void alloc_text_content(Ledger *ledger){
 int badfile(const char *filename){
   FILE *fp = fopen(filename, "r");
   if(fp == NULL){
-    fprintf(stderr, "Error: cannot open file, %s.\n", filename);
+    fprintf(stderr, "Error: cannot open file, %s.\nFile may not exist.\n", filename);
+    return 1;
+  }
+  fclose(fp);
+  return 0;
+}
+
+int badoutputfile(const char *filename){
+  FILE *fp = fopen(filename, "w");
+  if(fp == NULL){
+    fprintf(stderr, 
+            "Error: cannot create file, %s.\nCheck your permissions.\n", filename);
     return 1;
   }
   fclose(fp);
@@ -180,7 +191,7 @@ void unique(char **s, int n, char ***ret, int *nunique){
     }  
 }
 
-int check_legal_float(char *s, int row){
+int check_legal_double(char *s, int row){
   char *testbufref, testbuf[FIELDSIZE];
   
   errno = 0;
@@ -325,7 +336,7 @@ int get_text_content(Ledger *ledger){
         continue;
       
       if(field == 0) 
-        if(check_legal_float(token, row)){
+        if(check_legal_double(token, row)){
           free_ledger(ledger);
           return 1;
         }
@@ -573,48 +584,60 @@ int summarize(const char* filename){
   return 0;
 }
 
-int condense(const char* infile, const char *outfile){
-  int i, j, k;
-  double eps = 0.004, amount;
-  char status[FIELDSIZE];
-  FILE *fp;
-  Ledger *ledger;
+Ledger *condense(Ledger *ledger){
+  int i, j, k, new_n, row = 0;
+  double eps = 0.004, *local_leftover, **local_partition_totals;
+  char status[FIELDSIZE], amount[FIELDSIZE];
+  Ledger *newledger;
   
-  fp = fopen(infile, "r");
-  if(fp == NULL){
-    fprintf(stderr, "Error: cannot open input file, %s.\n", infile);
-    fprintf(stderr, "\nPossible reason: file does not exist.\n");
-    return 1;
-  } 
-  fclose(fp);
+  if(ledger == NULL)
+    return NULL;
   
-  ledger = get_ledger_from_filename(infile);
-  if(ledger == NULL){
-    printf("Failed to read ledger.\n");
-    return 1;
-  }  
+  newledger = malloc(sizeof(Ledger));
+  newledger->filename = NULL;
+  newledger->fp = NULL;
   
-  fp = fopen(outfile, "w");
-  
+  new_n = ledger->nbank;
+  for(i = 0; i < ledger->n; ++i)
+    new_n += (strlen(ledger->text_content[1][i]) > 0);
+
+  for(i = 0; i < ledger->nbank; ++i)
+    new_n += ledger->npartition[i];
+
+  newledger->n = new_n;
+  alloc_text_content(newledger);
+
+  local_leftover = calloc(ledger->nbank, sizeof(double));
+  for(i = 0; i < ledger->nbank; ++i)
+    local_leftover[i] = ledger->leftover[i];
+
+  local_partition_totals = malloc(ledger->nbank * sizeof(double*));
+  for(i = 0; i < ledger->nbank; ++i){
+    local_partition_totals[i] = calloc(ledger->npartition[i], sizeof(double));  
+    for(j = 0; j < ledger->npartition[i]; ++j)
+      local_partition_totals[i][j] = ledger->partition_totals[i][j];
+  }
+
   for(i = 0; i < ledger->n; ++i){
     strcpy(status, ledger->text_content[1][i]);
-    amount = atof(ledger->text_content[0][i]);
+    strcpy(amount, ledger->text_content[0][i]);
   
     if(!mycmp(status, CREDIT_NOTTHEREYET) || 
        !mycmp(status, CREDIT_PENDING) || 
        !mycmp(status, CREDIT_CLEARED) ||
        !mycmp(status, NOTTHEREYET) || 
        !mycmp(status, PENDING)){ 
-      fprintf(fp, "%s\t%s\t%s\t%s\t%s\t%s\n", ledger->text_content[0][i],
-              ledger->text_content[1][i], ledger->text_content[2][i],
-              ledger->text_content[3][i], ledger->text_content[4][i],
-              ledger->text_content[5][i]);
+       
+      for(j = 0; j < NFIELDS; ++j)
+        strcpy(newledger->text_content[j][row], ledger->text_content[j][row]);
+      ++row;
 
       for(j = 0; j < ledger->nbank; ++j)
         if(!mycmp(ledger->text_content[3][i], ledger->bank[j])){
          for(k = 0; k < ledger->npartition[j]; ++k){
             if(!mycmp(ledger->text_content[4][i], ledger->partition[j][k])){
-              ledger->partition_totals[j][k] -= amount;
+              local_partition_totals[j][k] -= atof(amount);
+              
               break;
             } 
           }
@@ -623,24 +646,129 @@ int condense(const char* infile, const char *outfile){
     }
   } 
   
-  for(j = 0; j < ledger->nbank; ++j){
-    ledger->leftover[j] = ledger->bank_totals[j][2];
+ for(j = 0; j < ledger->nbank; ++j){
+    local_leftover[j] = ledger->bank_totals[j][3];
     for(k = 0; k < ledger->npartition[j]; ++k)
-      ledger->leftover[j] -= ledger->partition_totals[j][k];
+      local_leftover[j] -= ledger->partition_totals[j][k];
   }  
     
-  for(i = 0; i < ledger->nbank; ++i){
-    if(abs(ledger->leftover[i]) > eps)
-      fprintf(fp, "%0.2f\t\t\t%s\t\tcondensed\n", ledger->leftover[i], ledger->bank[i]);
+  for(i = 0; i < ledger->nbank; ++i){  
+    if(abs(local_leftover[i]) > eps){
+      sprintf(amount, "%0.2f", local_leftover[i]);
+      strcpy(newledger->text_content[0][row], amount);
+      strcpy(newledger->text_content[3][row], ledger->bank[i]);
+      strcpy(newledger->text_content[5][row], "condensed-leftover");
+      ++row;
+    }
     
-    for(j = 0; j < ledger->npartition[i]; ++j)
-      if(abs(ledger->partition_totals[i][j]) > eps)
-        fprintf(fp, "%0.2f\t\t\t%s\t%s\tcondensed\n", ledger->partition_totals[i][j], 
-                ledger->bank[i], ledger->partition[i][j]); 
-  }      
+    for(j = 0; j < ledger->npartition[i]; ++j){
+      if(abs(local_partition_totals[i][j]) > eps){
+        sprintf(amount, "%0.2f", local_partition_totals[i][j]);
+        strcpy(newledger->text_content[0][row], amount);
+        strcpy(newledger->text_content[3][row], ledger->bank[i]);
+        strcpy(newledger->text_content[4][row], ledger->partition[i][j]);
+        strcpy(newledger->text_content[5][row], "condensed-partition");
+        ++row;
+      }
+    }
+  }  
+  
+  free(local_leftover);
 
-  fclose(fp);
+  for(i = 0; i < ledger->nbank; ++i)
+    free(local_partition_totals[i]);  
+  free(local_partition_totals); 
+
+  get_names(newledger);
+  get_totals(newledger); 
+
+  return newledger;
+}
+
+void print_ledger(Ledger *ledger, FILE *fp){
+  int i, j;
+  double amount, eps = 0.004;
+  
+  if(ledger == NULL || fp == NULL)
+    return;
+  
+  for(i = 0; i < ledger->n; ++i){
+    amount = atof(ledger->text_content[0][i]);
+    if(abs(amount) > eps){
+      fprintf(fp, "%0.2f", amount);
+      for(j = 1; j < NFIELDS; ++j)
+        fprintf(fp, "\t%s", ledger->text_content[j][i]);
+      fprintf(fp, "\n");
+    }
+  }
+}
+
+void print_ledger_verbose(Ledger *ledger, FILE *fp){
+  int i, j;
+
+  if(ledger == NULL || fp == NULL)
+    return;
+    
+  if(ledger->filename != NULL)
+    fprintf(fp, "filename = %s.\n", ledger->filename);
+  
+  if(ledger->fp == NULL)
+    fprintf(fp, "File pointer is null.\n");
+  else
+    fprintf(fp, "File pointer is allocated.\n");
+   
+  fprintf(fp, "%d rows in data\n\n", ledger->n);  
+    
+  fprintf(fp, "%d credit accounts:\n", ledger->ncredit);
+  for(i = 0; i < ledger->ncredit; ++i){
+    fprintf(fp, "\n  %s credit account:\n", ledger->credit[i]);
+    fprintf(fp, "    %0.2f not arrived\n", ledger->credit_totals[i][0]);
+    fprintf(fp, "    %0.2f pending\n", ledger->credit_totals[i][1]);
+    fprintf(fp, "    %0.2f available\n", ledger->credit_totals[i][2]);
+    fprintf(fp, "    %0.2f total\n", ledger->credit_totals[i][3]);
+  }
+  
+  fprintf(fp, "\n%d bank accounts:\n", ledger->nbank);
+  for(i = 0; i < ledger->nbank; ++i){
+    fprintf(fp, "\n  %s bank account:\n", ledger->bank[i]);
+    fprintf(fp, "    %0.2f not arrived\n", ledger->bank_totals[i][0]);
+    fprintf(fp, "    %0.2f pending\n", ledger->bank_totals[i][1]);
+    fprintf(fp, "    %0.2f available\n", ledger->bank_totals[i][2]);
+    fprintf(fp, "    %0.2f total\n\n", ledger->bank_totals[i][3]);
+    fprintf(fp, "    %d partitions\n", ledger->npartition[i]);
+    for(j = 0; j < ledger->npartition[i]; ++j)
+      fprintf(fp, "      %0.2f %s\n", ledger->partition_totals[i][j],
+                                      ledger->partition[i][j]);
+    fprintf(fp, "      %0.2f leftover\n", ledger->leftover[i]);
+  }  
+
+  fprintf(fp, "\n");
+  print_ledger(ledger, fp);
+}
+
+int condense_and_print(const char* infile, const char *outfile){
+  FILE *fp;
+  Ledger *ledger, *newledger;
+  
+  if(badfile(infile))
+    return 1;
+  
+  ledger = get_ledger_from_filename(infile);
+  if(ledger == NULL){
+    printf("Failed to read ledger.\n");
+    return 1;
+  }  
+  
+  newledger = condense(ledger);
+  
+  if(!badoutputfile(outfile)){
+    fp = fopen(outfile, "w");
+    print_ledger(newledger, fp);
+    fclose(fp);
+  }
+  
   free_ledger(ledger);
+  free_ledger(newledger);
   return 0;
 }
 
@@ -657,7 +785,7 @@ int standalone(int argc, char **argv){
       return 1;
     }
   } else if(argc == 3){
-    if(condense(argv[1], argv[2])){
+    if(condense_and_print(argv[1], argv[2])){
       printf("No output produced.\nExiting.\n");
       return 1;
     }
