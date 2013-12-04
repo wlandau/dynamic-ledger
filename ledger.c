@@ -1135,19 +1135,19 @@ int main(int argc, char **argv){ /*
   */
   
   Ledger *ledger = get_ledger_from_filename(argv[1]);
-  char *s; 
-  
-/*
-  s = print_ledger_to_string(ledger);
-  */
-  s = print_summary_str(ledger);
-
-  printf("%s", s);
-  
+  char *s1, *s2; 
   
 
+  s1 = print_ledger_to_string(ledger);
+  s2 = summarize_str2str(s1);
+
+  printf("%s", s2);
   
-  free(s);
+  
+
+  
+  free(s1);
+  free(s2);
   free_ledger(ledger);
   
 }
