@@ -997,29 +997,6 @@ int standalone(int argc, char **argv){
   return 0;
 }
  
-int main(int argc, char **argv){ /*
+int main(int argc, char **argv){
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
-  
-  */
-  int i;
-  Ledger *ledger = get_ledger_from_filename(argv[1]);
-  
-  
-  modify(ledger, 0, 0, "15");
-  
-  
-  
-  for(i = 0; i < 20; ++i)
-    remove_row(ledger, 0);
-  
-  
-    modify(ledger, 0, 3, "13");
- 
-   modify(ledger, 0, 0, "12");
- 
-    print_ledger_verbose(ledger, stdout);
-        
-free_ledger(ledger);
-        
-    return 0;
 }
