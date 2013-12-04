@@ -706,6 +706,82 @@ void print_summary(Ledger *ledger, FILE *fp){
   }
 }
 
+char *print_summary_str(Ledger *ledger){
+  int i, j, l0, l1, l2;
+  double eps = 0.004;
+  char *s = calloc((ledger->nbank + ledger->ncredit) * NFIELDS * ledger->n, sizeof(char));
+
+  for(i = 0; i < ledger->ncredit; ++i){
+    l0 = (abs(ledger->credit_totals[i][0]) > eps);
+    l1 = (abs(ledger->credit_totals[i][1]) > eps);
+    l2 = (abs(ledger->credit_totals[i][2]) > eps);      
+ 
+    if(l0 || l1 || l2){
+      sprintf(s,"%s\n----- Credit account: %s -----\n\n", s,ledger->credit[i]);
+ 
+      if(l0 || l1){
+        if(l0)
+          sprintf(s,"%s%0.2f\tnot arrived\n", s,ledger->credit_totals[i][0]); 
+        if(l1)
+          sprintf(s,"%s%0.2f\tpending\n", s,ledger->credit_totals[i][1]);
+        sprintf(s,"%s\n%0.2f\tonline balance\n",s, ledger->credit_totals[i][2]);
+        if(l1 && l0)
+          sprintf(s,"%s%0.2f\tpending balance\n",s, ledger->credit_totals[i][1] 
+                                           + ledger->credit_totals[i][2]);
+        sprintf(s,"%s%0.2f\ttrue balance\n", s,ledger->credit_totals[i][3]);
+      } else {
+        sprintf(s,"%s%0.2f\ttrue balance\n", s,ledger->credit_totals[i][3]); 
+        sprintf(s,"%s\tAll charges cleared.\n", s);
+      }
+    }
+  }
+
+  for(i = 0; i < ledger->nbank; ++i){
+    l0 = (abs(ledger->bank_totals[i][0]) > eps);
+    l1 = (abs(ledger->bank_totals[i][1]) > eps);
+    l2 = (abs(ledger->bank_totals[i][2]) > eps); 
+  
+    if(l0 || l1 || l2){
+      sprintf(s,"%s\n----- Bank account: %s -----\n\n", s,ledger->bank[i]);
+ 
+      if(l0 || l1){
+        if(l0)
+          sprintf(s,"%s%0.2f\tnot arrived\n", s,ledger->bank_totals[i][0]); 
+        if(l1)
+          sprintf(s,"%s%0.2f\tpending\n",s,  ledger->bank_totals[i][1]); 
+        sprintf(s,"%s\n%0.2f\tonline balance\n", s, ledger->bank_totals[i][2]);
+        if(l1 && l0)
+          sprintf(s, "%s%0.2f\tpending balance\n", s, ledger->bank_totals[i][1] 
+                                           + ledger->bank_totals[i][2]);
+        sprintf(s, "%s%0.2f\ttrue balance\n", s, ledger->bank_totals[i][3]);
+      } else {
+        sprintf(s, "%s%0.2f\ttrue balance\n", s, ledger->bank_totals[i][3]);
+        sprintf(s, "%s\tAll charges cleared.\n",s);
+      } 
+    }
+
+    for(j = 0; j < ledger->npartition[i]; ++j)
+      if(abs(ledger->partition_totals[i][j]) > eps){
+        if(strlen(ledger->partition[i][j])){
+          if(!j) sprintf(s, "%s\n", s);
+          sprintf(s,"%s%0.2f\t%s partition\n", s, ledger->partition_totals[i][j], 
+                                          ledger->partition[i][j]);
+        }
+        else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][2]) > eps){
+          if(!j) sprintf(s, "%s\n", s);
+          sprintf(s,"%s%0.2f\tunpartitioned\n", s, ledger->partition_totals[i][j]);
+        }
+      } 
+      
+    if(i == (ledger->nbank - 1))
+      sprintf(s, "%s\n",s);
+  }
+  
+  return s;
+}
+
+
+
 void modify(Ledger *ledger, int row, int col, char *next){
   char next_local[FIELDSIZE];
   int i;
@@ -1010,6 +1086,17 @@ int summarize_file2stream(const char* filename, FILE *fp){
   return 0;
 }
 
+void summarize_str2stream(char *s, FILE *fp){
+  Ledger *ledger = get_ledger_from_string(s);
+  print_summary(ledger, fp);
+  free_ledger(ledger);
+}
+
+char *summarize_str2str(char *s){
+  Ledger *ledger = get_ledger_from_string(s);  
+  return print_summary_str(ledger);
+}
+
 int standalone(int argc, char **argv){
   if(argc == 2){
     if(summarize_file2stream(argv[1], stdout)){
@@ -1041,32 +1128,23 @@ void condense_str(char **s){
   free(tmp);
 }
 
-void summarize_str2stream(char *s, FILE *fp){
-  Ledger *ledger = get_ledger_from_string(s);
-  print_summary(ledger, fp);
-  free_ledger(ledger);
-}
+
 
 int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; 
   */
   
   Ledger *ledger = get_ledger_from_filename(argv[1]);
-  char *s;
-  FILE *fp;
+  char *s; 
   
-
+/*
   s = print_ledger_to_string(ledger);
+  */
+  s = print_summary_str(ledger);
 
-
-        
-  fp = fopen("summ.txt", "w");
-
-
-        printf("%s\n\n==\n\n", s);
-  summarize_str2stream(s, fp);
-          printf("%s", s);
-  fclose(fp);
+  printf("%s", s);
+  
+  
 
   
   free(s);
