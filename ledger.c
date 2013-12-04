@@ -1015,7 +1015,7 @@ int main(int argc, char **argv){
     remove_row(ledger, 0);
   
   s = print_ledger_to_string(ledger);
-
+/*
   
   printf("%s", s);
 
@@ -1035,7 +1035,7 @@ int main(int argc, char **argv){
     printf("\n\n===\n\n");
   print_ledger_verbose(newledger, stdout);
 
-  free_ledger(newledger); 
+  free_ledger(newledger);  */
     free_ledger(ledger);
   free(s); 
   return 0;
