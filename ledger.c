@@ -1000,9 +1000,14 @@ int main(int argc, char **argv){
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
   
   */
+   Ledger *ledger;
+   char *s;
+   
+  if(argc < 2)
+  return 0;
   
-  Ledger *ledger = get_ledger_from_filename(argv[1]);
-  char *s = print_ledger_to_string(ledger);
+  ledger = get_ledger_from_filename(argv[1]);
+  s = print_ledger_to_string(ledger);
   
   printf("%s", s);
 /*
