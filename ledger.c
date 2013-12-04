@@ -702,11 +702,7 @@ void insert_row(Ledger *ledger, int row){
     free(tmp);
   }
   
-  ++(ledger->n);
-
-  free_for_retotal(ledger);
-  get_names(ledger);
-  get_totals(ledger); 
+  ++(ledger->n); 
 }
 
 void remove_row(Ledger *ledger, int row){
