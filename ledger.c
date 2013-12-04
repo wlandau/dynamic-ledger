@@ -671,7 +671,7 @@ Ledger *condense(Ledger *ledger){
         ++row;
       }
     }
-  }  
+  } 
   
   free(local_leftover);
 
