@@ -788,7 +788,7 @@ void modify(Ledger *ledger, int row, int col, char *next){
     return;
   }
   
-  if(!row)
+  if(!col)
     if(check_legal_double_modify(next))
       return;
       
