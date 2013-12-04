@@ -815,9 +815,9 @@ char *print_ledger_to_string(Ledger *ledger){
       strcat(s, "\t");
       
       printf("\t%s", ledger->text_content[i][j]);
-      /*
+      
       strcat(s, ledger->text_content[i][j]);
-      */
+      
     }
     
     printf("\n");
