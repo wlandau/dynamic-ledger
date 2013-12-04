@@ -540,7 +540,7 @@ Ledger *get_ledger_from_stream(FILE *fp){
   
   /*
   if(get_text_content_from_stream(ledger)){ */ 
-    if(fp != NULL)
+    if(fp != NULL && fp != stdout && fp != stdin && fp != stderr)
       fclose(fp);
     return NULL;
   
@@ -548,7 +548,7 @@ Ledger *get_ledger_from_stream(FILE *fp){
   get_names(ledger);
   get_totals(ledger); 
   
-  if(fp != NULL)
+  if(fp != NULL && fp != stdout && fp != stdin && fp != stderr)
       fclose(fp);
   return ledger;
 }
@@ -565,7 +565,7 @@ Ledger *get_ledger_from_filename(const char* filename){
   ledger = get_ledger_from_stream(fp); 
   
   if(ledger == NULL){
-    if(fp != NULL)
+    if(fp != NULL && fp != stdout && fp != stdin && fp != stderr)
       fclose(fp);
     return NULL;
   }
@@ -573,7 +573,7 @@ Ledger *get_ledger_from_filename(const char* filename){
   ledger->filename = malloc(FILENAMESIZE * sizeof(char));
   strcpy(ledger->filename, filename);
   
-  if(fp != NULL)
+  if(fp != NULL && fp != stdout && fp != stdin && fp != stderr)
     fclose(fp);
   return ledger;
 }
