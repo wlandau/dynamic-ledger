@@ -659,7 +659,9 @@ void remove_from_array(char **a, int at, int *n){
 */
 
 void insert_row(Ledger *ledger, int row){
-
+  int i, j;
+  char ***x, ***tmp;
+ 
   if(ledger == NULL)
     return;
     
@@ -667,9 +669,40 @@ void insert_row(Ledger *ledger, int row){
     printf("Error: illegal row index in insert_row().\n");
     return;
   }
-  
-  
 
+  x = malloc(NFIELDS * sizeof(char**));
+  for(i = 0; i < NFIELDS; ++i){
+    x[i] = malloc((ledger->n + 1) * sizeof(char*));
+    for(j = 0; j < (ledger->n + 1); ++j)
+      x[i][j] = calloc(FIELDSIZE, sizeof(char));
+  }
+
+  for(i = 0; i < NFIELDS; ++i){
+    for(j = 0; j < row; ++j)
+      strcpy(x[i][j], ledger->text_content[i][j]);
+
+    strcpy(x[i][row], NIL);
+
+    for(j = row + 1; j < (ledger->n + 1); ++j)
+      strcpy(x[i][j], ledger->text_content[i][j - 1]);
+  }
+
+  tmp = ledger->text_content;
+  ledger->text_content = x;
+  
+  if(tmp != NULL){
+    for(i = 0; i < NFIELDS; ++i){
+      if(tmp[i] != NULL){
+        for(j = 0; j < ledger->n; ++j)
+          if(tmp[i][j] != NULL)
+            free(tmp[i][j]);
+        free(tmp[i]);
+      }
+    }
+    free(tmp);
+  }
+  
+  ++(ledger->n);
 
   free_for_retotal(ledger);
   get_names(ledger);
@@ -936,7 +969,7 @@ int main(int argc, char **argv){ /*
   if(ledger != NULL){
     print_ledger_verbose(ledger, stdout);
   
-    remove_row(ledger, 0);
+    insert_row(ledger, 0);
     
     printf("\n\n===========\n\n");
     
