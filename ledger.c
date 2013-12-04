@@ -827,7 +827,7 @@ void trim_ledger(Ledger *ledger){
       remove_row(ledger, i);
 }
  
-void condense(Ledger **ledger){
+void condense_region(Ledger **ledger, int from, int to){
   int i, j, k, new_n, row = 0;
   double eps = 0.004, **local_partition_totals;
   char status[FIELDSIZE], amount[FIELDSIZE];
@@ -835,6 +835,11 @@ void condense(Ledger **ledger){
   
   if(ledger == NULL)
     return;
+    
+  if(to >= (*ledger)->n || from < 0 || to < from){
+    fprintf(stderr, "Error: bad condensing region.\n");
+    return;
+  }
 
   local_partition_totals = malloc((*ledger)->nbank * sizeof(double*));
   for(i = 0; i < (*ledger)->nbank; ++i){
@@ -843,7 +848,7 @@ void condense(Ledger **ledger){
       local_partition_totals[i][j] = (*ledger)->partition_totals[i][j];
   }
 
-  for(i = 0; i < (*ledger)->n; ++i){
+  for(i = 0; (i < (*ledger)->n) && (i >= from) && (i <= to); ++i){
     strcpy(status, (*ledger)->text_content[1][i]);
     strcpy(amount, (*ledger)->text_content[0][i]);
   
@@ -880,7 +885,7 @@ void condense(Ledger **ledger){
   newledger->n = new_n;
   alloc_text_content(newledger);  
   
-  for(i = 0; i < (*ledger)->n; ++i){
+  for(i = 0; (i < (*ledger)->n) && (i >= from) && (i <= to); ++i){
     strcpy(status, (*ledger)->text_content[1][i]);
     strcpy(amount, (*ledger)->text_content[0][i]);
   
@@ -920,6 +925,19 @@ void condense(Ledger **ledger){
   tmpledger = *ledger;
   *ledger = newledger;
   free_ledger(tmpledger); 
+}
+
+void condense_from(Ledger **ledger, int from){
+  condense_region(ledger, from, (*ledger)->n - 1);
+}
+
+void condense_to(Ledger **ledger, int to){
+  condense_region(ledger, 0, to);
+}
+
+
+void condense(Ledger **ledger){
+  condense_region(ledger, 0, (*ledger)->n - 1);
 }
 
 void print_ledger_verbose(Ledger *ledger, FILE *fp){
