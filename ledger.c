@@ -994,46 +994,5 @@ int standalone(int argc, char **argv){
 }
  
 int main(int argc, char **argv){
-
-/*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
-  
-  */
-   Ledger *ledger, *newledger;
-   int i;
-   char *s;
-   
-  if(argc < 2)
-  return 0;
-  
-  ledger = get_ledger_from_filename(argv[1]);
-  if(ledger == NULL)
-    return 0;
-  
-  for(i = 0; i < 20; ++i)
-    remove_row(ledger, 0);
-  
-  s = print_ledger_to_string(ledger);
-
-  
-    free_ledger(ledger);
-
-
-  
-  
-  newledger = get_ledger_from_string(s);
-  if(newledger == NULL)
-    return 0;
-
-  print_ledger_verbose(newledger, stdout);
-  
-  
-  
-    printf("\n\n===\n\n");
-  print_ledger_verbose(newledger, stdout);
-
-  free_ledger(newledger);  
-
-  free(s); 
-  return 0;
 }
