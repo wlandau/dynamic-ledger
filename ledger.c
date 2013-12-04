@@ -429,8 +429,7 @@ int get_text_content_from_string(Ledger *ledger, char *str){
       if(field == 0) 
         if(check_legal_double(entrytoken, row)){
           free_ledger(ledger);
-          if(s != NULL)
-            free(s);
+          free(s);
           return 1;
         }
     
@@ -439,8 +438,7 @@ int get_text_content_from_string(Ledger *ledger, char *str){
     }
   }
  
-  if(s != NULL)
-    free(s);  
+  free(s); 
   return 0;
 }
 
