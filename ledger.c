@@ -670,6 +670,7 @@ void modify(Ledger *ledger, int row, int col, char *next){
     if(check_legal_double_modify(next))
       return;
   
+  strcpy(next_local, next);
   strstrip(next_local);    
   strcpy(ledger->text_content[col][row], next_local);
 
