@@ -900,27 +900,6 @@ int standalone(int argc, char **argv){
   return 0;
 }
 
-int main(int argc, char **argv){ /*
+int main(int argc, char **argv){
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
-  */
-  int i;
- Ledger *ledger = get_ledger_from_filename(argv[1]);
-  
-    if(ledger != NULL){
-    print_ledger(ledger, stdout);
-     printf("\n\n===========\n\n");
-  
-    for(i =0; i < 20; ++i){
-          remove_row(ledger, 0);
-
-          print_ledger(ledger, stdout);
-              printf("\n\n===========\n\n");
-    }
-    
-
-    
-
-    free_ledger(ledger);
-  }
-  return 0;
 }
