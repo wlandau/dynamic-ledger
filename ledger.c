@@ -379,51 +379,6 @@ char *print_ledger_to_string(Ledger *ledger){
   return s;
 }
 
-int get_text_content_from_string(Ledger *ledger, char *s){
-  int i, row, field;
-  char *linetoken = NULL, *entrytoken = NULL;
-  
-  if(ledger == NULL || s == NULL)
-    return 1;
-
-  ledger->n = 1;
-  for(i = 0; i < strlen(s); ++i)
-    if(s[i] == '\n' || s[i] == '\r')
-      ++ledger->n;
-      
-  alloc_text_content(ledger);
-  
-  row = 0;
-  field = 0;
-
-  for(row = 0; row < ledger->n; ++row){
-    linetoken = local_strsep(&s, "\n\r");
-    
-    if(linetoken == NULL)
-      continue;
-    
-    for(field = 0; field < NFIELDS; ++field){
-      entrytoken = local_strsep(&linetoken, "\t");
-      if(entrytoken == NULL)
-        continue;
-      
-      strstrip(entrytoken);
-      if(field == 0) 
-        if(check_legal_double(entrytoken, row)){
-          free_ledger(ledger);
-          free(s);
-          return 1;
-        }
-    
-      strcpy(ledger->text_content[field][row], entrytoken);    
-      
-    }
-  }
- 
-  free(s); 
-  return 0;
-}
-
 int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   int row, field; 
   char line[LINESIZE], *str, *token;
