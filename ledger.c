@@ -594,7 +594,7 @@ int safe_get_text_content_from_string(Ledger *ledger, char *s){
   int ret;
   strcpy(s2, s);
   ret = get_text_content_from_string(ledger, s2);
-  free(s);
+  free(s2);
   return(ret);
 }
 
