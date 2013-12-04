@@ -673,19 +673,17 @@ Ledger *condense(Ledger *ledger){
 
 void print_ledger(Ledger *ledger, FILE *fp){
   int i, j;
-  double amount, eps = 0.004;
+  double amount;
   
   if(ledger == NULL || fp == NULL)
     return;
   
   for(i = 0; i < ledger->n; ++i){
     amount = atof(ledger->text_content[0][i]);
-    if(abs(amount) > eps){ 
-      fprintf(fp, "%0.2f", amount);
-      for(j = 1; j < NFIELDS; ++j)
-        fprintf(fp, "\t%s", ledger->text_content[j][i]);
-      fprintf(fp, "\n");
-    } 
+    fprintf(fp, "%0.2f", amount);
+    for(j = 1; j < NFIELDS; ++j)
+      fprintf(fp, "\t%s", ledger->text_content[j][i]);
+    fprintf(fp, "\n");
   }
 }
 
