@@ -1011,7 +1011,7 @@ int main(int argc, char **argv){
     return 0;
   
   s = print_ledger_to_string(ledger);
-  free_ledger(ledger);
+
   
   printf("%s", s);
 
@@ -1021,11 +1021,13 @@ int main(int argc, char **argv){
   newledger = get_ledger_from_string(s);
   if(newledger == NULL)
     return 0;
-  
+
+  print_ledger_verbose(ledger, stdout);  
+  printf("\n\n===\n\n");
   print_ledger_verbose(newledger, stdout);
 
   free_ledger(newledger); 
-  
+    free_ledger(ledger);
   free(s); 
   return 0;
 }
