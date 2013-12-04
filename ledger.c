@@ -558,9 +558,9 @@ Ledger *get_ledger_from_stream(FILE *fp){
     
    print_ledger_to_stream(ledger, stdout); 
     
-  /*
+  
   get_names(ledger);
-  get_totals(ledger);   
+  /*get_totals(ledger);   
   */
   return ledger; 
 }
