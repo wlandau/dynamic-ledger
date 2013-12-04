@@ -807,6 +807,8 @@ char *print_ledger_to_string(Ledger *ledger){
     }
   }
   
+  printf("%d\n", n);
+  
   s = calloc(n, sizeof(char));
   for(j = 0; j < ledger->n; ++j){
     strcat(s, ledger->text_content[0][j]);
