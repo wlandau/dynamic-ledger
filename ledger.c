@@ -810,13 +810,15 @@ char *print_ledger_to_string(Ledger *ledger){
   s = calloc(n, sizeof(char));
   for(j = 0; j < ledger->n; ++j){
     strcat(s, ledger->text_content[0][j]);
-    /*
+    
     for(i = 1; i < NFIELDS; ++i){
       strcat(s, "\t");
+      /*
       strcat(s, ledger->text_content[i][j]);
+      */
     }
     strcat(s, "\n");
-    */
+    
   }
   
   return s;
