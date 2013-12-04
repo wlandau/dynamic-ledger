@@ -798,7 +798,16 @@ Ledger *condense(Ledger *ledger){
 }
 
 void print_ledger_to_string(Ledger *ledger){
-
+  char **s; 
+  int i, j, n = 0;
+  
+  for(i = 0; i < NFIELDS; ++i){
+    for(j = 0; j < ledger->n; ++j){
+      s = NULL;
+      ++n;
+    }
+  }
+  
   return;
 }
 
@@ -921,6 +930,14 @@ int standalone(int argc, char **argv){
   return 0;
 }
 
-int main(int argc, char **argv){
+int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
+  */
+  
+  Ledger *ledger = get_ledger_from_filename(argv[1]);
+  remove_row(ledger, 1);
+  print_ledger_verbose(ledger, stdout);
+  
+  free_ledger(ledger);
+  return 0;
 }
