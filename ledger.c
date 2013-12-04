@@ -1005,8 +1005,8 @@ int main(int argc, char **argv){
   */
   
   Ledger *ledger = get_ledger_from_filename(argv[1]);
- /* char *s = print_ledger_to_string(ledger);
-
+  char *s = print_ledger_to_string(ledger);
+/*
   
   
 
@@ -1015,8 +1015,8 @@ int main(int argc, char **argv){
   print_ledger_verbose(newledger, stdout);
 
   free(newledger); 
-  
-  free(s); */
+  */
+  free(s); 
   
     free_ledger(ledger);
   return 0;
