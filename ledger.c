@@ -77,7 +77,6 @@ void free_for_retotal(Ledger *ledger){
     free(ledger->bank);
   }
 
-
   if(ledger->bank_totals != NULL){
     for(i = 0; i < ledger->nbank; ++i)
       if(ledger->bank_totals[i] != NULL)
@@ -373,7 +372,6 @@ int get_text_content(Ledger *ledger){
 void get_names(Ledger *ledger){
   int i, j;
   char nil[] = "\0", **s = malloc(ledger->n * sizeof(char*));
-
 
   for(i = 0; i < ledger->n; ++i){
     s[i] = calloc(FIELDSIZE, sizeof(char));
@@ -833,7 +831,7 @@ int main(int argc, char **argv){ /*
     printf("\n\n===========\n\n");
     
         print_ledger_verbose(ledger, stdout);
-  
+    free_ledger(ledger);
   }
   return 0;
 }
