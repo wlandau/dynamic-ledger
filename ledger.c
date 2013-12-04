@@ -671,7 +671,7 @@ void remove_row(Ledger *ledger, int row){
     return;  
   }
 
-  recalculate = (atof(ledger->text_content[0][row]) > eps);
+  recalculate = (abs(atof(ledger->text_content[0][row])) > eps);
 
   if(ledger->n == 1){
     printf("Warning: trying to remove the last row. Leaving a blank line.\n");
@@ -687,10 +687,7 @@ void remove_row(Ledger *ledger, int row){
   
   --(ledger->n);
 
-    printf("\n\nRECALCULATING? %d\n\n", recalculate);
-
   if(recalculate){
-
     free_for_retotal(ledger);
     get_names(ledger);
     get_totals(ledger); 
