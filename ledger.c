@@ -770,7 +770,7 @@ void trim_ledger(Ledger *ledger){
     if(abs(atof(ledger->text_content[0][i])) < eps)
       remove_row(ledger, i);
 }
-
+ 
 Ledger *condense(Ledger *ledger){
   int i, j, k, new_n, row = 0;
   double eps = 0.004, **local_partition_totals;
