@@ -401,10 +401,10 @@ int get_text_content_from_string(Ledger *ledger, char *str){
   if(ledger == NULL || str == NULL)
     return 1;
   
-  s = malloc((strlen(str) + 1) * sizeof(char));
+  s = calloc((strlen(str) + 1), sizeof(char));
   strcpy(s, str);
 
-  ledger->n = 1;
+/*  ledger->n = 1;
   for(i = 0; i < strlen(s); ++i)
     if(s[i] == '\n' || s[i] == '\r')
       ++ledger->n;
@@ -437,7 +437,7 @@ int get_text_content_from_string(Ledger *ledger, char *str){
       
     }
   }
- 
+  */
   free(s); 
   return 0;
 }
