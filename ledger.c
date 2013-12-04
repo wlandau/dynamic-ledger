@@ -821,14 +821,17 @@ int standalone(int argc, char **argv){
   return 0;
 }
 
-int main(int argc, char **argv){ 
+int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
-  
-  /*
-  Ledger *ledger = get_ledger_from_filename(argv[1]);
-  print_ledger_verbose(ledger);
-  
-  modify(ledger
   */
+  
+  Ledger *ledger = get_ledger_from_filename(argv[1]);
+  
+  if(ledger != NULL){
+    print_ledger_verbose(ledger, stdout);
+  
+    modify(ledger, 0, 0, "bla");
+  
+  }
   
 }
