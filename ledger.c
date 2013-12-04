@@ -836,7 +836,13 @@ void condense_region(Ledger **ledger, int from, int to){
   if(ledger == NULL)
     return;
     
-  if(to >= (*ledger)->n || from < 0 || to < from){
+  if(from < 0)
+    from = 0;
+    
+  if(to > (*ledger)->n - 1)
+    to = (*ledger)->n - 1;
+    
+  if(from > to){
     fprintf(stderr, "Error: bad condensing region.\n");
     return;
   }
@@ -935,7 +941,6 @@ void condense_to(Ledger **ledger, int to){
   condense_region(ledger, 0, to);
 }
 
-
 void condense(Ledger **ledger){
   condense_region(ledger, 0, (*ledger)->n - 1);
 }
@@ -981,7 +986,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
   print_ledger_to_stream(ledger, fp);
 }
 
-int condense_and_print(const char* infile, const char *outfile){
+int condense_and_print(const char* infile, const char *outfile, int from, int to){
   FILE *fp;
   Ledger *ledger;
   
@@ -994,8 +999,15 @@ int condense_and_print(const char* infile, const char *outfile){
     return 1;
   }  
   
-  condense(&ledger);
-  
+  if(from != -1 && to != -1)
+    condense_region(&ledger, from, to);
+  else if(from == -1 && to != -1)
+    condense_from(&ledger, from);
+  else if(from != -1 && to == -1)
+    condense_to(&ledger, to);
+  else
+    condense(&ledger);
+      
   if(!badoutputfile(outfile)){
     fp = fopen(outfile, "w");
     print_ledger_to_stream(ledger, fp);
@@ -1020,17 +1032,45 @@ int summarize(const char* filename){
 }
 
 int standalone(int argc, char **argv){
-  if(argc == 2){
-    if(summarize(argv[1])){
-      printf("Exiting.\n");
-      return 1;
+ int c, option_index, to = -1, from = -1, iflag = 0, oflag = 0;
+ char in[FILENAMESIZE], out[FILENAMESIZE];
+  
+  struct option long_options[] = {
+    {"in", required_argument, 0, 'i'},
+    {"out", required_argument, 0, 'o'},
+    {"from", required_argument, 0, 'f'},
+    {"to", required_argument, 0, 't'}};
+
+  while(1){
+  
+    option_index = 0;
+    c = getopt_long(argc, argv, "i:o:f:t", long_options, &option_index);
+        
+    if(c == -1){
+      break;
     }
-  } else if(argc == 3){
-    if(condense_and_print(argv[1], argv[2])){
-      printf("No output produced.\nExiting.\n");
+      
+    if(c == 'i') {
+      strcpy(in, optarg);
+      ++iflag;
+    } else if (c == 'o'){
+      strcpy(out, optarg);
+      ++oflag;
+    } else if (c == 'f'){
+      from = atoi(optarg);
+    } else if (c == 't'){
+      to = atoi(optarg);
+    } else {
+      usage();
       return 1;
-    }
-  } else{
+    } 
+  }
+
+  if(iflag && !oflag){
+    summarize(in);
+  } else if(oflag) {
+    condense_and_print(in, out, from, to);
+  } else {
     usage();
   }
 
