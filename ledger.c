@@ -560,8 +560,8 @@ Ledger *get_ledger_from_stream(FILE *fp){
     
   
   get_names(ledger);
-  /*get_totals(ledger);   
-  */
+  get_totals(ledger);   
+  
   return ledger; 
 }
 
