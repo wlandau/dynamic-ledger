@@ -393,9 +393,11 @@ char *print_ledger_to_string(Ledger *ledger){
   return s;
 }
 
-int get_text_content_from_string(Ledger *ledger, char *s){
+int get_text_content_from_string(Ledger *ledger, char *str){
   int i, row, field;
   char *linetoken = NULL, *entrytoken = NULL;
+  char *s = calloc(strlen(str), sizeof(char));
+  strcpy(s, str);
 
   ledger->n = 1;
   for(i = 0; i < strlen(s); ++i)
@@ -422,6 +424,8 @@ int get_text_content_from_string(Ledger *ledger, char *s){
       if(field == 0) 
         if(check_legal_double(entrytoken, row)){
           free_ledger(ledger);
+          if(s != NULL)
+            free(s);
           return 1;
         }
     
@@ -429,7 +433,9 @@ int get_text_content_from_string(Ledger *ledger, char *s){
       
     }
   }
-
+ 
+  if(s != NULL)
+    free(s);  
   return 0;
 }
 
@@ -686,12 +692,12 @@ void print_summary(Ledger *ledger, FILE *fp){
     for(j = 0; j < ledger->npartition[i]; ++j)
       if(abs(ledger->partition_totals[i][j]) > eps){
         if(strlen(ledger->partition[i][j])){
-          if(!j) printf("\n");
+          if(!j) fprintf(fp, "\n");
           fprintf(fp,"%0.2f\t%s partition\n", ledger->partition_totals[i][j], 
                                           ledger->partition[i][j]);
         }
         else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][2]) > eps){
-          if(!j) printf("\n");
+          if(!j) fprintf(fp, "\n");
           fprintf(fp,"%0.2f\tunpartitioned\n", ledger->partition_totals[i][j]);
         }
       } 
@@ -992,7 +998,7 @@ int condense_and_print(const char* infile, const char *outfile){
   return 0;
 }
 
-int summarize_file(const char* filename, FILE *fp){
+int summarize_file2stream(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_filename(filename);
   int ind = (ledger == NULL);
   
@@ -1007,7 +1013,7 @@ int summarize_file(const char* filename, FILE *fp){
 
 int standalone(int argc, char **argv){
   if(argc == 2){
-    if(summarize_file(argv[1], stdout)){
+    if(summarize_file2stream(argv[1], stdout)){
       printf("Exiting.\n");
       return 1;
     }
@@ -1047,9 +1053,20 @@ int main(int argc, char **argv){ /*
   */
   
   Ledger *ledger = get_ledger_from_filename(argv[1]);
-  char *s = print_ledger_to_string(ledger);
-  summarize_str2stream(s, stdout);
-  printf("%s", s);
+  char *s;
+  FILE *fp;
+  
+
+  s = print_ledger_to_string(ledger);
+
+        
+        
+  fp = fopen("summ.txt", "w");
+
+
+  summarize_str2stream(s, fp);
+  fclose(fp);
+
   
   free(s);
   free_ledger(ledger);
