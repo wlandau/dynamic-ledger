@@ -231,20 +231,6 @@ int check_legal_double(char *s, int row){
     }
   return 0;
 }
-
-int check_legal_double_modify(char *s){
-  char *testbufref, testbuf[FIELDSIZE];
-  
-  errno = 0;
-  strcpy(testbuf, s);
-    testbufref = testbuf;
-    strtod(testbuf, &testbufref); 
-    if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf)){
-      fprintf(stderr, "Error: bad number.\n");
-      return 1;   
-    }
-  return 0;
-}
  
 int is_space(char c){
   return (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == 'v');
@@ -589,15 +575,6 @@ void get_totals(Ledger *ledger){
     }  
 }
 
-Ledger *get_ledger_from_string(char *s){
-  Ledger *ledger = calloc(1, sizeof(Ledger));
-  if(get_text_content_from_string(ledger, s))
-    return NULL;
-  get_names(ledger);
-  get_totals(ledger); 
-  return ledger;
-}
-
 Ledger *get_ledger_from_stream(FILE *fp){
   Ledger *ledger;
   
@@ -778,88 +755,6 @@ char *print_summary_str(Ledger *ledger){
   }
   
   return s;
-}
-
-
-
-void modify(Ledger *ledger, int row, int col, char *next){
-  char next_local[FIELDSIZE];
-  int i;
-
-  if(row < 0 || row >= ledger->n){
-    printf("Error: illegal row index in modify().\n");
-    return;
-  }
-  
-  if(col < 0 || col >= NFIELDS){
-    printf("Error: illegal column index in modify().\n");
-    return;
-  }
-  
-  if(!col)
-    if(check_legal_double_modify(next))
-      return;
-  
-  strcpy(next_local, next);
-  strstrip(next_local);  
-  
-  if((i = contains_tabs(next_local))){
-    printf("Warning: entries must not contain tabs. Truncating input.\n");
-    next_local[i] = '\0';
-  }
-  
-  strcpy(ledger->text_content[col][row], next_local);
-
-  free_for_retotal(ledger);
-  get_names(ledger);
-  get_totals(ledger); 
-}
-
-void insert_row(Ledger *ledger, int row){
-  int i, j;
-  char ***x, ***tmp;
- 
-  if(ledger == NULL)
-    return;
-    
-  if(row < 0 || row > ledger->n){
-    printf("Error: illegal row index in insert_row().\n");
-    return;
-  }
-
-  x = malloc(NFIELDS * sizeof(char**));
-  for(i = 0; i < NFIELDS; ++i){
-    x[i] = malloc((ledger->n + 1) * sizeof(char*));
-    for(j = 0; j < (ledger->n + 1); ++j)
-      x[i][j] = calloc(FIELDSIZE, sizeof(char));
-  }
-
-  for(i = 0; i < NFIELDS; ++i){
-    for(j = 0; j < row; ++j)
-      strcpy(x[i][j], ledger->text_content[i][j]);
-
-    strcpy(x[i][row], NIL);
-
-    for(j = row + 1; j < (ledger->n + 1); ++j)
-      strcpy(x[i][j], ledger->text_content[i][j - 1]);
-  }
-
-  tmp = ledger->text_content;
-  ledger->text_content = x;
-  
-  if(tmp != NULL){
-    for(i = 0; i < NFIELDS; ++i){
-      if(tmp[i] != NULL){
-        for(j = 0; j < ledger->n; ++j)
-          if(tmp[i][j] != NULL)
-            free(tmp[i][j]);
-        free(tmp[i]);
-      }
-    }
-    free(tmp);
-  }
-  
-  ++(ledger->n); 
 }
 
 void remove_row(Ledger *ledger, int row){
@@ -1086,19 +981,6 @@ int summarize_file2stream(const char* filename, FILE *fp){
   return 0;
 }
 
-void summarize_str2stream(char *s, FILE *fp){
-  Ledger *ledger = get_ledger_from_string(s);
-  print_summary(ledger, fp);
-  free_ledger(ledger);
-}
-
-char *summarize_str2str(char *s){
-  Ledger *ledger = get_ledger_from_string(s);  
-  char *ret = print_summary_str(ledger);
-  free_ledger(ledger);
-  return ret;
-}
-
 int standalone(int argc, char **argv){
   if(argc == 2){
     if(summarize_file2stream(argv[1], stdout)){
@@ -1117,36 +999,6 @@ int standalone(int argc, char **argv){
   return 0;
 }
 
-void condense_str(char **s){
-  char *ret, *tmp;
-  Ledger *ledger = get_ledger_from_string(*s);
-  condense(&ledger);
-  ret = print_ledger_to_string(ledger);
-  free_ledger(ledger);
-  
-  tmp = *s;
-  *s = ret;
-  ret = tmp;
-  free(tmp);
-}
-
-
-
-int main(int argc, char **argv){ /*
+int main(int argc, char **argv){
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; 
-  */
-  
-  Ledger *ledger = get_ledger_from_filename(argv[1]);
-  char *s1, *s2; 
-  
-
-  s1 = print_ledger_to_string(ledger);
-  get_ledger_from_string(s1);
-  free(s1);
-  s1 = print_ledger_to_string(ledger);
-  
-  free(s1);
-  
-  free_ledger(ledger);
-  
 }
