@@ -554,8 +554,10 @@ Ledger *get_ledger_from_filename(const char* filename){
   fp = fopen(filename, "r");
   ledger = get_ledger_from_stream(fp);
   
-  if(ledger == NULL)
+  if(ledger == NULL){
+    fclose(fp);
     return NULL;
+  }
     
   ledger->filename = malloc(FILENAMESIZE * sizeof(char));
   strcpy(ledger->filename, filename);
