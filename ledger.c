@@ -27,7 +27,7 @@
 typedef struct {
   char *filename, **credit, **bank, ***partition, ***text_content;
   int n, ncredit, nbank, *npartition;
-  double *leftover, **credit_totals, **bank_totals, **partition_totals;
+  double **credit_totals, **bank_totals, **partition_totals;
   FILE *fp;
 } Ledger;
 
@@ -106,9 +106,6 @@ void free_ledger(Ledger *ledger){
   if(ledger->npartition != NULL)
     free(ledger->npartition);
 
-  if(ledger->leftover != NULL)
-    free(ledger->leftover);
-
   free(ledger);
 }
 
@@ -158,7 +155,7 @@ void unique(char **s, int n, char ***ret, int *nunique){
 
   qsort(s, n, sizeof(char*), qcmp);
 
-  *nunique = 0;  
+  *nunique = 1;  
   if(s[0][0] != '\0')
     ++(*nunique);
 
@@ -206,7 +203,22 @@ int check_legal_double(char *s, int row){
     }
   return 0;
 }
- 
+
+/*
+int check_legal_double_modify(char *s){
+  char *testbufref, testbuf[FIELDSIZE];
+  
+  errno = 0;
+  strcpy(testbuf, s);
+    testbufref = testbuf;
+    strtod(testbuf, &testbufref); 
+    if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf)){
+      fprintf(stderr, "Error: bad number.\n");
+      return 1;   
+    }
+  return 0;
+}
+ */
 int is_space(char c){
   return (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == 'v');
 }
@@ -355,23 +367,18 @@ void get_names(Ledger *ledger){
   int i, j;
   char nil[] = "\0", **s = malloc(ledger->n * sizeof(char*));
 
+
   for(i = 0; i < ledger->n; ++i){
     s[i] = calloc(FIELDSIZE, sizeof(char));
     strcpy(s[i], ledger->text_content[2][i]);
   }
      
   unique(s, ledger->n, &ledger->credit, &ledger->ncredit);
-  ++ledger->ncredit;
-  ledger->credit = realloc(ledger->credit, ledger->ncredit*sizeof(char*));
-  ledger->credit[ledger->ncredit - 1] = calloc(1, sizeof(char));
-  
+    
   for(i = 0; i < ledger->n; ++i)
-     strcpy(s[i], ledger->text_content[3][i]);
-     
+    strcpy(s[i], ledger->text_content[3][i]);
+  
   unique(s, ledger->n, &ledger->bank, &ledger->nbank);
-  ++ledger->nbank;
-  ledger->bank = realloc(ledger->bank, ledger->nbank*sizeof(char*));
-  ledger->bank[ledger->nbank - 1] = calloc(1, sizeof(char));
   
   ledger->npartition = calloc(ledger->nbank, sizeof(int*));
   ledger->partition = malloc(ledger->nbank * sizeof(char***));
@@ -395,8 +402,6 @@ void get_totals(Ledger *ledger){
   int i, j, k;
   double amount;
   char *status;
-
-  ledger->leftover = calloc(ledger->nbank, sizeof(double));
 
   ledger->credit_totals = calloc(ledger->ncredit, sizeof(double*));
   for(i = 0; i < ledger->ncredit; ++i)
@@ -465,12 +470,6 @@ void get_totals(Ledger *ledger){
     for(k = 0; k < 3; ++k){
       ledger->bank_totals[j][3] += ledger->bank_totals[j][k];
     }  
-  
-  for(j = 0; j < ledger->nbank; ++j){
-    ledger->leftover[j] = ledger->bank_totals[j][3];
-    for(k = 0; k < ledger->npartition[j]; ++k)
-      ledger->leftover[j] -= ledger->partition_totals[j][k];
-  }  
 }
 
 
@@ -560,56 +559,26 @@ void print_summary(Ledger *ledger){
       if(abs(ledger->partition_totals[i][j]) > eps){
         if(!j)
           printf("\n");
-        printf("%0.2f\t%s partition\n", ledger->partition_totals[i][j], 
-                                        ledger->partition[i][j]);
-      }
-    
-    if(ledger->npartition[i] && (abs(ledger->leftover[i]) > eps))
-      printf("%0.2f\tunpartitioned\n", ledger->leftover[i]);    
+        if(strlen(ledger->partition[i][j]))
+          printf("%0.2f\t%s partition\n", ledger->partition_totals[i][j], 
+                                          ledger->partition[i][j]);
+        else
+          printf("%0.2f\t unpartitioned\n", ledger->partition_totals[i][j]);
+      } 
       
     if(i == (ledger->nbank - 1))
       printf("\n");
   }
 }
 
-int summarize(const char* filename){
-  Ledger *ledger = get_ledger_from_filename(filename);
-  int ind = (ledger == NULL);
-  
-  if(ind)
-    return 1;
-
-  print_summary(ledger);
-  free_ledger(ledger);
-  return 0;
-}
-
 Ledger *condense(Ledger *ledger){
   int i, j, k, new_n, row = 0;
-  double eps = 0.004, *local_leftover, **local_partition_totals;
+  double eps = 0.004, **local_partition_totals;
   char status[FIELDSIZE], amount[FIELDSIZE];
   Ledger *newledger;
   
   if(ledger == NULL)
     return NULL;
-  
-  newledger = malloc(sizeof(Ledger));
-  newledger->filename = NULL;
-  newledger->fp = NULL;
-  
-  new_n = ledger->nbank;
-  for(i = 0; i < ledger->n; ++i)
-    new_n += (strlen(ledger->text_content[1][i]) > 0);
-
-  for(i = 0; i < ledger->nbank; ++i)
-    new_n += ledger->npartition[i];
-
-  newledger->n = new_n;
-  alloc_text_content(newledger);
-
-  local_leftover = calloc(ledger->nbank, sizeof(double));
-  for(i = 0; i < ledger->nbank; ++i)
-    local_leftover[i] = ledger->leftover[i];
 
   local_partition_totals = malloc(ledger->nbank * sizeof(double*));
   for(i = 0; i < ledger->nbank; ++i){
@@ -627,10 +596,6 @@ Ledger *condense(Ledger *ledger){
        !mycmp(status, CREDIT_CLEARED) ||
        !mycmp(status, NOTTHEREYET) || 
        !mycmp(status, PENDING)){ 
-       
-      for(j = 0; j < NFIELDS; ++j)
-        strcpy(newledger->text_content[j][row], ledger->text_content[j][row]);
-      ++row;
 
       for(j = 0; j < ledger->nbank; ++j)
         if(!mycmp(ledger->text_content[3][i], ledger->bank[j])){
@@ -645,23 +610,39 @@ Ledger *condense(Ledger *ledger){
         }
     }
   } 
-  
- for(j = 0; j < ledger->nbank; ++j){
-    local_leftover[j] = ledger->bank_totals[j][3];
-    for(k = 0; k < ledger->npartition[j]; ++k)
-      local_leftover[j] -= ledger->partition_totals[j][k];
-  }  
     
-  for(i = 0; i < ledger->nbank; ++i){  
-    if(abs(local_leftover[i]) > eps){
-      sprintf(amount, "%0.2f", local_leftover[i]);
-      strcpy(newledger->text_content[0][row], amount);
-      strcpy(newledger->text_content[3][row], ledger->bank[i]);
-      strcpy(newledger->text_content[5][row], "condensed");
+  newledger = malloc(sizeof(Ledger));
+  newledger->filename = NULL;
+  newledger->fp = NULL;
+  
+  new_n = 0;
+  for(i = 0; i < ledger->n; ++i)
+    new_n += (strlen(ledger->text_content[1][i]) > 0);
+
+  for(i = 0; i < ledger->nbank; ++i)
+    new_n += ledger->npartition[i];
+
+  newledger->n = new_n;
+  alloc_text_content(newledger);  
+  
+  for(i = 0; i < ledger->n; ++i){
+    strcpy(status, ledger->text_content[1][i]);
+    strcpy(amount, ledger->text_content[0][i]);
+  
+    if(!mycmp(status, CREDIT_NOTTHEREYET) || 
+       !mycmp(status, CREDIT_PENDING) || 
+       !mycmp(status, CREDIT_CLEARED) ||
+       !mycmp(status, NOTTHEREYET) || 
+       !mycmp(status, PENDING)){ 
+       
+      for(j = 0; j < NFIELDS; ++j)
+        strcpy(newledger->text_content[j][row], ledger->text_content[j][row]);
       ++row;
     }
-    
-    for(j = 0; j < ledger->npartition[i]; ++j){
+  } 
+   
+  for(i = 0; i < ledger->nbank; ++i)
+    for(j = 0; j < ledger->npartition[i]; ++j)
       if(abs(local_partition_totals[i][j]) > eps){
         sprintf(amount, "%0.2f", local_partition_totals[i][j]);
         strcpy(newledger->text_content[0][row], amount);
@@ -670,10 +651,6 @@ Ledger *condense(Ledger *ledger){
         strcpy(newledger->text_content[5][row], "condensed");
         ++row;
       }
-    }
-  } 
-  
-  free(local_leftover);
 
   for(i = 0; i < ledger->nbank; ++i)
     free(local_partition_totals[i]);  
@@ -694,12 +671,12 @@ void print_ledger(Ledger *ledger, FILE *fp){
   
   for(i = 0; i < ledger->n; ++i){
     amount = atof(ledger->text_content[0][i]);
-    if(abs(amount) > eps){
+    if(abs(amount) > eps){ 
       fprintf(fp, "%0.2f", amount);
       for(j = 1; j < NFIELDS; ++j)
         fprintf(fp, "\t%s", ledger->text_content[j][i]);
       fprintf(fp, "\n");
-    }
+    } 
   }
 }
 
@@ -736,10 +713,13 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
     fprintf(fp, "    %0.2f available\n", ledger->bank_totals[i][2]);
     fprintf(fp, "    %0.2f total\n\n", ledger->bank_totals[i][3]);
     fprintf(fp, "    %d partitions\n", ledger->npartition[i]);
-    for(j = 0; j < ledger->npartition[i]; ++j)
-      fprintf(fp, "      %0.2f %s\n", ledger->partition_totals[i][j],
-                                      ledger->partition[i][j]);
-    fprintf(fp, "      %0.2f leftover\n", ledger->leftover[i]);
+    for(j = 0; j < ledger->npartition[i]; ++j){
+      if(strlen(ledger->partition[i][j]))
+        fprintf(fp, "      %0.2f %s\n", ledger->partition_totals[i][j],
+                                        ledger->partition[i][j]);
+      else
+        fprintf(fp, "      %0.2f unpartitioned\n", ledger->partition_totals[i][j]);
+    }
   }  
 
   fprintf(fp, "\n");
@@ -766,9 +746,29 @@ int condense_and_print(const char* infile, const char *outfile){
     print_ledger(newledger, fp);
     fclose(fp);
   }
+
+      print_ledger_verbose(ledger, stdout);  
+      
+      printf("----\n\n\n----\n\n");
+      print_ledger_verbose(newledger, stdout);
   
   free_ledger(ledger);
   free_ledger(newledger);
+  return 0;
+}
+
+int summarize(const char* filename){
+  Ledger *ledger = get_ledger_from_filename(filename);
+  int ind = (ledger == NULL);
+  
+  if(ind)
+    return 1;
+
+  print_summary(ledger);
+  
+  print_ledger_verbose(ledger, stdout);
+  
+  free_ledger(ledger);
   return 0;
 }
 
@@ -777,6 +777,48 @@ void usage(){
   printf("\nTo condense the ledger,\n$ ./ledger [INTPUT_LEDGER_FILE] [OUTTPUT_LEDGER_FILE]\n");
   printf("\nSee README.txt for details.\n");
 }
+
+/*
+void modify(Ledger *ledger, int row, int col, const char *next){
+  int credit_index, bank_index, partition_index, i, j, k;
+  double previous_amount, next_amount;
+  char amount_str[FIELDSIZE], previous[FIELDSIZE], status[FIELDSIZE], bank[FIELDSIZE], 
+       credit[FIELDSIZE], partition[FIELDSIZE], memo[FIELDSIZE];
+  
+  previous_amount = atof(ledger->text_content[0][row]);
+  strcpy(status, ledger->text_content[1][row]);
+  strcpy(credit, ledger->text_content[2][row]);
+  strcpy(bank, ledger->text_content[3][row]);
+  strcpy(partition, ledger->text_content[4][row]);
+  strcpy(memo, ledger->text_content[5][row]);
+  
+  if(col == 1){
+    if(check_legal_double_modify(next))
+      return;
+    
+    next_amount = atof(next);
+    strcpy(ledger->text_content[0][row], next);
+    
+    for(
+     
+  
+  } else if(col == 2){
+  
+  
+  } else if(col == 3){
+  
+  
+  } else if(col == 4){
+  
+  
+  } else if(col == 5){
+  
+  
+  } else {
+    return;
+  }
+}
+*/
 
 int standalone(int argc, char **argv){
   if(argc == 2){
