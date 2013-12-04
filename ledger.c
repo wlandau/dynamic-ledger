@@ -1145,7 +1145,7 @@ int main(int argc, char **argv){ /*
 
   s2 = summarize_str2str(s1);
 
-  printf("%s", s2);
+  printf("%s", s1);
   free(s2);
 
   
