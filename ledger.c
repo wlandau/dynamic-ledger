@@ -1001,6 +1001,7 @@ int main(int argc, char **argv){
   
   */
    Ledger *ledger, *newledger;
+   int i;
    char *s;
    
   if(argc < 2)
@@ -1010,12 +1011,15 @@ int main(int argc, char **argv){
   if(ledger == NULL)
     return 0;
   
+  for(i = 0; i < 20; ++i)
+    remove_row(ledger, 0);
+  
   s = print_ledger_to_string(ledger);
 
   
   printf("%s", s);
 
-  
+
   
   
   newledger = get_ledger_from_string(s);
@@ -1024,6 +1028,11 @@ int main(int argc, char **argv){
 
   print_ledger_verbose(ledger, stdout);  
   printf("\n\n===\n\n");
+  print_ledger_verbose(newledger, stdout);
+  
+  
+  
+    printf("\n\n===\n\n");
   print_ledger_verbose(newledger, stdout);
 
   free_ledger(newledger); 
