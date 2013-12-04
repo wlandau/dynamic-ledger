@@ -146,8 +146,8 @@ int qcmp(const void *a, const void *b){
   return strcmp(*ia, *ib); 
 } 
 
-int mycmp(const char *s1, const char *s2){
-  return strcmp(s1, s2) || (strlen(s1) != strlen(s2));
+int str_equal(const char *s1, const char *s2){
+  return !strcmp(s1, s2) && (strlen(s1) == strlen(s2));
 }
 
 void unique(char **s, int n, char ***ret, int *nunique){
@@ -160,7 +160,7 @@ void unique(char **s, int n, char ***ret, int *nunique){
     ++(*nunique);
 
   for(j = 1; j < n; ++j){
-    if(mycmp(s[i], s[j])){
+    if(!str_equal(s[i], s[j])){
       i = j;
       ++(*nunique);
     }  
@@ -179,7 +179,7 @@ void unique(char **s, int n, char ***ret, int *nunique){
   }
  
   for(j = 1; j < n; ++j)
-    if(mycmp(s[i], s[j])){
+    if(!str_equal(s[i], s[j])){
       if(s[j][0] != '\0'){
         i = j;
         strcpy((*ret)[k], s[j]);
@@ -204,7 +204,7 @@ int check_legal_double(char *s, int row){
   return 0;
 }
 
-/*
+
 int check_legal_double_modify(char *s){
   char *testbufref, testbuf[FIELDSIZE];
   
@@ -218,7 +218,7 @@ int check_legal_double_modify(char *s){
     }
   return 0;
 }
- */
+ 
 int is_space(char c){
   return (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == 'v');
 }
@@ -386,7 +386,7 @@ void get_names(Ledger *ledger){
   for(i = 0; i < ledger->nbank; ++i){
     for(j = 0; j < ledger->n; ++j){         
       strcpy(s[j], ledger->text_content[4][j]);
-      if(mycmp(ledger->bank[i], ledger->text_content[3][j]))
+      if(!str_equal(ledger->bank[i], ledger->text_content[3][j]))
         strcpy(s[j], nil);
     }
      
@@ -420,38 +420,38 @@ void get_totals(Ledger *ledger){
     amount = atof(ledger->text_content[0][i]);
 
     k = -1;
-    if(!mycmp(status, CREDIT_NOTTHEREYET)){
+    if(str_equal(status, CREDIT_NOTTHEREYET)){
       k = 0;
-    } else if(!mycmp(status, CREDIT_PENDING)){
+    } else if(str_equal(status, CREDIT_PENDING)){
       k = 1;
-    } else if(!mycmp(status, CREDIT_CLEARED)){
+    } else if(str_equal(status, CREDIT_CLEARED)){
       k = 2;
     } 
 
     if(k != -1)
       for(j = 0; j < ledger->ncredit; ++j) 
-        if(!mycmp(ledger->text_content[2][i], ledger->credit[j])){
+        if(str_equal(ledger->text_content[2][i], ledger->credit[j])){
           ledger->credit_totals[j][k] += amount;
           break;
         }
       
-    if(!mycmp(status, CREDIT_NOTTHEREYET) || 
-       !mycmp(status, CREDIT_PENDING) || 
-       !mycmp(status, CREDIT_CLEARED) || 
-       !mycmp(status, NOTTHEREYET)){
+    if(str_equal(status, CREDIT_NOTTHEREYET) || 
+       str_equal(status, CREDIT_PENDING) || 
+       str_equal(status, CREDIT_CLEARED) || 
+       str_equal(status, NOTTHEREYET)){
       k = 0;
-    } else if(!mycmp(status, PENDING)){
+    } else if(str_equal(status, PENDING)){
       k = 1;
     } else {
       k = 2;
     }
     
     for(j = 0; j < ledger->nbank; ++j){
-      if(!mycmp(ledger->text_content[3][i], ledger->bank[j])){
+      if(str_equal(ledger->text_content[3][i], ledger->bank[j])){
         ledger->bank_totals[j][k] += amount;
 
         for(k = 0; k < ledger->npartition[j]; ++k){
-          if(!mycmp(ledger->text_content[4][i], ledger->partition[j][k])){
+          if(str_equal(ledger->text_content[4][i], ledger->partition[j][k])){
             ledger->partition_totals[j][k] += amount;
             break;
           }
@@ -593,16 +593,16 @@ Ledger *condense(Ledger *ledger){
     strcpy(status, ledger->text_content[1][i]);
     strcpy(amount, ledger->text_content[0][i]);
   
-    if(!mycmp(status, CREDIT_NOTTHEREYET) || 
-       !mycmp(status, CREDIT_PENDING) || 
-       !mycmp(status, CREDIT_CLEARED) ||
-       !mycmp(status, NOTTHEREYET) || 
-       !mycmp(status, PENDING)){ 
+    if(str_equal(status, CREDIT_NOTTHEREYET) || 
+       str_equal(status, CREDIT_PENDING) || 
+       str_equal(status, CREDIT_CLEARED) ||
+       str_equal(status, NOTTHEREYET) || 
+       str_equal(status, PENDING)){ 
 
       for(j = 0; j < ledger->nbank; ++j)
-        if(!mycmp(ledger->text_content[3][i], ledger->bank[j])){
+        if(str_equal(ledger->text_content[3][i], ledger->bank[j])){
          for(k = 0; k < ledger->npartition[j]; ++k){
-            if(!mycmp(ledger->text_content[4][i], ledger->partition[j][k])){
+            if(str_equal(ledger->text_content[4][i], ledger->partition[j][k])){
               local_partition_totals[j][k] -= atof(amount);
               
               break;
@@ -631,11 +631,11 @@ Ledger *condense(Ledger *ledger){
     strcpy(status, ledger->text_content[1][i]);
     strcpy(amount, ledger->text_content[0][i]);
   
-    if(!mycmp(status, CREDIT_NOTTHEREYET) || 
-       !mycmp(status, CREDIT_PENDING) || 
-       !mycmp(status, CREDIT_CLEARED) ||
-       !mycmp(status, NOTTHEREYET) || 
-       !mycmp(status, PENDING)){ 
+    if(str_equal(status, CREDIT_NOTTHEREYET) || 
+       str_equal(status, CREDIT_PENDING) || 
+       str_equal(status, CREDIT_CLEARED) ||
+       str_equal(status, NOTTHEREYET) || 
+       str_equal(status, PENDING)){ 
        
       for(j = 0; j < NFIELDS; ++j)
         strcpy(newledger->text_content[j][row], ledger->text_content[j][row]);
@@ -787,6 +787,9 @@ void modify(Ledger *ledger, int row, int col, const char *next){
   strcpy(partition, ledger->text_content[4][row]);
   strcpy(memo, ledger->text_content[5][row]);
   
+  for(i = 0; i < 
+  
+  
   if(col == 1){
     if(check_legal_double_modify(next))
       return;
@@ -813,8 +816,8 @@ void modify(Ledger *ledger, int row, int col, const char *next){
     return;
   }
 }
-*/
 
+*/
 int standalone(int argc, char **argv){
   if(argc == 2){
     if(summarize(argv[1])){
