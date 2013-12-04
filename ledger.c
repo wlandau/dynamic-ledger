@@ -664,9 +664,10 @@ void insert_row(Ledger *ledger, int row){
     return;
     
   if(row < 0 || row > ledger->n){
-    printf("Error: illegal row index in modify().\n");
+    printf("Error: illegal row index in insert_row().\n");
     return;
   }
+  
   
 
 
@@ -682,7 +683,7 @@ void remove_row(Ledger *ledger, int row){
     return;
   
   if(row < 0 || row >= ledger->n){
-    printf("Error: illegal row index in modify().\n");
+    printf("Error: illegal row index in remove_row().\n");
     return;
   }
   
@@ -889,9 +890,6 @@ int condense_and_print(const char* infile, const char *outfile){
   return 0;
 }
 
-
-
-
 int summarize(const char* filename){
   Ledger *ledger = get_ledger_from_filename(filename);
   int ind = (ledger == NULL);
@@ -938,8 +936,7 @@ int main(int argc, char **argv){ /*
   if(ledger != NULL){
     print_ledger_verbose(ledger, stdout);
   
-    remove_row(ledger, 7);
-    remove_row(ledger, 6);
+    remove_row(ledger, 0);
     
     printf("\n\n===========\n\n");
     
