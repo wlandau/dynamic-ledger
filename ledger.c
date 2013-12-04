@@ -913,7 +913,7 @@ int main(int argc, char **argv){ /*
     
     printf("\n\n===========\n\n");
     
-        print_ledger_verbose(ledger, stdout);
+        print_ledger(ledger, stdout);
     free_ledger(ledger);
   }
 }
