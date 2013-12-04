@@ -524,7 +524,7 @@ void print_summary(Ledger *ledger){
           printf("%0.2f\tnot arrived\n", ledger->credit_totals[i][0]); 
         if(l1)
           printf("%0.2f\tpending\n", ledger->credit_totals[i][1]);
-        printf("\n%0.2f\tavailable\n", ledger->credit_totals[i][2]);
+        printf("\n%0.2f\tonline balance\n", ledger->credit_totals[i][2]);
         if(l1 && l0)
           printf("%0.2f\tpending balance\n", ledger->credit_totals[i][1] 
                                            + ledger->credit_totals[i][2]);
@@ -549,7 +549,7 @@ void print_summary(Ledger *ledger){
           printf("%0.2f\tnot arrived\n", ledger->bank_totals[i][0]); 
         if(l1)
           printf("%0.2f\tpending\n", ledger->bank_totals[i][1]); 
-        printf("\n%0.2f\tavailable\n", ledger->bank_totals[i][2]);
+        printf("\n%0.2f\tonline balance\n", ledger->bank_totals[i][2]);
         if(l1 && l0)
           printf("%0.2f\tpending balance\n", ledger->bank_totals[i][1] 
                                            + ledger->bank_totals[i][2]);
@@ -706,7 +706,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
     fprintf(fp, "\n  %s credit account:\n", ledger->credit[i]);
     fprintf(fp, "    %0.2f not arrived\n", ledger->credit_totals[i][0]);
     fprintf(fp, "    %0.2f pending\n", ledger->credit_totals[i][1]);
-    fprintf(fp, "    %0.2f available\n", ledger->credit_totals[i][2]);
+    fprintf(fp, "    %0.2f online balance\n", ledger->credit_totals[i][2]);
     fprintf(fp, "    %0.2f total\n", ledger->credit_totals[i][3]);
   }
   
@@ -715,7 +715,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
     fprintf(fp, "\n  %s bank account:\n", ledger->bank[i]);
     fprintf(fp, "    %0.2f\tnot arrived\n", ledger->bank_totals[i][0]);
     fprintf(fp, "    %0.2f\tpending\n", ledger->bank_totals[i][1]);
-    fprintf(fp, "    %0.2f\tavailable\n", ledger->bank_totals[i][2]);
+    fprintf(fp, "    %0.2f\tonline balance\n", ledger->bank_totals[i][2]);
     fprintf(fp, "    %0.2f\ttotal\n\n", ledger->bank_totals[i][3]);
     fprintf(fp, "    %d partitions\n", ledger->npartition[i]);
     for(j = 0; j < ledger->npartition[i]; ++j){
@@ -826,7 +826,7 @@ int main(int argc, char **argv){ /*
   if(ledger != NULL){
     print_ledger_verbose(ledger, stdout);
   
-    modify(ledger, 2, 3, "0");
+    modify(ledger, 2, -1, "0");
     
     printf("\n\n===========\n\n");
     
