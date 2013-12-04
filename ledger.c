@@ -906,7 +906,7 @@ int main(int argc, char **argv){ /*
  Ledger *ledger = get_ledger_from_filename(argv[1]);
   
     if(ledger != NULL){
-    print_ledger_verbose(ledger, stdout);
+    print_ledger(ledger, stdout);
   
     for(i =0; i < 11; ++i)
       remove_row(ledger, 0);
@@ -916,4 +916,5 @@ int main(int argc, char **argv){ /*
         print_ledger(ledger, stdout);
     free_ledger(ledger);
   }
+  return 0;
 }
