@@ -1005,15 +1005,19 @@ int main(int argc, char **argv){
   */
   
   Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger;
-  char *s = print_ledger_to_string(ledger);
-  free(ledger);
-  /*
+ /* char *s = print_ledger_to_string(ledger);
+
+  
+  
 
   newledger = get_ledger_from_string(s);
   
   print_ledger_verbose(newledger, stdout);
 
-  free(newledger); */
-  free(s);
+  free(newledger); 
+  
+  free(s); */
+  
+    free(ledger);
   return 0;
 }
