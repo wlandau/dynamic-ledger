@@ -671,6 +671,7 @@ void remove_row(Ledger *ledger, int row){
   }
 
   if(ledger->n == 1){
+    printf("Warning: trying to remove the last row. Leaving a blank line.\n");
     for(i = 0; i < NFIELDS; ++i)
       strcpy(ledger->text_content[i][0], NIL);
     return;
@@ -908,12 +909,16 @@ int main(int argc, char **argv){ /*
     if(ledger != NULL){
     print_ledger(ledger, stdout);
   
-    for(i =0; i < 11; ++i)
-      remove_row(ledger, 0);
+    for(i =0; i < 20; ++i){
+          remove_row(ledger, 0);
+
+          print_ledger(ledger, stdout);
+              printf("\n\n===========\n\n");
+    }
     
-    printf("\n\n===========\n\n");
+
     
-        print_ledger(ledger, stdout);
+
     free_ledger(ledger);
   }
   return 0;
