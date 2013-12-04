@@ -653,8 +653,18 @@ void print_summary(Ledger *ledger){
   }
 }
 
+int contains_tabs(char *s){
+  int i, n = strlen(s);
+  for(i = 0; i < n; ++i)
+    if(s[i] == '\t')
+      return i;
+  return 0;
+}
+
+
 void modify(Ledger *ledger, int row, int col, char *next){
   char next_local[FIELDSIZE];
+  int i;
 
   if(row < 0 || row >= ledger->n){
     printf("Error: illegal row index in modify().\n");
@@ -671,7 +681,13 @@ void modify(Ledger *ledger, int row, int col, char *next){
       return;
   
   strcpy(next_local, next);
-  strstrip(next_local);    
+  strstrip(next_local);  
+  
+  if((i = contains_tabs(next_local))){
+    printf("Warning: entries must not contain tabs. Truncating input.\n");
+    next_local[i] = '\0';
+  }
+  
   strcpy(ledger->text_content[col][row], next_local);
 
   free_for_retotal(ledger);
@@ -997,6 +1013,23 @@ int standalone(int argc, char **argv){
   return 0;
 }
  
-int main(int argc, char **argv){
-  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
+int main(int argc, char **argv){ /*
+  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; */
+  
+  char *s;
+  Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger;
+  
+  print_ledger_verbose(ledger, stdout);
+  
+  modify(ledger, 5, 5, "        here\tbad\tabs      ");
+  s = print_ledger_to_string(ledger);
+  printf("%s\n", s);
+  
+  free_ledger(ledger);
+  
+  newledger = get_ledger_from_string(s);
+  
+  print_ledger_verbose(newledger, stdout);
+  free(newledger);
+  
 }
