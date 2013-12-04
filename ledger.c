@@ -1013,9 +1013,9 @@ int main(int argc, char **argv){ /*
     remove_row(ledger, 0);
   
   
-    modify(ledger, 0, 3, "15");
+    modify(ledger, 0, 3, "13");
  
-   modify(ledger, 0, 0, "15");
+   modify(ledger, 0, 0, "12");
  
     print_ledger_verbose(ledger, stdout);
         
