@@ -828,15 +828,20 @@ char *print_ledger_to_string(Ledger *ledger){
   return s;
 }
 
-void print_ledger(Ledger *ledger, FILE *fp){
-  char *s;
+void print_ledger_to_stream(Ledger *ledger, FILE *fp){
+  int i, j;
+  double amount;
   
   if(ledger == NULL || fp == NULL)
     return;
-    
-  s = print_ledger_to_string(ledger); 
-  fprintf(fp, "%s", s); 
-  free(s);
+  
+  for(i = 0; i < ledger->n; ++i){
+    amount = atof(ledger->text_content[0][i]);
+    fprintf(fp, "%0.2f", amount);
+    for(j = 1; j < NFIELDS; ++j)
+      fprintf(fp, "\t%s", ledger->text_content[j][i]);
+    fprintf(fp, "\n");
+  }
 }
 
 void print_ledger_verbose(Ledger *ledger, FILE *fp){
@@ -882,7 +887,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
   }  
 
   fprintf(fp, "\n");
-  print_ledger(ledger, fp);
+  print_ledger_to_stream(ledger, fp);
 }
 
 int condense_and_print(const char* infile, const char *outfile){
@@ -902,7 +907,7 @@ int condense_and_print(const char* infile, const char *outfile){
   
   if(!badoutputfile(outfile)){
     fp = fopen(outfile, "w");
-    print_ledger(newledger, fp);
+    print_ledger_to_stream(newledger, fp);
     fclose(fp);
   }
   
@@ -942,6 +947,13 @@ int standalone(int argc, char **argv){
   return 0;
 }
 
-int main(int argc, char **argv){ 
+int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
+  
+  */
+  
+  Ledger *ledger = get_ledger_from_filename(argv[1]);
+  print_ledger_to_stream(ledger, stdout);
+  free_ledger(ledger); 
+  return 0; 
 }
