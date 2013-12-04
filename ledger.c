@@ -907,6 +907,7 @@ char *print_ledger_to_string(Ledger *ledger){
       if(strlen(ledger->text_content[i][j])){
         sprintf(entry, "%s", ledger->text_content[i][j]);
         
+        strstrip(entry);
         if((itab = contains_tabs(entry))){
           printf("Warning: entries must not contain tabs. Truncating input.\n");
           entry[itab] = '\0';
