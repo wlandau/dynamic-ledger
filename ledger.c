@@ -602,12 +602,59 @@ void modify(Ledger *ledger, int row, int col, char *next){
   get_totals(ledger); 
 }
 
-void insert_in_array(char **a, int at, int *n){
+void insert_in_array(char ***a, int at, int *n){
+  int i;
+  char **tmp, **b;
 
+  if(a == NULL)
+    return;
+  
+  if(at < 0 || at >= *n){
+    fprintf(stderr, "Error: bad row index.\n");
+    return;
+  }
+ 
+  b = malloc((*n + 1) * sizeof(char*));
+ 
+  for(i = 0; i < (*n + 1); ++i)
+    b[i] = malloc(FIELDSIZE * sizeof(char));
+    
+  for(i = 0; i < at; ++i)
+    strcpy(b[i], (*a)[i]);
+  
+  strcpy(b[i], NIL); 
+  
+  printf("--%lu-%lu-\n", strlen("\0"), strlen(""));
+  
+  for(i = at + 1; i < *n + 1; ++i)
+    strcpy(b[i], (*a)[i - 1]);
+
+   
+  tmp = *a;
+  *a = b;
+  
+  for(i = 0; i < *n; ++i)
+    free(tmp[i]);
+  free(tmp);
+  ++(*n); 
 }
 
 void remove_from_array(char **a, int at, int *n){
-
+  int i;
+  
+  if(a == NULL)
+    return;
+  
+  if(at < 0 || at >= *n){
+    fprintf(stderr, "Error: bad row index.\n");
+    return;
+  }
+  
+  for(i = at; i < (*n - 1); ++i)
+    strcpy(a[i], a[i + 1]);
+  
+  free(a[*n - 1]);
+  --(*n); 
 }
 
 void insert_row(Ledger *ledger, int row){
@@ -619,7 +666,7 @@ void insert_row(Ledger *ledger, int row){
   }
   
   for(i = 0; i < NFIELDS; ++i)
-    insert_in_array(ledger->text_content[i], row, &(ledger->n));
+    insert_in_array(&(ledger->text_content[i]), row, &(ledger->n));
 
   free_for_retotal(ledger);
   get_names(ledger);
@@ -870,7 +917,7 @@ int main(int argc, char **argv){ /*
   if(ledger != NULL){
     print_ledger_verbose(ledger, stdout);
   
-    modify(ledger, 2, 0, "asld;kf");
+    insert_row(ledger, 0);
     
     printf("\n\n===========\n\n");
     

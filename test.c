@@ -32,7 +32,7 @@ void insert_in_array(char ***a, int at, int *n){
   for(i = 0; i < at; ++i)
     strcpy(b[i], (*a)[i]);
   
-  strcpy(b[i], "--"); 
+  strcpy(b[i], NIL); 
   
   printf("--%lu-%lu-\n", strlen("\0"), strlen(""));
   
