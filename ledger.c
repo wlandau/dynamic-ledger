@@ -29,7 +29,6 @@ typedef struct {
   char *filename, **credit, **bank, ***partition, ***text_content;
   int n, ncredit, nbank, *npartition;
   double **credit_totals, **bank_totals, **partition_totals;
-  FILE *fp;
 } Ledger;
 
 void usage(){
@@ -110,9 +109,6 @@ void free_ledger(Ledger *ledger){
 
   if(ledger == NULL)
     return;
-
-  if(ledger->fp != NULL)
-    fclose(ledger->fp);
 
   if(ledger->filename != NULL)
     free(ledger->filename);
@@ -373,12 +369,12 @@ int get_text_content_from_string(Ledger *ledger, char *s){
   return 0;
 }
 
-int get_text_content_from_stream(Ledger *ledger){
+int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   int row, field; 
   char line[LINESIZE], *str, *token;
   
   ledger->n = 0;
-  while(fgets(line, LINESIZE, ledger->fp))
+  while(fgets(line, LINESIZE, fp))
     ++ledger->n;
   
   if(!ledger->n){
@@ -387,13 +383,13 @@ int get_text_content_from_stream(Ledger *ledger){
     return 1;
   }
     
-  rewind(ledger->fp);
+  rewind(fp);
   alloc_text_content(ledger);
   
   row = 0;
   field = 0;
 
-  while(fgets(line, LINESIZE, ledger->fp)){
+  while(fgets(line, LINESIZE, fp)){
     str = line;
     for(field = 0; field < NFIELDS; ++field){
       token = local_strsep(&str, "\f\n\r\t\v");
@@ -412,7 +408,7 @@ int get_text_content_from_stream(Ledger *ledger){
     ++row;
   }
   
-  rewind(ledger->fp);
+  rewind(fp);
   return 0;
 }
 
@@ -526,7 +522,6 @@ void get_totals(Ledger *ledger){
 
 Ledger *get_ledger_from_string(char *s){
   Ledger *ledger = calloc(1, sizeof(Ledger));
-  ledger->fp = NULL;
   if(get_text_content_from_string(ledger, s))
     return NULL;
   get_names(ledger);
@@ -536,11 +531,10 @@ Ledger *get_ledger_from_string(char *s){
 
 Ledger *get_ledger_from_stream(FILE *fp){
   Ledger *ledger = calloc(1, sizeof(Ledger));
-  ledger->fp = fp;
   
   /*
-  if(get_text_content_from_stream(ledger)){ */ 
-    if(fp != NULL && fp != stdout && fp != stdin && fp != stderr)
+  if(get_text_content_from_stream(ledger, fp)){ */ 
+    if(fp != NULL)
       fclose(fp);
     return NULL;
   
@@ -548,7 +542,7 @@ Ledger *get_ledger_from_stream(FILE *fp){
   get_names(ledger);
   get_totals(ledger); 
   
-  if(fp != NULL && fp != stdout && fp != stdin && fp != stderr)
+  if(fp != NULL)
       fclose(fp);
   return ledger;
 }
@@ -565,7 +559,7 @@ Ledger *get_ledger_from_filename(const char* filename){
   ledger = get_ledger_from_stream(fp); 
   
   if(ledger == NULL){
-    if(fp != NULL && fp != stdout && fp != stdin && fp != stderr)
+    if(fp != NULL)
       fclose(fp);
     return NULL;
   }
@@ -573,7 +567,7 @@ Ledger *get_ledger_from_filename(const char* filename){
   ledger->filename = malloc(FILENAMESIZE * sizeof(char));
   strcpy(ledger->filename, filename);
   
-  if(fp != NULL && fp != stdout && fp != stdin && fp != stderr)
+  if(fp != NULL)
     fclose(fp);
   return ledger;
 }
@@ -810,7 +804,6 @@ Ledger *condense(Ledger *ledger){
     
   newledger = malloc(sizeof(Ledger));
   newledger->filename = NULL;
-  newledger->fp = NULL;
   
   new_n = 0;
   for(i = 0; i < ledger->n; ++i)
@@ -917,11 +910,6 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
     
   if(ledger->filename != NULL)
     fprintf(fp, "filename = %s.\n", ledger->filename);
-  
-  if(ledger->fp == NULL)
-    fprintf(fp, "File pointer is null.\n");
-  else
-    fprintf(fp, "File pointer is allocated.\n");
    
   fprintf(fp, "%d rows in data\n\n", ledger->n);  
     
@@ -1019,7 +1007,7 @@ int main(int argc, char **argv){
   
   */
   
-  Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger;
+  Ledger *ledger = get_ledger_from_filename(argv[1]);
  /* char *s = print_ledger_to_string(ledger);
 
   
