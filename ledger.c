@@ -535,10 +535,10 @@ Ledger *get_ledger_from_stream(FILE *fp){
   if(fp == NULL)
     return NULL;
   
-  /*
+  
   ledger = calloc(1, sizeof(Ledger));
   
-  
+  /*
   if(get_text_content_from_stream(ledger, fp)){ 
     fclose(fp);
     return NULL;
@@ -546,11 +546,9 @@ Ledger *get_ledger_from_stream(FILE *fp){
   
 
   get_names(ledger);
-  get_totals(ledger);  
+  get_totals(ledger);   */
   
-  return ledger; */
-  
-  return NULL;
+  return ledger; 
 }
 
 Ledger *get_ledger_from_filename(const char* filename){
@@ -561,7 +559,8 @@ Ledger *get_ledger_from_filename(const char* filename){
     return NULL;
   
   fp = fopen(filename, "r");
-  ledger = get_ledger_from_stream(fp); 
+  ledger = get_ledger_from_stream(fp);
+  free_ledger(ledger); 
   fclose(fp);
   return NULL; /*
   
