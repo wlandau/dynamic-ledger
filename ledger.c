@@ -797,18 +797,27 @@ Ledger *condense(Ledger *ledger){
   return newledger;
 }
 
-void print_ledger_to_string(Ledger *ledger){
-  char **s; 
-  int i, j, n = 0;
+char *print_ledger_to_string(Ledger *ledger){
+  char *s; 
+  int i, j, n = 1;
   
   for(i = 0; i < NFIELDS; ++i){
     for(j = 0; j < ledger->n; ++j){
-      s = NULL;
-      ++n;
+      n += strlen(ledger->text_content[i][j]);
     }
   }
   
-  return;
+  s = malloc(n * sizeof(char));
+  for(j = 0; j < ledger->n; ++j){
+    strcat(s, ledger->text_content[0][j]);
+    for(i = 1; i < NFIELDS; ++i){
+      strcat(s, "\t");
+      strcat(s, ledger->text_content[i][j]);
+    }
+    strcat(s, "\n");
+  }
+  
+  return s;
 }
 
 void print_ledger(Ledger *ledger, FILE *fp){
@@ -932,13 +941,12 @@ int standalone(int argc, char **argv){
 
 int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
+  
   */
   
   Ledger *ledger = get_ledger_from_filename(argv[1]);
-  print_ledger_verbose(ledger, stdout);
-  remove_row(ledger, 45);
-  print_ledger_verbose(ledger, stdout);
-  
-  free_ledger(ledger);
-  return 0;
+  char *s = print_ledger_to_string(ledger);
+  printf("%s", s);  
+  free(s);
+  free_ledger(ledger);  
 }
