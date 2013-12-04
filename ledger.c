@@ -539,11 +539,11 @@ Ledger *get_ledger_from_stream(FILE *fp){
   ledger->fp = fp;
   
   /*
-  if(get_text_content_from_stream(ledger)){ */ {
+  if(get_text_content_from_stream(ledger)){ */ 
     if(fp != NULL)
       fclose(fp);
     return NULL;
-  }  
+  
 
   get_names(ledger);
   get_totals(ledger); 
