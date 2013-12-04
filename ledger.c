@@ -557,13 +557,15 @@ void print_summary(Ledger *ledger){
 
     for(j = 0; j < ledger->npartition[i]; ++j)
       if(abs(ledger->partition_totals[i][j]) > eps){
-        if(!j)
-          printf("\n");
-        if(strlen(ledger->partition[i][j]))
+        if(strlen(ledger->partition[i][j])){
+          if(!j) printf("\n");
           printf("%0.2f\t%s partition\n", ledger->partition_totals[i][j], 
                                           ledger->partition[i][j]);
-        else
+        }
+        else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][2]) > eps){
+          if(!j) printf("\n");
           printf("%0.2f\t unpartitioned\n", ledger->partition_totals[i][j]);
+        }
       } 
       
     if(i == (ledger->nbank - 1))
