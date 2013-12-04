@@ -803,7 +803,7 @@ char *print_ledger_to_string(Ledger *ledger){
   
   for(i = 0; i < NFIELDS; ++i){
     for(j = 0; j < ledger->n; ++j){
-      n += strlen(ledger->text_content[i][j]);
+      n += strlen(ledger->text_content[i][j]) + 1;
     }
   }
   
