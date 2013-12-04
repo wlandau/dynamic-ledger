@@ -541,6 +541,8 @@ Ledger *get_ledger_from_stream(FILE *fp){
   /*
   if(get_text_content_from_stream(ledger)) */
     return NULL;
+    
+  fclose(fp);
   get_names(ledger);
   get_totals(ledger); 
   return ledger;
@@ -558,14 +560,16 @@ Ledger *get_ledger_from_filename(const char* filename){
   ledger = get_ledger_from_stream(fp); 
   
   if(ledger == NULL){
-    fclose(fp);
+    if(fp != NULL)
+      fclose(fp);
     return NULL;
   }
     
   ledger->filename = malloc(FILENAMESIZE * sizeof(char));
   strcpy(ledger->filename, filename);
   
-  fclose(fp);
+  if(fp != NULL)
+    fclose(fp);
   return ledger;
 }
 
