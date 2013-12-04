@@ -1015,4 +1015,5 @@ int main(int argc, char **argv){
 
   free(newledger);
   free(s);
+  return 0;
 }
