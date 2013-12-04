@@ -589,30 +589,9 @@ void get_totals(Ledger *ledger){
     }  
 }
 
-int safe_get_text_content_from_string(Ledger *ledger, char *s){
-  char *s2;
-  int ret, i, j, n = 1;
-  
-  if(ledger == NULL)
-    return 1;
-  
-  for(i = 0; i < NFIELDS; ++i){
-    for(j = 0; j < ledger->n; ++j){
-      n += strlen(ledger->text_content[i][j]) + 1;
-    }
-  }
-  
-  s2 = calloc(n, sizeof(char));  
-  strcpy(s2, s);
-  
-  ret = get_text_content_from_string(ledger, s2);
-  free(s2);
-  return(ret);
-}
-
 Ledger *get_ledger_from_string(char *s){
   Ledger *ledger = calloc(1, sizeof(Ledger));
-  if(safe_get_text_content_from_string(ledger, s))
+  if(get_text_content_from_string(ledger, s))
     return NULL;
   get_names(ledger);
   get_totals(ledger); 
