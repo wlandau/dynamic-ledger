@@ -396,7 +396,12 @@ char *print_ledger_to_string(Ledger *ledger){
 int get_text_content_from_string(Ledger *ledger, char *str){
   int i, row, field;
   char *linetoken = NULL, *entrytoken = NULL;
-  char *s = calloc(strlen(str) + 1, sizeof(char));
+  char *s;
+  
+  if(ledger == NULL || str == NULL)
+    return 1;
+  
+  s = calloc(strlen(str) + 1, sizeof(char));
   strcpy(s, str);
 
   ledger->n = 1;
