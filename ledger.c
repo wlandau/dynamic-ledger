@@ -1007,6 +1007,9 @@ int main(int argc, char **argv){
   return 0;
   
   ledger = get_ledger_from_filename(argv[1]);
+  if(ledger == NULL)
+    return 0;
+  
   s = print_ledger_to_string(ledger);
   free_ledger(ledger);
   
