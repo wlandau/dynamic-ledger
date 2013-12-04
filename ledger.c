@@ -771,25 +771,25 @@ void trim_ledger(Ledger *ledger){
       remove_row(ledger, i);
 }
  
-Ledger *condense(Ledger *ledger){
+void condense(Ledger **ledger){
   int i, j, k, new_n, row = 0;
   double eps = 0.004, **local_partition_totals;
   char status[FIELDSIZE], amount[FIELDSIZE];
-  Ledger *newledger;
+  Ledger *newledger, *tmpledger;
   
   if(ledger == NULL)
-    return NULL;
+    return;
 
-  local_partition_totals = malloc(ledger->nbank * sizeof(double*));
-  for(i = 0; i < ledger->nbank; ++i){
-    local_partition_totals[i] = calloc(ledger->npartition[i], sizeof(double));  
-    for(j = 0; j < ledger->npartition[i]; ++j)
-      local_partition_totals[i][j] = ledger->partition_totals[i][j];
+  local_partition_totals = malloc((*ledger)->nbank * sizeof(double*));
+  for(i = 0; i < (*ledger)->nbank; ++i){
+    local_partition_totals[i] = calloc((*ledger)->npartition[i], sizeof(double));  
+    for(j = 0; j < (*ledger)->npartition[i]; ++j)
+      local_partition_totals[i][j] = (*ledger)->partition_totals[i][j];
   }
 
-  for(i = 0; i < ledger->n; ++i){
-    strcpy(status, ledger->text_content[1][i]);
-    strcpy(amount, ledger->text_content[0][i]);
+  for(i = 0; i < (*ledger)->n; ++i){
+    strcpy(status, (*ledger)->text_content[1][i]);
+    strcpy(amount, (*ledger)->text_content[0][i]);
   
     if(str_equal(status, CREDIT_NOTTHEREYET) || 
        str_equal(status, CREDIT_PENDING) || 
@@ -797,10 +797,10 @@ Ledger *condense(Ledger *ledger){
        str_equal(status, NOTTHEREYET) || 
        str_equal(status, PENDING)){ 
 
-      for(j = 0; j < ledger->nbank; ++j)
-        if(str_equal(ledger->text_content[3][i], ledger->bank[j])){
-         for(k = 0; k < ledger->npartition[j]; ++k){
-            if(str_equal(ledger->text_content[4][i], ledger->partition[j][k])){
+      for(j = 0; j < (*ledger)->nbank; ++j)
+        if(str_equal((*ledger)->text_content[3][i], (*ledger)->bank[j])){
+         for(k = 0; k < (*ledger)->npartition[j]; ++k){
+            if(str_equal((*ledger)->text_content[4][i], (*ledger)->partition[j][k])){
               local_partition_totals[j][k] -= atof(amount);
               
               break;
@@ -815,18 +815,18 @@ Ledger *condense(Ledger *ledger){
   newledger->filename = NULL;
   
   new_n = 0;
-  for(i = 0; i < ledger->n; ++i)
-    new_n += (strlen(ledger->text_content[1][i]) > 0);
+  for(i = 0; i < (*ledger)->n; ++i)
+    new_n += (strlen((*ledger)->text_content[1][i]) > 0);
 
-  for(i = 0; i < ledger->nbank; ++i)
-    new_n += ledger->npartition[i];
+  for(i = 0; i < (*ledger)->nbank; ++i)
+    new_n += (*ledger)->npartition[i];
 
   newledger->n = new_n;
   alloc_text_content(newledger);  
   
-  for(i = 0; i < ledger->n; ++i){
-    strcpy(status, ledger->text_content[1][i]);
-    strcpy(amount, ledger->text_content[0][i]);
+  for(i = 0; i < (*ledger)->n; ++i){
+    strcpy(status, (*ledger)->text_content[1][i]);
+    strcpy(amount, (*ledger)->text_content[0][i]);
   
     if(str_equal(status, CREDIT_NOTTHEREYET) || 
        str_equal(status, CREDIT_PENDING) || 
@@ -836,32 +836,34 @@ Ledger *condense(Ledger *ledger){
       
       if(abs(atof(amount)) > eps){
         for(j = 0; j < NFIELDS; ++j)
-          strcpy(newledger->text_content[j][row], ledger->text_content[j][i]);
+          strcpy(newledger->text_content[j][row], (*ledger)->text_content[j][i]);
         ++row;
       }
     }
   } 
    
-  for(i = 0; i < ledger->nbank; ++i)
-    for(j = 0; j < ledger->npartition[i]; ++j)
+  for(i = 0; i < (*ledger)->nbank; ++i)
+    for(j = 0; j < (*ledger)->npartition[i]; ++j)
       if(abs(local_partition_totals[i][j]) > eps){
         sprintf(amount, "%0.2f", local_partition_totals[i][j]);
         strcpy(newledger->text_content[0][row], amount);
-        strcpy(newledger->text_content[3][row], ledger->bank[i]);
-        strcpy(newledger->text_content[4][row], ledger->partition[i][j]);
+        strcpy(newledger->text_content[3][row], (*ledger)->bank[i]);
+        strcpy(newledger->text_content[4][row], (*ledger)->partition[i][j]);
         strcpy(newledger->text_content[5][row], "condensed");
         ++row;
       }
 
-  for(i = 0; i < ledger->nbank; ++i)
+  for(i = 0; i < (*ledger)->nbank; ++i)
     free(local_partition_totals[i]);  
   free(local_partition_totals); 
 
   get_names(newledger);
   get_totals(newledger); 
   trim_ledger(newledger); 
-
-  return newledger;
+  
+  tmpledger = *ledger;
+  *ledger = newledger;
+  free_ledger(tmpledger); 
 }
 
 char *print_ledger_to_string(Ledger *ledger){
@@ -938,7 +940,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
 
 int condense_and_print(const char* infile, const char *outfile){
   FILE *fp;
-  Ledger *ledger, *newledger;
+  Ledger *ledger;
   
   if(badinputfile(infile))
     return 1;
@@ -949,16 +951,15 @@ int condense_and_print(const char* infile, const char *outfile){
     return 1;
   }  
   
-  newledger = condense(ledger);
+  condense(&ledger);
   
   if(!badoutputfile(outfile)){
     fp = fopen(outfile, "w");
-    print_ledger_to_stream(newledger, fp);
+    print_ledger_to_stream(ledger, fp);
     fclose(fp);
   }
   
   free_ledger(ledger);
-  free_ledger(newledger);
   return 0;
 }
 
