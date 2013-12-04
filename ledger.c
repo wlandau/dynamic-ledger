@@ -18,6 +18,7 @@
 #define CREDIT_CLEARED "c"
 #define NOTTHEREYET "n"
 #define PENDING "p"
+#define LOCKED "l"
 
 #define NIL "\0"
 #define NFIELDS 6
@@ -827,7 +828,7 @@ void trim_ledger(Ledger *ledger){
       remove_row(ledger, i);
 }
  
-void condense_region(Ledger **ledger, int from, int to){
+void condense(Ledger **ledger){
   int i, j, k, new_n, row = 0;
   double eps = 0.004, **local_partition_totals;
   char status[FIELDSIZE], amount[FIELDSIZE];
@@ -835,17 +836,6 @@ void condense_region(Ledger **ledger, int from, int to){
   
   if(ledger == NULL)
     return;
-    
-  if(from < 0)
-    from = 0;
-    
-  if(to > (*ledger)->n - 1)
-    to = (*ledger)->n - 1;
-    
-  if(from > to){
-    fprintf(stderr, "Error: bad condensing region.\n");
-    return;
-  }
 
   local_partition_totals = malloc((*ledger)->nbank * sizeof(double*));
   for(i = 0; i < (*ledger)->nbank; ++i){
@@ -854,7 +844,7 @@ void condense_region(Ledger **ledger, int from, int to){
       local_partition_totals[i][j] = (*ledger)->partition_totals[i][j];
   }
 
-  for(i = 0; (i < (*ledger)->n) && (i >= from) && (i <= to); ++i){
+  for(i = 0; i < (*ledger)->n; ++i){
     strcpy(status, (*ledger)->text_content[1][i]);
     strcpy(amount, (*ledger)->text_content[0][i]);
   
@@ -862,7 +852,8 @@ void condense_region(Ledger **ledger, int from, int to){
        str_equal(status, CREDIT_PENDING) || 
        str_equal(status, CREDIT_CLEARED) ||
        str_equal(status, NOTTHEREYET) || 
-       str_equal(status, PENDING)){ 
+       str_equal(status, PENDING) ||
+       str_equal(status, LOCKED)){ 
 
       for(j = 0; j < (*ledger)->nbank; ++j)
         if(str_equal((*ledger)->text_content[3][i], (*ledger)->bank[j])){
@@ -891,7 +882,7 @@ void condense_region(Ledger **ledger, int from, int to){
   newledger->n = new_n;
   alloc_text_content(newledger);  
   
-  for(i = 0; (i < (*ledger)->n) && (i >= from) && (i <= to); ++i){
+  for(i = 0; i < (*ledger)->n; ++i){
     strcpy(status, (*ledger)->text_content[1][i]);
     strcpy(amount, (*ledger)->text_content[0][i]);
   
@@ -899,7 +890,8 @@ void condense_region(Ledger **ledger, int from, int to){
        str_equal(status, CREDIT_PENDING) || 
        str_equal(status, CREDIT_CLEARED) ||
        str_equal(status, NOTTHEREYET) || 
-       str_equal(status, PENDING)){ 
+       str_equal(status, PENDING) || 
+       str_equal(status, LOCKED)){ 
       
       if(abs(atof(amount)) > eps){
         for(j = 0; j < NFIELDS; ++j)
@@ -931,18 +923,6 @@ void condense_region(Ledger **ledger, int from, int to){
   tmpledger = *ledger;
   *ledger = newledger;
   free_ledger(tmpledger); 
-}
-
-void condense_from(Ledger **ledger, int from){
-  condense_region(ledger, from, (*ledger)->n - 1);
-}
-
-void condense_to(Ledger **ledger, int to){
-  condense_region(ledger, 0, to);
-}
-
-void condense(Ledger **ledger){
-  condense_region(ledger, 0, (*ledger)->n - 1);
 }
 
 void print_ledger_verbose(Ledger *ledger, FILE *fp){
@@ -986,7 +966,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
   print_ledger_to_stream(ledger, fp);
 }
 
-int condense_and_print(const char* infile, const char *outfile, int from, int to){
+int condense_and_print(const char* infile, const char *outfile){
   FILE *fp;
   Ledger *ledger;
   
@@ -999,14 +979,7 @@ int condense_and_print(const char* infile, const char *outfile, int from, int to
     return 1;
   }  
   
-  if(from != -1 && to != -1)
-    condense_region(&ledger, from, to);
-  else if(from == -1 && to != -1)
-    condense_to(&ledger, to);
-  else if(from != -1 && to == -1)
-    condense_from(&ledger, from);
-  else
-    condense(&ledger);
+  condense(&ledger);
       
   if(!badoutputfile(outfile)){
     fp = fopen(outfile, "w");
@@ -1032,45 +1005,17 @@ int summarize(const char* filename){
 }
 
 int standalone(int argc, char **argv){
- int c, option_index, to = -1, from = -1, iflag = 0, oflag = 0;
- char in[FILENAMESIZE], out[FILENAMESIZE];
-  
-  struct option long_options[] = {
-    {"in", required_argument, 0, 'i'},
-    {"out", required_argument, 0, 'o'},
-    {"from", required_argument, 0, 'f'},
-    {"to", required_argument, 0, 't'}};
-
-  while(1){
-  
-    option_index = 0;
-    c = getopt_long(argc, argv, "i:o:f:t", long_options, &option_index);
-        
-    if(c == -1){
-      break;
-    }
-      
-    if(c == 'i') {
-      strcpy(in, optarg);
-      ++iflag;
-    } else if (c == 'o'){
-      strcpy(out, optarg);
-      ++oflag;
-    } else if (c == 'f'){
-      from = atoi(optarg);
-    } else if (c == 't'){
-      to = atoi(optarg);
-    } else {
-      usage();
+  if(argc == 2){
+    if(summarize(argv[1])){
+      printf("Exiting.\n");
       return 1;
-    } 
-  }
-
-  if(iflag && !oflag){
-    summarize(in);
-  } else if(oflag) {
-    condense_and_print(in, out, from, to);
-  } else {
+    }
+  } else if(argc == 3){
+    if(condense_and_print(argv[1], argv[2])){
+      printf("No output produced.\nExiting.\n");
+      return 1;
+    }
+  } else{
     usage();
   }
 
