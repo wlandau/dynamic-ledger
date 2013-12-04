@@ -657,7 +657,7 @@ Ledger *condense(Ledger *ledger){
       sprintf(amount, "%0.2f", local_leftover[i]);
       strcpy(newledger->text_content[0][row], amount);
       strcpy(newledger->text_content[3][row], ledger->bank[i]);
-      strcpy(newledger->text_content[5][row], "condensed-leftover");
+      strcpy(newledger->text_content[5][row], "condensed");
       ++row;
     }
     
@@ -667,7 +667,7 @@ Ledger *condense(Ledger *ledger){
         strcpy(newledger->text_content[0][row], amount);
         strcpy(newledger->text_content[3][row], ledger->bank[i]);
         strcpy(newledger->text_content[4][row], ledger->partition[i][j]);
-        strcpy(newledger->text_content[5][row], "condensed-partition");
+        strcpy(newledger->text_content[5][row], "condensed");
         ++row;
       }
     }
