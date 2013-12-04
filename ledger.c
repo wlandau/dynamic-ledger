@@ -1002,9 +1002,9 @@ int condense_and_print(const char* infile, const char *outfile, int from, int to
   if(from != -1 && to != -1)
     condense_region(&ledger, from, to);
   else if(from == -1 && to != -1)
-    condense_from(&ledger, from);
-  else if(from != -1 && to == -1)
     condense_to(&ledger, to);
+  else if(from != -1 && to == -1)
+    condense_from(&ledger, from);
   else
     condense(&ledger);
       
