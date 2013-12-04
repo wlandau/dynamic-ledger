@@ -32,6 +32,22 @@ typedef struct {
   FILE *fp;
 } Ledger;
 
+void usage(){
+  printf("\nUsage: to summarize the ledger,\n$ ./ledger [LEDGER_FILE]\n");
+  printf("\nTo condense the ledger,\n$ ./ledger [INTPUT_LEDGER_FILE] [OUTTPUT_LEDGER_FILE]\n");
+  printf("\nSee README.txt for details.\n");
+}
+
+void alloc_text_content(Ledger *ledger){
+  int i, j;
+  ledger->text_content = malloc(NFIELDS * sizeof(char**));
+  for(i = 0; i < NFIELDS; ++i){
+    ledger->text_content[i] = malloc(ledger->n * sizeof(char*));
+    for(j = 0; j < ledger->n; ++j)
+      ledger->text_content[i][j] = calloc(FIELDSIZE, sizeof(char));
+  }
+}
+
 void free_for_retotal(Ledger *ledger){
   int i, j;
 
@@ -117,17 +133,7 @@ void free_ledger(Ledger *ledger){
   free(ledger);
 }
 
-void alloc_text_content(Ledger *ledger){
-  int i, j;
-  ledger->text_content = malloc(NFIELDS * sizeof(char**));
-  for(i = 0; i < NFIELDS; ++i){
-    ledger->text_content[i] = malloc(ledger->n * sizeof(char*));
-    for(j = 0; j < ledger->n; ++j)
-      ledger->text_content[i][j] = calloc(FIELDSIZE, sizeof(char));
-  }
-}
-
-int badfile(const char *filename){
+int badinputfile(const char *filename){
   FILE *fp = fopen(filename, "r");
   if(fp == NULL){
     fprintf(stderr, "Error: cannot open file, %s.\nFile may not exist.\n", filename);
@@ -478,7 +484,6 @@ void get_totals(Ledger *ledger){
     }  
 }
 
-
 Ledger *get_ledger_from_stream(FILE *fp){
   Ledger *ledger = calloc(1, sizeof(Ledger));
   ledger->fp = fp;
@@ -493,7 +498,7 @@ Ledger *get_ledger_from_filename(const char* filename){
   FILE *fp;
   Ledger *ledger = NULL;
   
-  if(badfile(filename))
+  if(badinputfile(filename))
     return NULL;
   
   fp = fopen(filename, "r");
@@ -601,62 +606,6 @@ void modify(Ledger *ledger, int row, int col, char *next){
   get_names(ledger);
   get_totals(ledger); 
 }
-/*
-void insert_in_array(char ***a, int at, int *n){
-  int i;
-  char **tmp, **b;
-
-  if(a == NULL)
-    return;
-  
-  if(at < 0 || at >= *n){
-    fprintf(stderr, "Error: bad row index.\n");
-    return;
-  }
- 
-  b = malloc((*n + 1) * sizeof(char*));
- 
-  for(i = 0; i < (*n + 1); ++i)
-    b[i] = malloc(FIELDSIZE * sizeof(char));
-    
-  for(i = 0; i < at; ++i)
-    strcpy(b[i], (*a)[i]);
-  
-  strcpy(b[i], NIL); 
-  
-  printf("--%lu-%lu-\n", strlen("\0"), strlen(""));
-  
-  for(i = at + 1; i < *n + 1; ++i)
-    strcpy(b[i], (*a)[i - 1]);
-
-   
-  tmp = *a;
-  *a = b;
-  
-  for(i = 0; i < *n; ++i)
-    free(tmp[i]);
-  free(tmp);
-  ++(*n); 
-}
-
-void remove_from_array(char **a, int at, int *n){
-  int i;
-  
-  if(a == NULL)
-    return;
-  
-  if(at < 0 || at >= *n){
-    fprintf(stderr, "Error: bad row index.\n");
-    return;
-  }
-  
-  for(i = at; i < (*n - 1); ++i)
-    strcpy(a[i], a[i + 1]);
-  
-  free(a[*n - 1]);
-  --(*n); 
-}
-*/
 
 void insert_row(Ledger *ledger, int row){
   int i, j;
@@ -897,7 +846,7 @@ int condense_and_print(const char* infile, const char *outfile){
   FILE *fp;
   Ledger *ledger, *newledger;
   
-  if(badfile(infile))
+  if(badinputfile(infile))
     return 1;
   
   ledger = get_ledger_from_filename(infile);
@@ -932,12 +881,6 @@ int summarize(const char* filename){
   return 0;
 }
 
-void usage(){
-  printf("\nUsage: to summarize the ledger,\n$ ./ledger [LEDGER_FILE]\n");
-  printf("\nTo condense the ledger,\n$ ./ledger [INTPUT_LEDGER_FILE] [OUTTPUT_LEDGER_FILE]\n");
-  printf("\nSee README.txt for details.\n");
-}
-
 int standalone(int argc, char **argv){
   if(argc == 2){
     if(summarize(argv[1])){
@@ -959,21 +902,18 @@ int standalone(int argc, char **argv){
 int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
   */
+  int i;
+ Ledger *ledger = get_ledger_from_filename(argv[1]);
   
-  Ledger *ledger = get_ledger_from_filename(argv[1]);
-  
-  if(ledger != NULL){
+    if(ledger != NULL){
     print_ledger_verbose(ledger, stdout);
   
-    insert_row(ledger, 8);
-    insert_row(ledger, 9);
+    for(i =0; i < 11; ++i)
+      remove_row(ledger, 0);
     
     printf("\n\n===========\n\n");
     
         print_ledger_verbose(ledger, stdout);
     free_ledger(ledger);
   }
-  
-  
-  return 0;
 }
