@@ -797,6 +797,11 @@ Ledger *condense(Ledger *ledger){
   return newledger;
 }
 
+void print_ledger_to_string(Ledger *ledger){
+
+  return;
+}
+
 void print_ledger(Ledger *ledger, FILE *fp){
   int i, j;
   double amount;
