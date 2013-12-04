@@ -1137,17 +1137,12 @@ int main(int argc, char **argv){ /*
   */
   
   Ledger *ledger = get_ledger_from_filename(argv[1]);
-  char *s1, *s2; 
+  char *s1; 
   
 
   s1 = print_ledger_to_string(ledger);
     printf("%s", s1);
   
-  
-  s2 = summarize_str2str(s1);
-
-
-  free(s2);
 
   
 
