@@ -948,5 +948,6 @@ int main(int argc, char **argv){ /*
   char *s = print_ledger_to_string(ledger);
   printf("%s", s);  
   free(s);
-  free_ledger(ledger);  
+  free_ledger(ledger); 
+  return 0; 
 }
