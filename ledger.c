@@ -935,6 +935,7 @@ int main(int argc, char **argv){ /*
   */
   
   Ledger *ledger = get_ledger_from_filename(argv[1]);
+  print_ledger_verbose(ledger, stdout);
   remove_row(ledger, 1);
   print_ledger_verbose(ledger, stdout);
   
