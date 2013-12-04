@@ -589,9 +589,18 @@ void get_totals(Ledger *ledger){
     }  
 }
 
+int safe_get_text_content_from_string(Ledger *ledger, char *s){
+  char *s2 = malloc(strlen(s) * sizeof(char));
+  int ret;
+  strcpy(s2, s);
+  ret = get_text_content_from_string(ledger, s2);
+  free(s);
+  return(ret);
+}
+
 Ledger *get_ledger_from_string(char *s){
   Ledger *ledger = calloc(1, sizeof(Ledger));
-  if(get_text_content_from_string(ledger, s))
+  if(safe_get_text_content_from_string(ledger, s))
     return NULL;
   get_names(ledger);
   get_totals(ledger); 
