@@ -743,7 +743,7 @@ void remove_row(Ledger *ledger, int row){
   recalculate = (abs(atof(ledger->text_content[0][row])) > eps);
 
   if(ledger->n == 1){
-    printf("Warning: trying to remove the last row. Leaving a blank line.\n");
+    printf("Warning: can't remove the last row. Replacing it with a blank line.\n");
     for(i = 0; i < NFIELDS; ++i)
       strcpy(ledger->text_content[i][0], NIL);
   } else {
@@ -752,9 +752,8 @@ void remove_row(Ledger *ledger, int row){
         strcpy(ledger->text_content[i][j], ledger->text_content[i][j + 1]);
       free(ledger->text_content[i][ledger->n - 1]);
     }
+    --(ledger->n);
   }
-  
-  --(ledger->n);
 
   if(recalculate){
     free_for_retotal(ledger);
@@ -1010,9 +1009,9 @@ int main(int argc, char **argv){
   ledger = get_ledger_from_filename(argv[1]);
   if(ledger == NULL)
     return 0;
-  /*
+  
   for(i = 0; i < 20; ++i)
-    remove_row(ledger, 0);*/
+    remove_row(ledger, 0);
   
   s = print_ledger_to_string(ledger);
 /*
