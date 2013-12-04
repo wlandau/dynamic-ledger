@@ -543,9 +543,9 @@ Ledger *get_ledger_from_stream(FILE *fp){
     return NULL;
   } */
   
-
+/*
   get_names(ledger);
-  get_totals(ledger); 
+  get_totals(ledger);  */
   
   fclose(fp);
   return ledger;
