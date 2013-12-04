@@ -813,10 +813,9 @@ char *print_ledger_to_string(Ledger *ledger){
     
     for(i = 1; i < NFIELDS; ++i){
       strcat(s, "\t");
-      /*
-      printf("\t%s", ledger->text_content[i][j]);
-      */
-      strcat(s, ledger->text_content[i][j]);
+      
+      if(strlen(ledger->text_content[i][j]))
+        strcat(s, ledger->text_content[i][j]);
       
     }
     /*
