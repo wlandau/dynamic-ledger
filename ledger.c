@@ -530,20 +530,24 @@ Ledger *get_ledger_from_string(char *s){
 }
 
 Ledger *get_ledger_from_stream(FILE *fp){
-  Ledger *ledger = calloc(1, sizeof(Ledger));
+  Ledger *ledger;
+  
+  if(fp == NULL)
+    return NULL;
+  
+  ledger = calloc(1, sizeof(Ledger));
   
   /*
-  if(get_text_content_from_stream(ledger, fp)){ */ 
-    if(fp != NULL)
-      fclose(fp);
+  if(get_text_content_from_stream(ledger, fp)){ 
+    fclose(fp);
     return NULL;
+  } */
   
 
   get_names(ledger);
   get_totals(ledger); 
   
-  if(fp != NULL)
-      fclose(fp);
+  fclose(fp);
   return ledger;
 }
 
