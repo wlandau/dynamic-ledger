@@ -826,7 +826,7 @@ int main(int argc, char **argv){ /*
   if(ledger != NULL){
     print_ledger_verbose(ledger, stdout);
   
-    modify(ledger, 0, 0, "0");
+    modify(ledger, 2, 3, "0");
     
     printf("\n\n===========\n\n");
     
