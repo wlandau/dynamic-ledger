@@ -766,9 +766,10 @@ Ledger *condense(Ledger *ledger){
        str_equal(status, CREDIT_CLEARED) ||
        str_equal(status, NOTTHEREYET) || 
        str_equal(status, PENDING)){ 
-       
-      for(j = 0; j < NFIELDS; ++j)
-        strcpy(newledger->text_content[j][row], ledger->text_content[j][row]);
+      
+      if(atof(amount) > eps) 
+        for(j = 0; j < NFIELDS; ++j)
+          strcpy(newledger->text_content[j][row], ledger->text_content[j][row]);
       ++row;
     }
   } 
