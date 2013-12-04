@@ -687,8 +687,10 @@ void remove_row(Ledger *ledger, int row){
   
   --(ledger->n);
 
+    printf("\n\nRECALCULATING? %d\n\n", recalculate);
+
   if(recalculate){
-    printf("\n\nRECALCULATING...\n\n");
+
     free_for_retotal(ledger);
     get_names(ledger);
     get_totals(ledger); 
