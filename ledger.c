@@ -820,10 +820,8 @@ char *print_ledger_to_string(Ledger *ledger){
       }
     }
     
-    strcat(s, "\n");
-    
+    strcat(s, "\n"); 
   }
-  
   return s;
 }
 
