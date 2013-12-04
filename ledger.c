@@ -798,12 +798,12 @@ Ledger *condense(Ledger *ledger){
 }
 
 char *print_ledger_to_string(Ledger *ledger){
-  char *s; 
-  int i, j, n = 0;
+  char *s, entry[FIELDSIZE]; 
+  int i, j, n = 1;
   
   for(i = 0; i < NFIELDS; ++i){
     for(j = 0; j < ledger->n; ++j){
-      n += strlen(ledger->text_content[i][j]) + 1;
+      n += strlen(ledger->text_content[i][j]);
     }
   }
   
@@ -816,12 +816,12 @@ char *print_ledger_to_string(Ledger *ledger){
     for(i = 1; i < NFIELDS; ++i){
       strcat(s, "\t");
       
-      if(strlen(ledger->text_content[i][j]))
-        strcat(s, ledger->text_content[i][j]);
-      
+      if(strlen(ledger->text_content[i][j])){
+        sprintf(entry, "%s", ledger->text_content[i][j]);
+        strcat(s, entry);
+      }
     }
-    /*
-    printf("\n");*/
+    
     strcat(s, "\n");
     
   }
