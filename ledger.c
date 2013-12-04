@@ -25,6 +25,7 @@
 #define FIELDSIZE 128
 #define LINESIZE 4096
 #define FILENAMESIZE 256
+#define SUMMARYSIZE 10000
 
 typedef struct {
   char *filename, **credit, **bank, ***partition, ***text_content;
@@ -629,7 +630,7 @@ Ledger *get_ledger_from_filename(const char* filename){
   return ledger;
 }
 
-void print_summary(Ledger *ledger){
+void print_summary(Ledger *ledger, FILE *fp){
   int i, j, l0, l1, l2;
   double eps = 0.004;
 
@@ -639,21 +640,21 @@ void print_summary(Ledger *ledger){
     l2 = (abs(ledger->credit_totals[i][2]) > eps);      
  
     if(l0 || l1 || l2){
-      printf("\n----- Credit account: %s -----\n\n", ledger->credit[i]);
+      fprintf(fp,"\n----- Credit account: %s -----\n\n", ledger->credit[i]);
  
       if(l0 || l1){
         if(l0)
-          printf("%0.2f\tnot arrived\n", ledger->credit_totals[i][0]); 
+          fprintf(fp,"%0.2f\tnot arrived\n", ledger->credit_totals[i][0]); 
         if(l1)
-          printf("%0.2f\tpending\n", ledger->credit_totals[i][1]);
-        printf("\n%0.2f\tonline balance\n", ledger->credit_totals[i][2]);
+          fprintf(fp,"%0.2f\tpending\n", ledger->credit_totals[i][1]);
+        fprintf(fp,"\n%0.2f\tonline balance\n", ledger->credit_totals[i][2]);
         if(l1 && l0)
-          printf("%0.2f\tpending balance\n", ledger->credit_totals[i][1] 
+          fprintf(fp,"%0.2f\tpending balance\n", ledger->credit_totals[i][1] 
                                            + ledger->credit_totals[i][2]);
-        printf("%0.2f\ttrue balance\n", ledger->credit_totals[i][3]);
+        fprintf(fp,"%0.2f\ttrue balance\n", ledger->credit_totals[i][3]);
       } else {
-        printf("%0.2f\ttrue balance\n", ledger->credit_totals[i][3]); 
-        printf("\tAll charges cleared.\n");
+        fprintf(fp,"%0.2f\ttrue balance\n", ledger->credit_totals[i][3]); 
+        fprintf(fp,"\tAll charges cleared.\n");
       }
     }
   }
@@ -664,21 +665,21 @@ void print_summary(Ledger *ledger){
     l2 = (abs(ledger->bank_totals[i][2]) > eps); 
   
     if(l0 || l1 || l2){
-      printf("\n----- Bank account: %s -----\n\n", ledger->bank[i]);
+      fprintf(fp,"\n----- Bank account: %s -----\n\n", ledger->bank[i]);
  
       if(l0 || l1){
         if(l0)
-          printf("%0.2f\tnot arrived\n", ledger->bank_totals[i][0]); 
+          fprintf(fp,"%0.2f\tnot arrived\n", ledger->bank_totals[i][0]); 
         if(l1)
-          printf("%0.2f\tpending\n", ledger->bank_totals[i][1]); 
-        printf("\n%0.2f\tonline balance\n", ledger->bank_totals[i][2]);
+          fprintf(fp,"%0.2f\tpending\n", ledger->bank_totals[i][1]); 
+        fprintf(fp,"\n%0.2f\tonline balance\n", ledger->bank_totals[i][2]);
         if(l1 && l0)
-          printf("%0.2f\tpending balance\n", ledger->bank_totals[i][1] 
+          fprintf(fp, "%0.2f\tpending balance\n", ledger->bank_totals[i][1] 
                                            + ledger->bank_totals[i][2]);
-        printf("%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
+        fprintf(fp, "%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
       } else {
-        printf("%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
-        printf("\tAll charges cleared.\n");
+        fprintf(fp, "%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
+        fprintf(fp, "\tAll charges cleared.\n");
       } 
     }
 
@@ -686,17 +687,17 @@ void print_summary(Ledger *ledger){
       if(abs(ledger->partition_totals[i][j]) > eps){
         if(strlen(ledger->partition[i][j])){
           if(!j) printf("\n");
-          printf("%0.2f\t%s partition\n", ledger->partition_totals[i][j], 
+          fprintf(fp,"%0.2f\t%s partition\n", ledger->partition_totals[i][j], 
                                           ledger->partition[i][j]);
         }
         else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][2]) > eps){
           if(!j) printf("\n");
-          printf("%0.2f\tunpartitioned\n", ledger->partition_totals[i][j]);
+          fprintf(fp,"%0.2f\tunpartitioned\n", ledger->partition_totals[i][j]);
         }
       } 
       
     if(i == (ledger->nbank - 1))
-      printf("\n");
+      fprintf(fp, "\n");
   }
 }
 
@@ -991,14 +992,14 @@ int condense_and_print(const char* infile, const char *outfile){
   return 0;
 }
 
-int summarize(const char* filename){
+int summarize(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_filename(filename);
   int ind = (ledger == NULL);
   
   if(ind)
     return 1;
 
-  print_summary(ledger);
+  print_summary(ledger, fp);
   
   free_ledger(ledger);
   return 0;
@@ -1006,7 +1007,7 @@ int summarize(const char* filename){
 
 int standalone(int argc, char **argv){
   if(argc == 2){
-    if(summarize(argv[1])){
+    if(summarize(argv[1], stdout)){
       printf("Exiting.\n");
       return 1;
     }
