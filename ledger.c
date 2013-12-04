@@ -393,18 +393,14 @@ char *print_ledger_to_string(Ledger *ledger){
   return s;
 }
 
-int get_text_content_from_string(Ledger *ledger, char *str){
+int get_text_content_from_string(Ledger *ledger, char *s){
   int i, row, field;
   char *linetoken = NULL, *entrytoken = NULL;
-  char *s;
   
-  if(ledger == NULL || str == NULL)
+  if(ledger == NULL || s == NULL)
     return 1;
-  
-  s = calloc((strlen(str) + 1), sizeof(char));
-  strcpy(s, str);
 
-/*  ledger->n = 1;
+  ledger->n = 1;
   for(i = 0; i < strlen(s); ++i)
     if(s[i] == '\n' || s[i] == '\r')
       ++ledger->n;
@@ -437,7 +433,7 @@ int get_text_content_from_string(Ledger *ledger, char *str){
       
     }
   }
-  */
+ 
   free(s); 
   return 0;
 }
