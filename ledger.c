@@ -938,7 +938,8 @@ int main(int argc, char **argv){ /*
   if(ledger != NULL){
     print_ledger_verbose(ledger, stdout);
   
-    remove_row(ledger, 1);
+    remove_row(ledger, 8);
+    remove_row(ledger, 7);
     
     printf("\n\n===========\n\n");
     
