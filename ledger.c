@@ -939,7 +939,7 @@ int main(int argc, char **argv){ /*
     print_ledger_verbose(ledger, stdout);
   
     remove_row(ledger, 7);
-    remove_row(ledger, 8);
+    remove_row(ledger, 6);
     
     printf("\n\n===========\n\n");
     
