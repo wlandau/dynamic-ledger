@@ -790,7 +790,7 @@ Ledger *condense(Ledger *ledger){
 
   get_names(newledger);
   get_totals(newledger); 
-  trim_ledger(newledger);
+  /*trim_ledger(newledger); */
 
   return newledger;
 }
