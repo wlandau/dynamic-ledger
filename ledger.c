@@ -766,8 +766,6 @@ int summarize(const char* filename){
 
   print_summary(ledger);
   
-  print_ledger_verbose(ledger, stdout);
-  
   free_ledger(ledger);
   return 0;
 }
