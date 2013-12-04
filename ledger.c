@@ -1026,5 +1026,7 @@ int main(int argc, char **argv){ /*
  
     print_ledger_verbose(ledger, stdout);
         
+free_ledger(ledger);
+        
     return 0;
 }
