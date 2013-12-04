@@ -654,6 +654,7 @@ void print_summary(Ledger *ledger){
 }
 
 void modify(Ledger *ledger, int row, int col, char *next){
+  char next_local[FIELDSIZE];
 
   if(row < 0 || row >= ledger->n){
     printf("Error: illegal row index in modify().\n");
@@ -668,8 +669,9 @@ void modify(Ledger *ledger, int row, int col, char *next){
   if(!col)
     if(check_legal_double_modify(next))
       return;
-      
-  strcpy(ledger->text_content[col][row], next);
+  
+  strstrip(next_local);    
+  strcpy(ledger->text_content[col][row], next_local);
 
   free_for_retotal(ledger);
   get_names(ledger);
@@ -998,12 +1000,31 @@ int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
   
   */
-  
+  int i;
   Ledger *ledger = get_ledger_from_filename(argv[1]);
-  print_ledger_verbose(ledger, stdout);
-  condense(&ledger);
-  print_ledger_verbose(ledger, stdout);
-  free_ledger(ledger);
-  return 0;
   
+  print_ledger_verbose(ledger, stdout);
+  printf("\n\n===============================\n\n");
+  
+  modify(ledger, 0, 0, "15");
+  
+  print_ledger_verbose(ledger, stdout);
+  printf("\n\n===============================\n\n");
+  
+  for(i = 0; i < 20; ++i)
+    remove_row(ledger, 0);
+  
+  print_ledger_verbose(ledger, stdout);
+  printf("\n\n===============================\n\n");
+  
+    modify(ledger, 0, 3, "15");
+ 
+   print_ledger_verbose(ledger, stdout);
+  printf("\n\n===============================\n\n");
+    
+        modify(ledger, 0, 0, "15");
+ 
+    print_ledger_verbose(ledger, stdout);
+        
+    return 0;
 }
