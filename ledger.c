@@ -535,19 +535,22 @@ Ledger *get_ledger_from_stream(FILE *fp){
   if(fp == NULL)
     return NULL;
   
+  /*
   ledger = calloc(1, sizeof(Ledger));
   
-  /*
+  
   if(get_text_content_from_stream(ledger, fp)){ 
     fclose(fp);
     return NULL;
-  } */
+  } 
   
-/*
+
   get_names(ledger);
-  get_totals(ledger);  */
+  get_totals(ledger);  
   
-  return ledger;
+  return ledger; */
+  
+  return NULL;
 }
 
 Ledger *get_ledger_from_filename(const char* filename){
