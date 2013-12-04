@@ -908,6 +908,7 @@ int main(int argc, char **argv){ /*
   
     if(ledger != NULL){
     print_ledger(ledger, stdout);
+     printf("\n\n===========\n\n");
   
     for(i =0; i < 20; ++i){
           remove_row(ledger, 0);
