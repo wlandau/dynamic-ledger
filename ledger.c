@@ -661,7 +661,6 @@ int contains_tabs(char *s){
   return 0;
 }
 
-
 void modify(Ledger *ledger, int row, int col, char *next){
   char next_local[FIELDSIZE];
   int i;
@@ -887,7 +886,7 @@ void condense(Ledger **ledger){
 
 char *print_ledger_to_string(Ledger *ledger){
   char *s, entry[FIELDSIZE]; 
-  int i, j, n = 1;
+  int i, itab, j, n = 1;
   
   if(ledger == NULL)
     return NULL;
@@ -907,6 +906,12 @@ char *print_ledger_to_string(Ledger *ledger){
       
       if(strlen(ledger->text_content[i][j])){
         sprintf(entry, "%s", ledger->text_content[i][j]);
+        
+        if((itab = contains_tabs(entry))){
+          printf("Warning: entries must not contain tabs. Truncating input.\n");
+          entry[itab] = '\0';
+        }
+
         strcat(s, entry);
       }
     }
@@ -1022,6 +1027,7 @@ int main(int argc, char **argv){ /*
   
   strcpy(ledger->text_content[5][5], "        here\tbad\tabs      ");
     print_ledger_verbose(ledger, stdout);
+    
     
   s = print_ledger_to_string(ledger);
   printf("%s\n", s);
