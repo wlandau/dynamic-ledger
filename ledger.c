@@ -37,6 +37,22 @@ void usage(){
   printf("\nSee README.txt for details.\n");
 }
 
+void print_ledger_to_stream(Ledger *ledger, FILE *fp){
+  int i, j;
+  double amount;
+  
+  if(ledger == NULL || fp == NULL)
+    return;
+  
+  for(i = 0; i < ledger->n; ++i){
+    amount = atof(ledger->text_content[0][i]);
+    fprintf(fp, "%0.2f", amount);
+    for(j = 1; j < NFIELDS; ++j)
+      fprintf(fp, "\t%s", ledger->text_content[j][i]);
+    fprintf(fp, "\n");
+  }
+}
+
 void alloc_text_content(Ledger *ledger){
   int i, j;
   ledger->text_content = malloc(NFIELDS * sizeof(char**));
@@ -540,10 +556,13 @@ Ledger *get_ledger_from_stream(FILE *fp){
    
   if(get_text_content_from_stream(ledger, fp))
     return NULL;
-  
+    
+   print_ledger_to_stream(ledger, stdout); 
+    
+  /*
   get_names(ledger);
   get_totals(ledger);   
-  
+  */
   return ledger; 
 }
 
@@ -879,22 +898,6 @@ char *print_ledger_to_string(Ledger *ledger){
     strcat(s, "\n"); 
   }
   return s;
-}
-
-void print_ledger_to_stream(Ledger *ledger, FILE *fp){
-  int i, j;
-  double amount;
-  
-  if(ledger == NULL || fp == NULL)
-    return;
-  
-  for(i = 0; i < ledger->n; ++i){
-    amount = atof(ledger->text_content[0][i]);
-    fprintf(fp, "%0.2f", amount);
-    for(j = 1; j < NFIELDS; ++j)
-      fprintf(fp, "\t%s", ledger->text_content[j][i]);
-    fprintf(fp, "\n");
-  }
 }
 
 void print_ledger_verbose(Ledger *ledger, FILE *fp){
