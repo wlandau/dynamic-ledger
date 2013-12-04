@@ -564,7 +564,7 @@ void print_summary(Ledger *ledger){
         }
         else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][2]) > eps){
           if(!j) printf("\n");
-          printf("%0.2f\t unpartitioned\n", ledger->partition_totals[i][j]);
+          printf("%0.2f\tunpartitioned\n", ledger->partition_totals[i][j]);
         }
       } 
       
@@ -710,17 +710,17 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
   fprintf(fp, "\n%d bank accounts:\n", ledger->nbank);
   for(i = 0; i < ledger->nbank; ++i){
     fprintf(fp, "\n  %s bank account:\n", ledger->bank[i]);
-    fprintf(fp, "    %0.2f not arrived\n", ledger->bank_totals[i][0]);
-    fprintf(fp, "    %0.2f pending\n", ledger->bank_totals[i][1]);
-    fprintf(fp, "    %0.2f available\n", ledger->bank_totals[i][2]);
-    fprintf(fp, "    %0.2f total\n\n", ledger->bank_totals[i][3]);
+    fprintf(fp, "    %0.2f\tnot arrived\n", ledger->bank_totals[i][0]);
+    fprintf(fp, "    %0.2f\tpending\n", ledger->bank_totals[i][1]);
+    fprintf(fp, "    %0.2f\tavailable\n", ledger->bank_totals[i][2]);
+    fprintf(fp, "    %0.2f\ttotal\n\n", ledger->bank_totals[i][3]);
     fprintf(fp, "    %d partitions\n", ledger->npartition[i]);
     for(j = 0; j < ledger->npartition[i]; ++j){
       if(strlen(ledger->partition[i][j]))
-        fprintf(fp, "      %0.2f %s\n", ledger->partition_totals[i][j],
+        fprintf(fp, "      %0.2f\t%s\n", ledger->partition_totals[i][j],
                                         ledger->partition[i][j]);
       else
-        fprintf(fp, "      %0.2f unpartitioned\n", ledger->partition_totals[i][j]);
+        fprintf(fp, "      %0.2f\tunpartitioned\n", ledger->partition_totals[i][j]);
     }
   }  
 
