@@ -1139,15 +1139,18 @@ int main(int argc, char **argv){ /*
   
 
   s1 = print_ledger_to_string(ledger);
+  
+  /*
   s2 = summarize_str2str(s1);
 
   printf("%s", s2);
-  
+    free(s2);
+  */
   
 
   
+
   free(s1);
-  free(s2);
   free_ledger(ledger);
   
 }
