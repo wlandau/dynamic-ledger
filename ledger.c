@@ -31,23 +31,11 @@ typedef struct {
   FILE *fp;
 } Ledger;
 
-void free_ledger(Ledger *ledger){
+void free_for_retotal(Ledger *ledger){
   int i, j;
 
   if(ledger == NULL)
     return;
-
-  if(ledger->text_content != NULL){
-    for(i = 0; i < NFIELDS; ++i){
-      if(ledger->text_content[i] != NULL){
-        for(j = 0; j < ledger->n; ++j)
-          if(ledger->text_content[i][j] != NULL)
-            free(ledger->text_content[i][j]);
-        free(ledger->text_content[i]);
-      }
-    }
-    free(ledger->text_content);
-  }
   
   if(ledger->partition != NULL){
     for(i = 0; i < ledger->nbank; ++i){
@@ -97,15 +85,35 @@ void free_ledger(Ledger *ledger){
     free(ledger->bank_totals);
   }
 
+  if(ledger->npartition != NULL)
+    free(ledger->npartition);
+}
+
+void free_ledger(Ledger *ledger){
+  int i, j;
+
+  if(ledger == NULL)
+    return;
+
   if(ledger->fp != NULL)
     fclose(ledger->fp);
 
   if(ledger->filename != NULL)
     free(ledger->filename);
-
-  if(ledger->npartition != NULL)
-    free(ledger->npartition);
-
+    
+  if(ledger->text_content != NULL){
+    for(i = 0; i < NFIELDS; ++i){
+      if(ledger->text_content[i] != NULL){
+        for(j = 0; j < ledger->n; ++j)
+          if(ledger->text_content[i][j] != NULL)
+            free(ledger->text_content[i][j]);
+        free(ledger->text_content[i]);
+      }
+    }
+    free(ledger->text_content);
+  }
+  
+  free_for_retotal(ledger);
   free(ledger);
 }
 
@@ -204,8 +212,7 @@ int check_legal_double(char *s, int row){
   return 0;
 }
 
-
-int check_legal_double_modify(char *s){
+int check_legal_double_modify(const char *s){
   char *testbufref, testbuf[FIELDSIZE];
   
   errno = 0;
@@ -773,51 +780,29 @@ void usage(){
   printf("\nSee README.txt for details.\n");
 }
 
-/*
 void modify(Ledger *ledger, int row, int col, const char *next){
-  int credit_index, bank_index, partition_index, i, j, k;
-  double previous_amount, next_amount;
-  char amount_str[FIELDSIZE], previous[FIELDSIZE], status[FIELDSIZE], bank[FIELDSIZE], 
-       credit[FIELDSIZE], partition[FIELDSIZE], memo[FIELDSIZE];
-  
-  previous_amount = atof(ledger->text_content[0][row]);
-  strcpy(status, ledger->text_content[1][row]);
-  strcpy(credit, ledger->text_content[2][row]);
-  strcpy(bank, ledger->text_content[3][row]);
-  strcpy(partition, ledger->text_content[4][row]);
-  strcpy(memo, ledger->text_content[5][row]);
-  
-  for(i = 0; i < 
-  
-  
-  if(col == 1){
-    if(check_legal_double_modify(next))
-      return;
-    
-    next_amount = atof(next);
-    strcpy(ledger->text_content[0][row], next);
-    
-    for(
-     
-  
-  } else if(col == 2){
-  
-  
-  } else if(col == 3){
-  
-  
-  } else if(col == 4){
-  
-  
-  } else if(col == 5){
-  
-  
-  } else {
+  if(row < 0 || row > NFIELDS){
+    printf("Error: illegal row index in modify().\n");
     return;
   }
+  
+  if(col < 0 || col > NFIELDS){
+    printf("Error: illegal column index in modify().\n");
+    return;
+  }
+  
+  if(!row)
+    if(check_legal_double_modify(next))
+      return;
+      
+  strcpy(ledger->text_content[col][row], next);
+
+  free_for_retotal(ledger);
+  get_names(ledger);
+  get_totals(ledger); 
 }
 
-*/
+
 int standalone(int argc, char **argv){
   if(argc == 2){
     if(summarize(argv[1])){
@@ -836,6 +821,14 @@ int standalone(int argc, char **argv){
   return 0;
 }
 
-int main(int argc, char **argv){
+int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
+  
+  */
+  Ledger *ledger = get_ledger_from_filename(argv[1]);
+  print_ledger_verbose(ledger);
+  
+  modify(ledger
+  
+  
 }
