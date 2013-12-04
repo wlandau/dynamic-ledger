@@ -768,8 +768,10 @@ Ledger *condense(Ledger *ledger){
        str_equal(status, PENDING)){ 
       
       if(atof(amount) > eps){
-        for(j = 0; j < NFIELDS; ++j)
+        for(j = 0; j < NFIELDS; ++j){
           strcpy(newledger->text_content[j][row], ledger->text_content[j][i]);
+          printf("%s\n", ledger->text_content[j][i]);
+        }
         ++row;
       }
     }
