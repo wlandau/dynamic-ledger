@@ -579,7 +579,7 @@ Ledger *get_ledger_from_filename(const char* filename){
   if(ledger == NULL)
     return NULL;
     
-  ledger->filename = calloc(FILENAMESIZE, sizeof(char));
+  ledger->filename = malloc(FILENAMESIZE * sizeof(char));
   strcpy(ledger->filename, filename);
 
   return ledger;
@@ -1018,6 +1018,6 @@ int main(int argc, char **argv){
   
   free(s); */
   
-    free(ledger);
+    free_ledger(ledger);
   return 0;
 }
