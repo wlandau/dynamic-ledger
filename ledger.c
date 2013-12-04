@@ -896,7 +896,7 @@ int standalone(int argc, char **argv){
   } else{
     usage();
   }
-  
+
   return 0;
 }
 
