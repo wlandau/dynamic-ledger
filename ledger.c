@@ -1021,7 +1021,30 @@ int standalone(int argc, char **argv){
 
   return 0;
 }
- 
-int main(int argc, char **argv){
+
+void condense_str(char **s){
+  char *ret, *tmp;
+  Ledger *ledger = get_ledger_from_string(*s);
+  condense(&ledger);
+  ret = print_ledger_to_string(ledger);
+  free_ledger(ledger);
+  
+  tmp = *s;
+  *s = ret;
+  ret = tmp;
+  free(tmp);
+}
+
+int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; 
+  */
+  
+  Ledger *ledger = get_ledger_from_filename(argv[1]);
+  char *s = print_ledger_to_string(ledger);
+  condense_str(&s);
+  printf("%s", s);
+  
+  free(s);
+  free_ledger(ledger);
+  
 }
