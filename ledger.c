@@ -555,9 +555,6 @@ Ledger *get_ledger_from_stream(FILE *fp){
    
   if(get_text_content_from_stream(ledger, fp))
     return NULL;
-    
-   print_ledger_to_stream(ledger, stdout); 
-    
   
   get_names(ledger);
   get_totals(ledger);   
