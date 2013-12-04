@@ -1018,10 +1018,11 @@ int main(int argc, char **argv){ /*
   
   char *s;
   Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger;
+
   
-  print_ledger_verbose(ledger, stdout);
-  
-  modify(ledger, 5, 5, "        here\tbad\tabs      ");
+  strcpy(ledger->text_content[5][5], "        here\tbad\tabs      ");
+    print_ledger_verbose(ledger, stdout);
+    
   s = print_ledger_to_string(ledger);
   printf("%s\n", s);
   
