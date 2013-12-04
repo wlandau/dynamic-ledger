@@ -550,8 +550,7 @@ Ledger *get_ledger_from_stream(FILE *fp){
   
   if(fp == NULL)
     return NULL;
-  
-  
+
   ledger = calloc(1, sizeof(Ledger));
    
   if(get_text_content_from_stream(ledger, fp))
@@ -580,7 +579,7 @@ Ledger *get_ledger_from_filename(const char* filename){
   if(ledger == NULL)
     return NULL;
     
-  ledger->filename = malloc(FILENAMESIZE * sizeof(char));
+  ledger->filename = calloc(FILENAMESIZE, sizeof(char));
   strcpy(ledger->filename, filename);
 
   return ledger;
