@@ -1008,10 +1008,11 @@ int main(int argc, char **argv){ /*
   printf("\n\n===============================\n\n");
   
   modify(ledger, 0, 0, "15");
-  /*
+  
   print_ledger_verbose(ledger, stdout);
   printf("\n\n===============================\n\n");
   
+  /*
   for(i = 0; i < 20; ++i)
     remove_row(ledger, 0);
   
