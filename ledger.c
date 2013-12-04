@@ -801,6 +801,9 @@ char *print_ledger_to_string(Ledger *ledger){
   char *s, entry[FIELDSIZE]; 
   int i, j, n = 1;
   
+  if(ledger == NULL)
+    return NULL;
+  
   for(i = 0; i < NFIELDS; ++i){
     for(j = 0; j < ledger->n; ++j){
       n += strlen(ledger->text_content[i][j]) + 1;
@@ -826,19 +829,14 @@ char *print_ledger_to_string(Ledger *ledger){
 }
 
 void print_ledger(Ledger *ledger, FILE *fp){
-  int i, j;
-  double amount;
+  char *s;
   
   if(ledger == NULL || fp == NULL)
     return;
-  
-  for(i = 0; i < ledger->n; ++i){
-    amount = atof(ledger->text_content[0][i]);
-    fprintf(fp, "%0.2f", amount);
-    for(j = 1; j < NFIELDS; ++j)
-      fprintf(fp, "\t%s", ledger->text_content[j][i]);
-    fprintf(fp, "\n");
-  }
+    
+  s = print_ledger_to_string(ledger); 
+  fprintf(fp, "%s", s); 
+  free(s);
 }
 
 void print_ledger_verbose(Ledger *ledger, FILE *fp){
@@ -946,13 +944,10 @@ int standalone(int argc, char **argv){
 
 int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
-  
   */
   
   Ledger *ledger = get_ledger_from_filename(argv[1]);
-  char *s = print_ledger_to_string(ledger);
-  printf("%s", s);  
-  free(s);
+  print_ledger(ledger, stdout);
   free_ledger(ledger); 
   return 0; 
 }
