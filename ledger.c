@@ -211,7 +211,7 @@ int check_legal_double(char *s, int row){
   return 0;
 }
 
-int check_legal_double_modify(const char *s){
+int check_legal_double_modify(char *s){
   char *testbufref, testbuf[FIELDSIZE];
   
   errno = 0;
@@ -776,7 +776,8 @@ void usage(){
   printf("\nSee README.txt for details.\n");
 }
 
-void modify(Ledger *ledger, int row, int col, const char *next){
+void modify(Ledger *ledger, int row, int col, char *next){
+
   if(row < 0 || row > NFIELDS){
     printf("Error: illegal row index in modify().\n");
     return;
