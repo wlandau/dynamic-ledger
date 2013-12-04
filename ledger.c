@@ -601,7 +601,7 @@ void modify(Ledger *ledger, int row, int col, char *next){
   get_names(ledger);
   get_totals(ledger); 
 }
-
+/*
 void insert_in_array(char ***a, int at, int *n){
   int i;
   char **tmp, **b;
@@ -656,17 +656,19 @@ void remove_from_array(char **a, int at, int *n){
   free(a[*n - 1]);
   --(*n); 
 }
+*/
 
 void insert_row(Ledger *ledger, int row){
-  int i;
-  
+
+  if(ledger == NULL)
+    return;
+    
   if(row < 0 || row > ledger->n){
     printf("Error: illegal row index in modify().\n");
     return;
   }
   
-  for(i = 0; i < NFIELDS; ++i)
-    insert_in_array(&(ledger->text_content[i]), row, &(ledger->n));
+
 
   free_for_retotal(ledger);
   get_names(ledger);
@@ -674,15 +676,33 @@ void insert_row(Ledger *ledger, int row){
 }
 
 void remove_row(Ledger *ledger, int row){
-  int i;
+  int i, j;
   
-  if(row < 0 || row > ledger->n){
+  if(ledger == NULL)
+    return;
+  
+  if(row < 0 || row >= ledger->n){
     printf("Error: illegal row index in modify().\n");
     return;
   }
   
+  if(ledger->n < 1){
+    printf("Error: data already too small.\n");
+    return;  
+  }
+
+  if(ledger->n == 1){
+    for(i = 0; i < NFIELDS; ++i)
+      strcpy(ledger->text_content[i][0], NIL);
+    return;
+  }
+  
   for(i = 0; i < NFIELDS; ++i)
-    remove_from_array(ledger->text_content[i], row, &(ledger->n));
+    for(j = row; j < ledger->n - 1; ++j)
+      strcpy(ledger->text_content[i][j], ledger->text_content[i][j + 1]);
+    free(ledger->text_content[i][ledger->n - 1]);
+ 
+  --(ledger->n);
 
   free_for_retotal(ledger);
   get_names(ledger);
@@ -924,5 +944,7 @@ int main(int argc, char **argv){ /*
         print_ledger_verbose(ledger, stdout);
     free_ledger(ledger);
   }
+  
+  
   return 0;
 }
