@@ -1000,7 +1000,7 @@ int main(int argc, char **argv){
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
   
   */
-   Ledger *ledger;
+   Ledger *ledger, *newledger;
    char *s;
    
   if(argc < 2)
@@ -1008,20 +1008,19 @@ int main(int argc, char **argv){
   
   ledger = get_ledger_from_filename(argv[1]);
   s = print_ledger_to_string(ledger);
+  free_ledger(ledger);
   
   printf("%s", s);
-/*
+
   
   
 
   newledger = get_ledger_from_string(s);
-  
+  /*
   print_ledger_verbose(newledger, stdout);
-
-  free(newledger); 
-  */
-  free(s); 
+*/
+  free_ledger(newledger); 
   
-    free_ledger(ledger);
+  free(s); 
   return 0;
 }
