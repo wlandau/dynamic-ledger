@@ -922,7 +922,7 @@ int condense_and_print(const char* infile, const char *outfile){
   free_ledger(ledger);
   return 0;
 }
-
+ 
 int summarize_file2stream(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_filename(filename);
   int ind = (ledger == NULL);
