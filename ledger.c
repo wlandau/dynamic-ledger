@@ -590,8 +590,7 @@ void get_totals(Ledger *ledger){
 }
 
 int safe_get_text_content_from_string(Ledger *ledger, char *s){
-  int n = strlen(s);
-  char *s2 = malloc(n * sizeof(char));
+  char *s2 = malloc(sizeof(s));
   int ret;
   strcpy(s2, s);
   ret = get_text_content_from_string(ledger, s2);
