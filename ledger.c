@@ -761,6 +761,8 @@ Ledger *condense(Ledger *ledger){
     strcpy(status, ledger->text_content[1][i]);
     strcpy(amount, ledger->text_content[0][i]);
   
+    printf("%s %s\n", amount, status);
+  
     if(str_equal(status, CREDIT_NOTTHEREYET) || 
        str_equal(status, CREDIT_PENDING) || 
        str_equal(status, CREDIT_CLEARED) ||
@@ -768,10 +770,8 @@ Ledger *condense(Ledger *ledger){
        str_equal(status, PENDING)){ 
       
       if(atof(amount) > eps){
-        printf("hi\n");
         for(j = 0; j < NFIELDS; ++j){
           strcpy(newledger->text_content[j][row], ledger->text_content[j][i]);
-          printf("%s\n", ledger->text_content[j][i]);
         }
         ++row;
       }
