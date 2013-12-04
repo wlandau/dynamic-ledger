@@ -831,6 +831,10 @@ int main(int argc, char **argv){ /*
     print_ledger_verbose(ledger, stdout);
   
     modify(ledger, 0, 0, "0");
+    
+    printf("\n\n===========\n\n");
+    
+        print_ledger_verbose(ledger, stdout);
   
   }
   return 0;
