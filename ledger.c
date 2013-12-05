@@ -370,7 +370,7 @@ int get_text_content_from_string(Ledger *ledger, char **s){
   if(ledger == NULL || *s == NULL)
     return 1;
     
-  begin = malloc(strlen(*s) * sizeof(char));
+  begin = calloc(strlen(*s) + 1, sizeof(char));
   strcpy(begin, *s);
 
   ledger->n = 1;
