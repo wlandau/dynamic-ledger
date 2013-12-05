@@ -1,11 +1,12 @@
 /*
- @author Will Landau
- @email will.landau@gmail.com
- @web http://will-landau.com
- @date December 1, 2013
- @license GPL 3.0
- @about Personal accounting software. More documentation to come. 
-*/
+ * @file ledger.c
+ * @author Will Landau
+ * @email will.landau@gmail.com
+ * @web http://will-landau.com
+ * @date December 1, 2013
+ * @license GPL 3.0
+ * @about Personal accounting software. See README.txt for details. 
+ */
  
 #include <errno.h>
 #include <getopt.h>
@@ -296,8 +297,10 @@ void strstrip(char *s){ /* taken from a stackoverflow forum */
   return; 
 } 
 
-/* The function local_strsep() (below) was originally strsep(), and its
- * copyright information is below.
+/* COPYRIGHT NOTE:
+ *
+ * The function local_strsep() in ledger.c was taken from strsep().
+ * The copyright info for strsep() is quoted below and in README.txt.
  *
  * Copyright (c) 1990, 1993
  *	The Regents of the University of California.  All rights reserved.
