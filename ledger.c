@@ -308,8 +308,8 @@ void strstrip(char *s){ /* taken from a stackoverflow forum */
 
 /* The function local_strsep() (below) was originally strsep(), and its
  * copyright information is below.
- *
- * Copyright (c) 1990, 1993
+ * 
+ * "Copyright (c) 1990, 1993
  *	The Regents of the University of California.  All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -334,7 +334,7 @@ void strstrip(char *s){ /* taken from a stackoverflow forum */
  * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
  * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
  * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
+ * SUCH DAMAGE."
  */
 
 char *local_strsep(char **stringp, const char *delim){
@@ -1115,16 +1115,6 @@ int standalone(int argc, char **argv){
   return 0;
 }
 
-int main(int argc, char **argv){ /*
+int main(int argc, char **argv){
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
-  */
-  Ledger *ledger = get_ledger_from_filename(argv[1]);
-  print_ledger_verbose(ledger, stdout);
-  
-  
-  printf("\n\n======================\n\n");
-  rename_partition(ledger, "checking", "rent", "funfun");
-  print_ledger_verbose(ledger, stdout);
-
-  free_ledger(ledger);
 }
