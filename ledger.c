@@ -363,6 +363,66 @@ int contains_tabs(char *s){
   return 0;
 }
 
+int get_text_content_from_string(Ledger *ledger, char **s){
+  int i,/* j,*/ row, field;
+  char /*line[LINESIZE],*/ *linetoken = NULL, *entrytoken = NULL, *begin, *tmp;
+  
+  if(ledger == NULL || *s == NULL)
+    return 1;
+    
+  begin = malloc(strlen(*s) * sizeof(char));
+  strcpy(begin, *s);
+
+  ledger->n = 1;
+  for(i = 0; i < strlen(*s); ++i)
+    if((*s)[i] == '\n' || (*s)[i] == '\r')
+      ++ledger->n;
+      
+  alloc_text_content(ledger);
+  
+  row = 0;
+  field = 0;
+  i = 0;
+  for(row = 0; row < ledger->n; ++row){
+    linetoken = local_strsep(s, "\n\r");
+    
+    if(linetoken == NULL)
+      continue;
+  /*
+    memset(line, 0, LINESIZE * sizeof(char));
+  
+    j = 0;
+    for(; i < strlen(s) && s[i] != '\n' && s[i] != '\r'; ++i)
+      if(j < LINESIZE){
+        line[j] = s[i];
+        ++j;
+      }
+      
+      */
+    
+    for(field = 0; field < NFIELDS; ++field){
+      entrytoken = local_strsep(&linetoken, "\t");
+      if(entrytoken == NULL)
+        continue;
+      
+      strstrip(entrytoken);
+      if(field == 0) 
+        if(check_legal_double(entrytoken, row)){
+          free(begin);
+          return 1;
+        }
+      strcpy(ledger->text_content[field][row], entrytoken);    
+      
+    }
+  }
+  
+  tmp = *s;
+  *s = begin;
+  begin = tmp;
+  free(begin);
+  return 0;
+}
+
 int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   int row, field; 
   char line[LINESIZE], *str, *token;
@@ -514,6 +574,17 @@ void get_totals(Ledger *ledger){
     for(k = 0; k < 3; ++k){
       ledger->bank_totals[j][3] += ledger->bank_totals[j][k];
     }  
+}
+
+Ledger *get_ledger_from_string(char *s){
+  Ledger *ledger = calloc(1, sizeof(Ledger));
+  if(get_text_content_from_string(ledger, &s))
+    return NULL;
+  get_names(ledger);
+  get_totals(ledger);
+  
+      printf("s2 = %s\n\n", s); 
+  return ledger;
 }
 
 Ledger *new_ledger(){
@@ -1077,6 +1148,44 @@ int condense_and_print(const char* infile, const char *outfile){
   return 0;
 }
  
+char *print_ledger_to_string(Ledger *ledger){
+  char *s, entry[FIELDSIZE]; 
+  int i, itab, j, n = 1;
+  
+  if(ledger == NULL)
+    return NULL;
+  
+  for(i = 0; i < NFIELDS; ++i){
+    for(j = 0; j < ledger->n; ++j){
+      n += strlen(ledger->text_content[i][j]) + 1;
+    }
+  }
+  
+  s = calloc(n, sizeof(char));
+  for(j = 0; j < ledger->n; ++j){
+    strcat(s, ledger->text_content[0][j]);
+    
+    for(i = 1; i < NFIELDS; ++i){
+      strcat(s, "\t");
+      
+      if(strlen(ledger->text_content[i][j])){
+        sprintf(entry, "%s", ledger->text_content[i][j]);
+        
+        strstrip(entry);
+        if((itab = contains_tabs(entry))){
+          printf("Warning: entries must not contain tabs. Truncating input.\n");
+          entry[itab] = '\0';
+        }
+
+        strcat(s, entry);
+      }
+    }
+    
+    strcat(s, "\n"); 
+  }
+  return s;
+} 
+ 
 int summarize_file2stream(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_filename(filename);
   int ind = (ledger == NULL);
@@ -1108,6 +1217,31 @@ int standalone(int argc, char **argv){
   return 0;
 }
 
-int main(int argc, char **argv){ 
-  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
+int main(int argc, char **argv){ /*
+  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; */
+  
+    Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger;
+  char *s1; 
+  
+
+  s1 = print_ledger_to_string(ledger);
+  
+  printf("sgot = %s\n\n", s1); 
+  
+  newledger = get_ledger_from_string(s1);
+  
+  
+  printf("%s", s1);
+  
+  /*
+  
+  print_ledger_verbose(newledger, stdout);
+  */
+
+  
+
+  
+  free_ledger(newledger);
+  free(s1);
+  free_ledger(ledger);
 }
