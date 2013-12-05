@@ -1149,7 +1149,7 @@ char *print_ledger_to_string(Ledger *ledger){
     }
   }
   
-  s = calloc(n + 1, sizeof(char));
+  s = calloc(n, sizeof(char));
   for(j = 0; j < ledger->n; ++j){
     strcat(s, ledger->text_content[0][j]);
     
@@ -1206,7 +1206,7 @@ int main(int argc, char **argv){ /*
   Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger, *newledger2, *newledger3;
   char *s1, *s2, *s3; 
   
-
+/*
   s1 = print_ledger_to_string(ledger); 
   newledger = get_ledger_from_string(&s1);
   s2 = print_ledger_to_string(newledger); 
@@ -1231,5 +1231,6 @@ int main(int argc, char **argv){ /*
     free_ledger(newledger);
       free_ledger(newledger2);
         free_ledger(newledger3);
+         */
         return 0;
 }
