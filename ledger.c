@@ -532,6 +532,7 @@ void get_totals(Ledger *ledger){
 Ledger *new_ledger(){
   Ledger *ledger = malloc(sizeof(Ledger));
   ledger->n = 1;
+  ledger->filename = NULL;
   alloc_text_content(ledger);
   get_names(ledger);
   get_totals(ledger);   
