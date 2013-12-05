@@ -1062,7 +1062,7 @@ int main(int argc, char **argv){ /*
   printf("\n\n======================\n\n");
   
   for(i = 0; i < 100; ++i)
-    remove_row(ledger, 0);
+    insert_row(ledger, 4);
   
   print_ledger_verbose(ledger, stdout);
   
