@@ -45,6 +45,7 @@ void print_ledger_to_stream(Ledger *ledger, FILE *fp){
   if(ledger == NULL || fp == NULL)
     return;
   
+  fprintf(fp, "amount\tstatus\tcredit\tbank\tpartition\tdescription\n");
   for(i = 0; i < ledger->n; ++i){
     amount = atof(ledger->text_content[0][i]);
     fprintf(fp, "%0.2f", amount);
@@ -354,6 +355,7 @@ char *print_ledger_to_string(Ledger *ledger){
   }
   
   s = calloc(n, sizeof(char));
+  sprintf(s, "amount\tstatus\tcredit\tbank\tpartition\tdescription\n");
   for(j = 0; j < ledger->n; ++j){
     strcat(s, ledger->text_content[0][j]);
     
