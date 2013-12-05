@@ -363,16 +363,16 @@ int contains_tabs(char *s){
   return 0;
 }
 
-int get_text_content_from_string(Ledger *ledger, char **s){
+int get_text_content_from_string(Ledger *ledger, char *s){
   int i, row, field;
   char c, entry[FIELDSIZE];
   
-  if(ledger == NULL || *s == NULL)
+  if(ledger == NULL || s == NULL)
     return 1;
 
   ledger->n = 1;
-  for(i = 0; i < strlen(*s); ++i)
-    if((*s)[i] == '\n' || (*s)[i] == '\r')
+  for(i = 0; i < strlen(s); ++i)
+    if(s[i] == '\n' || s[i] == '\r')
       ++ledger->n;
       
   alloc_text_content(ledger);
@@ -380,10 +380,8 @@ int get_text_content_from_string(Ledger *ledger, char **s){
   field = 0;
   row = 0;
   
-  
-  for(i = 0; i < strlen(*s); ++i){
-    c = (*s)[i];
-   printf("%c", c);
+  for(i = 0; i < strlen(s); ++i){
+    c = s[i];
       
     if(c== '\t'){
       if(field < FIELDSIZE)
@@ -955,7 +953,7 @@ void trim_ledger(Ledger *ledger){
       remove_row(ledger, i);
 }
  
-Ledger *get_ledger_from_string(char **s){
+Ledger *get_ledger_from_string(char *s){
   Ledger *ledger = calloc(1, sizeof(Ledger));
   if(get_text_content_from_string(ledger, s))
     return NULL;
@@ -1198,16 +1196,17 @@ int main(int argc, char **argv){ /*
   Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger, *newledger2, *newledger3;
   char *s1, *s2, *s3; 
   s1 = print_ledger_to_string(ledger); 
-    newledger = get_ledger_from_string(&s1);
-   /* 
-    print_ledger_to_stream(newledger, stdout);*/
-/*
-  
+    newledger = get_ledger_from_string(s1);
+    
+ 
+    print_ledger_to_stream(newledger, stdout);
+
+ 
 
   s2 = print_ledger_to_string(newledger); 
-  newledger2 = get_ledger_from_string(&s2);
+ /* newledger2 = get_ledger_from_string(s2);
   s3 = print_ledger_to_string(newledger2); 
-  newledger3 = get_ledger_from_string(&s3);
+  newledger3 = get_ledger_from_string(s3);
 
   
   printf("LEDGER 3!!!\n");
@@ -1220,7 +1219,7 @@ int main(int argc, char **argv){ /*
   printf("END STRING 3!!!\n");
   
 
-  free(s2);
+
   free(s3);
 
 
@@ -1228,7 +1227,9 @@ int main(int argc, char **argv){ /*
         free_ledger(newledger3);
          */
              free_ledger(newledger);
+               free(s2);
            free(s1);
          free_ledger(ledger);
+         
         return 0;
 }
