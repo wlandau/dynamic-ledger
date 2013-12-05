@@ -576,17 +576,6 @@ void get_totals(Ledger *ledger){
     }  
 }
 
-Ledger *get_ledger_from_string(char *s){
-  Ledger *ledger = calloc(1, sizeof(Ledger));
-  if(get_text_content_from_string(ledger, &s))
-    return NULL;
-  get_names(ledger);
-  get_totals(ledger);
-  
-      printf("s2 = %s\n\n", s); 
-  return ledger;
-}
-
 Ledger *new_ledger(){
   Ledger *ledger = malloc(sizeof(Ledger));
   ledger->n = 1;
@@ -985,6 +974,16 @@ void trim_ledger(Ledger *ledger){
       remove_row(ledger, i);
 }
  
+Ledger *get_ledger_from_string(char **s){
+  Ledger *ledger = calloc(1, sizeof(Ledger));
+  if(get_text_content_from_string(ledger, s))
+    return NULL;
+  trim_ledger(ledger);
+  get_names(ledger);
+  get_totals(ledger);
+  return ledger;
+} 
+ 
 void condense(Ledger **ledger){
   int i, j, k, new_n, row = 0;
   double eps = 0.004, **local_partition_totals;
@@ -1220,28 +1219,32 @@ int standalone(int argc, char **argv){
 int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; */
   
-    Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger;
-  char *s1; 
+  Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger, *newledger2, *newledger3;
+  char *s1, *s2, *s3; 
   
 
-  s1 = print_ledger_to_string(ledger);
-  
-  printf("sgot = %s\n\n", s1); 
-  
-  newledger = get_ledger_from_string(s1);
-  
-  
-  printf("%s", s1);
-  
-  /*
-  
-  print_ledger_verbose(newledger, stdout);
-  */
+  s1 = print_ledger_to_string(ledger); 
+  newledger = get_ledger_from_string(&s1);
+  s2 = print_ledger_to_string(newledger); 
+  newledger2 = get_ledger_from_string(&s2);
+  s3 = print_ledger_to_string(newledger2); 
+  newledger3 = get_ledger_from_string(&s3);
 
   
+  printf("LEDGER 3!!!\n");
+  print_ledger_verbose(newledger3, stdout);
+  printf("END LEDGER 3!!!\n\n");
 
+
+  printf("STRING 3!!!\n");
+  printf("%s\n", s3);
+  printf("END STRING 3!!!\n");
   
-  free_ledger(newledger);
   free(s1);
+  free(s2);
+  free(s3);
   free_ledger(ledger);
+    free_ledger(newledger);
+      free_ledger(newledger2);
+        free_ledger(newledger3);
 }
