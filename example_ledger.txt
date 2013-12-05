@@ -1,4 +1,4 @@
-
+amount	status	credit	bank	partition	description
 -27	cp	card	checking	rent	electric bill
 -500	c	card	checking	rent	rent
 800			checking	rent	paycheck

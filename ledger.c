@@ -382,14 +382,14 @@ int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   int row, field; 
   char line[LINESIZE], *str, *token;
   
-  ledger->n = 0;
+  ledger->n = -1;
   while(fgets(line, LINESIZE, fp))
     ++ledger->n;
   
-  if(!ledger->n){
-    fprintf(stderr, "Ledger file is empty.\n");
-    free_ledger(ledger);
-    return 1;
+  if(ledger->n < 1){
+    ledger->n = 1;
+    alloc_text_content(ledger);
+    return 0;
   }
     
   rewind(fp);
@@ -397,7 +397,9 @@ int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   
   row = 0;
   field = 0;
-
+  
+  fgets(line, LINESIZE, fp); /* skip the header */
+  
   while(fgets(line, LINESIZE, fp)){
     str = line;
     for(field = 0; field < NFIELDS; ++field){
@@ -647,10 +649,8 @@ void print_summary(Ledger *ledger, FILE *fp){
           fprintf(fp,"%0.2f\tunpartitioned\n", ledger->partition_totals[i][j]);
         }
       } 
-      
-    if(i == (ledger->nbank - 1))
-      fprintf(fp, "\n");
   }
+  fprintf(fp, "\n");
 }
 
 char *print_summary_str(Ledger *ledger){
@@ -1064,25 +1064,5 @@ int standalone(int argc, char **argv){
 }
 
 int main(int argc, char **argv){ 
-  Ledger *ledger = new_ledger();
-  print_ledger_verbose(ledger, stdout);
-  free_ledger(ledger);
-
-/*
-  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; */
-   /*
-   int i;
-  
-  Ledger *ledger = get_ledger_from_filename(argv[1]);
-  
-  print_ledger_verbose(ledger, stdout);
-  printf("\n\n======================\n\n");
-  
-  for(i = 0; i < 100; ++i)
-    insert_row(ledger, 4);
-  
-  print_ledger_verbose(ledger, stdout);
-  
-  free_ledger(ledger);
-  return 0; */
+  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
 }
