@@ -404,8 +404,8 @@ int get_text_content_from_string(Ledger *ledger, char *s){
 }
 
 int get_text_content_from_stream(Ledger *ledger, FILE *fp){
-  int row, field; 
-  char line[LINESIZE], *str, *token;
+  int i, row, field; 
+  char c, line[LINESIZE];
   
   ledger->n = -1;
   while(fgets(line, LINESIZE, fp))
@@ -420,28 +420,26 @@ int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   rewind(fp);
   alloc_text_content(ledger);
   
-  row = 0;
   field = 0;
-  
-  fgets(line, LINESIZE, fp); /* skip the header */
-  
-  while(fgets(line, LINESIZE, fp)){
-    str = line;
-    for(field = 0; field < NFIELDS; ++field){
-      token = local_strsep(&str, "\f\n\r\t\v");
-      if(token == NULL)
-        continue;
-      
-      strstrip(token);
-      if(field == 0) 
-        if(check_legal_double(token, row)){
-          free_ledger(ledger);
-          return 1;
-        }
-    
-      strcpy(ledger->text_content[field][row], token);
+  row = 0;
+  i = 0;
+  while((c = fgetc(fp)) != EOF){
+
+    if(c== '\t'){
+      if(field < FIELDSIZE){
+        i = 0;
+      }
+      ++field; 
+    } else if(c == '\n' || c == '\r'){
+      if(field < FIELDSIZE){
+        i= 0;
+      }
+      field = 0;
+      ++row; 
+    } else if(field < NFIELDS && c != '\0'){
+      ledger->text_content[field][row][i] = c;
+      ++i;
     }
-    ++row;
   }
   
   rewind(fp);
