@@ -581,7 +581,7 @@ Ledger *get_ledger_from_filename(const char* filename){
 }
 
 void print_summary(Ledger *ledger, FILE *fp){
-  int i, j, l0, l1, l2;
+  int i, j, l0, l1, l2, any = 0;
   double eps = 0.004;
 
   for(i = 0; i < ledger->ncredit; ++i){
@@ -590,6 +590,7 @@ void print_summary(Ledger *ledger, FILE *fp){
     l2 = (abs(ledger->credit_totals[i][2]) > eps);      
  
     if(l0 || l1 || l2){
+      ++any;
       if(strlen(ledger->credit[i]))
         fprintf(fp,"\n----- Credit account: %s -----\n\n", ledger->credit[i]);
       else
@@ -618,6 +619,7 @@ void print_summary(Ledger *ledger, FILE *fp){
     l2 = (abs(ledger->bank_totals[i][2]) > eps); 
   
     if(l0 || l1 || l2){
+      ++any;
       if(strlen(ledger->bank[i]))
         fprintf(fp,"\n----- Bank account: %s -----\n\n", ledger->bank[i]);
       else 
@@ -652,7 +654,9 @@ void print_summary(Ledger *ledger, FILE *fp){
         }
       } 
   }
-  fprintf(fp, "\n");
+  
+  if(any)
+    fprintf(fp, "\n");
 }
 
 char *print_summary_str(Ledger *ledger){
