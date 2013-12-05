@@ -386,10 +386,16 @@ int get_text_content_from_string(Ledger *ledger, char **s){
    printf("%c", c);
       
     if(c== '\t'){
+      if(field < FIELDSIZE)
+        strcpy(ledger->text_content[field][row], entry);
       ++field;
+      memset(entry, 0, FIELDSIZE);      
     } else if(c == '\n' || c == '\r'){
+      if(field < FIELDSIZE)
+        strcpy(ledger->text_content[field][row], entry);
       field = 0;
       ++row; 
+      memset(entry, 0, FIELDSIZE);
     } else if(field < NFIELDS && c != '\0'){
       strcat(entry, &c);
     }
