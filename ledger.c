@@ -370,45 +370,6 @@ int contains_tabs(char *s){
   return 0;
 }
 
-char *print_ledger_to_string(Ledger *ledger){
-  char *s, entry[FIELDSIZE]; 
-  int i, itab, j, n = 1;
-  
-  if(ledger == NULL)
-    return NULL;
-  
-  for(i = 0; i < NFIELDS; ++i){
-    for(j = 0; j < ledger->n; ++j){
-      n += strlen(ledger->text_content[i][j]) + 1;
-    }
-  }
-
-  s = calloc(n, sizeof(char));
-  sprintf(s, "amount\tstatus\tcredit\tbank\tpartition\tdescription\n");
-  for(j = 0; j < ledger->n; ++j){
-    strcat(s, ledger->text_content[0][j]);
-    
-    for(i = 1; i < NFIELDS; ++i){
-      strcat(s, "\t");
-      
-      if(strlen(ledger->text_content[i][j])){
-        sprintf(entry, "%s", ledger->text_content[i][j]);
-        
-        strstrip(entry);
-        if((itab = contains_tabs(entry))){
-          printf("Warning: entries must not contain tabs. Truncating input.\n");
-          entry[itab] = '\0';
-        }
-
-        strcat(s, entry);
-      }
-    }
-    
-    strcat(s, "\n"); 
-  }
-  return s;
-}
-
 int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   int row, field; 
   char line[LINESIZE], *str, *token;
@@ -1123,6 +1084,13 @@ int standalone(int argc, char **argv){
   return 0;
 }
 
-int main(int argc, char **argv){
+int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
+  */
+  FILE *fp = fopen("sum.txt", "w");
+  Ledger *ledger = get_ledger_from_filename(argv[1]);
+  print_summary(ledger, fp);
+
+  free_ledger(ledger);
+  fclose(fp);
 }
