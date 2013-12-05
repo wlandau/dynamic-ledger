@@ -379,13 +379,17 @@ int get_text_content_from_string(Ledger *ledger, char **s){
   
   field = 0;
   row = 0;
+  
   for(i = 0; i < strlen(*s); ++i){
     c = (*s)[i];
+    
+    printf("%c", c);
+    
     if(c== '\t')
       field = (field + 1) % NFIELDS;
     else if(c == '\n' || c == '\r')
       ++row;
-    else   
+    else if(c != '\0')  
       strcat(ledger->text_content[row][field], &c);
   }
   
