@@ -1056,7 +1056,7 @@ int main(int argc, char **argv){ /*
   print_ledger_verbose(ledger, stdout);
   printf("\n\n======================\n\n");
   
-  modify(ledger, 1, 0, "1sdf5");
+  modify(ledger, 1, 1000, "1sdf5");
   
   print_ledger_verbose(ledger, stdout);
   
