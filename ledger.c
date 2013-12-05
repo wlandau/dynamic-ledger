@@ -379,9 +379,14 @@ int get_text_content_from_string(Ledger *ledger, char **s){
   
   field = 0;
   row = 0;
-  for(i = 0; i < strlen(s); ++i){
-    if((*s)[i] == '\n')
-      field 
+  for(i = 0; i < strlen(*s); ++i){
+    c = (*s)[i];
+    if(c== '\t')
+      field = (field + 1) % NFIELDS;
+    else if(c == '\n' || c == '\r')
+      ++row;
+    else   
+      strcat(ledger->text_content[row][field], &c);
   }
   
   
@@ -410,11 +415,6 @@ int get_text_content_from_string(Ledger *ledger, char **s){
   }
    */
    
-   
-  tmp = *s;
-  *s = begin;
-  begin = tmp;
-  free(begin);
   return 0;
 }
 
