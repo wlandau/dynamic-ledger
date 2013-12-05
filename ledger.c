@@ -365,7 +365,7 @@ int contains_tabs(char *s){
 
 int get_text_content_from_string(Ledger *ledger, char **s){
   int i, row, field;
-  char c;
+  char c, entry[FIELDSIZE];
   
   if(ledger == NULL || *s == NULL)
     return 1;
@@ -391,7 +391,7 @@ int get_text_content_from_string(Ledger *ledger, char **s){
       field = 0;
       ++row; 
     } else if(field < NFIELDS && c != '\0'){
-      strcpy(ledger->text_content[row][field], &c);
+      strcat(entry, &c);
     }
   }
    
