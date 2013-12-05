@@ -1131,8 +1131,8 @@ int standalone(int argc, char **argv){
   return 0;
 }
 
-int main(int argc, char **argv){ /*
-  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; */
+int main(int argc, char **argv){ 
+  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; /*
   
   Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger, *newledger2, *newledger3;
   char *s1, *s2, *s3; 
@@ -1175,4 +1175,5 @@ int main(int argc, char **argv){ /*
          free_ledger(ledger);
          
         return 0;
+        */
 }
