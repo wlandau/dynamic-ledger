@@ -1149,7 +1149,7 @@ char *print_ledger_to_string(Ledger *ledger){
     }
   }
   
-  s = calloc(n, sizeof(char));
+  s = calloc(n + 1, sizeof(char));
   for(j = 0; j < ledger->n; ++j){
     strcat(s, ledger->text_content[0][j]);
     
