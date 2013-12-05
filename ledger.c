@@ -400,9 +400,9 @@ int get_text_content_from_string(Ledger *ledger, char **s){
           free(begin);
           return 1;
         }
-      strcpy(ledger->text_content[field][row], entrytoken);    
-      free(entrytoken);
+      strcpy(ledger->text_content[field][row], entrytoken);     
     }
+    free(entrytoken);
   }
 
   
