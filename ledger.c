@@ -26,6 +26,25 @@
 #define LINESIZE 4096
 #define FILENAMESIZE 256
 
+#define KNRM  "\x1B[0m"
+#define KRED  "\x1B[31m"
+#define KGRN  "\x1B[32m"
+#define KYEL  "\x1B[33m"
+#define KBLU  "\x1B[34m"
+#define KMAG  "\x1B[35m"
+#define KCYN  "\x1B[36m"
+#define KWHT  "\x1B[37m"
+
+const char *ksgn(double d){
+  double eps = 0.004;
+  if(d > eps)
+    return KBLU;
+  else if(d < eps)
+    return KRED;
+  else 
+    return KNRM;
+}
+
 typedef struct {
   char *filename, **credit, **bank, ***partition, ***text_content;
   int n, ncredit, nbank, *npartition;
@@ -581,7 +600,7 @@ Ledger *get_ledger_from_filename(const char* filename){
 }
  
 void print_summary(Ledger *ledger, FILE *fp){
-  int i, j, l0, l1, l2, any = 0;
+  int i, j, l0, l1, l2, any = 0, anyp = 0;
   double eps = 0.004;
 
   for(i = 0; i < ledger->ncredit; ++i){
@@ -592,27 +611,37 @@ void print_summary(Ledger *ledger, FILE *fp){
     if(l0 || l1 || l2){
       ++any;
       if(strlen(ledger->credit[i]))
-        fprintf(fp,"\n----- Credit account: %s -----\n\n", ledger->credit[i]);
+        fprintf(fp,"\nCredit account: %s\n\n", ledger->credit[i]);
       else
-        fprintf(fp,"\n----- Credit account with no name -----\n\n");
+        fprintf(fp,"\nCredit account with no name:\n\n");
  
       if(l0 || l1){
+        fprintf(fp,"          Delayed money:\n");
         if(l0)
-          fprintf(fp,"%0.2f\tnot arrived\n", ledger->credit_totals[i][0]); 
+          fprintf(fp,"%s%30.2f%s  not arrived\n", ksgn(ledger->credit_totals[i][0]), 
+                  ledger->credit_totals[i][0], KNRM); 
         if(l1)
-          fprintf(fp,"%0.2f\tpending\n", ledger->credit_totals[i][1]);
-        fprintf(fp,"\n%0.2f\tonline balance\n", ledger->credit_totals[i][2]);
+          fprintf(fp,"%s%30.2f%s  pending\n", ksgn(ledger->credit_totals[i][1]), 
+                  ledger->credit_totals[i][1], KNRM);
+        fprintf(fp, "\n          Balances:\n");
+        fprintf(fp,"%s%30.2f%s  \"available\"\n", ksgn(ledger->credit_totals[i][2]),
+               ledger->credit_totals[i][2], KNRM);
         if(l1 && l0)
-          fprintf(fp,"%0.2f\tpending balance\n", ledger->credit_totals[i][1] 
-                                           + ledger->credit_totals[i][2]);
-        fprintf(fp,"%0.2f\ttrue balance\n", ledger->credit_totals[i][3]);
+          fprintf(fp,"%s%30.2f%s  pending balance\n", 
+                  ksgn(ledger->credit_totals[i][1] + ledger->credit_totals[i][2]),
+                  ledger->credit_totals[i][1] + ledger->credit_totals[i][2],
+                  KNRM);
+        fprintf(fp,"%s%30.2f%s  true balance\n", ksgn(ledger->credit_totals[i][3]),
+                ledger->credit_totals[i][3], KNRM);
       } else {
-        fprintf(fp,"%0.2f\ttrue balance\n", ledger->credit_totals[i][3]); 
-        fprintf(fp,"\tAll charges cleared.\n");
+        fprintf(fp,"          Balances:\n");
+        fprintf(fp,"%s%30.2f%s  true balance\n", ksgn(ledger->credit_totals[i][3]), 
+                ledger->credit_totals[i][3], KNRM); 
+        fprintf(fp,"                                All charges cleared.\n");
       }
     }
   }
-
+          
   for(i = 0; i < ledger->nbank; ++i){
     l0 = (abs(ledger->bank_totals[i][0]) > eps);
     l1 = (abs(ledger->bank_totals[i][1]) > eps);
@@ -621,42 +650,49 @@ void print_summary(Ledger *ledger, FILE *fp){
     if(l0 || l1 || l2){
       ++any;
       if(strlen(ledger->bank[i]))
-        fprintf(fp,"\n----- Bank account: %s -----\n\n", ledger->bank[i]);
+        fprintf(fp,"\nBank account: %s\n\n", ledger->bank[i]);
       else 
-        fprintf(fp,"\n----- Bank account with no name -----\n\n");
+        fprintf(fp,"\nBank account with no name\n\n");
  
       if(l0 || l1){
+        fprintf(fp,"          Delayed money:\n");
         if(l0)
-          fprintf(fp,"%0.2f\tnot arrived\n", ledger->bank_totals[i][0]); 
+          fprintf(fp,"%30.2f  not arrived\n", ledger->bank_totals[i][0]); 
         if(l1)
-          fprintf(fp,"%0.2f\tpending\n", ledger->bank_totals[i][1]); 
-        fprintf(fp,"\n%0.2f\tonline balance\n", ledger->bank_totals[i][2]);
+          fprintf(fp,"%30.2f  pending\n", ledger->bank_totals[i][1]); 
+        fprintf(fp,"\n          Balances:\n");
+        fprintf(fp,"%30.2f  \"available\"\n", ledger->bank_totals[i][2]);
         if(l1 && l0)
-          fprintf(fp, "%0.2f\tpending balance\n", ledger->bank_totals[i][1] 
+          fprintf(fp,"%30.2f  pending balance\n", ledger->bank_totals[i][1] 
                                            + ledger->bank_totals[i][2]);
-        fprintf(fp, "%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
+        fprintf(fp,"%30.2f  true balance\n", ledger->bank_totals[i][3]);
       } else {
-        fprintf(fp, "%0.2f\ttrue balance\n", ledger->bank_totals[i][3]);
-        fprintf(fp, "\tAll charges cleared.\n");
+        fprintf(fp,"          Balances:\n");
+        fprintf(fp,"%30.2f  true balance\n", ledger->bank_totals[i][3]);
+        fprintf(fp,"                                All charges cleared.\n");
       } 
     }
 
+    anyp = 0;
     for(j = 0; j < ledger->npartition[i]; ++j)
       if(abs(ledger->partition_totals[i][j]) > eps){
         if(strlen(ledger->partition[i][j])){
-          if(!j) fprintf(fp, "\n");
-          fprintf(fp,"%0.2f\t%s partition\n", ledger->partition_totals[i][j], 
+          if(!anyp){
+            fprintf(fp,"\n          Partitions:\n");
+            ++anyp;
+          }
+          fprintf(fp,"%30.2f  %s\n", ledger->partition_totals[i][j], 
                                           ledger->partition[i][j]);
         }
         else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][2]) > eps){
           if(!j) fprintf(fp, "\n");
-          fprintf(fp,"%0.2f\tunpartitioned\n", ledger->partition_totals[i][j]);
+          fprintf(fp,"%30.2f  unpartitioned\n", ledger->partition_totals[i][j]);
         }
       } 
   }
   
   if(any)
-    fprintf(fp, "\n");
+    fprintf(fp,"\n");
 }
 
 char *print_summary_str(Ledger *ledger){
