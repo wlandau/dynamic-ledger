@@ -1206,7 +1206,7 @@ int main(int argc, char **argv){ /*
 
   s2 = print_ledger_to_string(newledger); 
   newledger2 = get_ledger_from_string(s2);
- /* s3 = print_ledger_to_string(newledger2); 
+  s3 = print_ledger_to_string(newledger2); 
   newledger3 = get_ledger_from_string(s3);
 
   
@@ -1226,7 +1226,7 @@ int main(int argc, char **argv){ /*
 
 
         free_ledger(newledger3);
-         */
+         
          
                free_ledger(newledger2);
              free_ledger(newledger);
