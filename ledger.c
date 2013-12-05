@@ -1058,7 +1058,7 @@ int main(int argc, char **argv){ /*
   print_ledger_verbose(ledger, stdout);
   printf("\n\n======================\n\n");
   
-  insert_row(ledger, 5);
+  remove_row(ledger, 2);
   
   print_ledger_verbose(ledger, stdout);
   
