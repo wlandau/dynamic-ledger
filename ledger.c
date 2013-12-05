@@ -1206,9 +1206,10 @@ int main(int argc, char **argv){ /*
   Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger, *newledger2, *newledger3;
   char *s1, *s2, *s3; 
   s1 = print_ledger_to_string(ledger); 
+    newledger = get_ledger_from_string(&s1);
 /*
   
-  newledger = get_ledger_from_string(&s1);
+
   s2 = print_ledger_to_string(newledger); 
   newledger2 = get_ledger_from_string(&s2);
   s3 = print_ledger_to_string(newledger2); 
@@ -1228,11 +1229,11 @@ int main(int argc, char **argv){ /*
   free(s2);
   free(s3);
 
-    free_ledger(newledger);
+
       free_ledger(newledger2);
         free_ledger(newledger3);
          */
-         
+             free_ledger(newledger);
            free(s1);
          free_ledger(ledger);
         return 0;
