@@ -1123,7 +1123,7 @@ int main(int argc, char **argv){ /*
   
   
   printf("\n\n======================\n\n");
-  rename_bank(ledger, "", "blee");
+  rename_credit(ledger, "", "blee");
   print_ledger_verbose(ledger, stdout);
 
   free_ledger(ledger);
