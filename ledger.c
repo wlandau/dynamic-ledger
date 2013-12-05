@@ -1059,4 +1059,7 @@ int main(int argc, char **argv){ /*
   modify(ledger, 0, 0, "15");
   
   print_ledger_verbose(ledger, stdout);
+  
+  free_ledger(ledger);
+  return 0;
 }
