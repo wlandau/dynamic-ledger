@@ -1138,7 +1138,7 @@ int condense_and_print(const char* infile, const char *outfile){
  
 char *print_ledger_to_string(Ledger *ledger){
   char *s, entry[FIELDSIZE]; 
-  int i, itab, j, n = 1;
+  int i, j, n = 1;
   
   if(ledger == NULL)
     return NULL;
@@ -1149,7 +1149,7 @@ char *print_ledger_to_string(Ledger *ledger){
     }
   }
   
-  s = malloc(n* sizeof(char));
+  s = calloc(n, sizeof(char));
   for(j = 0; j < ledger->n; ++j){
     strcat(s, ledger->text_content[0][j]);
     
@@ -1160,11 +1160,6 @@ char *print_ledger_to_string(Ledger *ledger){
         sprintf(entry, "%s", ledger->text_content[i][j]);
         
         strstrip(entry);
-        if((itab = contains_tabs(entry))){
-          printf("Warning: entries must not contain tabs. Truncating input.\n");
-          entry[itab] = '\0';
-        }
-
         strcat(s, entry);
       }
     }
