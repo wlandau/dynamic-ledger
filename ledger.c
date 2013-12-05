@@ -795,6 +795,37 @@ void modify(Ledger *ledger, int row, int col, char *next){
   get_totals(ledger); 
 }
 
+void rename_credit(Ledger *ledger, char *from, char *to){
+  int i;
+  for(i = 0; i < ledger->n; ++i)
+    if(str_equal(ledger->text_content[2][i], from))
+      strcpy(ledger->text_content[2][i], to);
+  free_for_retotal(ledger);
+  get_names(ledger);
+  get_totals(ledger);   
+}
+
+void rename_bank(Ledger *ledger, char *from, char *to){
+  int i;
+  for(i = 0; i < ledger->n; ++i)
+    if(str_equal(ledger->text_content[3][i], from))
+      strcpy(ledger->text_content[3][i], to);
+  free_for_retotal(ledger);
+  get_names(ledger);
+  get_totals(ledger);   
+}
+
+void rename_partition(Ledger *ledger, char *bank, char *from, char *to){
+  int i;
+  for(i = 0; i < ledger->n; ++i)
+    if(str_equal(ledger->text_content[3][i], bank) && 
+       str_equal(ledger->text_content[4][i], from))
+      strcpy(ledger->text_content[4][i], to);
+  free_for_retotal(ledger);
+  get_names(ledger);
+  get_totals(ledger);   
+}
+
 void insert_row(Ledger *ledger, int row){
   int i, j;
   char ***x, ***tmp;
@@ -1087,10 +1118,13 @@ int standalone(int argc, char **argv){
 int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
   */
-  FILE *fp = fopen("sum.txt", "w");
   Ledger *ledger = get_ledger_from_filename(argv[1]);
-  print_summary(ledger, fp);
+  print_ledger_verbose(ledger, stdout);
+  
+  
+  printf("\n\n======================\n\n");
+  rename_bank(ledger, "", "blee");
+  print_ledger_verbose(ledger, stdout);
 
   free_ledger(ledger);
-  fclose(fp);
 }
