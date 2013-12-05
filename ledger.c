@@ -1232,5 +1232,6 @@ int main(int argc, char **argv){ /*
       free_ledger(newledger2);
         free_ledger(newledger3);
          */
+         free_ledger(ledger);
         return 0;
 }
