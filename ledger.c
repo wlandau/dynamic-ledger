@@ -401,9 +401,10 @@ int get_text_content_from_string(Ledger *ledger, char **s){
           return 1;
         }
       strcpy(ledger->text_content[field][row], entrytoken);    
+      free(entrytoken);
     }
   }
-        free(entrytoken);
+
   
   tmp = *s;
   *s = begin;
