@@ -42,7 +42,7 @@ const char *ksgn(double d){
   else if(d < -eps)
     return KRED;
   else 
-    return KNRM;
+    return KBLU;
 }
 
 typedef struct {
