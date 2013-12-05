@@ -42,16 +42,6 @@ const char *ksgn(double d){
   else if(d < -eps)
     return KRED;
   else 
-    return KNRM;
-}
-
-const char *gsgn(double d){
-  double eps = 0.004;
-  if(d > eps)
-    return KYEL;
-  else if(d < eps)
-    return KRED;
-  else 
     return KBLU;
 }
 
