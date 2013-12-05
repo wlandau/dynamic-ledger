@@ -383,7 +383,7 @@ int get_text_content_from_string(Ledger *ledger, char **s){
   
   for(i = 0; i < strlen(*s); ++i){
     c = (*s)[i];
- 
+   printf("%c", c);
       
     if(c== '\t'){
       ++field;
@@ -392,7 +392,6 @@ int get_text_content_from_string(Ledger *ledger, char **s){
       ++row; 
     } else if(field < NFIELDS && c != '\0'){
       strcat(ledger->text_content[row][field], &c);
-      printf("%s\n", ledger->text_content[row][field]);
     }
   }
    
