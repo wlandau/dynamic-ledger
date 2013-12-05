@@ -353,7 +353,7 @@ char *print_ledger_to_string(Ledger *ledger){
       n += strlen(ledger->text_content[i][j]) + 1;
     }
   }
-  
+
   s = calloc(n, sizeof(char));
   sprintf(s, "amount\tstatus\tcredit\tbank\tpartition\tdescription\n");
   for(j = 0; j < ledger->n; ++j){
