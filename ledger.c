@@ -364,8 +364,8 @@ int contains_tabs(char *s){
 }
 
 int get_text_content_from_string(Ledger *ledger, char **s){
-  int i,/* j,*/ row, field;
-  char /*line[LINESIZE],*/ *linetoken = NULL, *entrytoken = NULL, *begin, *tmp;
+  int i, row, field;
+  char *linetoken = NULL, *entrytoken = NULL, *begin, *tmp;
   
   if(ledger == NULL || *s == NULL)
     return 1;
@@ -382,23 +382,12 @@ int get_text_content_from_string(Ledger *ledger, char **s){
   
   row = 0;
   field = 0;
-  i = 0;
+
   for(row = 0; row < ledger->n; ++row){
     linetoken = local_strsep(s, "\n\r");
     
     if(linetoken == NULL)
       continue;
-  /*
-    memset(line, 0, LINESIZE * sizeof(char));
-  
-    j = 0;
-    for(; i < strlen(s) && s[i] != '\n' && s[i] != '\r'; ++i)
-      if(j < LINESIZE){
-        line[j] = s[i];
-        ++j;
-      }
-      
-      */
     
     for(field = 0; field < NFIELDS; ++field){
       entrytoken = local_strsep(&linetoken, "\t");
@@ -1160,7 +1149,7 @@ char *print_ledger_to_string(Ledger *ledger){
     }
   }
   
-  s = calloc(n, sizeof(char));
+  s = malloc(n* sizeof(char));
   for(j = 0; j < ledger->n; ++j){
     strcat(s, ledger->text_content[0][j]);
     
