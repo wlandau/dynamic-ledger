@@ -19,4 +19,5 @@ amount	status	credit	bank	partition	description
 500			checking	food	paycheck2
 100			savingss		paycheck2
 50			savingss	travel	saving for next trip2
+50				b	saving for next trip2
 

@@ -1123,7 +1123,7 @@ int main(int argc, char **argv){ /*
   
   
   printf("\n\n======================\n\n");
-  rename_credit(ledger, "", "blee");
+  rename_partition(ledger, "checking", "resd", "funfun");
   print_ledger_verbose(ledger, stdout);
 
   free_ledger(ledger);
