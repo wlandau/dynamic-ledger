@@ -390,8 +390,8 @@ int get_text_content_from_string(Ledger *ledger, char **s){
     } else if(c == '\n' || c == '\r'){
       field = 0;
       ++row; 
-    } else if(field < NFIELDS && c != '\0'){/*
-      strcat(ledger->text_content[row][field], &c);*/
+    } else if(field < NFIELDS && c != '\0'){
+      strcpy(ledger->text_content[row][field], &c);
     }
   }
    
