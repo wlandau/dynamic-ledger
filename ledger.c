@@ -1065,6 +1065,6 @@ int standalone(int argc, char **argv){
   return 0;
 }
 
-int main(int argc, char **argv){ 
+int main(int argc, char **argv){
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
 }
