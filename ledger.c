@@ -529,6 +529,15 @@ void get_totals(Ledger *ledger){
     }  
 }
 
+Ledger *new_ledger(){
+  Ledger *ledger = malloc(sizeof(Ledger));
+  ledger->n = 1;
+  alloc_text_content(ledger);
+  get_names(ledger);
+  get_totals(ledger);   
+  return ledger; 
+}
+
 Ledger *get_ledger_from_stream(FILE *fp){
   Ledger *ledger;
   
@@ -1054,7 +1063,12 @@ int standalone(int argc, char **argv){
 }
 
 int main(int argc, char **argv){ 
-  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; 
+  Ledger *ledger = new_ledger();
+  print_ledger_verbose(ledger, stdout);
+  free_ledger(ledger);
+
+/*
+  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; */
    /*
    int i;
   
