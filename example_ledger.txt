@@ -4,7 +4,7 @@ amount	status	credit	bank	partition	description
 800			checking	rent	paycheck
 
 -500			checking	rent	paycheck
--51.25	cp	card	checking	travel	travel expenses
+-51.25	cp	card	checking	travel	travel expenses		klsdj
 
 500	l		checking	food	paycheck
 100	l		savingss		paycheck

@@ -376,48 +376,25 @@ int get_text_content_from_string(Ledger *ledger, char **s){
       ++ledger->n;
       
   alloc_text_content(ledger);
-  
+
   field = 0;
   row = 0;
   
+  
   for(i = 0; i < strlen(*s); ++i){
     c = (*s)[i];
-    
-    printf("%c", c);
-    
-    if(c== '\t')
-      field = (field + 1) % NFIELDS;
-    else if(c == '\n' || c == '\r')
-      ++row;
-    else if(c != '\0')  
-      strcat(ledger->text_content[row][field], &c);
-  }
-  
-  
-  /*
-
-  for(row = 0; row < ledger->n; ++row){
-    linetoken = local_strsep(s, "\n\r");
-    strcpy()
-    
-    if(linetoken == NULL)
-      continue;
-    
-    for(field = 0; field < NFIELDS; ++field){
-      entrytoken = local_strsep(&linetoken, "\t");
-      if(entrytoken == NULL)
-        continue;
+ 
       
-      strstrip(entrytoken);
-      if(field == 0) 
-        if(check_legal_double(entrytoken, row)){
-          free(begin);
-          return 1;
-        }
-      strcpy(ledger->text_content[field][row], entrytoken);     
+    if(c== '\t'){
+      ++field;
+    } else if(c == '\n' || c == '\r'){
+      field = 0;
+      ++row; 
+    } else if(field < NFIELDS && c != 0){
+      strcat(ledger->text_content[row][field], &c);
+      printf("%s\n", ledger->text_content[row][field]);
     }
   }
-   */
    
   return 0;
 }
@@ -1217,6 +1194,8 @@ int main(int argc, char **argv){ /*
   char *s1, *s2, *s3; 
   s1 = print_ledger_to_string(ledger); 
     newledger = get_ledger_from_string(&s1);
+   /* 
+    print_ledger_to_stream(newledger, stdout);*/
 /*
   
 
