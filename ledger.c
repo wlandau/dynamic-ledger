@@ -370,8 +370,7 @@ int get_text_content_from_string(Ledger *ledger, char **s){
   if(ledger == NULL || *s == NULL)
     return 1;
     
-  begin = calloc(strlen(*s) + 1, sizeof(char));
-  strcpy(begin, *s);
+  begin = strdup(*s);
 
   ledger->n = 1;
   for(i = 0; i < strlen(*s); ++i)
@@ -401,7 +400,7 @@ int get_text_content_from_string(Ledger *ledger, char **s){
           return 1;
         }
       strcpy(ledger->text_content[field][row], entrytoken);    
-      
+      free(entrytoken);
     }
   }
   
