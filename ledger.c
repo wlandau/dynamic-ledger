@@ -383,7 +383,7 @@ int get_text_content_from_string(Ledger *ledger, char **s){
   
   for(i = 0; i < strlen(*s); ++i){
     c = (*s)[i];
-   printf("%d", strlen(ledger->text_content[row][field]));
+   printf("%c", c);
       
     if(c== '\t'){
       ++field;
