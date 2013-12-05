@@ -579,7 +579,7 @@ Ledger *get_ledger_from_filename(const char* filename){
 
   return ledger;
 }
-
+ 
 void print_summary(Ledger *ledger, FILE *fp){
   int i, j, l0, l1, l2, any = 0;
   double eps = 0.004;
