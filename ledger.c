@@ -402,9 +402,9 @@ int get_text_content_from_string(Ledger *ledger, char **s){
         }
       strcpy(ledger->text_content[field][row], entrytoken);     
     }
-    free(entrytoken);
   }
-
+    free(entrytoken);
+    free(linetoken);
   
   tmp = *s;
   *s = begin;
