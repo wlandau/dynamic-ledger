@@ -25,7 +25,6 @@
 #define FIELDSIZE 128
 #define LINESIZE 4096
 #define FILENAMESIZE 256
-#define SUMMARYSIZE 10000
 
 typedef struct {
   char *filename, **credit, **bank, ***partition, ***text_content;
@@ -577,7 +576,10 @@ void print_summary(Ledger *ledger, FILE *fp){
     l2 = (abs(ledger->credit_totals[i][2]) > eps);      
  
     if(l0 || l1 || l2){
-      fprintf(fp,"\n----- Credit account: %s -----\n\n", ledger->credit[i]);
+      if(strlen(ledger->credit[i]))
+        fprintf(fp,"\n----- Credit account: %s -----\n\n", ledger->credit[i]);
+      else
+        fprintf(fp,"\n----- Credit account with no name -----\n\n");
  
       if(l0 || l1){
         if(l0)
@@ -602,7 +604,10 @@ void print_summary(Ledger *ledger, FILE *fp){
     l2 = (abs(ledger->bank_totals[i][2]) > eps); 
   
     if(l0 || l1 || l2){
-      fprintf(fp,"\n----- Bank account: %s -----\n\n", ledger->bank[i]);
+      if(strlen(ledger->bank[i]))
+        fprintf(fp,"\n----- Bank account: %s -----\n\n", ledger->bank[i]);
+      else 
+        fprintf(fp,"\n----- Bank account with no name -----\n\n");
  
       if(l0 || l1){
         if(l0)

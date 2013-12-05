@@ -13,6 +13,7 @@
 
 -500	c	card	checking	rent	rent2
 800			checking	rent	paycheck2
+800	c			rent	paycheck2
 -500			checking	rent	paycheck2
 -51.25	cp	card	checking	travel	travel expenses2
 500			checking	food	paycheck2
