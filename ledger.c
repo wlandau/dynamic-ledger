@@ -1350,7 +1350,7 @@ int main(int argc, char **argv){ /*
   
   printf("\n\n====\n\n%s", s);
   
-    remove_row_str(&s, 0);
+    remove_row_str(&s, 5);
   
   printf("\n\n====\n\n%s", s);
   
