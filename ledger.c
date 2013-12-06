@@ -1005,7 +1005,7 @@ Ledger *get_ledger_from_string(char *s){
   return ledger;
 } 
  
-char *print_summary_str(char *s){
+char *print_summary_to_string_str(char *s){
   char *s2;
   Ledger *ledger = get_ledger_from_string(s);
   
@@ -1020,6 +1020,34 @@ char *print_summary_str(char *s){
   free_ledger(ledger);
   return s2;
 } 
+
+
+
+void print_summary_to_stream_str(char *s, FILE *fp){
+  Ledger *ledger = get_ledger_from_string(s);
+  
+  if(ledger == NULL)
+    return;
+  
+  print_summary_to_stream(ledger, fp);
+  free_ledger(ledger);
+} 
+
+
+void print_ledger_to_stream_str(char *s, FILE *fp){
+  Ledger *ledger = get_ledger_from_string(s);
+  
+  if(ledger == NULL)
+    return;
+  
+  print_ledger_to_stream(ledger, fp);
+  free_ledger(ledger);
+} 
+
+
+
+
+
  
 void condense(Ledger **ledger){
   int i, j, k, new_n, row = 0;
@@ -1431,18 +1459,14 @@ int main(int argc, char **argv){ /*
   
   Ledger *ledger = get_ledger_from_filename(argv[1]); 
   char *s = print_ledger_to_string(ledger);
+  FILE *fp = fopen("leds.txt", "w");
 
+print_ledger_to_stream_str(s, fp);
+fclose(fp);
 
-  if(s != NULL)
-    printf("%s\n====\n\n", s);
-
-if(s != NULL)
-  trim_ledger_str(&s);
-
-
-if(s != NULL)
-  printf("%s\n", s);
-  
+fp = fopen("sums.txt", "w");
+print_summary_to_stream_str(s, fp);
+fclose(fp);
   
   if(s != NULL)
     free(s); 
