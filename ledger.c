@@ -997,7 +997,7 @@ Ledger *get_ledger_from_string(char *s){
     free_ledger(ledger);
     return NULL;
   }
-
+  trim_ledger(ledger);
   get_names(ledger);
   get_totals(ledger);
   return ledger;
@@ -1349,7 +1349,7 @@ int main(int argc, char **argv){ /*
   
   printf("\n\n====\n\n%s", s);
   
-    remove_row_str(&s, 6);
+    remove_row_str(&s, 0);
   
   printf("\n\n====\n\n%s", s);
   
