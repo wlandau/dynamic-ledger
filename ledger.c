@@ -916,7 +916,7 @@ char *print_ledger_to_string(Ledger *ledger){
     strcat(s, "\n"); 
   }
   return s;
-} 
+}
 
 void print_ledger_verbose(Ledger *ledger, FILE *fp){
   int i, j;
