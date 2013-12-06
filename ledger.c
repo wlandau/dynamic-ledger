@@ -1239,12 +1239,12 @@ int main(int argc, char **argv){ /*
   
   Ledger *ledger = get_ledger_from_filename(argv[1]); 
   char *s = print_summary_to_string(ledger);
-  /*
+  
   FILE *fp = fopen("ddd.txt", "w");
   fprintf(fp, "%s", s);
   fclose(fp);
   
-
+/*
   
   fp = fopen("ddd.txt", "w");
     print_summary(ledger, fp);
