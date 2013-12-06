@@ -111,15 +111,18 @@ int get_text_content_from_stream(Ledger *ledger, FILE *fp);
 int get_text_content_from_string(Ledger *ledger, char *s);
 
 Ledger *get_ledger_from_stream(FILE *fp);
-Ledger *get_ledger_from_filename(const char* filename);
+Ledger *get_ledger_from_file(const char* filename);
 Ledger *get_ledger_from_string(char *s);
 
 char *print_ledger_to_string(Ledger *ledger);
 void print_ledger_to_stream(Ledger *ledger, FILE *fp);
+void print_ledger_to_file(Ledger *ledger, const char *filename);
+
 void print_summary_to_stream(Ledger *ledger, FILE *fp);
 void print_ledger_verbose(Ledger *ledger, FILE *fp);
 
 void print_ledger_to_stream_str(char *s, FILE *fp);
+void print_ledger_to_file_str(char *s, const char *filename);
 char *print_summary_to_string(Ledger *ledger);
 char *print_summary_to_string_str(char *s);
 

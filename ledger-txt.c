@@ -870,7 +870,7 @@ Ledger *get_ledger_from_stream(FILE *fp){
 
 /* CONSTRUCTS A Ledger OBJECT GIVEN THE NAME OF A LEDGER FILE */
 
-Ledger *get_ledger_from_filename(const char* filename){
+Ledger *get_ledger_from_file(const char* filename){
   FILE *fp;
   Ledger *ledger = NULL;
   
@@ -921,6 +921,19 @@ void print_ledger_to_stream(Ledger *ledger, FILE *fp){
       fprintf(fp, "\t%s", ledger->text_content[j][i]);
     fprintf(fp, "\n");
   }
+}
+
+/* PRINTS A Ledger OBJECT TO A FILE */
+
+void print_ledger_to_file(Ledger *ledger, const char* filename){
+  FILE *fp;
+  
+  if(badinputfile(filename))
+    return;
+  
+  fp = fopen(filename, "r");
+  print_ledger_to_stream(ledger, fp); 
+  fclose(fp);
 }
 
 /* PRINTS A Ledger OBJECT TO A STRING */
@@ -1260,6 +1273,16 @@ void print_ledger_to_stream_str(char *s, FILE *fp){
   free_ledger(ledger);
 } 
 
+void print_ledger_to_file_str(char *s, const char *filename){
+  Ledger *ledger = get_ledger_from_string(s);
+  
+  if(ledger == NULL)
+    return;
+  
+  print_ledger_to_file(ledger, filename);
+  free_ledger(ledger);
+} 
+
 /* PRINTS A SUMMARY OF A RAW STRING LEDGER TO A FILE STREAM */
 
 void print_summary_to_stream_str(char *s, FILE *fp){
@@ -1487,7 +1510,7 @@ void condense_str(char **s){
  * LEDGER TO A FILE STREAM */
 
 int summarize_file_to_stream(const char* filename, FILE *fp){
-  Ledger *ledger = get_ledger_from_filename(filename);
+  Ledger *ledger = get_ledger_from_file(filename);
   int ind = (ledger == NULL);
   
   if(ind)
@@ -1510,7 +1533,7 @@ int condense_and_print(const char* infile, const char *outfile){
   if(badinputfile(infile))
     return 1;
   
-  ledger = get_ledger_from_filename(infile);
+  ledger = get_ledger_from_file(infile);
   if(ledger == NULL){
     printf("Failed to read ledger.\n");
     return 1;
@@ -1519,9 +1542,7 @@ int condense_and_print(const char* infile, const char *outfile){
   condense(&ledger);
       
   if(!badoutputfile(outfile)){
-    fp = fopen(outfile, "w");
-    print_ledger_to_stream(ledger, fp);
-    fclose(fp);
+    print_ledger_to_file(ledger, outfile);
   }
   
   free_ledger(ledger);
