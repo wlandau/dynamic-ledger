@@ -251,6 +251,16 @@ int check_legal_double(char *s, int row){
     }
   return 0;
 }
+
+int legal_amounts(Ledger *ledger){
+  int i;
+  
+  for(i = 0; i < ledger->n; ++i)
+    if(check_legal_double(ledger->text_content[0][i], i))
+      return 1;
+
+  return 0;
+}
  
 int is_space(char c){
   return (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == 'v');
@@ -345,9 +355,9 @@ int get_text_content_from_string(Ledger *ledger, char *s){
       ledger->text_content[field][row][j] = c;
       ++j;
     }
-  }
+  } 
    
-  return 0;
+  return legal_amounts(ledger);
 }
 
 int get_text_content_from_stream(Ledger *ledger, FILE *fp){
@@ -395,7 +405,7 @@ int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   }
   
   rewind(fp);
-  return 0;
+  return legal_amounts(ledger);
 }
 
 void get_names(Ledger *ledger){
@@ -524,8 +534,10 @@ Ledger *get_ledger_from_stream(FILE *fp){
 
   ledger = calloc(1, sizeof(Ledger));
    
-  if(get_text_content_from_stream(ledger, fp))
+  if(get_text_content_from_stream(ledger, fp)){
+    free_ledger(ledger);
     return NULL;
+  } 
   
   get_names(ledger);
   get_totals(ledger);   
@@ -906,8 +918,10 @@ void trim_ledger(Ledger *ledger){
  
 Ledger *get_ledger_from_string(char *s){
   Ledger *ledger = calloc(1, sizeof(Ledger));
-  if(get_text_content_from_string(ledger, s))
+  if(get_text_content_from_string(ledger, s)){
+    free_ledger(ledger);
     return NULL;
+  }
   trim_ledger(ledger);
   get_names(ledger);
   get_totals(ledger);
@@ -1153,7 +1167,7 @@ int main(int argc, char **argv){ /*
   
     print_ledger_to_stream(ledger, stdout);
     
-    
+    if(ledger != NULL){
     printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");
     for(j = 0; j < ledger->n; ++j){
       for(i = 0; i < NFIELDS; ++i)
@@ -1161,7 +1175,7 @@ int main(int argc, char **argv){ /*
       printf("\n");
     }
     printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");    
-    
+    }
   s1 = print_ledger_to_string(ledger); 
   
   printf("\n\n=======\n\n%s\n\n===========\n\n", s1);
@@ -1194,7 +1208,7 @@ int main(int argc, char **argv){ /*
   printf("%s\n", s3);
   printf("END STRING 3!!!\n");
   
-  
+  if(newledger3 != NULL){
       printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");
     for(j = 0; j < newledger3->n; ++j){
       for(i = 0; i < NFIELDS; ++i)
@@ -1202,7 +1216,7 @@ int main(int argc, char **argv){ /*
       printf("\n");
     }
     printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");  
-
+}
 
   free(s3);
 
