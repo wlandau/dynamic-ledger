@@ -1345,7 +1345,11 @@ int main(int argc, char **argv){ /*
 
   printf("%s", s);  
   
-  modify_str(&s, 2, 1, "higgles");
+  insert_row_str(&s, 2);
+  
+  printf("\n\n====\n\n%s", s);
+  
+    remove_row_str(&s, 6);
   
   printf("\n\n====\n\n%s", s);
   
