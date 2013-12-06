@@ -796,8 +796,6 @@ char *print_summary_to_string(Ledger *ledger){
   return s;
 }
 
-
-
 int check_legal_double_modify(char *s){
   char *testbufref, testbuf[FIELDSIZE];
   
@@ -1003,6 +1001,13 @@ Ledger *get_ledger_from_string(char *s){
   get_names(ledger);
   get_totals(ledger);
   return ledger;
+} 
+ 
+char *print_summary_str(char *s){
+  Ledger *ledger = get_ledger_from_string(s);
+  char *s2 = print_summary_to_string(ledger);
+  free_ledger(ledger);
+  return s2;
 } 
  
 void condense(Ledger **ledger){
@@ -1233,29 +1238,23 @@ int standalone(int argc, char **argv){
 
   return 0;
 }
-
+  
 int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; */
   
   Ledger *ledger = get_ledger_from_filename(argv[1]); 
-  char *s = print_summary_to_string(ledger);
+  char *s = print_ledger_to_string(ledger);
   
   
+  char *s2 = print_summary_str(s);
   
-  
-  FILE *fp = fopen("ddd.txt", "w");
-  if(s != NULL)
-    fprintf(fp, "%s", s);
-  fclose(fp);
-  
-
-  
-  fp = fopen("ddd.txt", "w");
-    print_summary(ledger, fp);
-   fclose(fp);
+  printf("%s\n\n---\n\n%s", s, s2);
   
   if(s != NULL)
     free(s); 
+   
+     if(s2 != NULL)
+    free(s2); 
     
    free_ledger(ledger);
         return 0;
