@@ -1259,7 +1259,52 @@ void modify_str(char **s, int row, int col, char *next){
   *s = s2;
   s2 = tmp;
   free(s2);
+}
+
+void insert_row_str(char **s, int row){
+  char *s2, *tmp;
+  Ledger *ledger;
+  
+  if(s == NULL || *s == NULL)
+    return;
+  
+  ledger = get_ledger_from_string(*s);
+  
+  if(ledger == NULL)
+    return;
+  
+  insert_row(ledger, row);
+  s2 = print_ledger_to_string(ledger);
+  free_ledger(ledger);
+  
+  tmp = *s;
+  *s = s2;
+  s2 = tmp;
+  free(s2);
 }  
+
+void remove_row_str(char **s, int row){
+  char *s2, *tmp;
+  Ledger *ledger;
+  
+  if(s == NULL || *s == NULL)
+    return;
+  
+  ledger = get_ledger_from_string(*s);
+  
+  if(ledger == NULL)
+    return;
+  
+  remove_row(ledger, row);
+  s2 = print_ledger_to_string(ledger);
+  free_ledger(ledger);
+  
+  tmp = *s;
+  *s = s2;
+  s2 = tmp;
+  free(s2);
+}  
+ 
  
 int summarize_file_to_stream(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_filename(filename);
