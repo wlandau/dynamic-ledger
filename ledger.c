@@ -1208,6 +1208,15 @@ char *print_ledger_to_string(Ledger *ledger){
   return s;
 } 
  
+char *condense_str(char *s){
+  char *s2;
+  Ledger *ledger = get_ledger_from_string(s);
+  condense(&ledger);
+  s2 = print_ledger_to_string(ledger);
+  free_ledger(ledger);
+  return s2;
+} 
+ 
 int summarize_file_to_stream(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_filename(filename);
   int ind = (ledger == NULL);
@@ -1246,7 +1255,7 @@ int main(int argc, char **argv){ /*
   char *s = print_ledger_to_string(ledger);
   
   
-  char *s2 = print_summary_str(s);
+  char *s2 = condense_str(s);
   
   printf("%s\n\n---\n\n%s", s, s2);
   
