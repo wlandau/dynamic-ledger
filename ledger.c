@@ -1431,10 +1431,10 @@ int main(int argc, char **argv){ /*
   
   Ledger *ledger = get_ledger_from_filename(argv[1]); 
   char *s = print_ledger_to_string(ledger);
-/*
+
   if(s != NULL);
     printf("%s\n====\n\n", s);
-    
+    /*
   trim_ledger_str(&s);
 
   printf("%s\n", s);
