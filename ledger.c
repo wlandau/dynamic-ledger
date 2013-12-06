@@ -1208,12 +1208,18 @@ char *print_ledger_to_string(Ledger *ledger){
   return s;
 } 
  
-char *condense_str(char *s){
-  char *s2;
-  Ledger *ledger = get_ledger_from_string(s);
+char *condense_str(char **s){
+  char *s2, *tmp;
+  Ledger *ledger = get_ledger_from_string(*s);
   condense(&ledger);
   s2 = print_ledger_to_string(ledger);
   free_ledger(ledger);
+  
+  tmp = *s;
+  *s = s2;
+  s2 = tmp;
+  free(s2);
+  
   return s2;
 } 
  
@@ -1255,7 +1261,7 @@ int main(int argc, char **argv){ /*
   char *s = print_ledger_to_string(ledger);
   
   
-  char *s2 = condense_str(s);
+  char *s2 = condense_str(&s);
   
   printf("%s\n\n---\n\n%s", s, s2);
   
