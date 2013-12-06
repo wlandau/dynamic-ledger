@@ -109,17 +109,20 @@ void condense(Ledger **ledger);
 
 int get_text_content_from_stream(Ledger *ledger, FILE *fp);
 int get_text_content_from_string(Ledger *ledger, char *s);
+
 Ledger *get_ledger_from_stream(FILE *fp);
 Ledger *get_ledger_from_filename(const char* filename);
 Ledger *get_ledger_from_string(char *s);
-void print_ledger_to_stream(Ledger *ledger, FILE *fp);
-char *print_ledger_to_string(Ledger *ledger);
-void print_ledger_verbose(Ledger *ledger, FILE *fp);
-void print_summary_to_stream(Ledger *ledger, FILE *fp);
 
-char *print_summary_to_string(Ledger *ledger);
+char *print_ledger_to_string(Ledger *ledger);
+void print_ledger_to_stream(Ledger *ledger, FILE *fp);
+void print_summary_to_stream(Ledger *ledger, FILE *fp);
+void print_ledger_verbose(Ledger *ledger, FILE *fp);
+
 void print_ledger_to_stream_str(char *s, FILE *fp);
+char *print_summary_to_string(Ledger *ledger);
 char *print_summary_to_string_str(char *s);
+
 void modify_str(char **s, int row, int col, char *next);
 void insert_row_str(char **s, int row);
 void remove_row_str(char **s, int row);
@@ -128,6 +131,7 @@ void rename_credit_str(char **s, char *from, char *to);
 void rename_bank_str(char **s, char *from, char *to);
 void rename_partition_str(char **s, char *bank, char *from, char *to);
 void condense_str(char **s);
+
 int summarize_file_to_stream(const char* filename, FILE *fp);
 int condense_and_print(const char* infile, const char *outfile);
 int standalone(int argc, char **argv);
