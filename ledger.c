@@ -5,7 +5,8 @@
  * @web http://will-landau.com
  * @date December 1, 2013
  * @license GPL 3.0
- * @about Personal accounting software. See README.txt for details. 
+ * @about Ledger.txt: minimalist personal accounting software. 
+ *        See README.txt for details. 
  */
  
 #include <errno.h>
@@ -576,7 +577,7 @@ Ledger *get_ledger_from_filename(const char* filename){
   return ledger;
 }
  
-void print_summary(Ledger *ledger, FILE *fp){
+void print_summary_to_stream(Ledger *ledger, FILE *fp){
   int i, j, l0, l1, l2, any = 0, anyp = 0;
   double eps = 0.004;
 
@@ -998,7 +999,7 @@ Ledger *get_ledger_from_string(char *s){
     free_ledger(ledger);
     return NULL;
   }
-/*  trim_ledger(ledger); */
+
   get_names(ledger);
   get_totals(ledger);
   return ledger;
@@ -1239,6 +1240,28 @@ void condense_str(char **s){
   s2 = tmp;
   free(s2);
 } 
+
+void trim_ledger_str(char **s){
+  char *s2, *tmp;
+  Ledger *ledger;
+  
+  if(s == NULL || *s == NULL)
+    return;
+  
+  ledger = get_ledger_from_string(*s);
+  
+  if(ledger == NULL)
+    return;
+  
+  trim_ledger(ledger);
+  s2 = print_ledger_to_string(ledger);
+  free_ledger(ledger);
+  
+  tmp = *s;
+  *s = s2;
+  s2 = tmp;
+  free(s2);
+} 
  
 void modify_str(char **s, int row, int col, char *next){
   char *s2, *tmp;
@@ -1379,7 +1402,7 @@ int summarize_file_to_stream(const char* filename, FILE *fp){
   if(ind)
     return 1;
 
-  print_summary(ledger, fp);
+  print_summary_to_stream(ledger, fp);
   
   free_ledger(ledger);
   return 0;
@@ -1413,9 +1436,7 @@ int main(int argc, char **argv){ /*
   s2 = print_summary_str(s);
   printf("\n\n====\n\n%s", s2);
 
-  rename_credit_str(&s, "card", "yippee");
-  rename_bank_str(&s, "", "bangbang");
-  rename_partition_str(&s, "checking", "rent", "humbug");
+  trim_ledger_str(&s);
 
   s3 = print_summary_str(s);
   printf("\n\n====\n\n%s", s3);
