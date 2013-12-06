@@ -306,7 +306,7 @@ int contains_tabs(char *s){
 }
 
 int get_text_content_from_string(Ledger *ledger, char *s){
-  int i, row, field, index = 0;
+  int i, j, row, field;
   char c;
   
   if(ledger == NULL || s == NULL)
@@ -321,24 +321,29 @@ int get_text_content_from_string(Ledger *ledger, char *s){
 
   field = 0;
   row = 0;
+  j = 0;
   
-  for(i = 0; i < strlen(s); ++i){
+  /* ignore header */
+  for(i = 0; s[i] != '\n' && s[i] != '\r'; ++i);
+  
+  /* parse the data */
+  for(; i < strlen(s); ++i){
     c = s[i];
       
     if(c== '\t'){
       if(field < FIELDSIZE){
-        index = 0;
+        j = 0;
       }
       ++field; 
     } else if(c == '\n' || c == '\r'){
       if(field < FIELDSIZE){
-        index = 0;
+        j = 0;
       }
       field = 0;
       ++row; 
-    } else if(field < NFIELDS && c != '\0'){
-      ledger->text_content[field][row][index] = c;
-      ++index;
+    } else if(field < NFIELDS && j < FIELDSIZE - 1){
+      ledger->text_content[field][row][j] = c;
+      ++j;
     }
   }
    
@@ -365,6 +370,11 @@ int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   field = 0;
   row = 0;
   i = 0;
+  
+  /* ignore the header */
+  fgets(line, LINESIZE, fp);
+  
+  /* parse the data */
   while((c = fgetc(fp)) != EOF){
 
     if(c== '\t'){
@@ -378,7 +388,7 @@ int get_text_content_from_stream(Ledger *ledger, FILE *fp){
       }
       field = 0;
       ++row; 
-    } else if(field < NFIELDS && c != '\0'){
+    } else if(field < NFIELDS && i < FIELDSIZE - 1){
       ledger->text_content[field][row][i] = c;
       ++i; 
     }
@@ -1068,7 +1078,8 @@ int condense_and_print(const char* infile, const char *outfile){
 }
  
 char *print_ledger_to_string(Ledger *ledger){
-  char *s, entry[FIELDSIZE]; 
+  char *s, entry[FIELDSIZE], 
+        header[] = "amount\tstatus\tcredit\tbank\tpartition\tdescription\n"; 
   int i, j, n = 1;
   
   if(ledger == NULL)
@@ -1080,7 +1091,8 @@ char *print_ledger_to_string(Ledger *ledger){
     }
   }
   
-  s = calloc(n, sizeof(char));
+  s = calloc(n + strlen(header), sizeof(char));
+  strcat(s, header);
   for(j = 0; j < ledger->n; ++j){
     strcat(s, ledger->text_content[0][j]);
     
@@ -1136,19 +1148,32 @@ int main(int argc, char **argv){ /*
   
   Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger, *newledger2, *newledger3;
   char *s1, *s2, *s3; 
-  s1 = print_ledger_to_string(ledger); 
-    newledger = get_ledger_from_string(s1);
+  
+    print_ledger_to_stream(ledger, stdout);
     
+    
+  s1 = print_ledger_to_string(ledger); 
+  
+  printf("\n\n=======\n\n%s\n\n===========\n\n", s1);
+  
+    newledger = get_ledger_from_string(s1);
+      printf("\n\n=======\n\n%s\n\n===========\n\n", s1);
  
-    print_ledger_to_stream(newledger, stdout);
-
+  print_ledger_verbose(newledger, stdout);
  
 
   s2 = print_ledger_to_string(newledger); 
+    printf("\n\n=======\n\n%s\n\n===========\n\n", s2);
+  
   newledger2 = get_ledger_from_string(s2);
+    printf("\n\n=======\n\n%s\n\n===========\n\n", s2);
+  
+    print_ledger_verbose(newledger2, stdout);
   s3 = print_ledger_to_string(newledger2); 
+  
+    printf("\n\n=======\n\n%s\n\n===========\n\n", s3);
   newledger3 = get_ledger_from_string(s3);
-
+  printf("\n\n=======\n\n%s\n\n===========\n\n", s3);
   
   printf("LEDGER 3!!!\n");
   print_ledger_verbose(newledger3, stdout);
