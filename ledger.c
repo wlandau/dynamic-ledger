@@ -1241,6 +1241,7 @@ int main(int argc, char **argv){ /*
   char *s = print_summary_to_string(ledger);
   
   FILE *fp = fopen("ddd.txt", "w");
+  if(s != NULL);
   fprintf(fp, "%s", s);
   fclose(fp);
   
