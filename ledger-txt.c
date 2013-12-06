@@ -25,14 +25,14 @@ void usage(){
 
 /* POSITIVE MONIES GET GREEN COLORS IN OUTPUT, NEGATIVE ONES GET RED, ZEROES GET BLUE */
 
-const char *ksgn(double d){
+const char *get_color(double d){
   
   if(d > EPS)
-    return KGRN;
+    return POSITIVE_COLOR;
   else if(d < -EPS)
-    return KRED;
+    return NEGATIVE_COLOR;
   else 
-    return KBLU;
+    return ZERO_COLOR;
 }
 
 /* TEXT CONTENT = 2D ARRAY OF LEDGER ENTRIES */
@@ -47,7 +47,7 @@ void alloc_text_content(Ledger *ledger){
   for(i = 0; i < NFIELDS; ++i){
     ledger->text_content[i] = malloc(ledger->n * sizeof(char*));
     for(j = 0; j < ledger->n; ++j)
-      ledger->text_content[i][j] = calloc(FIELDSIZE, sizeof(char));
+      ledger->text_content[i][j] = calloc(ENTRYSIZE, sizeof(char));
   }
 }
 
@@ -213,7 +213,7 @@ void strstrip(char *s){ /* taken from a stackoverflow forum */
 /* CHECKS IF A CHARACTER CAN BE TRANSFORMED INTO A DOUBLE PRECISION NUMBER */
 
 int check_legal_double(char *s, int row){
-  char *testbufref, testbuf[FIELDSIZE];
+  char *testbufref, testbuf[ENTRYSIZE];
   
   errno = 0;
   strcpy(testbuf, s);
@@ -231,7 +231,7 @@ int check_legal_double(char *s, int row){
 /* SPECIAL ADAPTATION OF check_legal_double() FOR modify() */
 
 int check_legal_double_modify(char *s){
-  char *testbufref, testbuf[FIELDSIZE];
+  char *testbufref, testbuf[ENTRYSIZE];
   
   if(s == NULL)
     return 1;
@@ -308,7 +308,7 @@ void unique(char **s, int n, char ***ret, int *nunique){
     
   *ret = malloc(*nunique * sizeof(char*));
   for(i = 0; i < *nunique; ++i)
-    (*ret)[i] = calloc(FIELDSIZE, sizeof(char));
+    (*ret)[i] = calloc(ENTRYSIZE, sizeof(char));
 
   i = 0;
   k = 0;
@@ -336,7 +336,7 @@ void get_names(Ledger *ledger){
   char **s = malloc(ledger->n * sizeof(char*));
 
   for(i = 0; i < ledger->n; ++i){
-    s[i] = calloc(FIELDSIZE, sizeof(char));
+    s[i] = calloc(ENTRYSIZE, sizeof(char));
     strcpy(s[i], ledger->text_content[CREDIT][i]);
   }
      
@@ -389,7 +389,7 @@ void get_totals(Ledger *ledger){
     amount = atof(ledger->text_content[AMOUNT][i]);
 
     k = -1;
-    if(str_equal(status, CREDIT_NOTTHEREYET)){
+    if(str_equal(status, CREDIT_NOT_THERE_YET)){
       k = 0;
     } else if(str_equal(status, CREDIT_PENDING)){
       k = 1;
@@ -404,10 +404,10 @@ void get_totals(Ledger *ledger){
           break;
         }
       
-    if(str_equal(status, CREDIT_NOTTHEREYET) || 
+    if(str_equal(status, CREDIT_NOT_THERE_YET) || 
        str_equal(status, CREDIT_PENDING) || 
        str_equal(status, CREDIT_CLEARED) || 
-       str_equal(status, NOTTHEREYET)){
+       str_equal(status, NOT_THERE_YET)){
       k = 0;
     } else if(str_equal(status, PENDING)){
       k = 1;
@@ -458,7 +458,7 @@ Ledger *new_ledger(){
 
 void modify(Ledger *ledger, int row, int col, char *next){
 
-  char next_local[FIELDSIZE];
+  char next_local[ENTRYSIZE];
   int i;
 
   if(ledger == NULL)
@@ -511,7 +511,7 @@ void insert_row(Ledger *ledger, int row){
   for(i = 0; i < NFIELDS; ++i){
     x[i] = malloc((ledger->n + 1) * sizeof(char*));
     for(j = 0; j < (ledger->n + 1); ++j)
-      x[i][j] = calloc(FIELDSIZE, sizeof(char));
+      x[i][j] = calloc(ENTRYSIZE, sizeof(char));
   }
 
   for(i = 0; i < NFIELDS; ++i){
@@ -652,7 +652,7 @@ void rename_partition(Ledger *ledger, char *bank, char *from, char *to){
 void condense(Ledger **ledger){
   int i, j, k, new_n, row = 0;
   double **local_partition_totals;
-  char status[FIELDSIZE], amount[FIELDSIZE];
+  char status[ENTRYSIZE], amount[ENTRYSIZE];
   Ledger *newledger, *tmpledger;
   
   if(ledger == NULL || *ledger == NULL)
@@ -669,10 +669,10 @@ void condense(Ledger **ledger){
     strcpy(status, (*ledger)->text_content[STATUS][i]);
     strcpy(amount, (*ledger)->text_content[AMOUNT][i]);
   
-    if(str_equal(status, CREDIT_NOTTHEREYET) || 
+    if(str_equal(status, CREDIT_NOT_THERE_YET) || 
        str_equal(status, CREDIT_PENDING) || 
        str_equal(status, CREDIT_CLEARED) ||
-       str_equal(status, NOTTHEREYET) || 
+       str_equal(status, NOT_THERE_YET) || 
        str_equal(status, PENDING) ||
        str_equal(status, LOCKED)){ 
 
@@ -707,10 +707,10 @@ void condense(Ledger **ledger){
     strcpy(status, (*ledger)->text_content[STATUS][i]);
     strcpy(amount, (*ledger)->text_content[AMOUNT][i]);
   
-    if(str_equal(status, CREDIT_NOTTHEREYET) || 
+    if(str_equal(status, CREDIT_NOT_THERE_YET) || 
        str_equal(status, CREDIT_PENDING) || 
        str_equal(status, CREDIT_CLEARED) ||
-       str_equal(status, NOTTHEREYET) || 
+       str_equal(status, NOT_THERE_YET) || 
        str_equal(status, PENDING) || 
        str_equal(status, LOCKED)){ 
       
@@ -779,17 +779,17 @@ int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   while((c = fgetc(fp)) != EOF){
 
     if(c== '\t'){
-      if(field < FIELDSIZE){
+      if(field < ENTRYSIZE){
         i = 0;
       }
       ++field; 
     } else if(c == '\n' || c == '\r'){
-      if(field < FIELDSIZE){
+      if(field < ENTRYSIZE){
         i= 0;
       }
       field = 0;
       ++row; 
-    } else if(field < NFIELDS && i < FIELDSIZE - 1){
+    } else if(field < NFIELDS && i < ENTRYSIZE - 1){
       ledger->text_content[field][row][i] = c;
       ++i; 
     }
@@ -828,17 +828,17 @@ int get_text_content_from_string(Ledger *ledger, char *s){
     c = s[i];
       
     if(c== '\t'){
-      if(field < FIELDSIZE){
+      if(field < ENTRYSIZE){
         j = 0;
       }
       ++field; 
     } else if(c == '\n' || c == '\r'){
-      if(field < FIELDSIZE){
+      if(field < ENTRYSIZE){
         j = 0;
       }
       field = 0;
       ++row; 
-    } else if(field < NFIELDS && j < FIELDSIZE - 1){
+    } else if(field < NFIELDS && j < ENTRYSIZE - 1){
       ledger->text_content[field][row][j] = c;
       ++j;
     }
@@ -926,7 +926,7 @@ void print_ledger_to_stream(Ledger *ledger, FILE *fp){
 /* PRINTS A Ledger OBJECT TO A STRING */
 
 char *print_ledger_to_string(Ledger *ledger){
-  char *s, entry[FIELDSIZE], 
+  char *s, entry[ENTRYSIZE], 
         header[] = "amount\tstatus\tcredit\tbank\tpartition\tdescription\n"; 
   int i, j, n = 1;
   
@@ -976,7 +976,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
   fprintf(fp, "%d credit accounts:\n", ledger->ncredit);
   for(i = 0; i < ledger->ncredit; ++i){
     fprintf(fp, "\n  %s credit account:\n", ledger->credit[i]);
-    fprintf(fp, "    %0.2f not arrived\n", ledger->credit_totals[i][I_NOTTHEREYET]);
+    fprintf(fp, "    %0.2f not arrived\n", ledger->credit_totals[i][I_NOT_THERE_YET]);
     fprintf(fp, "    %0.2f pending\n", ledger->credit_totals[i][I_PENDING]);
     fprintf(fp, "    %0.2f online balance\n", ledger->credit_totals[i][I_CLEARED]);
     fprintf(fp, "    %0.2f total\n", ledger->credit_totals[i][I_OVERALL]);
@@ -985,7 +985,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
   fprintf(fp, "\n%d bank accounts:\n", ledger->nbank);
   for(i = 0; i < ledger->nbank; ++i){
     fprintf(fp, "\n  %s bank account:\n", ledger->bank[i]);
-    fprintf(fp, "    %0.2f\tnot arrived\n", ledger->bank_totals[i][I_NOTTHEREYET]);
+    fprintf(fp, "    %0.2f\tnot arrived\n", ledger->bank_totals[i][I_NOT_THERE_YET]);
     fprintf(fp, "    %0.2f\tpending\n", ledger->bank_totals[i][I_PENDING]);
     fprintf(fp, "    %0.2f\tonline balance\n", ledger->bank_totals[i][I_CLEARED]);
     fprintf(fp, "    %0.2f\ttotal\n\n", ledger->bank_totals[i][I_OVERALL]);
@@ -1011,10 +1011,10 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
   if(ledger == NULL || fp == NULL)
     return;
 
-  fprintf(fp, "%s", KNRM);
+  fprintf(fp, "%s", NORMAL_COLOR);
 
   for(i = 0; i < ledger->ncredit; ++i){
-    l0 = (abs(ledger->credit_totals[i][I_NOTTHEREYET]) > EPS);
+    l0 = (abs(ledger->credit_totals[i][I_NOT_THERE_YET]) > EPS);
     l1 = (abs(ledger->credit_totals[i][I_PENDING]) > EPS);
     l2 = (abs(ledger->credit_totals[i][I_CLEARED]) > EPS);      
  
@@ -1029,38 +1029,38 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
         fprintf(fp,"          Delayed money:\n");
         if(l0)
           fprintf(fp,"%s%30.2f%s  not arrived\n", 
-                  ksgn(ledger->credit_totals[i][I_NOTTHEREYET]), 
-                  ledger->credit_totals[i][I_NOTTHEREYET], KNRM); 
+                  get_color(ledger->credit_totals[i][I_NOT_THERE_YET]), 
+                  ledger->credit_totals[i][I_NOT_THERE_YET], NORMAL_COLOR); 
         if(l1)
           fprintf(fp,"%s%30.2f%s  pending\n", 
-                  ksgn(ledger->credit_totals[i][I_PENDING]), 
-                  ledger->credit_totals[i][I_PENDING], KNRM);
+                  get_color(ledger->credit_totals[i][I_PENDING]), 
+                  ledger->credit_totals[i][I_PENDING], NORMAL_COLOR);
         fprintf(fp, "\n          Balances:\n");
         fprintf(fp,"%s%30.2f%s  \"available\"\n", 
-                ksgn(ledger->credit_totals[i][I_CLEARED]),
-                ledger->credit_totals[i][I_CLEARED], KNRM);
+                get_color(ledger->credit_totals[i][I_CLEARED]),
+                ledger->credit_totals[i][I_CLEARED], NORMAL_COLOR);
         if(l1 && l0)
           fprintf(fp,"%s%30.2f%s  pending balance\n", 
-                  ksgn(ledger->credit_totals[i][I_PENDING] 
+                  get_color(ledger->credit_totals[i][I_PENDING] 
                 + ledger->credit_totals[i][I_CLEARED]),
                   ledger->credit_totals[i][I_PENDING] 
                 + ledger->credit_totals[i][I_CLEARED],
-                  KNRM);
+                  NORMAL_COLOR);
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                ksgn(ledger->credit_totals[i][I_OVERALL]),
-                ledger->credit_totals[i][I_OVERALL], KNRM);
+                get_color(ledger->credit_totals[i][I_OVERALL]),
+                ledger->credit_totals[i][I_OVERALL], NORMAL_COLOR);
       } else {
         fprintf(fp,"          Balances:\n");
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                ksgn(ledger->credit_totals[i][I_OVERALL]), 
-                ledger->credit_totals[i][I_OVERALL], KNRM); 
+                get_color(ledger->credit_totals[i][I_OVERALL]), 
+                ledger->credit_totals[i][I_OVERALL], NORMAL_COLOR); 
         fprintf(fp,"                                All charges cleared.\n");
       }
     }
   }
           
   for(i = 0; i < ledger->nbank; ++i){
-    l0 = (abs(ledger->bank_totals[i][I_NOTTHEREYET]) > EPS);
+    l0 = (abs(ledger->bank_totals[i][I_NOT_THERE_YET]) > EPS);
     l1 = (abs(ledger->bank_totals[i][I_PENDING]) > EPS);
     l2 = (abs(ledger->bank_totals[i][I_CLEARED]) > EPS); 
   
@@ -1075,30 +1075,30 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
         fprintf(fp,"          Delayed money:\n");
         if(l0)
           fprintf(fp,"%s%30.2f%s  not arrived\n", 
-                  ksgn(ledger->bank_totals[i][I_NOTTHEREYET]),
-                  ledger->bank_totals[i][I_NOTTHEREYET], KNRM); 
+                  get_color(ledger->bank_totals[i][I_NOT_THERE_YET]),
+                  ledger->bank_totals[i][I_NOT_THERE_YET], NORMAL_COLOR); 
         if(l1)
           fprintf(fp,"%s%30.2f%s  pending\n", 
-                  ksgn(ledger->bank_totals[i][I_PENDING]), 
-                  ledger->bank_totals[i][I_PENDING], KNRM); 
+                  get_color(ledger->bank_totals[i][I_PENDING]), 
+                  ledger->bank_totals[i][I_PENDING], NORMAL_COLOR); 
         fprintf(fp,"\n          Balances:\n");
         fprintf(fp,"%s%30.2f%s  \"available\"\n", 
-                ksgn(ledger->bank_totals[i][I_CLEARED]),
-                ledger->bank_totals[i][I_CLEARED], KNRM);
+                get_color(ledger->bank_totals[i][I_CLEARED]),
+                ledger->bank_totals[i][I_CLEARED], NORMAL_COLOR);
         if(l1 && l0)
           fprintf(fp,"%s%30.2f%s  pending balance\n", 
-                  ksgn(ledger->bank_totals[i][I_PENDING] 
+                  get_color(ledger->bank_totals[i][I_PENDING] 
                 + ledger->bank_totals[i][I_CLEARED]),
                   ledger->bank_totals[i][I_PENDING] 
-                + ledger->bank_totals[i][I_CLEARED], KNRM);
+                + ledger->bank_totals[i][I_CLEARED], NORMAL_COLOR);
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                ksgn(ledger->bank_totals[i][I_OVERALL]),
-                ledger->bank_totals[i][I_OVERALL], KNRM);
+                get_color(ledger->bank_totals[i][I_OVERALL]),
+                ledger->bank_totals[i][I_OVERALL], NORMAL_COLOR);
       } else {
         fprintf(fp,"          Balances:\n");
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                ksgn(ledger->bank_totals[i][I_OVERALL]),
-                ledger->bank_totals[i][I_OVERALL], KNRM);
+                get_color(ledger->bank_totals[i][I_OVERALL]),
+                ledger->bank_totals[i][I_OVERALL], NORMAL_COLOR);
         fprintf(fp,"                                All charges cleared.\n");
       } 
     }
@@ -1111,13 +1111,13 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
             fprintf(fp,"\n          Partitions:\n");
             ++anyp;
           }
-          fprintf(fp,"%s%30.2f%s  %s\n", ksgn(ledger->partition_totals[i][j]), 
-                  ledger->partition_totals[i][j], KNRM, ledger->partition[i][j]);
+          fprintf(fp,"%s%30.2f%s  %s\n", get_color(ledger->partition_totals[i][j]), 
+                  ledger->partition_totals[i][j], NORMAL_COLOR, ledger->partition[i][j]);
         }
         else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][I_CLEARED]) > EPS){
           if(!j) fprintf(fp, "\n");
-          fprintf(fp,"%s%30.2f%s  unpartitioned\n", ksgn(ledger->partition_totals[i][j]),
-                  ledger->partition_totals[i][j], KNRM);
+          fprintf(fp,"%s%30.2f%s  unpartitioned\n", get_color(ledger->partition_totals[i][j]),
+                  ledger->partition_totals[i][j], NORMAL_COLOR);
         }
       } 
   }
@@ -1136,10 +1136,10 @@ char *print_summary_to_string(Ledger *ledger){
   if(ledger == NULL)
     return NULL;
     
-  s = calloc(ledger->n * NFIELDS * FIELDSIZE, sizeof(char));
+  s = calloc(ledger->n * NFIELDS * ENTRYSIZE, sizeof(char));
 
   for(i = 0; i < ledger->ncredit; ++i){
-    l0 = (abs(ledger->credit_totals[i][I_NOTTHEREYET]) > EPS);
+    l0 = (abs(ledger->credit_totals[i][I_NOT_THERE_YET]) > EPS);
     l1 = (abs(ledger->credit_totals[i][I_PENDING]) > EPS);
     l2 = (abs(ledger->credit_totals[i][I_CLEARED]) > EPS);      
  
@@ -1155,39 +1155,39 @@ char *print_summary_to_string(Ledger *ledger){
         sprintf(s,"%s          Delayed money:\n",s);
         if(l0)
           sprintf(s,"%s%s%30.2f%s  not arrived\n", s, 
-                  ksgn(ledger->credit_totals[i][I_NOTTHEREYET]), 
-                  ledger->credit_totals[i][I_NOTTHEREYET], KNRM); 
+                  get_color(ledger->credit_totals[i][I_NOT_THERE_YET]), 
+                  ledger->credit_totals[i][I_NOT_THERE_YET], NORMAL_COLOR); 
         if(l1)
           sprintf(s,"%s%s%30.2f%s  pending\n", s, 
-                  ksgn(ledger->credit_totals[i][I_PENDING]), 
-                  ledger->credit_totals[i][I_PENDING], KNRM);
+                  get_color(ledger->credit_totals[i][I_PENDING]), 
+                  ledger->credit_totals[i][I_PENDING], NORMAL_COLOR);
 
         sprintf(s, "%s\n          Balances:\n", s);
         sprintf(s,"%s%s%30.2f%s  \"available\"\n",s, 
-                ksgn(ledger->credit_totals[i][I_CLEARED]),
-                ledger->credit_totals[i][I_CLEARED], KNRM);
+                get_color(ledger->credit_totals[i][I_CLEARED]),
+                ledger->credit_totals[i][I_CLEARED], NORMAL_COLOR);
         if(l1 && l0)
           sprintf(s,"%s%s%30.2f%s  pending balance\n", s,
-                  ksgn(ledger->credit_totals[i][I_PENDING] 
+                  get_color(ledger->credit_totals[i][I_PENDING] 
                 + ledger->credit_totals[i][I_CLEARED]),
                   ledger->credit_totals[i][I_PENDING] 
                 + ledger->credit_totals[i][I_CLEARED],
-                  KNRM);
+                  NORMAL_COLOR);
         sprintf(s,"%s%s%30.2f%s  true balance\n",s, 
-                ksgn(ledger->credit_totals[i][I_OVERALL]),
-                ledger->credit_totals[i][I_OVERALL], KNRM);
+                get_color(ledger->credit_totals[i][I_OVERALL]),
+                ledger->credit_totals[i][I_OVERALL], NORMAL_COLOR);
       } else {
         sprintf(s,"%s          Balances:\n",s);
         sprintf(s,"%s%s%30.2f%s  true balance\n", s, 
-                ksgn(ledger->credit_totals[i][I_OVERALL]), 
-                ledger->credit_totals[i][I_OVERALL], KNRM); 
+                get_color(ledger->credit_totals[i][I_OVERALL]), 
+                ledger->credit_totals[i][I_OVERALL], NORMAL_COLOR); 
         sprintf(s,"%s                                All charges cleared.\n", s);
       }
     }
   }     
           
   for(i = 0; i < ledger->nbank; ++i){
-    l0 = (abs(ledger->bank_totals[i][I_NOTTHEREYET]) > EPS);
+    l0 = (abs(ledger->bank_totals[i][I_NOT_THERE_YET]) > EPS);
     l1 = (abs(ledger->bank_totals[i][I_PENDING]) > EPS);
     l2 = (abs(ledger->bank_totals[i][I_CLEARED]) > EPS); 
   
@@ -1201,24 +1201,24 @@ char *print_summary_to_string(Ledger *ledger){
       if(l0 || l1){
         sprintf(s,"%s          Delayed money:\n", s);
         if(l0)
-          sprintf(s,"%s%s%30.2f%s  not arrived\n", s, ksgn(ledger->bank_totals[i][I_NOTTHEREYET]),
-                  ledger->bank_totals[i][I_NOTTHEREYET], KNRM); 
+          sprintf(s,"%s%s%30.2f%s  not arrived\n", s, get_color(ledger->bank_totals[i][I_NOT_THERE_YET]),
+                  ledger->bank_totals[i][I_NOT_THERE_YET], NORMAL_COLOR); 
         if(l1)
-          sprintf(s,"%s%s%30.2f%s  pending\n",s, ksgn(ledger->bank_totals[i][I_PENDING]), 
-                  ledger->bank_totals[i][I_PENDING], KNRM); 
+          sprintf(s,"%s%s%30.2f%s  pending\n",s, get_color(ledger->bank_totals[i][I_PENDING]), 
+                  ledger->bank_totals[i][I_PENDING], NORMAL_COLOR); 
         sprintf(s,"%s\n          Balances:\n",s);
-        sprintf(s,"%s%s%30.2f%s  \"available\"\n",s, ksgn(ledger->bank_totals[i][I_CLEARED]),
-                ledger->bank_totals[i][I_CLEARED], KNRM);
+        sprintf(s,"%s%s%30.2f%s  \"available\"\n",s, get_color(ledger->bank_totals[i][I_CLEARED]),
+                ledger->bank_totals[i][I_CLEARED], NORMAL_COLOR);
         if(l1 && l0)
           sprintf(s,"%s%s%30.2f%s  pending balance\n", s,
-                  ksgn(ledger->bank_totals[i][I_PENDING] + ledger->bank_totals[i][I_CLEARED]),
-                  ledger->bank_totals[i][I_PENDING] + ledger->bank_totals[i][I_CLEARED], KNRM);
-        sprintf(s,"%s%s%30.2f%s  true balance\n", s,ksgn(ledger->bank_totals[i][I_OVERALL]),
-                ledger->bank_totals[i][I_OVERALL], KNRM);
+                  get_color(ledger->bank_totals[i][I_PENDING] + ledger->bank_totals[i][I_CLEARED]),
+                  ledger->bank_totals[i][I_PENDING] + ledger->bank_totals[i][I_CLEARED], NORMAL_COLOR);
+        sprintf(s,"%s%s%30.2f%s  true balance\n", s,get_color(ledger->bank_totals[i][I_OVERALL]),
+                ledger->bank_totals[i][I_OVERALL], NORMAL_COLOR);
       } else {
         sprintf(s,"%s          Balances:\n",s);
-        sprintf(s,"%s%s%30.2f%s  true balance\n", s,ksgn(ledger->bank_totals[i][I_OVERALL]),
-                ledger->bank_totals[i][I_OVERALL], KNRM);
+        sprintf(s,"%s%s%30.2f%s  true balance\n", s,get_color(ledger->bank_totals[i][I_OVERALL]),
+                ledger->bank_totals[i][I_OVERALL], NORMAL_COLOR);
         sprintf(s,"%s                                All charges cleared.\n",s);
       } 
     }
@@ -1231,13 +1231,13 @@ char *print_summary_to_string(Ledger *ledger){
             sprintf(s,"%s\n          Partitions:\n",s);
             ++anyp;
           }
-          sprintf(s,"%s%s%30.2f%s  %s\n",s, ksgn(ledger->partition_totals[i][j]), 
-                  ledger->partition_totals[i][j], KNRM, ledger->partition[i][j]);
+          sprintf(s,"%s%s%30.2f%s  %s\n",s, get_color(ledger->partition_totals[i][j]), 
+                  ledger->partition_totals[i][j], NORMAL_COLOR, ledger->partition[i][j]);
         }
         else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][I_CLEARED]) > EPS){
           if(!j) sprintf(s, "%s\n",s);
-          sprintf(s,"%s%s%30.2f%s  unpartitioned\n",s, ksgn(ledger->partition_totals[i][j]),
-                  ledger->partition_totals[i][j], KNRM);
+          sprintf(s,"%s%s%30.2f%s  unpartitioned\n",s, get_color(ledger->partition_totals[i][j]),
+                  ledger->partition_totals[i][j], NORMAL_COLOR);
         }
       } 
   }
