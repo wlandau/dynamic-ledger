@@ -15,12 +15,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define CREDIT_NOTTHEREYET "cn"
-#define CREDIT_PENDING "cp"
-#define CREDIT_CLEARED "c"
-#define NOTTHEREYET "n"
-#define PENDING "p"
-#define LOCKED "l"
+/* COLUMN INDEX FOR EACH FIELD IN THE TEXT FILE */
 
 #define AMOUNT 0
 #define STATUS 1
@@ -29,10 +24,23 @@
 #define PARTITION 4
 #define DESCRIPTION 5
 
+/* TRANSACTION STATUS CODES */
+
+#define CREDIT_NOTTHEREYET "cn"
+#define CREDIT_PENDING "cp"
+#define CREDIT_CLEARED "c"
+#define NOTTHEREYET "n"
+#define PENDING "p"
+#define LOCKED "l"
+
+/* INDICES FOR CREDIT AND BANK TOTALS */
+
 #define I_NOTTHEREYET 0
 #define I_PENDING 1
 #define I_CLEARED 2
 #define I_OVERALL 3
+
+/* COMPUTATIONAL PARAMETERS (MEMORY SIZES, ETC) */
 
 #define EPS 0.004
 #define NIL "\0"
@@ -40,6 +48,8 @@
 #define FIELDSIZE 256
 #define LINESIZE 4096
 #define FILENAMESIZE 256
+
+/* COLOR CODES FOR OUTPUT */
 
 #define KNRM "\x1B[0m"
 #define KRED "\x1B[31m"
@@ -49,6 +59,8 @@
 #define KMAG "\x1B[35m"
 #define KCYN "\x1B[36m"
 #define KWHT "\x1B[37m"
+
+/* BASIC DATA STRUCTURE: ALMOST EVERYTHING IS IN A Ledger OBJECT */
 
 typedef struct {
   char *filename, **credit, **bank, ***partition, ***text_content;
@@ -63,6 +75,8 @@ void usage(){
   printf("\nSee README.txt for details.\n");
 }
 
+/* POSITIVE MONIES GET GREEN COLORS IN OUTPUT, NEGATIVE ONES GET RED, ZEROES GET BLUE */
+
 const char *ksgn(double d){
   
   if(d > EPS)
@@ -72,6 +86,8 @@ const char *ksgn(double d){
   else 
     return KBLU;
 }
+
+/* TEXT CONTENT = 2D ARRAY OF LEDGER ENTRIES */
 
 void alloc_text_content(Ledger *ledger){
   int i, j;
@@ -86,6 +102,8 @@ void alloc_text_content(Ledger *ledger){
       ledger->text_content[i][j] = calloc(FIELDSIZE, sizeof(char));
   }
 }
+
+/* FREE LEDGER OBJECT */
 
 void free_for_retotal(Ledger *ledger){
   int i, j;
@@ -144,6 +162,8 @@ void free_for_retotal(Ledger *ledger){
     free(ledger->npartition);
 }
 
+/* FREE LEDGER OBJECT */
+
 void free_ledger(Ledger *ledger){
   int i, j;
 
@@ -169,9 +189,13 @@ void free_ledger(Ledger *ledger){
   free(ledger);
 }
 
+/* CHECK IF TWO STRINGS ARE EQUAL */
+
 int str_equal(const char *s1, const char *s2){
   return !strcmp(s1, s2) && (strlen(s1) == strlen(s2));
 }
+
+/* STRING COMPARISON USED FOR qsort INSIDE unique() */
 
 int qcmp(const void *a, const void *b){ 
   const char **ia = (const char **) a;
@@ -179,6 +203,7 @@ int qcmp(const void *a, const void *b){
   return strcmp(*ia, *ib); 
 } 
 
+/* THE LEDGER FILE IS TAB-DELIMITED, SO WE DONT WANT TABS IN ANY NEW ENTRIES */
 
 int contains_tabs(char *s){
   int i, n = strlen(s);
@@ -188,9 +213,13 @@ int contains_tabs(char *s){
   return 0;
 }
 
+/* IS_SPACE... ENOUGH SAID */
+
 int is_space(char c){
   return (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == 'v');
 }
+
+/* REMOVES LEADING AND TRAILING WHITESPACE OF A STRING AS DEFINED IN IS_SPACE */
 
 void strstrip(char *s){ /* taken from a stackoverflow forum */
   char *start;
@@ -233,6 +262,8 @@ void strstrip(char *s){ /* taken from a stackoverflow forum */
   return; 
 } 
 
+/* CHECKS IF A CHARACTER CAN BE TRANSFORMED INTO A DOUBLE PRECISION NUMBER */
+
 int check_legal_double(char *s, int row){
   char *testbufref, testbuf[FIELDSIZE];
   
@@ -248,6 +279,8 @@ int check_legal_double(char *s, int row){
     }
   return 0;
 }
+
+/* SPECIAL ADAPTATION OF check_legal_double() FOR modify() */
 
 int check_legal_double_modify(char *s){
   char *testbufref, testbuf[FIELDSIZE];
@@ -266,6 +299,9 @@ int check_legal_double_modify(char *s){
   return 0;
 }
 
+/* CHECKS IF THE "AMOUNT" FIELD OF THE LEDGER
+ * CAN BE TRANSFORMED INTO A DOUBLE PRECISION NUMBER */
+
 int legal_amounts(Ledger *ledger){
   int i;
 
@@ -279,6 +315,8 @@ int legal_amounts(Ledger *ledger){
   return 0;
 }
 
+/* CHECKS IF YOU CAN OPEN THE INPUT LEDGER FILE */
+
 int badinputfile(const char *filename){
   FILE *fp = fopen(filename, "r");
   if(fp == NULL){
@@ -288,6 +326,8 @@ int badinputfile(const char *filename){
   fclose(fp);
   return 0;
 }
+
+/* CHECKS IF YOU CAN OPEN THE FILE TO STORE THE CONDENSED LEDGER */
 
 int badoutputfile(const char *filename){
   FILE *fp = fopen(filename, "w");
@@ -299,6 +339,8 @@ int badoutputfile(const char *filename){
   fclose(fp);
   return 0;
 }
+
+/* TAKES AN ARRAY OF STRINGS AND REMOVES REPEAT STRINGS */
 
 void unique(char **s, int n, char ***ret, int *nunique){
   int i = 0, j, k;
@@ -330,6 +372,9 @@ void unique(char **s, int n, char ***ret, int *nunique){
       }
     }  
 }
+
+/* GETS THE NAMES OF THE CREDIT ACCOUNTS, BANK ACCOUNTS, AND PARTITIONS
+ * IN THE LEDGER AND STORES THEM IN A Ledger OBJECT */
 
 void get_names(Ledger *ledger){
   int i, j;
@@ -364,6 +409,8 @@ void get_names(Ledger *ledger){
     free(s[i]);
   free(s);
 }
+
+/* CALCULATES THE CREDIT, BANK, AND PARTITION TOTALS */
 
 void get_totals(Ledger *ledger){
   int i, j, k;
@@ -439,6 +486,8 @@ void get_totals(Ledger *ledger){
     }  
 }
 
+/* CREATES AN EMPTY Ledger OBJECT */
+
 Ledger *new_ledger(){
   Ledger *ledger = malloc(sizeof(Ledger));
   ledger->n = 1;
@@ -448,6 +497,9 @@ Ledger *new_ledger(){
   get_totals(ledger);   
   return ledger; 
 }
+
+/* OVERWRITES A SINGLE ENTRY IN A Ledger OBJECT AND UPDATES CREDIT, BANK,
+ * AND PARTITION TOTALS ACCORDINGLY */
 
 void modify(Ledger *ledger, int row, int col, char *next){
 
@@ -485,6 +537,8 @@ void modify(Ledger *ledger, int row, int col, char *next){
   get_names(ledger);
   get_totals(ledger); 
 }
+
+/* INSERTS A BLANK ROW */
 
 void insert_row(Ledger *ledger, int row){
   int i, j;
@@ -533,6 +587,8 @@ void insert_row(Ledger *ledger, int row){
   ++(ledger->n); 
 }
 
+/* REMOVES A ROW AND UPDATES ALL TOTALS ACCORDINGLY */
+
 void remove_row(Ledger *ledger, int row){
   int i, j, recalculate;
   
@@ -572,9 +628,10 @@ void remove_row(Ledger *ledger, int row){
   }
 }
 
+/* REMOVES LINES (TRANSACTIONS) WITH NO CHANGE IN MONEY (AMOUNT = 0) */
+
 void trim_ledger(Ledger *ledger){
-  int i;
-  
+  int i; 
 
   if(ledger == NULL)
     return;
@@ -583,6 +640,8 @@ void trim_ledger(Ledger *ledger){
     if(abs(atof(ledger->text_content[AMOUNT][i])) < EPS)
       remove_row(ledger, i);
 }
+
+/* SAFELY RENAMES A CREDIT ACCOUNT IN THE LEDGER */
 
 void rename_credit(Ledger *ledger, char *from, char *to){
   int i;
@@ -598,6 +657,8 @@ void rename_credit(Ledger *ledger, char *from, char *to){
   get_totals(ledger);   
 }
 
+/* SAFELY RENAMES A BANK ACCOUNT IN THE LEDGER */
+
 void rename_bank(Ledger *ledger, char *from, char *to){
   int i;
   
@@ -611,6 +672,8 @@ void rename_bank(Ledger *ledger, char *from, char *to){
   get_names(ledger);
   get_totals(ledger);   
 }
+
+/* SAFELY RENAMES A BANK PARTITION IN THE LEDGER */
 
 void rename_partition(Ledger *ledger, char *bank, char *from, char *to){
   int i;
@@ -626,6 +689,10 @@ void rename_partition(Ledger *ledger, char *bank, char *from, char *to){
   get_names(ledger);
   get_totals(ledger);   
 }
+
+/* CONDENSES THE LEDGER: COLLAPSES ALL CLEARED TRANSACTIONS AND THOSE 
+ * NOT MARKED AS "LOCKED" TO CALCULATE A NEW LEDGER WITH FEWER ROWS
+ * THIS IS USEFUL IF YOUR LEDGER GETS TOO LONG */
 
 void condense(Ledger **ledger){
   int i, j, k, new_n, row = 0;
@@ -724,6 +791,8 @@ void condense(Ledger **ledger){
   free_ledger(tmpledger); 
 }
 
+/* PARSES A LEDGER FILE FROM AN INPUT STREAM */
+
 int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   int i, row, field; 
   char c, line[LINESIZE];
@@ -775,6 +844,8 @@ int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   return legal_amounts(ledger);
 }
 
+/* PARSES A LEDGER FILE FROM A STRING */
+
 int get_text_content_from_string(Ledger *ledger, char *s){
   int i, j, row, field;
   char c;
@@ -821,6 +892,8 @@ int get_text_content_from_string(Ledger *ledger, char *s){
   return legal_amounts(ledger);
 }
 
+/* CONSTRUCTS A Ledger OBJECT FROM A LEDGER FILE RECEIVED THROUGH AN INPUT STREAM */
+
 Ledger *get_ledger_from_stream(FILE *fp){
   Ledger *ledger;
   
@@ -839,6 +912,8 @@ Ledger *get_ledger_from_stream(FILE *fp){
   
   return ledger; 
 }
+
+/* CONSTRUCTS A Ledger OBJECT GIVEN THE NAME OF A LEDGER FILE */
 
 Ledger *get_ledger_from_filename(const char* filename){
   FILE *fp;
@@ -860,6 +935,8 @@ Ledger *get_ledger_from_filename(const char* filename){
   return ledger;
 }
 
+/* CONSTRUCTS A Ledger OBJECT FROM DATA STORED AS A STRING */
+
 Ledger *get_ledger_from_string(char *s){
   Ledger *ledger = calloc(1, sizeof(Ledger));
   if(get_text_content_from_string(ledger, s)){
@@ -871,6 +948,8 @@ Ledger *get_ledger_from_string(char *s){
   get_totals(ledger);
   return ledger;
 } 
+
+/* PRINTS A Ledger OBJECT TO A FILE STREAM */
 
 void print_ledger_to_stream(Ledger *ledger, FILE *fp){
   int i, j;
@@ -888,6 +967,8 @@ void print_ledger_to_stream(Ledger *ledger, FILE *fp){
     fprintf(fp, "\n");
   }
 }
+
+/* PRINTS A Ledger OBJECT TO A STRING */
 
 char *print_ledger_to_string(Ledger *ledger){
   char *s, entry[FIELDSIZE], 
@@ -923,6 +1004,8 @@ char *print_ledger_to_string(Ledger *ledger){
   }
   return s;
 }
+
+/* PRINTS ALL THE DATA IN A Ledger OBJECT. OUTPUT IS UGLY. USED FOR DEBUGGING ONLY. */
 
 void print_ledger_verbose(Ledger *ledger, FILE *fp){
   int i, j;
@@ -964,6 +1047,8 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
   fprintf(fp, "\n");
   print_ledger_to_stream(ledger, fp);
 }
+
+/* PRINTS A PRETTY SUMMARY OF A Ledger OBJECT TO A FILE STREAM */
 
 void print_summary_to_stream(Ledger *ledger, FILE *fp){
   int i, j, l0, l1, l2, any = 0, anyp = 0;
@@ -1087,6 +1172,8 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
     fprintf(fp,"\n");
 }
 
+/* PRINTS A PRETTY SUMMARY OF A Ledger OBJECT TO A STRING */
+
 char *print_summary_to_string(Ledger *ledger){
   int i, j, l0, l1, l2, any = 0, anyp = 0;
   
@@ -1207,6 +1294,8 @@ char *print_summary_to_string(Ledger *ledger){
   return s;
 }
 
+/* PRINTS A RAW STRING LEDGER TO A FILE STREAM */
+
 void print_ledger_to_stream_str(char *s, FILE *fp){
   Ledger *ledger = get_ledger_from_string(s);
   
@@ -1217,6 +1306,7 @@ void print_ledger_to_stream_str(char *s, FILE *fp){
   free_ledger(ledger);
 } 
 
+/* PRINTS A SUMMARY OF A RAW STRING LEDGER TO A FILE STREAM */
 
 void print_summary_to_stream_str(char *s, FILE *fp){
   Ledger *ledger = get_ledger_from_string(s);
@@ -1228,6 +1318,7 @@ void print_summary_to_stream_str(char *s, FILE *fp){
   free_ledger(ledger);
 } 
 
+/* PRINTS A RAW STRING LEDGER TO ANOTHER RAW STRING */
  
 char *print_summary_to_string_str(char *s){
   char *s2;
@@ -1244,6 +1335,8 @@ char *print_summary_to_string_str(char *s){
   free_ledger(ledger);
   return s2;
 } 
+
+/* LIKE modify(), EXCEPT WITH A THE LEDGER INPUT AS A RAW STRING */
 
 void modify_str(char **s, int row, int col, char *next){
   char *s2, *tmp;
@@ -1267,6 +1360,8 @@ void modify_str(char **s, int row, int col, char *next){
   free(s2);
 }
 
+/* LIKE insert_row(), EXCEPT WITH A THE LEDGER INPUT AS A RAW STRING */
+
 void insert_row_str(char **s, int row){
   char *s2, *tmp;
   Ledger *ledger;
@@ -1289,6 +1384,8 @@ void insert_row_str(char **s, int row){
   free(s2);
 }  
 
+/* LIKE remove_row(), EXCEPT WITH A THE LEDGER INPUT AS A RAW STRING */
+
 void remove_row_str(char **s, int row){
   char *s2, *tmp;
   Ledger *ledger;
@@ -1310,6 +1407,8 @@ void remove_row_str(char **s, int row){
   s2 = tmp;
   free(s2);
 }  
+
+/* LIKE trim_ledger(), EXCEPT WITH A THE LEDGER INPUT AS A RAW STRING */
  
 void trim_ledger_str(char **s){
   char *s2, *tmp;
@@ -1333,6 +1432,8 @@ void trim_ledger_str(char **s){
   free(s2);
 } 
 
+/* LIKE rename_credit(), EXCEPT WITH A THE LEDGER INPUT AS A RAW STRING */
+
 void rename_credit_str(char **s, char *from, char *to){
   char *s2, *tmp;
   Ledger *ledger;
@@ -1354,6 +1455,8 @@ void rename_credit_str(char **s, char *from, char *to){
   s2 = tmp;
   free(s2);
 }
+
+/* LIKE rename_bank(), EXCEPT WITH A THE LEDGER INPUT AS A RAW STRING */
 
 void rename_bank_str(char **s, char *from, char *to){
   char *s2, *tmp;
@@ -1377,6 +1480,8 @@ void rename_bank_str(char **s, char *from, char *to){
   free(s2);
 }
 
+/* LIKE rename_partition(), EXCEPT WITH A THE LEDGER INPUT AS A RAW STRING */
+
 void rename_partition_str(char **s, char *bank, char *from, char *to){
   char *s2, *tmp;
   Ledger *ledger;
@@ -1398,6 +1503,8 @@ void rename_partition_str(char **s, char *bank, char *from, char *to){
   s2 = tmp;
   free(s2);
 }
+
+/* LIKE condense(), EXCEPT WITH A THE LEDGER INPUT AS A RAW STRING */
 
 void condense_str(char **s){
   char *s2, *tmp;
@@ -1421,6 +1528,10 @@ void condense_str(char **s){
   free(s2);
 } 
 
+/* IF THE PROGRAM IS GIVEN ONE FILENAME AS INPUT, THE PROGRAM USES THIS FUNCTION
+ * TO READ THE FILE INTO A LEDGER OBJECT AND THEN PRINT A SUMMARY OF THAT 
+ * LEDGER TO A FILE STREAM */
+
 int summarize_file_to_stream(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_filename(filename);
   int ind = (ledger == NULL);
@@ -1435,6 +1546,10 @@ int summarize_file_to_stream(const char* filename, FILE *fp){
   free_ledger(ledger);
   return 0;
 }
+
+/* IF THE PROGRAM IS GIVEN TWO INPUT FILE NAMES, THE PROGRAM USES THIS FUNCTION
+ * TO READ THE FIRST FILENAME AS AN INPUT LEDGER. THEN, IT CONDENSES THE LEDGER
+ * WITH condense() AND WRITES THE CONDENSED LEDGER AS OUTPUT TO THE SECOND FILE. */
 
 int condense_and_print(const char* infile, const char *outfile){
   FILE *fp;
@@ -1461,6 +1576,10 @@ int condense_and_print(const char* infile, const char *outfile){
   return 0;
 }
  
+/* MAIN WORKHORSE OF THE STANDALONE C VERSION OF Ledger.txt. IT DOES 
+ * SUMMARY IF GIVEN AN INPUT FILE NAME AND condense() IF GIVEN BOTH
+ * INPUT AND OUTPUT FILE NAMES. */
+ 
 int standalone(int argc, char **argv){
   if(argc == 2){
     if(summarize_file_to_stream(argv[1], stdout)){
@@ -1478,7 +1597,7 @@ int standalone(int argc, char **argv){
 
   return 0;
 }
-  
+
 int main(int argc, char **argv){ 
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
 }
