@@ -1139,6 +1139,18 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
     fprintf(fp,"\n");
 }
 
+/* PRINTS A SUMMARY OF A Ledger OBJECT TO A FILE */
+
+void print_summary_to_file(Ledger *ledger, const char *filename){
+  FILE *fp;
+  
+  if(!badoutputfile(filename)){
+    fp = fopen(filename, "w");
+    print_summary_to_stream(ledger, fp);
+    fclose(fp);
+  }
+}
+
 /* PRINTS A PRETTY SUMMARY OF A Ledger OBJECT TO A STRING */
 
 char *print_summary_to_string(Ledger *ledger){
@@ -1273,16 +1285,6 @@ void print_ledger_to_stream_str(char *s, FILE *fp){
   free_ledger(ledger);
 } 
 
-void print_ledger_to_file_str(char *s, const char *filename){
-  Ledger *ledger = get_ledger_from_string(s);
-  
-  if(ledger == NULL)
-    return;
-  
-  print_ledger_to_file(ledger, filename);
-  free_ledger(ledger);
-} 
-
 /* PRINTS A SUMMARY OF A RAW STRING LEDGER TO A FILE STREAM */
 
 void print_summary_to_stream_str(char *s, FILE *fp){
@@ -1294,6 +1296,7 @@ void print_summary_to_stream_str(char *s, FILE *fp){
   print_summary_to_stream(ledger, fp);
   free_ledger(ledger);
 } 
+
 
 /* PRINTS A RAW STRING LEDGER TO ANOTHER RAW STRING */
  
@@ -1511,9 +1514,8 @@ void condense_str(char **s){
 
 int summarize_file_to_stream(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_file(filename);
-  int ind = (ledger == NULL);
   
-  if(ind)
+  if(ledger == NULL)
     return 1;
 
   print_summary_to_stream(ledger, fp);
@@ -1521,6 +1523,21 @@ int summarize_file_to_stream(const char* filename, FILE *fp){
   free_ledger(ledger);
   return 0;
 }
+
+/* TAKES IN THE FILENAME OF A Ledger OBJECT AND OUTPUTS A SUMMARY TO ANOTHER FILE */
+
+int summarize_file_to_file(const char* in, const char *out){
+  Ledger *ledger = get_ledger_from_file(in);
+  
+  if(ledger == NULL)
+    return 1;
+
+  print_summary_to_file(ledger, out);
+  
+  free_ledger(ledger);
+  return 0;
+}
+
 
 /* IF THE PROGRAM IS GIVEN TWO INPUT FILE NAMES, THE PROGRAM USES THIS FUNCTION
  * TO READ THE FIRST FILENAME AS AN INPUT LEDGER. THEN, IT CONDENSES THE LEDGER
@@ -1560,7 +1577,7 @@ int standalone(int argc, char **argv){
       return 1;
     }
   } else if(argc == 3){
-    if(condense_and_print(argv[1], argv[2])){
+    if(summarize_file_to_file(argv[1], argv[2]) /*condense_and_print(argv[1], argv[2]) */){
       printf("No output produced.\nExiting.\n");
       return 1;
     }
