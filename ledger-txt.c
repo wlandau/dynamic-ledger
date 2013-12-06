@@ -1,5 +1,5 @@
 /*
- * @file ledger.c
+ * @file ledger-txt.c
  * @author Will Landau
  * @email will.landau@gmail.com
  * @web http://will-landau.com
@@ -10,63 +10,11 @@
  */
  
 #include <errno.h>
+#include "ledger-txt.h"
 #include <getopt.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-/* COLUMN INDEX FOR EACH FIELD IN THE TEXT FILE */
-
-#define AMOUNT 0
-#define STATUS 1
-#define CREDIT 2
-#define BANK 3
-#define PARTITION 4
-#define DESCRIPTION 5
-
-/* TRANSACTION STATUS CODES */
-
-#define CREDIT_NOTTHEREYET "cn"
-#define CREDIT_PENDING "cp"
-#define CREDIT_CLEARED "c"
-#define NOTTHEREYET "n"
-#define PENDING "p"
-#define LOCKED "l"
-
-/* INDICES FOR CREDIT AND BANK TOTALS */
-
-#define I_NOTTHEREYET 0
-#define I_PENDING 1
-#define I_CLEARED 2
-#define I_OVERALL 3
-
-/* COMPUTATIONAL PARAMETERS (MEMORY SIZES, ETC) */
-
-#define EPS 0.004
-#define NIL "\0"
-#define NFIELDS 6
-#define FIELDSIZE 256
-#define LINESIZE 4096
-#define FILENAMESIZE 256
-
-/* COLOR CODES FOR OUTPUT */
-
-#define KNRM "\x1B[0m"
-#define KRED "\x1B[31m"
-#define KGRN "\x1B[32m"
-#define KYEL "\x1B[33m"
-#define KBLU "\x1B[34m"
-#define KMAG "\x1B[35m"
-#define KCYN "\x1B[36m"
-#define KWHT "\x1B[37m"
-
-/* BASIC DATA STRUCTURE: ALMOST EVERYTHING IS IN A Ledger OBJECT */
-
-typedef struct {
-  char *filename, **credit, **bank, ***partition, ***text_content;
-  int n, ncredit, nbank, *npartition;
-  double **credit_totals, **bank_totals, **partition_totals;
-} Ledger;
 
 void usage(){
   printf("\nUsage: to summarize the ledger,\n$ ./ledger [LEDGER_FILE]\n");
@@ -1059,7 +1007,6 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
 
 void print_summary_to_stream(Ledger *ledger, FILE *fp){
   int i, j, l0, l1, l2, any = 0, anyp = 0;
-  
 
   if(ledger == NULL || fp == NULL)
     return;
