@@ -1306,6 +1306,71 @@ void remove_row_str(char **s, int row){
   free(s2);
 }  
  
+void rename_credit_str(char **s, char *from, char *to){
+  char *s2, *tmp;
+  Ledger *ledger;
+  
+  if(s == NULL || *s == NULL)
+    return;
+  
+  ledger = get_ledger_from_string(*s);
+  
+  if(ledger == NULL)
+    return;
+  
+  rename_credit(ledger, from, to);
+  s2 = print_ledger_to_string(ledger);
+  free_ledger(ledger);
+  
+  tmp = *s;
+  *s = s2;
+  s2 = tmp;
+  free(s2);
+}
+
+void rename_bank_str(char **s, char *from, char *to){
+  char *s2, *tmp;
+  Ledger *ledger;
+  
+  if(s == NULL || *s == NULL)
+    return;
+  
+  ledger = get_ledger_from_string(*s);
+  
+  if(ledger == NULL)
+    return;
+  
+  rename_bank(ledger, from, to);
+  s2 = print_ledger_to_string(ledger);
+  free_ledger(ledger);
+  
+  tmp = *s;
+  *s = s2;
+  s2 = tmp;
+  free(s2);
+}
+
+void rename_partition_str(char **s, char *bank, char *from, char *to){
+  char *s2, *tmp;
+  Ledger *ledger;
+  
+  if(s == NULL || *s == NULL)
+    return;
+  
+  ledger = get_ledger_from_string(*s);
+  
+  if(ledger == NULL)
+    return;
+  
+  rename_partition(ledger, bank, from, to);
+  s2 = print_ledger_to_string(ledger);
+  free_ledger(ledger);
+  
+  tmp = *s;
+  *s = s2;
+  s2 = tmp;
+  free(s2);
+}
  
 int summarize_file_to_stream(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_filename(filename);
