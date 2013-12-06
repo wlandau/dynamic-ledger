@@ -1005,7 +1005,15 @@ Ledger *get_ledger_from_string(char *s){
  
 char *print_summary_str(char *s){
   Ledger *ledger = get_ledger_from_string(s);
+  
+  if(ledger == NULL)
+    return NULL;
+  
   char *s2 = print_summary_to_string(ledger);
+  
+  if(s2 == NULL)
+    return NULL;
+  
   free_ledger(ledger);
   return s2;
 } 
@@ -1210,7 +1218,16 @@ char *print_ledger_to_string(Ledger *ledger){
  
 char *condense_str(char **s){
   char *s2, *tmp;
-  Ledger *ledger = get_ledger_from_string(*s);
+  Ledger *ledger;
+  
+  if(s == NULL || *s == NULL)
+    return;
+  
+  ledger = get_ledger_from_string(*s);
+  
+  if(ledger == NULL)
+    return;
+  
   condense(&ledger);
   s2 = print_ledger_to_string(ledger);
   free_ledger(ledger);
