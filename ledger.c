@@ -1239,6 +1239,28 @@ void condense_str(char **s){
   free(s2);
 } 
  
+void modify_str(char **s, int row, int col, char *next){
+  char *s2, *tmp;
+  Ledger *ledger;
+  
+  if(s == NULL || *s == NULL)
+    return;
+  
+  ledger = get_ledger_from_string(*s);
+  
+  if(ledger == NULL)
+    return;
+  
+  modify(ledger, row, col, next);
+  s2 = print_ledger_to_string(ledger);
+  free_ledger(ledger);
+  
+  tmp = *s;
+  *s = s2;
+  s2 = tmp;
+  free(s2);
+}  
+ 
 int summarize_file_to_stream(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_filename(filename);
   int ind = (ledger == NULL);
@@ -1278,9 +1300,9 @@ int main(int argc, char **argv){ /*
 
   printf("%s", s);  
   
-  condense_str(&s);
+  modify_str(&s, 2, 1, "higgles");
   
-  printf("%s", s);
+  printf("\n\n====\n\n%s", s);
   
   if(s != NULL)
     free(s); 
