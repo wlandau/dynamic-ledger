@@ -1218,17 +1218,22 @@ int main(int argc, char **argv){ /*
     printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");  
 }
 
+if(s3 != NULL)
   free(s3);
 
 
-
+if(newledger3 != NULL)
         free_ledger(newledger3);
          
-         
+if(newledger2 != NULL)         
                free_ledger(newledger2);
+               if(newledger != NULL)
              free_ledger(newledger);
+             if(s2 != NULL)
                free(s2);
+               if(s1 != NULL)
            free(s1);
+           if(ledger != NULL)
          free_ledger(ledger);
          
         return 0;
