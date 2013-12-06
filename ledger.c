@@ -1160,81 +1160,11 @@ int standalone(int argc, char **argv){
 int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; */
   
-  Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger, *newledger2, *newledger3;
-  char *s1, *s2, *s3; 
-  int i, j;
+  Ledger *ledger = get_ledger_from_filename(argv[1]);
   
   
     print_ledger_to_stream(ledger, stdout);
     
-    if(ledger != NULL){
-    printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");
-    for(j = 0; j < ledger->n; ++j){
-      for(i = 0; i < NFIELDS; ++i)
-        printf("%s ", ledger->text_content[i][j]);
-      printf("\n");
-    }
-    printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");    
-    }
-  s1 = print_ledger_to_string(ledger); 
-  
-  printf("\n\n=======\n\n%s\n\n===========\n\n", s1);
-  
-    newledger = get_ledger_from_string(s1);
-      printf("\n\n=======\n\n%s\n\n===========\n\n", s1);
- 
-  print_ledger_verbose(newledger, stdout);
- 
-
-  s2 = print_ledger_to_string(newledger); 
-    printf("\n\n=======\n\n%s\n\n===========\n\n", s2);
-  
-  newledger2 = get_ledger_from_string(s2);
-    printf("\n\n=======\n\n%s\n\n===========\n\n", s2);
-  
-    print_ledger_verbose(newledger2, stdout);
-  s3 = print_ledger_to_string(newledger2); 
-  
-    printf("\n\n=======\n\n%s\n\n===========\n\n", s3);
-  newledger3 = get_ledger_from_string(s3);
-  printf("\n\n=======\n\n%s\n\n===========\n\n", s3);
-  
-  printf("LEDGER 3!!!\n");
-  print_ledger_verbose(newledger3, stdout);
-  printf("END LEDGER 3!!!\n\n");
-
-
-  printf("STRING 3!!!\n");
-  printf("%s\n", s3);
-  printf("END STRING 3!!!\n");
-  
-  if(newledger3 != NULL){
-      printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");
-    for(j = 0; j < newledger3->n; ++j){
-      for(i = 0; i < NFIELDS; ++i)
-        printf("%s ", newledger3->text_content[i][j]);
-      printf("\n");
-    }
-    printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");  
-}
-
-if(s3 != NULL)
-  free(s3);
-
-
-if(newledger3 != NULL)
-        free_ledger(newledger3);
-         
-if(newledger2 != NULL)         
-               free_ledger(newledger2);
-               if(newledger != NULL)
-             free_ledger(newledger);
-             if(s2 != NULL)
-               free(s2);
-               if(s1 != NULL)
-           free(s1);
-           if(ledger != NULL)
-         free_ledger(ledger);
-         
+   free_ledger(ledger);
         return 0;
 }
