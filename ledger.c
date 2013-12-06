@@ -1346,15 +1346,18 @@ int main(int argc, char **argv){ /*
   char *s2, *s3, *s4;
 
   s2 = print_summary_str(s);
+  printf("\n\n====\n\n%s", s);
   printf("\n\n====\n\n%s", s2);
   
   insert_row_str(&s, 2);
 
+  printf("\n\n====\n\n%s", s);
   s3 = print_summary_str(s);  
   printf("\n\n====\n\n%s", s3);
   
     remove_row_str(&s, 5);
   
+   printf("\n\n====\n\n%s", s); 
     s4 = print_summary_str(s);
   printf("\n\n====\n\n%s", s4);
   
