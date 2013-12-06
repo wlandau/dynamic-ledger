@@ -1236,9 +1236,9 @@ int standalone(int argc, char **argv){
 int main(int argc, char **argv){ /*
   return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS; */
   
-  Ledger *ledger = get_ledger_from_filename(argv[1]); /*
+  Ledger *ledger = get_ledger_from_filename(argv[1]); 
   char *s = print_summary_to_string(ledger);
-  
+  /*
   FILE *fp = fopen("ddd.txt", "w");
   fprintf(fp, "%s", s);
   fclose(fp);
@@ -1248,9 +1248,9 @@ int main(int argc, char **argv){ /*
   fp = fopen("ddd.txt", "w");
     print_summary(ledger, fp);
    fclose(fp);
-  
+  */
   if(s != NULL)
-    free(s); */
+    free(s); 
     
    free_ledger(ledger);
         return 0;
