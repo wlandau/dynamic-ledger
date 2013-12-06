@@ -1248,12 +1248,12 @@ int main(int argc, char **argv){ /*
     fprintf(fp, "%s", s);
   fclose(fp);
   
-/*
+
   
   fp = fopen("ddd.txt", "w");
     print_summary(ledger, fp);
    fclose(fp);
-  */
+  
   if(s != NULL)
     free(s); 
     
