@@ -1343,20 +1343,32 @@ int main(int argc, char **argv){ /*
   
   Ledger *ledger = get_ledger_from_filename(argv[1]); 
   char *s = print_ledger_to_string(ledger);
+  char *s2, *s3, *s4;
 
-  printf("\n\n====\n\n%s", print_summary_str(s));
+  s2 = print_summary_str(s);
+  printf("\n\n====\n\n%s", s2);
   
   insert_row_str(&s, 2);
-  
-  printf("\n\n====\n\n%s", print_summary_str(s));
+
+  s3 = print_summary_str(s);  
+  printf("\n\n====\n\n%s", s3);
   
     remove_row_str(&s, 5);
   
-  printf("\n\n====\n\n%s", print_summary_str(s));
+    s4 = print_summary_str(s);
+  printf("\n\n====\n\n%s", s4);
   
   if(s != NULL)
     free(s); 
-   
+ 
+   if(s2 != NULL)
+    free(s2); 
+    
+      if(s3 != NULL)
+    free(s3); 
+    
+      if(s4 != NULL)
+    free(s4);   
     
    free_ledger(ledger);
         return 0;
