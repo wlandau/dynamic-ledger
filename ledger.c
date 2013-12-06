@@ -1344,15 +1344,15 @@ int main(int argc, char **argv){ /*
   Ledger *ledger = get_ledger_from_filename(argv[1]); 
   char *s = print_ledger_to_string(ledger);
 
-  printf("%s", s);  
+  printf("\n\n====\n\n%s", print_summary_str(s));
   
   insert_row_str(&s, 2);
   
-  printf("\n\n====\n\n%s", s);
+  printf("\n\n====\n\n%s", print_summary_str(s));
   
     remove_row_str(&s, 5);
   
-  printf("\n\n====\n\n%s", s);
+  printf("\n\n====\n\n%s", print_summary_str(s));
   
   if(s != NULL)
     free(s); 
