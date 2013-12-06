@@ -870,7 +870,7 @@ Ledger *get_ledger_from_stream(FILE *fp){
 
 /* CONSTRUCTS A Ledger OBJECT GIVEN THE NAME OF A LEDGER FILE */
 
-Ledger *get_ledger_from_file(const char* filename){
+Ledger *get_ledger_from_filename(const char* filename){
   FILE *fp;
   Ledger *ledger = NULL;
   
@@ -921,19 +921,6 @@ void print_ledger_to_stream(Ledger *ledger, FILE *fp){
       fprintf(fp, "\t%s", ledger->text_content[j][i]);
     fprintf(fp, "\n");
   }
-}
-
-/* PRINTS A Ledger OBJECT TO A FILE */
-
-void print_ledger_to_file(Ledger *ledger, const char* filename){
-  FILE *fp;
-  
-  if(badinputfile(filename))
-    return;
-  
-  fp = fopen(filename, "r");
-  print_ledger_to_stream(ledger, fp); 
-  fclose(fp);
 }
 
 /* PRINTS A Ledger OBJECT TO A STRING */
@@ -1139,18 +1126,6 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
     fprintf(fp,"\n");
 }
 
-/* PRINTS A SUMMARY OF A Ledger OBJECT TO A FILE */
-
-void print_summary_to_file(Ledger *ledger, const char *filename){
-  FILE *fp;
-  
-  if(!badoutputfile(filename)){
-    fp = fopen(filename, "w");
-    print_summary_to_stream(ledger, fp);
-    fclose(fp);
-  }
-}
-
 /* PRINTS A PRETTY SUMMARY OF A Ledger OBJECT TO A STRING */
 
 char *print_summary_to_string(Ledger *ledger){
@@ -1296,7 +1271,6 @@ void print_summary_to_stream_str(char *s, FILE *fp){
   print_summary_to_stream(ledger, fp);
   free_ledger(ledger);
 } 
-
 
 /* PRINTS A RAW STRING LEDGER TO ANOTHER RAW STRING */
  
@@ -1513,9 +1487,10 @@ void condense_str(char **s){
  * LEDGER TO A FILE STREAM */
 
 int summarize_file_to_stream(const char* filename, FILE *fp){
-  Ledger *ledger = get_ledger_from_file(filename);
+  Ledger *ledger = get_ledger_from_filename(filename);
+  int ind = (ledger == NULL);
   
-  if(ledger == NULL)
+  if(ind)
     return 1;
 
   print_summary_to_stream(ledger, fp);
@@ -1523,21 +1498,6 @@ int summarize_file_to_stream(const char* filename, FILE *fp){
   free_ledger(ledger);
   return 0;
 }
-
-/* TAKES IN THE FILENAME OF A Ledger OBJECT AND OUTPUTS A SUMMARY TO ANOTHER FILE */
-
-int summarize_file_to_file(const char* in, const char *out){
-  Ledger *ledger = get_ledger_from_file(in);
-  
-  if(ledger == NULL)
-    return 1;
-
-  print_summary_to_file(ledger, out);
-  
-  free_ledger(ledger);
-  return 0;
-}
-
 
 /* IF THE PROGRAM IS GIVEN TWO INPUT FILE NAMES, THE PROGRAM USES THIS FUNCTION
  * TO READ THE FIRST FILENAME AS AN INPUT LEDGER. THEN, IT CONDENSES THE LEDGER
@@ -1550,7 +1510,7 @@ int condense_and_print(const char* infile, const char *outfile){
   if(badinputfile(infile))
     return 1;
   
-  ledger = get_ledger_from_file(infile);
+  ledger = get_ledger_from_filename(infile);
   if(ledger == NULL){
     printf("Failed to read ledger.\n");
     return 1;
@@ -1559,7 +1519,9 @@ int condense_and_print(const char* infile, const char *outfile){
   condense(&ledger);
       
   if(!badoutputfile(outfile)){
-    print_ledger_to_file(ledger, outfile);
+    fp = fopen(outfile, "w");
+    print_ledger_to_stream(ledger, fp);
+    fclose(fp);
   }
   
   free_ledger(ledger);
