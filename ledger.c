@@ -1541,8 +1541,6 @@ int summarize_file_to_stream(const char* filename, FILE *fp){
 
   print_summary_to_stream(ledger, fp);
   
-  print_ledger_verbose(ledger, fp);
-  
   free_ledger(ledger);
   return 0;
 }
