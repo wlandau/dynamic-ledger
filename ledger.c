@@ -23,7 +23,7 @@
 
 #define NIL "\0"
 #define NFIELDS 6
-#define FIELDSIZE 128
+#define FIELDSIZE 256
 #define LINESIZE 4096
 #define FILENAMESIZE 256
 
@@ -1148,9 +1148,19 @@ int main(int argc, char **argv){ /*
   
   Ledger *ledger = get_ledger_from_filename(argv[1]), *newledger, *newledger2, *newledger3;
   char *s1, *s2, *s3; 
+  int i, j;
+  
   
     print_ledger_to_stream(ledger, stdout);
     
+    
+    printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");
+    for(j = 0; j < ledger->n; ++j){
+      for(i = 0; i < NFIELDS; ++i)
+        printf("%s ", ledger->text_content[i][j]);
+      printf("\n");
+    }
+    printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");    
     
   s1 = print_ledger_to_string(ledger); 
   
@@ -1184,6 +1194,14 @@ int main(int argc, char **argv){ /*
   printf("%s\n", s3);
   printf("END STRING 3!!!\n");
   
+  
+      printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");
+    for(j = 0; j < newledger3->n; ++j){
+      for(i = 0; i < NFIELDS; ++i)
+        printf("%s ", newledger3->text_content[i][j]);
+      printf("\n");
+    }
+    printf("\n\n~~~~~~~~~~~~~~~~~~~~~~\n\n");  
 
 
   free(s3);
