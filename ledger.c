@@ -77,6 +77,10 @@ void print_ledger_to_stream(Ledger *ledger, FILE *fp){
 
 void alloc_text_content(Ledger *ledger){
   int i, j;
+  
+  if(ledger == NULL)
+    return;
+
   ledger->text_content = malloc(NFIELDS * sizeof(char**));
   for(i = 0; i < NFIELDS; ++i){
     ledger->text_content[i] = malloc(ledger->n * sizeof(char*));
@@ -254,7 +258,10 @@ int check_legal_double(char *s, int row){
 
 int legal_amounts(Ledger *ledger){
   int i;
-  
+
+  if(ledger == NULL)
+    return 1;
+
   for(i = 0; i < ledger->n; ++i)
     if(check_legal_double(ledger->text_content[0][i], i))
       return 1;
@@ -363,6 +370,9 @@ int get_text_content_from_string(Ledger *ledger, char *s){
 int get_text_content_from_stream(Ledger *ledger, FILE *fp){
   int i, row, field; 
   char c, line[LINESIZE];
+  
+  if(ledger == NULL)
+    return 1;
   
   ledger->n = -1;
   while(fgets(line, LINESIZE, fp))
@@ -570,6 +580,9 @@ void print_summary(Ledger *ledger, FILE *fp){
   double eps = 0.004;
   fprintf(fp, "%s", KNRM);
 
+  if(ledger == NULL)
+    return;
+
   for(i = 0; i < ledger->ncredit; ++i){
     l0 = (abs(ledger->credit_totals[i][0]) > eps);
     l1 = (abs(ledger->credit_totals[i][1]) > eps);
@@ -672,7 +685,12 @@ void print_summary(Ledger *ledger, FILE *fp){
 char *print_summary_to_string(Ledger *ledger){
   int i, j, l0, l1, l2, any = 0, anyp = 0;
   double eps = 0.004;
-  char *s = calloc(ledger->n * NFIELDS * FIELDSIZE, sizeof(char));
+  char *s;
+
+  if(ledger == NULL)
+    return NULL;
+    
+  s = calloc(ledger->n * NFIELDS * FIELDSIZE, sizeof(char));
 
   for(i = 0; i < ledger->ncredit; ++i){
     l0 = (abs(ledger->credit_totals[i][0]) > eps);
@@ -782,6 +800,9 @@ char *print_summary_to_string(Ledger *ledger){
 int check_legal_double_modify(char *s){
   char *testbufref, testbuf[FIELDSIZE];
   
+  if(s == NULL)
+    return 1;
+  
   errno = 0;
   strcpy(testbuf, s);
     testbufref = testbuf;
@@ -794,8 +815,12 @@ int check_legal_double_modify(char *s){
 }
 
 void modify(Ledger *ledger, int row, int col, char *next){
+
   char next_local[FIELDSIZE];
   int i;
+
+  if(ledger == NULL)
+    return;
 
   if(row < 0 || row >= ledger->n){
     printf("Error: illegal row index in modify().\n");
@@ -828,6 +853,10 @@ void modify(Ledger *ledger, int row, int col, char *next){
 
 void rename_credit(Ledger *ledger, char *from, char *to){
   int i;
+
+  if(ledger == NULL)
+    return;
+
   for(i = 0; i < ledger->n; ++i)
     if(str_equal(ledger->text_content[2][i], from))
       strcpy(ledger->text_content[2][i], to);
@@ -838,6 +867,10 @@ void rename_credit(Ledger *ledger, char *from, char *to){
 
 void rename_bank(Ledger *ledger, char *from, char *to){
   int i;
+  
+  if(ledger == NULL)
+    return;
+  
   for(i = 0; i < ledger->n; ++i)
     if(str_equal(ledger->text_content[3][i], from))
       strcpy(ledger->text_content[3][i], to);
@@ -848,6 +881,10 @@ void rename_bank(Ledger *ledger, char *from, char *to){
 
 void rename_partition(Ledger *ledger, char *bank, char *from, char *to){
   int i;
+  
+  if(ledger == NULL)
+    return;
+  
   for(i = 0; i < ledger->n; ++i)
     if(str_equal(ledger->text_content[3][i], bank) && 
        str_equal(ledger->text_content[4][i], from))
@@ -946,7 +983,10 @@ void remove_row(Ledger *ledger, int row){
 void trim_ledger(Ledger *ledger){
   int i;
   float eps = 0.004;
-  
+
+  if(ledger == NULL)
+    return;
+
   for(i = (ledger->n - 1); i >= 0; --i)
     if(abs(atof(ledger->text_content[0][i])) < eps)
       remove_row(ledger, i);
@@ -970,7 +1010,7 @@ void condense(Ledger **ledger){
   char status[FIELDSIZE], amount[FIELDSIZE];
   Ledger *newledger, *tmpledger;
   
-  if(ledger == NULL)
+  if(ledger == NULL || *ledger == NULL)
     return;
 
   local_partition_totals = malloc((*ledger)->nbank * sizeof(double*));
@@ -1202,6 +1242,8 @@ int main(int argc, char **argv){ /*
   FILE *fp = fopen("ddd.txt", "w");
   fprintf(fp, "%s", s);
   fclose(fp);
+  
+
   
   fp = fopen("ddd.txt", "w");
     print_summary(ledger, fp);
