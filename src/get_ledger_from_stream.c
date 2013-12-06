@@ -1,0 +1,31 @@
+/***
+ *** @file get_ledger_from_stream.c
+ *** @author Will Landau
+ *** @email will.landau@gmail.com
+ ***/
+
+#include <errno.h>
+#include <getopt.h>
+#include <ledger-txt.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+Ledger *get_ledger_from_stream(FILE *fp){
+  Ledger *ledger;
+  
+  if(fp == NULL)
+    return NULL;
+
+  ledger = calloc(1, sizeof(Ledger));
+   
+  if(get_text_content_from_stream(ledger, fp)){
+    free_ledger(ledger);
+    return NULL;
+  } 
+  
+  get_names(ledger);
+  get_totals(ledger);   
+  
+  return ledger; 
+}
