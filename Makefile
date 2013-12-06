@@ -1,7 +1,7 @@
-all: ledger
+all: ledger-txt
 
-ledger: ledger.c
-	gcc -Wall -pedantic -ansi ledger.c -o ledger
+ledger: ledger-txt.c
+	gcc -Wall -pedantic -ansi ledger.c -o ledger-txt
 
 clean:
-	rm ledger
+	rm ledger-txt

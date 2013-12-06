@@ -1,12 +1,12 @@
 amount	status	credit	bank	partition	description
--27	cp	card	checking	rent	electric bill
+-27	cn	card	checking	rent	electric bill
 -500	c	card	checking	rent	rent
 800			checking	rent	paycheck
 
 -500			checking	rent	paycheck
 -51.25	cp	card	checking	travel	travel expenses		klsdj
 
-500	l		checking	food	paycheck
+500	p		checking	food	paycheck
 100	l		savingss		paycheck
 50	l		savingss	travel	saving for next trip
 -27	cp	card	checking	rent	electric bill2
