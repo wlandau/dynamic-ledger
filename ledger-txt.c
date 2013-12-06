@@ -348,6 +348,8 @@ void unique(char **s, int n, char ***ret, int *nunique){
   qsort(s, n, sizeof(char*), qcmp);
 
   *nunique = 1;  
+  if(s[0][0] != '\0')
+    ++(*nunique);
 
   for(j = 1; j < n; ++j){
     if(!str_equal(s[i], s[j])){
@@ -362,6 +364,11 @@ void unique(char **s, int n, char ***ret, int *nunique){
 
   i = 0;
   k = 0;
+    
+  if(s[0][0] != '\0'){
+    strcpy((*ret)[0], s[0]);
+    ++k;
+  }
  
   for(j = 1; j < n; ++j)
     if(!str_equal(s[i], s[j])){
