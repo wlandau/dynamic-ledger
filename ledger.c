@@ -1434,7 +1434,7 @@ int main(int argc, char **argv){ /*
 
   if(s != NULL);
     printf("%s\n====\n\n", s);
-
+if(s != NULL)
   trim_ledger_str(&s);
 if(s != NULL);
   printf("%s\n", s);
