@@ -997,7 +997,7 @@ Ledger *get_ledger_from_string(char *s){
     free_ledger(ledger);
     return NULL;
   }
-  trim_ledger(ledger);
+/*  trim_ledger(ledger); */
   get_names(ledger);
   get_totals(ledger);
   return ledger;
