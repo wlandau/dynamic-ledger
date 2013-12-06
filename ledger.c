@@ -578,10 +578,11 @@ Ledger *get_ledger_from_filename(const char* filename){
 void print_summary(Ledger *ledger, FILE *fp){
   int i, j, l0, l1, l2, any = 0, anyp = 0;
   double eps = 0.004;
-  fprintf(fp, "%s", KNRM);
 
-  if(ledger == NULL)
+  if(ledger == NULL || fp == NULL)
     return;
+
+  fprintf(fp, "%s", KNRM);
 
   for(i = 0; i < ledger->ncredit; ++i){
     l0 = (abs(ledger->credit_totals[i][0]) > eps);
