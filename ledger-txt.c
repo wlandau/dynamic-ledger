@@ -1577,7 +1577,7 @@ int standalone(int argc, char **argv){
       return 1;
     }
   } else if(argc == 3){
-    if(summarize_file_to_file(argv[1], argv[2]) /*condense_and_print(argv[1], argv[2]) */){
+    if(condense_and_print(argv[1], argv[2])){
       printf("No output produced.\nExiting.\n");
       return 1;
     }
