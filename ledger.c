@@ -356,7 +356,6 @@ int get_text_content_from_string(Ledger *ledger, char *s){
     } else if(c == '\n' || c == '\r'){
       if(field < FIELDSIZE){
         j = 0;
-        ++i;
       }
       field = 0;
       ++row; 
