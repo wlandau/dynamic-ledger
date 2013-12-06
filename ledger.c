@@ -22,6 +22,7 @@
 #define PENDING "p"
 #define LOCKED "l"
 
+#define EPS 0.004
 #define NIL "\0"
 #define NFIELDS 6
 #define FIELDSIZE 256
@@ -51,10 +52,10 @@ void usage(){
 }
 
 const char *ksgn(double d){
-  double eps = 0.004;
-  if(d > eps)
+  
+  if(d > EPS)
     return KGRN;
-  else if(d < -eps)
+  else if(d < -EPS)
     return KRED;
   else 
     return KBLU;
@@ -529,7 +530,7 @@ void insert_row(Ledger *ledger, int row){
 
 void remove_row(Ledger *ledger, int row){
   int i, j, recalculate;
-  float eps = 0.004;
+  
   
   if(ledger == NULL)
     return;
@@ -544,7 +545,7 @@ void remove_row(Ledger *ledger, int row){
     return;  
   }
 
-  recalculate = (abs(atof(ledger->text_content[0][row])) > eps);
+  recalculate = (abs(atof(ledger->text_content[0][row])) > EPS);
 
   if(ledger->n == 1){
     printf("Warning: can't remove the last row. Replacing it with a blank line.\n");
@@ -568,13 +569,13 @@ void remove_row(Ledger *ledger, int row){
 
 void trim_ledger(Ledger *ledger){
   int i;
-  float eps = 0.004;
+  
 
   if(ledger == NULL)
     return;
 
   for(i = (ledger->n - 1); i >= 0; --i)
-    if(abs(atof(ledger->text_content[0][i])) < eps)
+    if(abs(atof(ledger->text_content[0][i])) < EPS)
       remove_row(ledger, i);
 }
 
@@ -623,7 +624,7 @@ void rename_partition(Ledger *ledger, char *bank, char *from, char *to){
 
 void condense(Ledger **ledger){
   int i, j, k, new_n, row = 0;
-  double eps = 0.004, **local_partition_totals;
+  double **local_partition_totals;
   char status[FIELDSIZE], amount[FIELDSIZE];
   Ledger *newledger, *tmpledger;
   
@@ -686,7 +687,7 @@ void condense(Ledger **ledger){
        str_equal(status, PENDING) || 
        str_equal(status, LOCKED)){ 
       
-      if(abs(atof(amount)) > eps){
+      if(abs(atof(amount)) > EPS){
         for(j = 0; j < NFIELDS; ++j)
           strcpy(newledger->text_content[j][row], (*ledger)->text_content[j][i]);
         ++row;
@@ -696,7 +697,7 @@ void condense(Ledger **ledger){
    
   for(i = 0; i < (*ledger)->nbank; ++i)
     for(j = 0; j < (*ledger)->npartition[i]; ++j)
-      if(abs(local_partition_totals[i][j]) > eps){
+      if(abs(local_partition_totals[i][j]) > EPS){
         sprintf(amount, "%0.2f", local_partition_totals[i][j]);
         strcpy(newledger->text_content[0][row], amount);
         strcpy(newledger->text_content[3][row], (*ledger)->bank[i]);
@@ -961,7 +962,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
 
 void print_summary_to_stream(Ledger *ledger, FILE *fp){
   int i, j, l0, l1, l2, any = 0, anyp = 0;
-  double eps = 0.004;
+  
 
   if(ledger == NULL || fp == NULL)
     return;
@@ -969,9 +970,9 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
   fprintf(fp, "%s", KNRM);
 
   for(i = 0; i < ledger->ncredit; ++i){
-    l0 = (abs(ledger->credit_totals[i][0]) > eps);
-    l1 = (abs(ledger->credit_totals[i][1]) > eps);
-    l2 = (abs(ledger->credit_totals[i][2]) > eps);      
+    l0 = (abs(ledger->credit_totals[i][0]) > EPS);
+    l1 = (abs(ledger->credit_totals[i][1]) > EPS);
+    l2 = (abs(ledger->credit_totals[i][2]) > EPS);      
  
     if(l0 || l1 || l2){
       ++any;
@@ -1008,9 +1009,9 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
   }
           
   for(i = 0; i < ledger->nbank; ++i){
-    l0 = (abs(ledger->bank_totals[i][0]) > eps);
-    l1 = (abs(ledger->bank_totals[i][1]) > eps);
-    l2 = (abs(ledger->bank_totals[i][2]) > eps); 
+    l0 = (abs(ledger->bank_totals[i][0]) > EPS);
+    l1 = (abs(ledger->bank_totals[i][1]) > EPS);
+    l2 = (abs(ledger->bank_totals[i][2]) > EPS); 
   
     if(l0 || l1 || l2){
       ++any;
@@ -1046,7 +1047,7 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
 
     anyp = 0;
     for(j = 0; j < ledger->npartition[i]; ++j)
-      if(abs(ledger->partition_totals[i][j]) > eps){
+      if(abs(ledger->partition_totals[i][j]) > EPS){
         if(strlen(ledger->partition[i][j])){
           if(!anyp){
             fprintf(fp,"\n          Partitions:\n");
@@ -1055,7 +1056,7 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
           fprintf(fp,"%s%30.2f%s  %s\n", ksgn(ledger->partition_totals[i][j]), 
                   ledger->partition_totals[i][j], KNRM, ledger->partition[i][j]);
         }
-        else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][2]) > eps){
+        else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][2]) > EPS){
           if(!j) fprintf(fp, "\n");
           fprintf(fp,"%s%30.2f%s  unpartitioned\n", ksgn(ledger->partition_totals[i][j]),
                   ledger->partition_totals[i][j], KNRM);
@@ -1069,7 +1070,7 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
 
 char *print_summary_to_string(Ledger *ledger){
   int i, j, l0, l1, l2, any = 0, anyp = 0;
-  double eps = 0.004;
+  
   char *s;
 
   if(ledger == NULL)
@@ -1078,9 +1079,9 @@ char *print_summary_to_string(Ledger *ledger){
   s = calloc(ledger->n * NFIELDS * FIELDSIZE, sizeof(char));
 
   for(i = 0; i < ledger->ncredit; ++i){
-    l0 = (abs(ledger->credit_totals[i][0]) > eps);
-    l1 = (abs(ledger->credit_totals[i][1]) > eps);
-    l2 = (abs(ledger->credit_totals[i][2]) > eps);      
+    l0 = (abs(ledger->credit_totals[i][0]) > EPS);
+    l1 = (abs(ledger->credit_totals[i][1]) > EPS);
+    l2 = (abs(ledger->credit_totals[i][2]) > EPS);      
  
     if(l0 || l1 || l2){
       ++any;
@@ -1119,9 +1120,9 @@ char *print_summary_to_string(Ledger *ledger){
   }     
           
   for(i = 0; i < ledger->nbank; ++i){
-    l0 = (abs(ledger->bank_totals[i][0]) > eps);
-    l1 = (abs(ledger->bank_totals[i][1]) > eps);
-    l2 = (abs(ledger->bank_totals[i][2]) > eps); 
+    l0 = (abs(ledger->bank_totals[i][0]) > EPS);
+    l1 = (abs(ledger->bank_totals[i][1]) > EPS);
+    l2 = (abs(ledger->bank_totals[i][2]) > EPS); 
   
     if(l0 || l1 || l2){
       ++any;
@@ -1157,7 +1158,7 @@ char *print_summary_to_string(Ledger *ledger){
 
     anyp = 0;
     for(j = 0; j < ledger->npartition[i]; ++j)
-      if(abs(ledger->partition_totals[i][j]) > eps){
+      if(abs(ledger->partition_totals[i][j]) > EPS){
         if(strlen(ledger->partition[i][j])){
           if(!anyp){
             sprintf(s,"%s\n          Partitions:\n",s);
@@ -1166,7 +1167,7 @@ char *print_summary_to_string(Ledger *ledger){
           sprintf(s,"%s%s%30.2f%s  %s\n",s, ksgn(ledger->partition_totals[i][j]), 
                   ledger->partition_totals[i][j], KNRM, ledger->partition[i][j]);
         }
-        else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][2]) > eps){
+        else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][2]) > EPS){
           if(!j) sprintf(s, "%s\n",s);
           sprintf(s,"%s%s%30.2f%s  unpartitioned\n",s, ksgn(ledger->partition_totals[i][j]),
                   ledger->partition_totals[i][j], KNRM);
