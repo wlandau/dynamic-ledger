@@ -29,6 +29,18 @@
 #define LINESIZE 4096
 #define FILENAMESIZE 256
 
+#define AMOUNT 0
+#define STATUS 1
+#define CREDIT 2
+#define BANK 3
+#define PARTITION 4
+#define DESCRIPTION 5
+
+#define TOT_NOTTHEREYET 0
+#define TOT_PENDING 1
+#define TOT_CLEARED 2
+#define TOT_OVERALL 3
+
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
 #define KGRN  "\x1B[32m"
@@ -261,7 +273,7 @@ int legal_amounts(Ledger *ledger){
     return 1;
 
   for(i = 0; i < ledger->n; ++i)
-    if(check_legal_double(ledger->text_content[0][i], i))
+    if(check_legal_double(ledger->text_content[AMOUNT][i], i))
       return 1;
 
   return 0;
@@ -332,13 +344,13 @@ void get_names(Ledger *ledger){
 
   for(i = 0; i < ledger->n; ++i){
     s[i] = calloc(FIELDSIZE, sizeof(char));
-    strcpy(s[i], ledger->text_content[2][i]);
+    strcpy(s[i], ledger->text_content[CREDIT][i]);
   }
      
   unique(s, ledger->n, &ledger->credit, &ledger->ncredit);
     
   for(i = 0; i < ledger->n; ++i)
-    strcpy(s[i], ledger->text_content[3][i]);
+    strcpy(s[i], ledger->text_content[BANK][i]);
   
   unique(s, ledger->n, &ledger->bank, &ledger->nbank);
   
@@ -347,8 +359,8 @@ void get_names(Ledger *ledger){
         
   for(i = 0; i < ledger->nbank; ++i){
     for(j = 0; j < ledger->n; ++j){         
-      strcpy(s[j], ledger->text_content[4][j]);
-      if(!str_equal(ledger->bank[i], ledger->text_content[3][j]))
+      strcpy(s[j], ledger->text_content[PARTITION][j]);
+      if(!str_equal(ledger->bank[i], ledger->text_content[BANK][j]))
         strcpy(s[j], NIL);
     }
      
@@ -378,8 +390,8 @@ void get_totals(Ledger *ledger){
     ledger->partition_totals[i] = calloc(ledger->npartition[i], sizeof(double));
     
   for(i = 0; i < ledger->n; ++i){
-    status = ledger->text_content[1][i];
-    amount = atof(ledger->text_content[0][i]);
+    status = ledger->text_content[STATUS][i];
+    amount = atof(ledger->text_content[AMOUNT][i]);
 
     k = -1;
     if(str_equal(status, CREDIT_NOTTHEREYET)){
@@ -392,7 +404,7 @@ void get_totals(Ledger *ledger){
 
     if(k != -1)
       for(j = 0; j < ledger->ncredit; ++j) 
-        if(str_equal(ledger->text_content[2][i], ledger->credit[j])){
+        if(str_equal(ledger->text_content[CREDIT][i], ledger->credit[j])){
           ledger->credit_totals[j][k] += amount;
           break;
         }
@@ -409,11 +421,11 @@ void get_totals(Ledger *ledger){
     }
     
     for(j = 0; j < ledger->nbank; ++j){
-      if(str_equal(ledger->text_content[3][i], ledger->bank[j])){
+      if(str_equal(ledger->text_content[BANK][i], ledger->bank[j])){
         ledger->bank_totals[j][k] += amount;
 
         for(k = 0; k < ledger->npartition[j]; ++k){
-          if(str_equal(ledger->text_content[4][i], ledger->partition[j][k])){
+          if(str_equal(ledger->text_content[PARTITION][i], ledger->partition[j][k])){
             ledger->partition_totals[j][k] += amount;
             break;
           }
@@ -545,7 +557,7 @@ void remove_row(Ledger *ledger, int row){
     return;  
   }
 
-  recalculate = (abs(atof(ledger->text_content[0][row])) > EPS);
+  recalculate = (abs(atof(ledger->text_content[AMOUNT][row])) > EPS);
 
   if(ledger->n == 1){
     printf("Warning: can't remove the last row. Replacing it with a blank line.\n");
@@ -575,7 +587,7 @@ void trim_ledger(Ledger *ledger){
     return;
 
   for(i = (ledger->n - 1); i >= 0; --i)
-    if(abs(atof(ledger->text_content[0][i])) < EPS)
+    if(abs(atof(ledger->text_content[AMOUNT][i])) < EPS)
       remove_row(ledger, i);
 }
 
@@ -586,8 +598,8 @@ void rename_credit(Ledger *ledger, char *from, char *to){
     return;
 
   for(i = 0; i < ledger->n; ++i)
-    if(str_equal(ledger->text_content[2][i], from))
-      strcpy(ledger->text_content[2][i], to);
+    if(str_equal(ledger->text_content[CREDIT][i], from))
+      strcpy(ledger->text_content[CREDIT][i], to);
   free_for_retotal(ledger);
   get_names(ledger);
   get_totals(ledger);   
@@ -600,8 +612,8 @@ void rename_bank(Ledger *ledger, char *from, char *to){
     return;
   
   for(i = 0; i < ledger->n; ++i)
-    if(str_equal(ledger->text_content[3][i], from))
-      strcpy(ledger->text_content[3][i], to);
+    if(str_equal(ledger->text_content[BANK][i], from))
+      strcpy(ledger->text_content[BANK][i], to);
   free_for_retotal(ledger);
   get_names(ledger);
   get_totals(ledger);   
@@ -614,9 +626,9 @@ void rename_partition(Ledger *ledger, char *bank, char *from, char *to){
     return;
   
   for(i = 0; i < ledger->n; ++i)
-    if(str_equal(ledger->text_content[3][i], bank) && 
-       str_equal(ledger->text_content[4][i], from))
-      strcpy(ledger->text_content[4][i], to);
+    if(str_equal(ledger->text_content[BANK][i], bank) && 
+       str_equal(ledger->text_content[PARTITION][i], from))
+      strcpy(ledger->text_content[PARTITION][i], to);
   free_for_retotal(ledger);
   get_names(ledger);
   get_totals(ledger);   
@@ -639,8 +651,8 @@ void condense(Ledger **ledger){
   }
 
   for(i = 0; i < (*ledger)->n; ++i){
-    strcpy(status, (*ledger)->text_content[1][i]);
-    strcpy(amount, (*ledger)->text_content[0][i]);
+    strcpy(status, (*ledger)->text_content[STATUS][i]);
+    strcpy(amount, (*ledger)->text_content[AMOUNT][i]);
   
     if(str_equal(status, CREDIT_NOTTHEREYET) || 
        str_equal(status, CREDIT_PENDING) || 
@@ -650,9 +662,9 @@ void condense(Ledger **ledger){
        str_equal(status, LOCKED)){ 
 
       for(j = 0; j < (*ledger)->nbank; ++j)
-        if(str_equal((*ledger)->text_content[3][i], (*ledger)->bank[j])){
+        if(str_equal((*ledger)->text_content[BANK][i], (*ledger)->bank[j])){
          for(k = 0; k < (*ledger)->npartition[j]; ++k){
-            if(str_equal((*ledger)->text_content[4][i], (*ledger)->partition[j][k])){
+            if(str_equal((*ledger)->text_content[PARTITION][i], (*ledger)->partition[j][k])){
               local_partition_totals[j][k] -= atof(amount);
               
               break;
@@ -668,7 +680,7 @@ void condense(Ledger **ledger){
   
   new_n = 0;
   for(i = 0; i < (*ledger)->n; ++i)
-    new_n += (strlen((*ledger)->text_content[1][i]) > 0);
+    new_n += (strlen((*ledger)->text_content[STATUS][i]) > 0);
 
   for(i = 0; i < (*ledger)->nbank; ++i)
     new_n += (*ledger)->npartition[i];
@@ -677,8 +689,8 @@ void condense(Ledger **ledger){
   alloc_text_content(newledger);  
   
   for(i = 0; i < (*ledger)->n; ++i){
-    strcpy(status, (*ledger)->text_content[1][i]);
-    strcpy(amount, (*ledger)->text_content[0][i]);
+    strcpy(status, (*ledger)->text_content[STATUS][i]);
+    strcpy(amount, (*ledger)->text_content[AMOUNT][i]);
   
     if(str_equal(status, CREDIT_NOTTHEREYET) || 
        str_equal(status, CREDIT_PENDING) || 
@@ -699,10 +711,10 @@ void condense(Ledger **ledger){
     for(j = 0; j < (*ledger)->npartition[i]; ++j)
       if(abs(local_partition_totals[i][j]) > EPS){
         sprintf(amount, "%0.2f", local_partition_totals[i][j]);
-        strcpy(newledger->text_content[0][row], amount);
-        strcpy(newledger->text_content[3][row], (*ledger)->bank[i]);
-        strcpy(newledger->text_content[4][row], (*ledger)->partition[i][j]);
-        strcpy(newledger->text_content[5][row], "condensed");
+        strcpy(newledger->text_content[AMOUNT][row], amount);
+        strcpy(newledger->text_content[BANK][row], (*ledger)->bank[i]);
+        strcpy(newledger->text_content[PARTITION][row], (*ledger)->partition[i][j]);
+        strcpy(newledger->text_content[DESCRIPTION][row], "condensed");
         ++row;
       }
 
@@ -876,7 +888,7 @@ void print_ledger_to_stream(Ledger *ledger, FILE *fp){
   
   fprintf(fp, "amount\tstatus\tcredit\tbank\tpartition\tdescription\n");
   for(i = 0; i < ledger->n; ++i){
-    amount = atof(ledger->text_content[0][i]);
+    amount = atof(ledger->text_content[AMOUNT][i]);
     fprintf(fp, "%0.2f", amount);
     for(j = 1; j < NFIELDS; ++j)
       fprintf(fp, "\t%s", ledger->text_content[j][i]);
@@ -901,7 +913,7 @@ char *print_ledger_to_string(Ledger *ledger){
   s = calloc(n + strlen(header), sizeof(char));
   strcat(s, header);
   for(j = 0; j < ledger->n; ++j){
-    strcat(s, ledger->text_content[0][j]);
+    strcat(s, ledger->text_content[AMOUNT][j]);
     
     for(i = 1; i < NFIELDS; ++i){
       strcat(s, "\t");
