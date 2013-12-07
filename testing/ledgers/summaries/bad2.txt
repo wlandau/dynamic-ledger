@@ -1,0 +1,3 @@
+Error: bad number "sdlkfj" at row 22 column 2.
+Fix your ledger file.
+Exiting.

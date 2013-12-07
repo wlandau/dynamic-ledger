@@ -99,7 +99,7 @@ int bad_output_file(const char *filename);
 int check_legal_double(char *s, int row);
 int check_legal_double_modify_entry(char *s);
 int contains_tabs(char *s);
-const char *get_color(double);
+const char *get_color(double);                              /* ADD OPTION TO DISABLE COLORS */
 int is_space(char c);
 int legal_amounts(Ledger *ledger);
 int qcmp(const void *a, const void *b);
@@ -196,13 +196,13 @@ err_t print_ledger_sl(FILE *fp, Ledger **ledger);                           /* N
  *** FUNCTIONS TO OUTPUT SUMMARIES OF LEDGER OBJECTS ***********************************
  ***************************************************************************************/
 
-err_t init_summary(Ledger *ledger, char **s);								/* NEED TO IMPLEMENT */
-err_t print_totals(float *totals, char **s); 								/* NEED TO IMPLEMENT ***/
-err_t print_partitions(char **partition, int npartition, char **s); 			/* NEED TO IMPLEMENT ***/
-err_t print_banks(Ledger *ledger, char **s);							/* NEED TO IMPLEMENT ***/
-err_t print_credits(Ledger *ledger, char **s);								/* NEED TO IMPLEMENT ***/
+err_t init_summary(Ledger *ledger, char **s);								/* NEED TO IMPLEMENT */  /* ADD OPTION TO DISABLE COLORS */    /* TRIM AFTERWARDS */
+err_t print_totals(float *totals, char **s); 								/* NEED TO IMPLEMENT ***/  /* ADD OPTION TO DISABLE COLORS */     /* TRIM AFTERWARDS */
+err_t print_partitions(char **partition, int npartition, char **s); 			/* NEED TO IMPLEMENT ***/  /* ADD OPTION TO DISABLE COLORS */    /* TRIM AFTERWARDS */
+err_t print_banks(Ledger *ledger, char **s);							/* NEED TO IMPLEMENT ***/  /* ADD OPTION TO DISABLE COLORS */        /* TRIM AFTERWARDS */
+err_t print_credits(Ledger *ledger, char **s);								/* NEED TO IMPLEMENT ***/  /* ADD OPTION TO DISABLE COLORS */    /* TRIM AFTERWARDS */
 
-err_t print_summary_to_filename(Ledger *ledger, const char *filename);     /* NEED TO IMPLEMENT ***/
+err_t print_summary_to_filename(Ledger *ledger, const char *filename);     /* NEED TO IMPLEMENT ***/ /* ADD OPTION TO DISABLE COLORS */      /* TRIM AFTERWARDS */
 void print_summary_to_stream(Ledger *ledger, FILE *fp);                     
 char *print_summary_to_string(Ledger *ledger);
 int summarize_file_to_stream(const char* filename, FILE *fp);                         /* REMOVE WHEN READY */

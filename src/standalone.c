@@ -14,12 +14,12 @@
 int standalone(int argc, char **argv){
   if(argc == 2){
     if(summarize_file_to_stream(argv[1], stdout)){
-      printf("Exiting.\n");
+      fprintf(stderr, "Exiting.\n");
       return 1;
     }
   } else if(argc == 3){
     if(condense_and_print(argv[1], argv[2])){
-      printf("No output produced.\nExiting.\n");
+      fprintf(stderr, "No output produced.\nExiting.\n");
       return 1;
     }
   } else{

@@ -1,0 +1,16 @@
+amount	status	credit	bank	partition	description
+-15.36	cn	ch	cp	a	hyvee
+-7.31	cp	ch	cp	a	hyvee
+305.26	cp		cp	a	banana
+112.21	c		cp	b	hihohiho
+2114.56	l		cp	r	wiggles
+3553.04	l		cps		Goodfried
+256.03			bank	c	condensed
+138.33			bank	d	condensed
+305.26			cp	a	condensed
+112.21			cp	b	condensed
+512.06			cp	c	condensed
+276.66			cp	d	condensed
+270.00			cp	knee	condensed
+4229.12			cp	r	condensed
+7106.08			cps		condensed

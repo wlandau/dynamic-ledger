@@ -1,0 +1,2 @@
+amount	status	credit	bank	partition	description
+90.00					condensed

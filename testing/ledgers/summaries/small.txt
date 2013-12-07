@@ -1,0 +1,7 @@
+[0m
+Bank account with no name
+
+          Balances:
+[32m                         90.00[0m  true balance
+                                All charges cleared.
+
