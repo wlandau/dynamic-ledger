@@ -20,24 +20,24 @@
 
 
 /*************************************************************************************** 
+ *** USER-DEFINED COLUMN ASSIGNMENTS IN LEDGER FILE. ***********************************
+ *** MUST INCLUDE ALL THE NUMBERS FROM 0 TO 5 INCLUSIVE. *******************************
+ ***************************************************************************************/
+
+#define AMOUNT        0   /*** COLUMN FOR TRANSACTION AMOUNTS ************/
+#define STATUS        1   /*** COLUMN FOR TRANSACTION STATUS CODES *******/
+#define CREDIT        2   /*** COLUMN FOR NAMES OF CREDIT ACCOUNTS *******/
+#define BANK          3   /*** COLUMN FOR NAMES OF BANK ACCOUNTS *********/       
+#define PARTITION     4   /*** COLUMN FOR NAMES OF BANK PARTITIONS *******/
+#define DESCRIPTION   5   /*** COLUMN FOR DESCRIPTIONS OF TRANSACTIONS ***/
+
+
+/*************************************************************************************** 
  *** USER-DEFINED ROW AND COLUMN SEPARATORS ********************************************
  ***************************************************************************************/
 
 #define ROW_SEPARATORS    "\n\r"													/* NEED TO IMPLEMENT */
 #define COLUMN_SEPARATORS "\t"          										/* NEED TO IMPLEMENT */
-
-
-/*************************************************************************************** 
- *** USER-DEFINED COLUMN ASSIGNMENTS IN LEDGER FILE. ***********************************
- *** MUST INCLUDE ALL THE NUMBERS FROM 0 TO 5 INCLUSIVE. *******************************
- ***************************************************************************************/
-
-#define AMOUNT        0   /*** TRANSACTION AMOUNTS ************/
-#define STATUS        1   /*** TRANSACTION STATUS CODES *******/
-#define CREDIT        2   /*** NAMES OF CREDIT ACCOUNTS *******/
-#define BANK          3   /*** NAMES OF BANK ACCOUNTS *********/       
-#define PARTITION     4   /*** NAMES OF BANK PARTITIONS *******/
-#define DESCRIPTION   5   /*** DESCRIPTIONS OF TRANSACTIONS ***/
 
 
 /*************************************************************************************** 
