@@ -13,7 +13,7 @@
 
 Ledger *get_ledger_from_string(char *s){
   Ledger *ledger = calloc(1, sizeof(Ledger));
-  if(get_text_content_from_string(ledger, s)){
+  if(get_entries_from_string(ledger, s)){
     free_ledger(ledger);
     return NULL;
   }

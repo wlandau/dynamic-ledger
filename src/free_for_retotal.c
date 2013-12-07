@@ -17,53 +17,53 @@ void free_for_retotal(Ledger *ledger){
   if(ledger == NULL)
     return;
   
-  if(ledger->partition != NULL){
-    for(i = 0; i < ledger->nbank; ++i){
-      if(ledger->partition[i] != NULL){
-        for(j = 0; j < ledger->npartition[i]; ++j)
-          if(ledger->partition[i][j] != NULL)
-            free(ledger->partition[i][j]);
-        free(ledger->partition[i]);
+  if(ledger->partitions != NULL){
+    for(i = 0; i < ledger->nbanks; ++i){
+      if(ledger->partitions[i] != NULL){
+        for(j = 0; j < ledger->npartitions[i]; ++j)
+          if(ledger->partitions[i][j] != NULL)
+            free(ledger->partitions[i][j]);
+        free(ledger->partitions[i]);
       }
     }
-    free(ledger->partition);
+    free(ledger->partitions);
   }
   
   if(ledger->partition_totals != NULL){
-    for(i = 0; i < ledger->nbank; ++i)
+    for(i = 0; i < ledger->nbanks; ++i)
       if(ledger->partition_totals[i] != NULL)
         free(ledger->partition_totals[i]);
     free(ledger->partition_totals);
   }
 
-  if(ledger->credit != NULL){
-    for(i = 0; i < ledger->ncredit; ++i)
-      if(ledger->credit[i] != NULL)
-        free(ledger->credit[i]);
-    free(ledger->credit); 
+  if(ledger->credits != NULL){
+    for(i = 0; i < ledger->ncredits; ++i)
+      if(ledger->credits[i] != NULL)
+        free(ledger->credits[i]);
+    free(ledger->credits); 
   }
 
   if(ledger->credit_totals != NULL){
-    for(i = 0; i < ledger->ncredit; ++i)
+    for(i = 0; i < ledger->ncredits; ++i)
       if(ledger->credit_totals[i] != NULL)
         free(ledger->credit_totals[i]);
     free(ledger->credit_totals); 
   }    
 
-  if(ledger->bank != NULL){
-    for(i = 0; i < ledger->nbank; ++i)
-      if(ledger->bank[i] != NULL)
-        free(ledger->bank[i]);
-    free(ledger->bank);
+  if(ledger->banks != NULL){
+    for(i = 0; i < ledger->nbanks; ++i)
+      if(ledger->banks[i] != NULL)
+        free(ledger->banks[i]);
+    free(ledger->banks);
   }
 
   if(ledger->bank_totals != NULL){
-    for(i = 0; i < ledger->nbank; ++i)
+    for(i = 0; i < ledger->nbanks; ++i)
       if(ledger->bank_totals[i] != NULL)
         free(ledger->bank_totals[i]);
     free(ledger->bank_totals);
   }
 
-  if(ledger->npartition != NULL)
-    free(ledger->npartition);
+  if(ledger->npartitions != NULL)
+    free(ledger->npartitions);
 }

@@ -19,11 +19,11 @@ void print_ledger_to_stream(Ledger *ledger, FILE *fp){
     return;
   
   fprintf(fp, "amount\tstatus\tcredit\tbank\tpartition\tdescription\n");
-  for(i = 0; i < ledger->n; ++i){
-    amount = atof(ledger->text_content[AMOUNT][i]);
+  for(i = 0; i < ledger->nrows; ++i){
+    amount = atof(ledger->entries[AMOUNT][i]);
     fprintf(fp, "%0.2f", amount);
     for(j = 1; j < NFIELDS; ++j)
-      fprintf(fp, "\t%s", ledger->text_content[j][i]);
+      fprintf(fp, "\t%s", ledger->entries[j][i]);
     fprintf(fp, "\n");
   }
 }

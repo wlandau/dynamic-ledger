@@ -13,34 +13,34 @@
 
 void get_names(Ledger *ledger){
   int i, j;
-  char **s = malloc(ledger->n * sizeof(char*));
+  char **s = malloc(ledger->nrows * sizeof(char*));
 
-  for(i = 0; i < ledger->n; ++i){
+  for(i = 0; i < ledger->nrows; ++i){
     s[i] = calloc(ENTRYSIZE, sizeof(char));
-    strcpy(s[i], ledger->text_content[CREDIT][i]);
+    strcpy(s[i], ledger->entries[CREDIT][i]);
   }
      
-  unique(s, ledger->n, &ledger->credit, &ledger->ncredit);
+  unique(s, ledger->nrows, &ledger->credits, &ledger->ncredits);
     
-  for(i = 0; i < ledger->n; ++i)
-    strcpy(s[i], ledger->text_content[BANK][i]);
+  for(i = 0; i < ledger->nrows; ++i)
+    strcpy(s[i], ledger->entries[BANK][i]);
   
-  unique(s, ledger->n, &ledger->bank, &ledger->nbank);
+  unique(s, ledger->nrows, &ledger->banks, &ledger->nbanks);
   
-  ledger->npartition = calloc(ledger->nbank, sizeof(int*));
-  ledger->partition = malloc(ledger->nbank * sizeof(char***));
+  ledger->npartitions = calloc(ledger->nbanks, sizeof(int*));
+  ledger->partitions = malloc(ledger->nbanks * sizeof(char***));
         
-  for(i = 0; i < ledger->nbank; ++i){
-    for(j = 0; j < ledger->n; ++j){         
-      strcpy(s[j], ledger->text_content[PARTITION][j]);
-      if(!str_equal(ledger->bank[i], ledger->text_content[BANK][j]))
+  for(i = 0; i < ledger->nbanks; ++i){
+    for(j = 0; j < ledger->nrows; ++j){         
+      strcpy(s[j], ledger->entries[PARTITION][j]);
+      if(!str_equal(ledger->banks[i], ledger->entries[BANK][j]))
         strcpy(s[j], NIL);
     }
      
-    unique(s, ledger->n, &(ledger->partition[i]), &(ledger->npartition[i]));
+    unique(s, ledger->nrows, &(ledger->partitions[i]), &(ledger->npartitions[i]));
   }
   
-  for(i = 0; i < ledger->n; ++i)
+  for(i = 0; i < ledger->nrows; ++i)
     free(s[i]);
   free(s);
 }

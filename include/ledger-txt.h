@@ -84,8 +84,8 @@
 typedef int err_t;
 
 typedef struct {
-  char *filename, **bank, **credit, ***partition, ***text_content;
-  int n, nbank, ncredit, *npartition;                                      /* change n to nrows */
+  char *filename, **banks, **credits, ***partitions, ***entries;
+  int nrows, nbanks, ncredits, *npartitions; 
   double **bank_totals, **credit_totals, **partition_totals;            
 } Ledger;
 
@@ -114,7 +114,7 @@ int which(const char **);										/**NEED TO IMPLEMENT AND ADD TO CONDENSE & OT
  *** FUNCTIONS TO CREATE, INITIALIZE, AND DESTROY LEDGER OBJECTS ***********************
  ***************************************************************************************/
 
-void alloc_text_content(Ledger*);
+void alloc_entries(Ledger*);
 void free_ledger(Ledger*);
 void free_for_retotal(Ledger*);
 void get_names(Ledger *ledger);
@@ -158,8 +158,8 @@ void trim_ledger_str(char **s);
 Ledger *get_ledger_from_filename(const char* filename);
 Ledger *get_ledger_from_stream(FILE *fp);
 Ledger *get_ledger_from_string(char *s);
-int get_text_content_from_stream(Ledger *ledger, FILE *fp);
-int get_text_content_from_string(Ledger *ledger, char *s);
+int get_entries_from_stream(Ledger *ledger, FILE *fp);
+int get_entries_from_string(Ledger *ledger, char *s);
 
 
 /*************************************************************************************** 

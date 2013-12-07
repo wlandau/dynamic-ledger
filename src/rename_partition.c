@@ -17,10 +17,10 @@ void rename_partition(Ledger *ledger, char *bank, char *from, char *to){
   if(ledger == NULL)
     return;
   
-  for(i = 0; i < ledger->n; ++i)
-    if(str_equal(ledger->text_content[BANK][i], bank) && 
-       str_equal(ledger->text_content[PARTITION][i], from))
-      strcpy(ledger->text_content[PARTITION][i], to);
+  for(i = 0; i < ledger->nrows; ++i)
+    if(str_equal(ledger->entries[BANK][i], bank) && 
+       str_equal(ledger->entries[PARTITION][i], from))
+      strcpy(ledger->entries[PARTITION][i], to);
   free_for_retotal(ledger);
   get_names(ledger);
   get_totals(ledger);   

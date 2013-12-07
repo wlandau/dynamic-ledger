@@ -16,21 +16,21 @@ void get_totals(Ledger *ledger){
   double amount;
   char *status;
 
-  ledger->credit_totals = calloc(ledger->ncredit, sizeof(double*));
-  for(i = 0; i < ledger->ncredit; ++i)
+  ledger->credit_totals = calloc(ledger->ncredits, sizeof(double*));
+  for(i = 0; i < ledger->ncredits; ++i)
     ledger->credit_totals[i] = calloc(4, sizeof(double));
       
-  ledger->bank_totals = calloc(ledger->nbank, sizeof(double*));  
-  for(i = 0; i < ledger->nbank; ++i)
+  ledger->bank_totals = calloc(ledger->nbanks, sizeof(double*));  
+  for(i = 0; i < ledger->nbanks; ++i)
     ledger->bank_totals[i] = calloc(4, sizeof(double));
   
-  ledger->partition_totals = malloc(ledger->nbank * sizeof(double*));
-  for(i = 0; i < ledger->nbank; ++i)
-    ledger->partition_totals[i] = calloc(ledger->npartition[i], sizeof(double));
+  ledger->partition_totals = malloc(ledger->nbanks * sizeof(double*));
+  for(i = 0; i < ledger->nbanks; ++i)
+    ledger->partition_totals[i] = calloc(ledger->npartitions[i], sizeof(double));
     
-  for(i = 0; i < ledger->n; ++i){
-    status = ledger->text_content[STATUS][i];
-    amount = atof(ledger->text_content[AMOUNT][i]);
+  for(i = 0; i < ledger->nrows; ++i){
+    status = ledger->entries[STATUS][i];
+    amount = atof(ledger->entries[AMOUNT][i]);
 
     k = -1;
     if(str_equal(status, CREDIT_NOT_THERE_YET)){
@@ -42,8 +42,8 @@ void get_totals(Ledger *ledger){
     } 
 
     if(k != -1)
-      for(j = 0; j < ledger->ncredit; ++j) 
-        if(str_equal(ledger->text_content[CREDIT][i], ledger->credit[j])){
+      for(j = 0; j < ledger->ncredits; ++j) 
+        if(str_equal(ledger->entries[CREDIT][i], ledger->credits[j])){
           ledger->credit_totals[j][k] += amount;
           break;
         }
@@ -59,12 +59,12 @@ void get_totals(Ledger *ledger){
       k = 2;
     }
     
-    for(j = 0; j < ledger->nbank; ++j){
-      if(str_equal(ledger->text_content[BANK][i], ledger->bank[j])){
+    for(j = 0; j < ledger->nbanks; ++j){
+      if(str_equal(ledger->entries[BANK][i], ledger->banks[j])){
         ledger->bank_totals[j][k] += amount;
 
-        for(k = 0; k < ledger->npartition[j]; ++k){
-          if(str_equal(ledger->text_content[PARTITION][i], ledger->partition[j][k])){
+        for(k = 0; k < ledger->npartitions[j]; ++k){
+          if(str_equal(ledger->entries[PARTITION][i], ledger->partitions[j][k])){
             ledger->partition_totals[j][k] += amount;
             break;
           }
@@ -75,11 +75,11 @@ void get_totals(Ledger *ledger){
     }
   }
   
-  for(j = 0; j < ledger->ncredit; ++j)
+  for(j = 0; j < ledger->ncredits; ++j)
     for(k = 0; k < 3; ++k)
       ledger->credit_totals[j][I_OVERALL] += ledger->credit_totals[j][k];
 
-  for(j = 0; j < ledger->nbank; ++j)
+  for(j = 0; j < ledger->nbanks; ++j)
     for(k = 0; k < 3; ++k){
       ledger->bank_totals[j][I_OVERALL] += ledger->bank_totals[j][k];
     }  

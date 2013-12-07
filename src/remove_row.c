@@ -17,29 +17,29 @@ void remove_row(Ledger *ledger, int row){
   if(ledger == NULL)
     return;
   
-  if(row < 0 || row >= ledger->n){
+  if(row < 0 || row >= ledger->nrows){
     printf("Error: illegal row index in remove_row().\n");
     return;
   }
   
-  if(ledger->n < 1){
+  if(ledger->nrows < 1){
     printf("Error: data already too small.\n");
     return;  
   }
 
-  recalculate = (abs(atof(ledger->text_content[AMOUNT][row])) > EPS);
+  recalculate = (abs(atof(ledger->entries[AMOUNT][row])) > EPS);
 
-  if(ledger->n == 1){
+  if(ledger->nrows == 1){
     printf("Warning: can't remove the last row. Replacing it with a blank line.\n");
     for(i = 0; i < NFIELDS; ++i)
-      strcpy(ledger->text_content[i][0], NIL);
+      strcpy(ledger->entries[i][0], NIL);
   } else {
     for(i = 0; i < NFIELDS; ++i){
-      for(j = row; j < (ledger->n - 1); ++j)
-        strcpy(ledger->text_content[i][j], ledger->text_content[i][j + 1]);
-      free(ledger->text_content[i][ledger->n - 1]);
+      for(j = row; j < (ledger->nrows - 1); ++j)
+        strcpy(ledger->entries[i][j], ledger->entries[i][j + 1]);
+      free(ledger->entries[i][ledger->nrows - 1]);
     }
-    --(ledger->n);
+    --(ledger->nrows);
   }
 
   if(recalculate){

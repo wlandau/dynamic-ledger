@@ -19,7 +19,7 @@ Ledger *get_ledger_from_stream(FILE *fp){
 
   ledger = calloc(1, sizeof(Ledger));
    
-  if(get_text_content_from_stream(ledger, fp)){
+  if(get_entries_from_stream(ledger, fp)){
     free_ledger(ledger);
     return NULL;
   } 

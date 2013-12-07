@@ -20,16 +20,16 @@ void condense(Ledger **ledger){
   if(ledger == NULL || *ledger == NULL)
     return;
 
-  local_partition_totals = malloc((*ledger)->nbank * sizeof(double*));
-  for(i = 0; i < (*ledger)->nbank; ++i){
-    local_partition_totals[i] = calloc((*ledger)->npartition[i], sizeof(double));  
-    for(j = 0; j < (*ledger)->npartition[i]; ++j)
+  local_partition_totals = malloc((*ledger)->nbanks * sizeof(double*));
+  for(i = 0; i < (*ledger)->nbanks; ++i){
+    local_partition_totals[i] = calloc((*ledger)->npartitions[i], sizeof(double));  
+    for(j = 0; j < (*ledger)->npartitions[i]; ++j)
       local_partition_totals[i][j] = (*ledger)->partition_totals[i][j];
   }
 
-  for(i = 0; i < (*ledger)->n; ++i){
-    strcpy(status, (*ledger)->text_content[STATUS][i]);
-    strcpy(amount, (*ledger)->text_content[AMOUNT][i]);
+  for(i = 0; i < (*ledger)->nrows; ++i){
+    strcpy(status, (*ledger)->entries[STATUS][i]);
+    strcpy(amount, (*ledger)->entries[AMOUNT][i]);
   
     if(str_equal(status, CREDIT_NOT_THERE_YET) || 
        str_equal(status, CREDIT_PENDING) || 
@@ -38,10 +38,10 @@ void condense(Ledger **ledger){
        str_equal(status, PENDING) ||
        str_equal(status, LOCKED)){ 
 
-      for(j = 0; j < (*ledger)->nbank; ++j)
-        if(str_equal((*ledger)->text_content[BANK][i], (*ledger)->bank[j])){
-         for(k = 0; k < (*ledger)->npartition[j]; ++k){
-            if(str_equal((*ledger)->text_content[PARTITION][i], (*ledger)->partition[j][k])){
+      for(j = 0; j < (*ledger)->nbanks; ++j)
+        if(str_equal((*ledger)->entries[BANK][i], (*ledger)->banks[j])){
+         for(k = 0; k < (*ledger)->npartitions[j]; ++k){
+            if(str_equal((*ledger)->entries[PARTITION][i], (*ledger)->partitions[j][k])){
               local_partition_totals[j][k] -= atof(amount);
               
               break;
@@ -56,18 +56,18 @@ void condense(Ledger **ledger){
   newledger->filename = NULL;
   
   new_n = 0;
-  for(i = 0; i < (*ledger)->n; ++i)
-    new_n += (strlen((*ledger)->text_content[STATUS][i]) > 0);
+  for(i = 0; i < (*ledger)->nrows; ++i)
+    new_n += (strlen((*ledger)->entries[STATUS][i]) > 0);
 
-  for(i = 0; i < (*ledger)->nbank; ++i)
-    new_n += (*ledger)->npartition[i];
+  for(i = 0; i < (*ledger)->nbanks; ++i)
+    new_n += (*ledger)->npartitions[i];
 
-  newledger->n = new_n;
-  alloc_text_content(newledger);  
+  newledger->nrows = new_n;
+  alloc_entries(newledger);  
   
-  for(i = 0; i < (*ledger)->n; ++i){
-    strcpy(status, (*ledger)->text_content[STATUS][i]);
-    strcpy(amount, (*ledger)->text_content[AMOUNT][i]);
+  for(i = 0; i < (*ledger)->nrows; ++i){
+    strcpy(status, (*ledger)->entries[STATUS][i]);
+    strcpy(amount, (*ledger)->entries[AMOUNT][i]);
   
     if(str_equal(status, CREDIT_NOT_THERE_YET) || 
        str_equal(status, CREDIT_PENDING) || 
@@ -78,24 +78,24 @@ void condense(Ledger **ledger){
       
       if(abs(atof(amount)) > EPS){
         for(j = 0; j < NFIELDS; ++j)
-          strcpy(newledger->text_content[j][row], (*ledger)->text_content[j][i]);
+          strcpy(newledger->entries[j][row], (*ledger)->entries[j][i]);
         ++row;
       }
     }
   } 
    
-  for(i = 0; i < (*ledger)->nbank; ++i)
-    for(j = 0; j < (*ledger)->npartition[i]; ++j)
+  for(i = 0; i < (*ledger)->nbanks; ++i)
+    for(j = 0; j < (*ledger)->npartitions[i]; ++j)
       if(abs(local_partition_totals[i][j]) > EPS){
         sprintf(amount, "%0.2f", local_partition_totals[i][j]);
-        strcpy(newledger->text_content[AMOUNT][row], amount);
-        strcpy(newledger->text_content[BANK][row], (*ledger)->bank[i]);
-        strcpy(newledger->text_content[PARTITION][row], (*ledger)->partition[i][j]);
-        strcpy(newledger->text_content[DESCRIPTION][row], "condensed");
+        strcpy(newledger->entries[AMOUNT][row], amount);
+        strcpy(newledger->entries[BANK][row], (*ledger)->banks[i]);
+        strcpy(newledger->entries[PARTITION][row], (*ledger)->partitions[i][j]);
+        strcpy(newledger->entries[DESCRIPTION][row], "condensed");
         ++row;
       }
 
-  for(i = 0; i < (*ledger)->nbank; ++i)
+  for(i = 0; i < (*ledger)->nbanks; ++i)
     free(local_partition_totals[i]);  
   free(local_partition_totals); 
 

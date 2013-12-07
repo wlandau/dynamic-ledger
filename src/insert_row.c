@@ -18,35 +18,35 @@ void insert_row(Ledger *ledger, int row){
   if(ledger == NULL)
     return;
     
-  if(row < 0 || row > ledger->n){
+  if(row < 0 || row > ledger->nrows){
     printf("Error: illegal row index in insert_row().\n");
     return;
   }
 
   x = malloc(NFIELDS * sizeof(char**));
   for(i = 0; i < NFIELDS; ++i){
-    x[i] = malloc((ledger->n + 1) * sizeof(char*));
-    for(j = 0; j < (ledger->n + 1); ++j)
+    x[i] = malloc((ledger->nrows + 1) * sizeof(char*));
+    for(j = 0; j < (ledger->nrows + 1); ++j)
       x[i][j] = calloc(ENTRYSIZE, sizeof(char));
   }
 
   for(i = 0; i < NFIELDS; ++i){
     for(j = 0; j < row; ++j)
-      strcpy(x[i][j], ledger->text_content[i][j]);
+      strcpy(x[i][j], ledger->entries[i][j]);
 
     strcpy(x[i][row], NIL);
 
-    for(j = row + 1; j < (ledger->n + 1); ++j)
-      strcpy(x[i][j], ledger->text_content[i][j - 1]);
+    for(j = row + 1; j < (ledger->nrows + 1); ++j)
+      strcpy(x[i][j], ledger->entries[i][j - 1]);
   }
 
-  tmp = ledger->text_content;
-  ledger->text_content = x;
+  tmp = ledger->entries;
+  ledger->entries = x;
   
   if(tmp != NULL){
     for(i = 0; i < NFIELDS; ++i){
       if(tmp[i] != NULL){
-        for(j = 0; j < ledger->n; ++j)
+        for(j = 0; j < ledger->nrows; ++j)
           if(tmp[i][j] != NULL)
             free(tmp[i][j]);
         free(tmp[i]);
@@ -55,6 +55,6 @@ void insert_row(Ledger *ledger, int row){
     free(tmp);
   }
   
-  ++(ledger->n); 
+  ++(ledger->nrows); 
 }
 

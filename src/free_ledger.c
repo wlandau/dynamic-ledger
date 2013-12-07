@@ -20,16 +20,16 @@ void free_ledger(Ledger *ledger){
   if(ledger->filename != NULL)
     free(ledger->filename);
     
-  if(ledger->text_content != NULL){
+  if(ledger->entries != NULL){
     for(i = 0; i < NFIELDS; ++i){
-      if(ledger->text_content[i] != NULL){
-        for(j = 0; j < ledger->n; ++j)
-          if(ledger->text_content[i][j] != NULL)
-            free(ledger->text_content[i][j]);
-        free(ledger->text_content[i]);
+      if(ledger->entries[i] != NULL){
+        for(j = 0; j < ledger->nrows; ++j)
+          if(ledger->entries[i][j] != NULL)
+            free(ledger->entries[i][j]);
+        free(ledger->entries[i]);
       }
     }
-    free(ledger->text_content);
+    free(ledger->entries);
   }
   
   free_for_retotal(ledger);

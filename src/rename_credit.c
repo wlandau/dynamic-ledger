@@ -17,9 +17,9 @@ void rename_credit(Ledger *ledger, char *from, char *to){
   if(ledger == NULL)
     return;
 
-  for(i = 0; i < ledger->n; ++i)
-    if(str_equal(ledger->text_content[CREDIT][i], from))
-      strcpy(ledger->text_content[CREDIT][i], to);
+  for(i = 0; i < ledger->nrows; ++i)
+    if(str_equal(ledger->entries[CREDIT][i], from))
+      strcpy(ledger->entries[CREDIT][i], to);
   free_for_retotal(ledger);
   get_names(ledger);
   get_totals(ledger);   

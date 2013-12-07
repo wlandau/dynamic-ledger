@@ -17,7 +17,7 @@ void trim_ledger(Ledger *ledger){
   if(ledger == NULL)
     return;
 
-  for(i = (ledger->n - 1); i >= 0; --i)
-    if(abs(atof(ledger->text_content[AMOUNT][i])) < EPS)
+  for(i = (ledger->nrows - 1); i >= 0; --i)
+    if(abs(atof(ledger->entries[AMOUNT][i])) < EPS)
       remove_row(ledger, i);
 }

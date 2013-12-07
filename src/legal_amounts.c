@@ -17,8 +17,8 @@ int legal_amounts(Ledger *ledger){
   if(ledger == NULL)
     return 1;
 
-  for(i = 0; i < ledger->n; ++i)
-    if(check_legal_double(ledger->text_content[AMOUNT][i], i))
+  for(i = 0; i < ledger->nrows; ++i)
+    if(check_legal_double(ledger->entries[AMOUNT][i], i))
       return 1;
 
   return 0;

@@ -19,17 +19,17 @@ char *print_summary_to_string(Ledger *ledger){
   if(ledger == NULL)
     return NULL;
     
-  s = calloc(ledger->n * NFIELDS * ENTRYSIZE, sizeof(char));
+  s = calloc(ledger->nrows * NFIELDS * ENTRYSIZE, sizeof(char));
 
-  for(i = 0; i < ledger->ncredit; ++i){
+  for(i = 0; i < ledger->ncredits; ++i){
     l0 = (abs(ledger->credit_totals[i][I_NOT_THERE_YET]) > EPS);
     l1 = (abs(ledger->credit_totals[i][I_PENDING]) > EPS);
     l2 = (abs(ledger->credit_totals[i][I_CLEARED]) > EPS);      
  
     if(l0 || l1 || l2){
       ++any;
-      if(strlen(ledger->credit[i]))
-        sprintf(s,"%s\nCredit account: %s\n\n", s, ledger->credit[i]);
+      if(strlen(ledger->credits[i]))
+        sprintf(s,"%s\nCredit account: %s\n\n", s, ledger->credits[i]);
       else
         sprintf(s,"%s\nCredit account with no name:\n\n", s);
  
@@ -69,15 +69,15 @@ char *print_summary_to_string(Ledger *ledger){
     }
   }     
           
-  for(i = 0; i < ledger->nbank; ++i){
+  for(i = 0; i < ledger->nbanks; ++i){
     l0 = (abs(ledger->bank_totals[i][I_NOT_THERE_YET]) > EPS);
     l1 = (abs(ledger->bank_totals[i][I_PENDING]) > EPS);
     l2 = (abs(ledger->bank_totals[i][I_CLEARED]) > EPS); 
   
     if(l0 || l1 || l2){
       ++any;
-      if(strlen(ledger->bank[i]))
-        sprintf(s,"%s\nBank account: %s\n\n", s, ledger->bank[i]);
+      if(strlen(ledger->banks[i]))
+        sprintf(s,"%s\nBank account: %s\n\n", s, ledger->banks[i]);
       else 
         sprintf(s,"%s\nBank account with no name\n\n", s);
  
@@ -107,15 +107,15 @@ char *print_summary_to_string(Ledger *ledger){
     }
 
     anyp = 0;
-    for(j = 0; j < ledger->npartition[i]; ++j)
+    for(j = 0; j < ledger->npartitions[i]; ++j)
       if(abs(ledger->partition_totals[i][j]) > EPS){
-        if(strlen(ledger->partition[i][j])){
+        if(strlen(ledger->partitions[i][j])){
           if(!anyp){
             sprintf(s,"%s\n          Partitions:\n",s);
             ++anyp;
           }
           sprintf(s,"%s%s%30.2f%s  %s\n",s, get_color(ledger->partition_totals[i][j]), 
-                  ledger->partition_totals[i][j], NORMAL_COLOR, ledger->partition[i][j]);
+                  ledger->partition_totals[i][j], NORMAL_COLOR, ledger->partitions[i][j]);
         }
         else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][I_CLEARED]) > EPS){
           if(!j) sprintf(s, "%s\n",s);

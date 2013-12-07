@@ -13,9 +13,9 @@
 
 Ledger *new_ledger(){
   Ledger *ledger = malloc(sizeof(Ledger));
-  ledger->n = 1;
+  ledger->nrows = 1;
   ledger->filename = NULL;
-  alloc_text_content(ledger);
+  alloc_entries(ledger);
   get_names(ledger);
   get_totals(ledger);   
   return ledger; 

@@ -20,21 +20,21 @@ char *print_ledger_to_string(Ledger *ledger){
     return NULL;
   
   for(i = 0; i < NFIELDS; ++i){
-    for(j = 0; j < ledger->n; ++j){
-      n += strlen(ledger->text_content[i][j]) + 1;
+    for(j = 0; j < ledger->nrows; ++j){
+      n += strlen(ledger->entries[i][j]) + 1;
     }
   }
   
   s = calloc(n + strlen(header), sizeof(char));
   strcat(s, header);
-  for(j = 0; j < ledger->n; ++j){
-    strcat(s, ledger->text_content[AMOUNT][j]);
+  for(j = 0; j < ledger->nrows; ++j){
+    strcat(s, ledger->entries[AMOUNT][j]);
     
     for(i = 1; i < NFIELDS; ++i){
       strcat(s, "\t");
       
-      if(strlen(ledger->text_content[i][j])){
-        sprintf(entry, "%s", ledger->text_content[i][j]);
+      if(strlen(ledger->entries[i][j])){
+        sprintf(entry, "%s", ledger->entries[i][j]);
         
         str_strip(entry);
         strcat(s, entry);
