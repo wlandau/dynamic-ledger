@@ -1,0 +1,32 @@
+amount	status	credit	bank	partition	description
+224	cn		checking	dood	electric bill
+-500	c		checking		rent
+800			checking	rent	paycheck
+-27	cn		checking	rent	electric bill
+-500	c		checking	rent	rent
+800			checking	rent	paycheck
+
+-500			checking	rent	paycheck
+-51.25	cp		checking	travel	travel expenses		klsdj
+
+500	p		checking	food	paycheck
+
+
+
+100	l		savingss		paycheck
+50	l		savingss	travel	saving for next trip
+
+-27	cp		checking	rent	electric bill2
+
+
+-500	c		checking	rent	rent2
+800			checking	rent	paycheck2
+800	c			rent	paycheck2
+-500			checking	rent	paycheck2
+-51.25	cp		checking	travel	travel expenses2
+500			checking	food	paycheck2
+100			savingss		paycheck2
+50			savingss	travel	saving for next trip2
+50				b	saving for next trip2						
+10		
+

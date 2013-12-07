@@ -1,0 +1,32 @@
+amount	status	credit	bank	partition	description
+224	cn	secondcard		dood	electric bill
+-500	c	secondcard			rent
+800				rent	paycheck
+-27	cn	card		rent	electric bill
+-500	c	card		rent	rent
+800				rent	paycheck
+
+-500				rent	paycheck
+-51.25	cp	card		travel	travel expenses		klsdj
+
+500	p			food	paycheck
+
+
+
+100	l				paycheck
+50	l			travel	saving for next trip
+
+-27	cp	card		rent	electric bill2
+
+
+-500	c	card		rent	rent2
+800				rent	paycheck2
+800	c			rent	paycheck2
+-500				rent	paycheck2
+-51.25	cp	card		travel	travel expenses2
+500				food	paycheck2
+100					paycheck2
+50				travel	saving for next trip2
+50				b	saving for next trip2						wheedle
+10		freebee
+

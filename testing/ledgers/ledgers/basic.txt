@@ -1,0 +1,10 @@
+amount	status	credit	bank	partition	description
+-15.36	cn	ch	cp	a	hyvee
+-7.31	c	ch	cp	a	hyvee
+305.26			cp	a	condensed
+112.21			cp	b	condensed
+256.03			cp	c	condensed
+138.33			cp	d	condensed
+90.00			cp	knee	condensed
+2114.56			cp	r	condensed
+3553.04			cps		condensed
