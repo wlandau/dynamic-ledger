@@ -38,9 +38,9 @@
  *** STRINGS OF SEPARATORS MUST BE NO LONGER THAN NUM_SEPARATORS ***********************
  ***************************************************************************************/
 
-#define ROW_SEPARATORS    "\n\r"													/* NEED TO IMPLEMENT */
-#define COLUMN_SEPARATORS "\t"          										/* NEED TO IMPLEMENT */
-#define NUM_SEPARATORS    16												/* NEED TO IMPLEMENT */
+#define ROW_SEPARATORS      "\n\r"													/* NEED TO IMPLEMENT */
+#define COLUMN_SEPARATORS   "\t"          										/* NEED TO IMPLEMENT */
+#define NUM_SEPARATORS      16												/* NEED TO IMPLEMENT */
 
 
 /*************************************************************************************** 
