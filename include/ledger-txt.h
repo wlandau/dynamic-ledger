@@ -34,10 +34,13 @@
 
 /*************************************************************************************** 
  *** USER-DEFINED ROW AND COLUMN SEPARATORS ********************************************
+ *** EACH CHARACTER IN EACH OF THE STRINGS BELOW IS A SEPARATOR ************************
+ *** STRINGS OF SEPARATORS MUST BE NO LONGER THAN NUM_SEPARATORS ***********************
  ***************************************************************************************/
 
 #define ROW_SEPARATORS    "\n\r"													/* NEED TO IMPLEMENT */
 #define COLUMN_SEPARATORS "\t"          										/* NEED TO IMPLEMENT */
+#define NUM_SEPARATORS    16												/* NEED TO IMPLEMENT */
 
 
 /*************************************************************************************** 
