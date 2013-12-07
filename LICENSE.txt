@@ -1,6 +1,1 @@
-Ledger.txt
-
-Copyright Will Landau (will.landau@gmail.com)
 GPL 3.0
-http://will-landau.com
-Iowa State University
