@@ -31,6 +31,3 @@ diff ../../ledgers/condensed/justbank.txt condensed/justbank.txt
 diff ../../ledgers/condensed/justcredit.txt condensed/justcredit.txt
 diff ../../ledgers/condensed/nonnull.txt condensed/nonnull.txt
 diff ../../ledgers/condensed/small.txt condensed/small.txt
-
-which condensed/bad.txt
-which condensed/bad2.txt
