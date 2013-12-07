@@ -82,7 +82,7 @@
  *** DATA TYPES ************************************************************************
  ***************************************************************************************/
 
-typedef int ledger_status;
+typedef int err_t;
 
 typedef struct {
   char *filename, **bank, **credit, ***partition, ***text_content;
@@ -98,7 +98,7 @@ typedef struct {
 int bad_input_file(const char *filename);
 int bad_output_file(const char *filename);
 int check_legal_double(char *s, int row);
-int check_legal_double_modify(char *s);
+int check_legal_double_modify_entry(char *s);
 int contains_tabs(char *s);
 const char *get_color(double);
 int is_space(char c);
@@ -123,12 +123,12 @@ Ledger *new_ledger();
 
 
 /*************************************************************************************** 
- *** FUNCTIONS MODIFYING LEDGER OBJECTS ************************************************
+ *** FUNCTIONS FOR MODIFYING LEDGER OBJECTS ********************************************
  ***************************************************************************************/
 
 void condense(Ledger **ledger);
 void insert_row(Ledger *ledger, int row);
-void modify(Ledger *ledger, int row, int col, char *next);
+void modify_entry(Ledger *ledger, int row, int col, char *next);
 void rename_bank(Ledger *ledger, char *from, char *to);
 void rename_credit(Ledger *ledger, char *from, char *to);
 void rename_partition(Ledger *ledger, char *bank, char *from, char *to);
@@ -137,12 +137,13 @@ void trim_ledger(Ledger *ledger);
 
 
 /*************************************************************************************** 
- *** FUNCTIONS MODIFYING LEDGERS REPRESENTED AS STRINGS ********************************
+ *** FUNCTIONS FOR MODIFYING LEDGERS REPRESENTED AS STRINGS ****************************
  ***************************************************************************************/
 
+err_t new_ledger_str();                                                      /* NEED TO IMPLEMENT ****/
 void condense_str(char **s);
 void insert_row_str(char **s, int row);
-void modify_str(char **s, int row, int col, char *next);
+void modify_entry_str(char **s, int row, int col, char *next);
 void rename_bank_str(char **s, char *from, char *to);
 void rename_credit_str(char **s, char *from, char *to);
 void rename_partition_str(char **s, char *bank, char *from, char *to);
@@ -165,25 +166,66 @@ int get_text_content_from_string(Ledger *ledger, char *s);
  *** FUNCTIONS FOR PRINTING LEDGER OBJECTS *********************************************
  ***************************************************************************************/
 
+err_t print_ledger_to_filename(Ledger *ledger, const char *filename);        /* NEED TO IMPLEMENT ****/
 void print_ledger_to_stream(Ledger *ledger, FILE *fp);
 char *print_ledger_to_string(Ledger *ledger);
 void print_ledger_verbose(Ledger *ledger, FILE *fp);
+
+err_t print_ledger_wrap(Ledger *in_ledger, const char *in_string, 
+  FILE *in_stream, const char *in_filename, Ledger *out_ledger, 
+  char **out_string, FILE *out_stream, const char *out_filename);
+
+
+
+
+
+err_t print_ledger_cl(const char *s, Ledger **ledger);                     /* NEED TO IMPLEMENT ****/
+err_t print_ledger_cf(const char *s, const char *filename);                    /* NEED TO IMPLEMENT ****/
+err_t print_ledger_cs(const char *s, FILE *fp);                           /* NEED TO IMPLEMENT ****/
+
+err_t print_ledger_fc(const char *filename, char **s);                           /* NEED TO IMPLEMENT ****/
+err_t print_ledger_fl(const char *filename, Ledger **ledger);                    /* NEED TO IMPLEMENT ****/
+err_t print_ledger_fs(const char *filename, FILE *fp);                           /* NEED TO IMPLEMENT ****/
+
+err_t print_ledger_lc(Ledger *ledger, char **s);                           /* NEED TO IMPLEMENT ****/
+err_t print_ledger_lf(Ledger *ledger, char *filename);                           /* NEED TO IMPLEMENT ****/
+err_t print_ledger_ls(Ledger *ledger, FILE *fp);                           /* NEED TO IMPLEMENT ****/
+
+err_t print_ledger_sc(FILE *fp, char **s);                               /* NEED TO IMPLEMENT ****/
+err_t print_ledger_sf(FILE *fp, const char *filename);                           /* NEED TO IMPLEMENT ****/
+err_t print_ledger_sl(FILE *fp, Ledger **ledger);                           /* NEED TO IMPLEMENT ****/
+
+
+
+
 
 
 /*************************************************************************************** 
  *** FUNCTIONS TO OUTPUT SUMMARIES OF LEDGER OBJECTS ***********************************
  ***************************************************************************************/
 
-void print_summary_to_stream(Ledger *ledger, FILE *fp);
+err_t print_summary_to_filename(Ledger *ledger, const char *filename);     /* NEED TO IMPLEMENT ***/
+void print_summary_to_stream(Ledger *ledger, FILE *fp);                     
 char *print_summary_to_string(Ledger *ledger);
-int summarize_file_to_stream(const char* filename, FILE *fp);
+int summarize_file_to_stream(const char* filename, FILE *fp);                         /* REMOVE WHEN READY */
 
+err_t print_summary_wrap(Ledger *in_ledger, const char *in_string, 
+  FILE *in_stream, const char *in_filename, Ledger *out_ledger, 
+  char **out_string, FILE *out_stream, const char *out_filename);
 
 /*************************************************************************************** 
  *** FUNCTIONS TO OUTPUT CONDENSED LEDGERS *********************************************
  ***************************************************************************************/
 
-int condense_and_print(const char* infile, const char *outfile);
+err_t condense_ledger_to_filename(Ledger *ledger, const char *filename);        /* NEED TO IMPLEMENT ****/
+void condense_ledger_to_stream(Ledger *ledger, FILE *fp);
+char *condense_ledger_to_string(Ledger *ledger);
+
+err_t condense_wrap(Ledger *in_ledger, const char *in_string, 
+  FILE *in_stream, const char *in_filename, Ledger *out_ledger, 
+  char **out_string, FILE *out_stream, const char *out_filename);
+
+int condense_and_print(const char* infile, const char *outfile);                     /* REMOVE WHEN READY */
 
 
 /*************************************************************************************** 
