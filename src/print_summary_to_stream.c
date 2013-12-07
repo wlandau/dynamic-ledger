@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void print_summary_to_stream(Ledger *ledger, FILE *fp){
+void print_summary_to_stream(Ledger *ledger, FILE *fp){ 
   int i, j, l0, l1, l2, any = 0, anyp = 0;
 
   if(ledger == NULL || fp == NULL)
