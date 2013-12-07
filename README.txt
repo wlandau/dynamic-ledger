@@ -1,1 +1,1 @@
-A little personal accounting software package written in C. More documentation to come. 
+A little personal accounting software package written in C. More documentation to come.
