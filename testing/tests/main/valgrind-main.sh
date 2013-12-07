@@ -14,11 +14,14 @@ do
   valgrind $DIR/../../../bin/ledger-txt $DIR/../../ledgers/ledgers/$f $DIR/condensed/$f 2>> $DIR/stderr.txt
 
 
-  echo $DIR/../../ledgers/condensed/$f 
-echo $DIR/condensed/$f
+  if [ -f $DIR/../../ledgers/condensed/$f && -f $DIR/condensed/$f ]
+  then
+    diff $DIR/../../ledgers/condensed/$f $DIR/condensed/$f 2>> $DIR/stderr.txt
+  fi
 
+  if [ -f $DIR/../../ledgers/summaries/$f && -f $DIR/summaries/$f ]
+  then
+    diff $DIR/../../ledgers/summaries/$f $DIR/summaries/$f 2>> $DIR/stderr.txt
+  fi
 
-
-  diff $DIR/../../ledgers/condensed/$f $DIR/condensed/$f 2>> $DIR/stderr.txt
-  diff $DIR/../../ledgers/summaries/$f $DIR/summaries/$f 2>> $DIR/stderr.txt
 done
