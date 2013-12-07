@@ -20,6 +20,14 @@
 
 
 /*************************************************************************************** 
+ *** USER-DEFINED ROW AND COLUMN SEPARATORS ********************************************
+ ***************************************************************************************/
+
+#define ROW_SEPARATORS    "\n\r"													/* NEED TO IMPLEMENT */
+#define COLUMN_SEPARATORS "\t"          										/* NEED TO IMPLEMENT */
+
+
+/*************************************************************************************** 
  *** USER-DEFINED COLUMN ASSIGNMENTS IN LEDGER FILE. ***********************************
  *** MUST INCLUDE ALL THE NUMBERS FROM 0 TO 5 INCLUSIVE. *******************************
  ***************************************************************************************/
@@ -143,6 +151,8 @@ void trim_ledger(Ledger *ledger);                                               
 err_t new_ledger_str();                                                      /* NEED TO IMPLEMENT ****/
 void condense_str(char **s);                                                                   /* NEEDS TESTING */
 void insert_row_str(char **s, int row);                                                              /* NEEDS TESTING */
+void is_row_separator(char c);												/* NEED TO IMPLEMENT ****/
+void is_column_separator(char c);											/* NEED TO IMPLEMENT ****/
 void modify_entry_str(char **s, int row, int col, char *next);                              /* NEEDS TESTING */
 void rename_bank_str(char **s, char *from, char *to);                              /* NEEDS TESTING */
 void rename_credit_str(char **s, char *from, char *to);                              /* NEEDS TESTING */
