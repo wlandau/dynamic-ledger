@@ -7,8 +7,9 @@ then
   rm $DIR/stderr.txt
 fi
 
-for f in $(basename `ls $DIR/../../ledgers/ledgers/*.txt`)
+for l in `ls $DIR/../../ledgers/ledgers/*.txt`
 do
+  f=`basename $l`
   $DIR/../../../bin/ledger-txt $DIR/../../ledgers/ledgers/$f &> $DIR/summaries/$f
   $DIR/../../../bin/ledger-txt $DIR/../../ledgers/ledgers/$f $DIR/condensed/$f 2>> $DIR/stderr.txt
 
