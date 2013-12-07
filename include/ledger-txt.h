@@ -70,7 +70,7 @@
  ***************************************************************************************/
 
 #define ENTRYSIZE      256
-#define EPS            0.004
+#define EPS            0.004999
 #define FILENAMESIZE   256
 #define LINESIZE       4096
 #define NFIELDS        6
@@ -94,19 +94,19 @@ typedef struct {
  *** UTILITY FUNCTIONS *****************************************************************
  ***************************************************************************************/
 
-int bad_input_file(const char *filename);
-int bad_output_file(const char *filename);
-int check_legal_double(char *s, int row);
-int check_legal_double_modify_entry(char *s);
-int contains_tabs(char *s);
-const char *get_color(double);                              /* ADD OPTION TO DISABLE COLORS */
-int is_space(char c);
-int legal_amounts(Ledger *ledger);
-int qcmp(const void *a, const void *b);
-int str_equal(const char *s1, const char *s2);
-void str_strip(char *s);
-void unique(char **s, int n, char ***ret, int *nunique);
-void usage();
+int bad_input_file(const char *filename);                      /* NEEDS TESTING */
+int bad_output_file(const char *filename);                     /* NEEDS TESTING */
+int check_legal_double(char *s, int row);                     /* NEEDS TESTING */
+int check_legal_double_modify_entry(char *s);                     /* NEEDS TESTING */
+int contains_tabs(char *s);                                         /* NEEDS TESTING */
+const char *get_color(double);                                       /* ADD OPTION TO DISABLE COLORS */
+int is_space(char c);                                                       /* NEEDS TESTING */
+int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING */
+int qcmp(const void *a, const void *b);                                /* NEEDS TESTING */
+int str_equal(const char *s1, const char *s2);                            /* NEEDS TESTING */
+void str_strip(char *s);                                                /* NEEDS TESTING */
+void unique(char **s, int n, char ***ret, int *nunique);                        /* NEEDS TESTING */
+void usage();                                                                        /* NEEDS TESTING */
 int which(const char **);										/**NEED TO IMPLEMENT AND ADD TO CONDENSE & OTHER FUNCTIONS */
 
 
@@ -114,26 +114,26 @@ int which(const char **);										/**NEED TO IMPLEMENT AND ADD TO CONDENSE & OT
  *** FUNCTIONS TO CREATE, INITIALIZE, AND DESTROY LEDGER OBJECTS ***********************
  ***************************************************************************************/
 
-void alloc_entries(Ledger*);
-void free_ledger(Ledger*);
-void free_for_retotal(Ledger*);
-void get_names(Ledger *ledger);
-void get_totals(Ledger *ledger);
-Ledger *new_ledger();
+void alloc_entries(Ledger*);                                                       /* NEEDS TESTING */
+void free_ledger(Ledger*);                                                    /* NEEDS TESTING */
+void free_for_retotal(Ledger*);                                                    /* NEEDS TESTING */
+void get_names(Ledger *ledger);                                                    /* NEEDS TESTING */
+void get_totals(Ledger *ledger);                                                    /* NEEDS TESTING */
+Ledger *new_ledger();                                                    /* NEEDS TESTING */
 
 
 /*************************************************************************************** 
  *** FUNCTIONS TO MODIFY LEDGER OBJECTS ************************************************
  ***************************************************************************************/
 
-void condense(Ledger **ledger);
-void insert_row(Ledger *ledger, int row);
-void modify_entry(Ledger *ledger, int row, int col, char *next);
-void rename_bank(Ledger *ledger, char *from, char *to);
-void rename_credit(Ledger *ledger, char *from, char *to);
-void rename_partition(Ledger *ledger, char *bank, char *from, char *to);
-void remove_row(Ledger *ledger, int row);
-void trim_ledger(Ledger *ledger);
+void condense(Ledger **ledger);                                                    /* NEEDS TESTING */
+void insert_row(Ledger *ledger, int row);                              /* NEEDS TESTING */
+void modify_entry(Ledger *ledger, int row, int col, char *next);                  /* NEEDS TESTING */
+void rename_bank(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
+void rename_credit(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
+void rename_partition(Ledger *ledger, char *bank, char *from, char *to);              /* NEEDS TESTING */
+void remove_row(Ledger *ledger, int row);                                                     /* NEEDS TESTING */
+void trim_ledger(Ledger *ledger);                                                         /* NEEDS TESTING */
 
 
 /*************************************************************************************** 
@@ -141,25 +141,25 @@ void trim_ledger(Ledger *ledger);
  ***************************************************************************************/
 
 err_t new_ledger_str();                                                      /* NEED TO IMPLEMENT ****/
-void condense_str(char **s);
-void insert_row_str(char **s, int row);
-void modify_entry_str(char **s, int row, int col, char *next);
-void rename_bank_str(char **s, char *from, char *to);
-void rename_credit_str(char **s, char *from, char *to);
-void rename_partition_str(char **s, char *bank, char *from, char *to);
-void remove_row_str(char **s, int row);
-void trim_ledger_str(char **s);
+void condense_str(char **s);                                                                   /* NEEDS TESTING */
+void insert_row_str(char **s, int row);                                                              /* NEEDS TESTING */
+void modify_entry_str(char **s, int row, int col, char *next);                              /* NEEDS TESTING */
+void rename_bank_str(char **s, char *from, char *to);                              /* NEEDS TESTING */
+void rename_credit_str(char **s, char *from, char *to);                              /* NEEDS TESTING */
+void rename_partition_str(char **s, char *bank, char *from, char *to);               /* NEEDS TESTING */
+void remove_row_str(char **s, int row);                                                 /* NEEDS TESTING */
+void trim_ledger_str(char **s);                                                              /* NEEDS TESTING */
 
 
 /*************************************************************************************** 
  *** FUNCTIONS TO PARSE INPUT INTO LEDGER OBJECTS **************************************
  ***************************************************************************************/
 
-Ledger *get_ledger_from_filename(const char* filename);
-Ledger *get_ledger_from_stream(FILE *fp);
-Ledger *get_ledger_from_string(char *s);
-int get_entries_from_stream(Ledger *ledger, FILE *fp);
-int get_entries_from_string(Ledger *ledger, char *s);
+Ledger *get_ledger_from_filename(const char* filename);                              /* NEEDS TESTING */
+Ledger *get_ledger_from_stream(FILE *fp);                                              /* NEEDS TESTING */
+Ledger *get_ledger_from_string(char *s);                                             /* NEEDS TESTING */
+int get_entries_from_stream(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
+int get_entries_from_string(Ledger *ledger, char *s);                              /* NEEDS TESTING */
 
 
 /*************************************************************************************** 
@@ -167,9 +167,9 @@ int get_entries_from_string(Ledger *ledger, char *s);
  ***************************************************************************************/
 
 err_t print_ledger_to_filename(Ledger *ledger, const char *filename);        /* NEED TO IMPLEMENT ****/
-void print_ledger_to_stream(Ledger *ledger, FILE *fp);
-char *print_ledger_to_string(Ledger *ledger);
-void print_ledger_verbose(Ledger *ledger, FILE *fp);
+void print_ledger_to_stream(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
+char *print_ledger_to_string(Ledger *ledger);                              /* NEEDS TESTING */
+void print_ledger_verbose(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
 
 err_t print_ledger_wrap(Ledger *in_ledger, const char *in_string,            /* NEED TO IMPLEMENT ****/
   FILE *in_stream, const char *in_filename, Ledger *out_ledger, 
@@ -263,6 +263,6 @@ err_t print_condense_sl(FILE *fp, Ledger **ledger);                           /*
  *** TOP-LEVEL ROUTINE OF COMMAND LINE INTERFACE VERSION *******************************
  ***************************************************************************************/
 
-int standalone(int argc, char **argv);
+int standalone(int argc, char **argv);                                       /* NEEDS TESTING */
 
 #endif

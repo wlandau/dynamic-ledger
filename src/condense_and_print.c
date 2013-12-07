@@ -20,7 +20,7 @@ int condense_and_print(const char* infile, const char *outfile){
   
   ledger = get_ledger_from_filename(infile);
   if(ledger == NULL){
-    printf("Failed to read ledger.\n");
+    fprintf(stderr, "Failed to read ledger.\n");
     return 1;
   }  
   

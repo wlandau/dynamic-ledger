@@ -18,19 +18,19 @@ void remove_row(Ledger *ledger, int row){
     return;
   
   if(row < 0 || row >= ledger->nrows){
-    printf("Error: illegal row index in remove_row().\n");
+    fprintf(stderr, "Error: illegal row index in remove_row().\n");
     return;
   }
   
   if(ledger->nrows < 1){
-    printf("Error: data already too small.\n");
+    fprintf(stderr, "Error: data already too small.\n");
     return;  
   }
 
   recalculate = (abs(atof(ledger->entries[AMOUNT][row])) > EPS);
 
   if(ledger->nrows == 1){
-    printf("Warning: can't remove the last row. Replacing it with a blank line.\n");
+    fprintf(stderr, "Warning: can't remove the last row. Replacing it with a blank line.\n");
     for(i = 0; i < NFIELDS; ++i)
       strcpy(ledger->entries[i][0], NIL);
   } else {

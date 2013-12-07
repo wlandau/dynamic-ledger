@@ -20,12 +20,12 @@ void modify_entry(Ledger *ledger, int row, int col, char *next){
     return;
 
   if(row < 0 || row >= ledger->nrows){
-    printf("Error: illegal row index in modify_entry().\n");
+    fprintf(stderr, "Error: illegal row index in modify_entry().\n");
     return;
   }
   
   if(col < 0 || col >= NFIELDS){
-    printf("Error: illegal column index in modify_entry().\n");
+    fprintf(stderr, "Error: illegal column index in modify_entry().\n");
     return;
   }
   
@@ -37,7 +37,7 @@ void modify_entry(Ledger *ledger, int row, int col, char *next){
   str_strip(next_local);  
   
   if((i = contains_tabs(next_local))){
-    printf("Warning: entries must not contain tabs. Truncating input.\n");
+    fprintf(stderr, "Warning: entries must not contain tabs. Truncating input.\n");
     next_local[i] = '\0';
   }
   
