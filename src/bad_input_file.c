@@ -12,12 +12,12 @@
 #include <string.h>
 #include <user_settings.h>
 
-int bad_input_file(const char *filename){
+err_t bad_input_file(const char *filename){
   FILE *fp = fopen(filename, "r");
   if(fp == NULL){
     fprintf(stderr, "Error: cannot open file, %s.\nFile may not exist.\n", filename);
-    return 1;
+    return LFAILURE;
   }
   fclose(fp);
-  return 0;
+  return LSUCCESS;
 }

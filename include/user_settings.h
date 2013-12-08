@@ -58,4 +58,4 @@
 #define POSITIVE_COLOR   "\x1B[32m"   /*** POSITIVE TOTALS ***/
 #define ZERO_COLOR       "\x1B[34m"   /*** EMPTY TOTALS ******/
  
- #endif
+#endif

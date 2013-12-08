@@ -31,6 +31,15 @@
 #define I_PENDING_BAL     4														/* NEED TO IMPLEMENT WHEN ALLOCATING/CALCULATING TOTALS AND SUMMARIZING */
 #define N_TOTALS          5														/* NEED TO IMPLEMENT WHEN ALLOCATING/CALCULATING TOTALS AND SUMMARIZING */
 
+
+/*************************************************************************************** 
+ *** ERROR CODES ***********************************************************************
+ ***************************************************************************************/
+
+#define LSUCCESS   0
+#define LFAILURE   1
+
+
 /*************************************************************************************** 
  *** MISC INTERNAL PARAMETERS **********************************************************
  ***************************************************************************************/
@@ -60,7 +69,7 @@ typedef struct {
  *** UTILITY FUNCTIONS *****************************************************************
  ***************************************************************************************/
 
-int bad_input_file(const char *filename);                      /* NEEDS TESTING */
+err_t bad_input_file(const char *filename);                      /* NEEDS TESTING */
 int bad_output_file(const char *filename);                     /* NEEDS TESTING */
 int check_legal_double(char *s, int row);                     /* NEEDS TESTING */
 int check_legal_double_modify_entry(char *s);                     /* NEEDS TESTING */
