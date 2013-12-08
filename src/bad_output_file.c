@@ -17,8 +17,8 @@ int bad_output_file(const char *filename){
   if(fp == NULL){
     fprintf(stderr, 
             "Error: cannot create file, %s.\nCheck your permissions.\n", filename);
-    return 1;
+    return LFAILURE;
   }
   fclose(fp);
-  return 0;
+  return LSUCCESS;
 }

@@ -69,8 +69,8 @@ typedef struct {
  *** UTILITY FUNCTIONS *****************************************************************
  ***************************************************************************************/
 
-err_t bad_input_file(const char *filename);                      /* NEEDS TESTING */
-int bad_output_file(const char *filename);                     /* NEEDS TESTING */
+err_t bad_input_file(const char *filename);
+err_t bad_output_file(const char *filename);                     /* NEEDS TESTING */
 int check_legal_double(char *s, int row);                     /* NEEDS TESTING */
 int check_legal_double_modify_entry(char *s);                     /* NEEDS TESTING */
 int contains_tabs(char *s);                                         /* NEEDS TESTING */

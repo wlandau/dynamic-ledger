@@ -9,10 +9,10 @@
 int main(){
   char good[400], bad[400];
   strcpy(good, "../../ledgers/ledgers/basic.txt");
-  printf("\nError status = %d for file, %s\n", bad_input_file(good), good);
+  printf("\n\nError status = %d for file, %s\n\n", bad_input_file(good), good);
 
   strcpy(bad, "DERP");
-  printf("\nError status = %d for file, %s\n", bad_input_file(bad), bad);
+  printf("\n\nError status = %d for file, %s\n\n", bad_input_file(bad), bad);
 
   return 0;
 }
