@@ -70,4 +70,4 @@ dirs:
 
 clean:
 	rm -rf $(OBJDIR)
-	rm $(BIN)
+	rm -f  $(BIN)
