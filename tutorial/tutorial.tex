@@ -148,10 +148,10 @@ The amount, delay status, credit account, and bank account of each transaction a
 amount   status   credit        bank         partition   description
 -21.22   cp       chase ink     us bank      food        groceries 12/7/13
 -80               am ex         us bank      medical     coinsurance 
-1000              bank of am                             misc savings
+1000     p        bank of am                             misc savings
 \end{lstlisting}  \q
 
-Note that ``cp" in the status column indicates a transaction that is pending with respect to its credit account and still completely absent from its final destination bank account. For more information on transaction status codes, please see Section \ref{sec:codes}. 
+Note that ``cp" in the status column indicates a transaction that is pending with respect to its credit account and still completely absent from its final destination bank account. ``p" indicates a pending transaction with respect to a bank. For more information on transaction status codes, please see Section \ref{sec:codes}. 
 
 \paragraph{} To output a summary of {\tt example\_ledger1.txt} on a Mac, I first locate and open Terminal. \q
 
@@ -166,7 +166,7 @@ Note that ``cp" in the status column indicates a transaction that is pending wit
 Then, I compile and run the program in a Terminal window. \q
 
 \begin{center}
-\includegraphics[scale=.5]{fig/open3.png}
+\includegraphics[scale=.65]{fig/open3.png}
 \end{center} \q
 
 The output gives the true balance of each account, along with other summaries that reflect transaction delays. Note that the program ignores accounts and partitions with balances of zero. 

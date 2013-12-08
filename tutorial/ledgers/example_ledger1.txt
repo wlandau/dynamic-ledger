@@ -1,4 +1,4 @@
 amount	status	credit	bank	partition   description
 -21.22	cp	chase ink	us bank	food	groceries 12/7/13
 -80		am ex	us bank	medical	coinsurance 
-1000			bank of am		misc savings
+1000	p		bank of am		misc savings
