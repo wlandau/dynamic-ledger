@@ -1,0 +1,17 @@
+amount	status	credit	bank	partition	description
+-30.14	cn	card1	checking	food	groceries 12/3/13
+-15.36	cn	card2	checking	food	produce 12/2/13
+-10.41	cp	card1	checking	food	dinner 11/21/13
+-7.31	c	card2	checking	fun	movie 11/18/13
+-500.00	p		checking	bills	December rent
+-30.00	l		checking	bills	November electric
+-50.00	l		checking	bills	November heat
+800.00	p		checking	rent	November paycheck
+400.00	p		checking	food	November paycheck
+500.00	p		checking	upkeep	November paycheck
+50.00	p		checking	fun	November paycheck
+-45.00			checking	bills	condensed
+50.00			checking	fun	condensed
+400.00			savings	bike	condensed
+100.00			savings		condensed
+200.00					condensed

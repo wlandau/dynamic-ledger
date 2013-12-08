@@ -11,10 +11,11 @@
  *** @about User settings for Dynamic Ledger
  ***/
  
- /*************************************************************************************** 
- *** USER-DEFINED COLUMN ASSIGNMENTS IN LEDGER FILE. ***********************************
- *** MUST INCLUDE ALL THE NUMBERS FROM 0 TO 5 INCLUSIVE. *******************************
- ***************************************************************************************/
+ /************************************************************************ 
+ *** COLUMN INDICES IN LEDGER FILE. **************************************
+ *** THESE NUMBERS DEFINE THE ORDERING OF THE COLUMNS ******* ************
+ *** MUST INCLUDE ALL THE NUMBERS FROM 0 TO 5 INCLUSIVE. *****************
+ *************************************************************************/
 
 #define AMOUNT        0   /*** COLUMN FOR TRANSACTION AMOUNTS ************/
 #define STATUS        1   /*** COLUMN FOR TRANSACTION STATUS CODES *******/
@@ -24,11 +25,11 @@
 #define DESCRIPTION   5   /*** COLUMN FOR DESCRIPTIONS OF TRANSACTIONS ***/
 
 
-/*************************************************************************************** 
- *** USER-DEFINED ROW AND COLUMN SEPARATORS ********************************************
- *** EACH CHARACTER IN EACH OF THE STRINGS BELOW IS A SEPARATOR ************************
- *** STRINGS OF SEPARATORS MUST BE NO LONGER THAN NUM_SEPARATORS ***********************
- ***************************************************************************************/
+/************************************************************************** 
+ *** USER-DEFINED ROW AND COLUMN SEPARATORS *******************************
+ *** EACH CHARACTER IN EACH OF THE STRINGS BELOW IS A SEPARATOR ***********
+ *** STRINGS OF SEPARATORS MUST BE NO LONGER THAN NUM_SEPARATORS **********
+ **************************************************************************/
 
 #define ROW_SEPARATORS      "\n\r"													/* NEED TO IMPLEMENT */
 #define COLUMN_SEPARATORS   "\t"          										/* NEED TO IMPLEMENT */
@@ -47,8 +48,11 @@
 
 
 /*************************************************************************************** 
- *** USER-DEFINED OPTIONS FOR COLORS IN OUTPUT SUMMARIES *******************************
+ *** USER-DEFINED OPTIONS FOR OUTPUT SUMMARIES *****************************************
  ***************************************************************************************/
+
+#define PRINT_ZEROED_ACCOUNTS 0  /*** SET TO 1 TO INCLUDE EMPTY ACCOUNTS IN SUMMARY ****    NEED TO IMPLEMENT
+                                  *** SET TO 0 TO IGNORE ACCOUNTS WITH $0.00 BALANCE ***/
 
 #define USE_COLOR   1  /*** SET TO 1 TO ENABLE COLOR-CODED PRINTING TO THE TERMINAL ***/  	/* NEED TO IMPLEMENT */
                        /*** SET TO 0 FOR NO COLORING **********************************/
@@ -57,5 +61,5 @@
 #define NEGATIVE_COLOR   "\x1B[31m"   /*** NEGATIVE TOTALS ***/
 #define POSITIVE_COLOR   "\x1B[32m"   /*** POSITIVE TOTALS ***/
 #define ZERO_COLOR       "\x1B[34m"   /*** EMPTY TOTALS ******/
- 
+ 																		/*** SET BACKGROUND COLOR CODES TOO ***/
 #endif

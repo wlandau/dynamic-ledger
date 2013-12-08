@@ -70,19 +70,22 @@ typedef struct {
  ***************************************************************************************/
 
 err_t bad_input_file(const char *filename);
-err_t bad_output_file(const char *filename);                     /* NEEDS TESTING */
+err_t bad_output_file(const char *filename); 
 int check_legal_double(char *s, int row);                     /* NEEDS TESTING */
 int check_legal_double_modify_entry(char *s);                     /* NEEDS TESTING */
 int contains_tabs(char *s);                                         /* NEEDS TESTING */
 const char *get_color(double);                                       /* ADD OPTION TO DISABLE COLORS */
 int is_space(char c);                                                       /* NEEDS TESTING */
 int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING */
+int legal_status_codes(Ledger *ledger);                           /* NEED TO IMPLEMENT */
 int qcmp(const void *a, const void *b);                                /* NEEDS TESTING */
 int str_equal(const char *s1, const char *s2);                            /* NEEDS TESTING */
 void str_strip(char *s);                                                /* NEEDS TESTING */
 void unique(char **s, int n, char ***ret, int *nunique);                        /* NEEDS TESTING */
 void usage();                                                                        /* NEEDS TESTING */
 int which(const char **);										/**NEED TO IMPLEMENT AND ADD TO CONDENSE & OTHER FUNCTIONS */
+
+
 
 
 /*************************************************************************************** 

@@ -11,6 +11,6 @@ fi
 for l in `ls $DIR/ledgers/ledgers/*.txt`
 do
   f=`basename $l`
-  $DIR/../bin/ledger-txt $DIR/ledgers/ledgers/$f &> $DIR/ledgers/summaries/$f                                        
-  $DIR/../bin/ledger-txt $DIR/ledgers/ledgers/$f $DIR/ledgers/condensed/$f 2>> $DIR/stderr.txt                       
+  $DIR/../ledger $DIR/ledgers/ledgers/$f &> $DIR/ledgers/summaries/$f                                        
+  $DIR/../ledger $DIR/ledgers/ledgers/$f $DIR/ledgers/condensed/$f 2>> $DIR/stderr.txt                       
 done

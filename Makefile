@@ -4,10 +4,7 @@ LDFLAGS=-lm
 
 SRCDIR=src/
 OBJDIR=obj/
-BINDIR=bin/
-
-BINNAME=ledger
-BIN=$(BINDIR)$(BINNAME)
+BIN=ledger
 
 DEP=alloc_entries 
 DEP+=bad_input_file 
@@ -70,8 +67,7 @@ $(OBJDIR)%.o: $(SRCDIR)%.c dirs
 
 dirs:
 	mkdir -p $(OBJDIR)
-	mkdir -p $(BINDIR)
 
 clean:
 	rm -rf $(OBJDIR)
-	rm -rf $(BINDIR)
+	rm $(BIN)
