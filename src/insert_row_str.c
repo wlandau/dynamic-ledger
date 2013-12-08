@@ -6,10 +6,11 @@
 
 #include <errno.h>
 #include <getopt.h>
-#include <ledger-txt.h>
+#include <ledger.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <user_settings.h>
 
 void insert_row_str(char **s, int row){
   char *s2, *tmp;

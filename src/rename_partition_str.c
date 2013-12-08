@@ -6,10 +6,11 @@
 
 #include <errno.h>
 #include <getopt.h>
-#include <ledger-txt.h>
+#include <ledger.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <user_settings.h>
 
 void rename_partition_str(char **s, char *bank, char *from, char *to){
   char *s2, *tmp;

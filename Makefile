@@ -6,7 +6,7 @@ SRCDIR=src/
 OBJDIR=obj/
 BINDIR=bin/
 
-BINNAME=ledger-txt
+BINNAME=ledger
 BIN=$(BINDIR)$(BINNAME)
 
 DEP=alloc_entries 

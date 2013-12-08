@@ -6,11 +6,11 @@
 
 #include <errno.h>
 #include <getopt.h>
-#include <ledger-txt.h>
+#include <ledger.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <user_settings.h>
 int condense_and_print(const char* infile, const char *outfile){
   FILE *fp;
   Ledger *ledger;

@@ -6,10 +6,11 @@
 
 #include <errno.h>
 #include <getopt.h>
-#include <ledger-txt.h>
+#include <ledger.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <user_settings.h>
 
 void rename_bank(Ledger *ledger, char *from, char *to){
   int i;

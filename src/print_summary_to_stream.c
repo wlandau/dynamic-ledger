@@ -6,10 +6,11 @@
 
 #include <errno.h>
 #include <getopt.h>
-#include <ledger-txt.h>
+#include <ledger.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <user_settings.h>
 
 void print_summary_to_stream(Ledger *ledger, FILE *fp){ 
   int i, j, l0, l1, l2, any = 0, anyp = 0;

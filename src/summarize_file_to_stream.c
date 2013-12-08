@@ -6,10 +6,11 @@
 
 #include <errno.h>
 #include <getopt.h>
-#include <ledger-txt.h>
+#include <ledger.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <user_settings.h>
 
 int summarize_file_to_stream(const char* filename, FILE *fp){
   Ledger *ledger = get_ledger_from_filename(filename);
