@@ -1,5 +1,4 @@
 all: test
-	./test
 
 test: test_bad_input_file.o bad_input_file.o
 	gcc test_bad_input_file.o bad_input_file.o -o test
