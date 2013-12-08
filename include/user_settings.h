@@ -11,18 +11,18 @@
  *** @about User settings for Dynamic Ledger
  ***/
  
- /************************************************************************ 
- *** COLUMN INDICES IN LEDGER FILE. **************************************
- *** THESE NUMBERS DEFINE THE ORDERING OF THE COLUMNS ******* ************
- *** MUST INCLUDE ALL THE NUMBERS FROM 0 TO 5 INCLUSIVE. *****************
- *************************************************************************/
+ /************************************************************************* 
+ *** COLUMN INDICES IN LEDGER FILE. ***************************************
+ *** THESE NUMBERS DEFINE THE ORDERING OF THE COLUMNS *********************
+ *** MUST INCLUDE ALL THE NUMBERS FROM 0 TO 5 INCLUSIVE. ******************
+ **************************************************************************/
 
-#define AMOUNT        0   /*** COLUMN FOR TRANSACTION AMOUNTS ************/
-#define STATUS        1   /*** COLUMN FOR TRANSACTION STATUS CODES *******/
-#define CREDIT        2   /*** COLUMN FOR NAMES OF CREDIT ACCOUNTS *******/
-#define BANK          3   /*** COLUMN FOR NAMES OF BANK ACCOUNTS *********/       
-#define PARTITION     4   /*** COLUMN FOR NAMES OF BANK PARTITIONS *******/
-#define DESCRIPTION   5   /*** COLUMN FOR DESCRIPTIONS OF TRANSACTIONS ***/
+#define AMOUNT        0   /*** COLUMN FOR TRANSACTION AMOUNTS *************/
+#define STATUS        1   /*** COLUMN FOR TRANSACTION STATUS CODES ********/
+#define CREDIT        2   /*** COLUMN FOR NAMES OF CREDIT ACCOUNTS ********/
+#define BANK          3   /*** COLUMN FOR NAMES OF BANK ACCOUNTS **********/       
+#define PARTITION     4   /*** COLUMN FOR NAMES OF BANK PARTITIONS ********/
+#define DESCRIPTION   5   /*** COLUMN FOR DESCRIPTIONS OF TRANSACTIONS **å**/
 
 
 /************************************************************************** 
@@ -35,9 +35,9 @@
 #define COLUMN_SEPARATORS   "\t"          										/* NEED TO IMPLEMENT */
 #define NUM_SEPARATORS      16												/* NEED TO IMPLEMENT */
 
-/*************************************************************************************** 
- *** USER-DEFINED TRANSACTION STATUSES CODES *******************************************
- ***************************************************************************************/
+/************************************************************************** 
+ *** USER-DEFINED TRANSACTION STATUSES CODES ******************************
+ **************************************************************************/
 
 #define CREDIT_NOT_THERE_YET   "cn"   /*** HASN'T REACHED CREDIT COMPANY YET ***/
 #define CREDIT_PENDING         "cp"   /*** PENDING CHARGE IN CREDIT ACCOUNT ****/
@@ -47,9 +47,9 @@
 #define LOCKED                 "l"    /*** CLEARED, BUT NOT OKAY TO CONDENSE ***/
 
 
-/*************************************************************************************** 
- *** USER-DEFINED OPTIONS FOR OUTPUT SUMMARIES *****************************************
- ***************************************************************************************/
+/************************************************************************** 
+ *** USER-DEFINED OPTIONS FOR OUTPUT SUMMARIES ****************************
+ **************************************************************************/
 
 #define PRINT_ZEROED_ACCOUNTS 0  /*** SET TO 1 TO INCLUDE EMPTY ACCOUNTS IN SUMMARY ****    NEED TO IMPLEMENT
                                   *** SET TO 0 TO IGNORE ACCOUNTS WITH $0.00 BALANCE ***/
