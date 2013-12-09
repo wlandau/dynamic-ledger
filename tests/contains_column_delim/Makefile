@@ -10,5 +10,5 @@ contains_column_delim.o:
 	gcc -c ../../src/contains_column_delim.c -o contains_column_delim.o -Wall -ansi -pedantic -I../../include
 
 clean:
-	rm *.o
-	rm test
+	rm -f *.o
+	rm -f test

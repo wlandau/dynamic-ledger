@@ -15,6 +15,7 @@ DEP+=condense
 DEP+=condense_and_print
 DEP+=condense_str
 DEP+=contains_column_delim
+DEP+=contains_row_delim
 DEP+=free_for_retotal 
 DEP+=free_ledger get_color
 DEP+=get_entries_from_stream 
