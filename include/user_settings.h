@@ -56,6 +56,7 @@
 #define USE_COLOR   1  /*** SET TO 1 TO ENABLE COLOR-CODED PRINTING TO THE TERMINAL ***/  	/* NEED TO IMPLEMENT */
                        /*** SET TO 0 FOR NO COLORING **********************************/
 
+#define BACKGROUND_COLOR "\x1B[40m"   /*** BACKGROUND COLOR **/
 #define NORMAL_COLOR     "\x1B[0m"    /*** REGULAR TEXT ******/
 #define NEGATIVE_COLOR   "\x1B[31m"   /*** NEGATIVE TOTALS ***/
 #define POSITIVE_COLOR   "\x1B[32m"   /*** POSITIVE TOTALS ***/
