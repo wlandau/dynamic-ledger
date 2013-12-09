@@ -7,16 +7,21 @@
 #include <user_settings.h>
 
 int main(){
-  printf("\"%s\" contains column delimiter. ret = %d\n", "	hi", contains_tabs("	hi"));
-  printf("\"%s\" contains column delimiter.ret = %d\n", "hi	",  contains_tabs("hi	"));
-  printf("\"%s\" contains column delimiter.ret = %d\n", "hi	hi",  contains_tabs("hi	hi"));
-  printf("\"%s\" contains column delimiter.ret = %d\n", "	hi	hi",  contains_tabs("	hi	hi"));
-  printf("\"%s\" contains column delimiter.ret = %d\n", "hi	hi	",  contains_tabs("hi	hi	"));
-  printf("\"%s\" contains column delimiter.ret = %d\n", "\thi",  contains_tabs("\thi"));
-  printf("\"%s\" contains column delimiter.ret = %d\n", "hi\t", contains_tabs("hi\t"));
-  printf("\"%s\" contains column delimiter.ret = %d\n", "hi\thi", contains_tabs("hi\thi"));
-  printf("\"%s\" contains column delimiter.ret = %d\n", "\thi\thi", contains_tabs("\thi\thi"));
-  printf("\"%s\" contains column delimiter.ret = %d\n", "hi\thi\t", contains_tabs("hi\thi\t"));
-  printf("\"%s\" does not contain column delimiter. ret = %d\n", "blkjadlkfj\n", contains_tabs("blkjadlkfj\n"));
+  char str[1000];
+
+  strcpy(str, "	hi");
+  printf("\"%s\" ret = %d\n", str, contains_column_delim(str));
+  
+  strcpy(str, "	goobah	");
+  printf("\"%s\" ret = %d\n", str, contains_column_delim(str));
+
+  strcpy(str, "doogie	");
+  printf("\"%s\" ret = %d\n", str, contains_column_delim(str));
+  
+  strcpy(str, "DERP!");
+  printf("\"%s\" ret = %d\n", str, contains_column_delim(str));
+  
+  strcpy(str, "DE	RP!");
+  printf("\"%s\" ret = %d\n", str, contains_column_delim(str));
   return 0;
 }
