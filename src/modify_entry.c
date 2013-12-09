@@ -37,7 +37,7 @@ void modify_entry(Ledger *ledger, int row, int col, char *next){
   strcpy(next_local, next);
   str_strip(next_local);  
   
-  if((i = contains_tabs(next_local))){
+  if((i = contains_column_delim(next_local))){
     fprintf(stderr, "Warning: entries must not contain tabs. Truncating input.\n");
     next_local[i] = '\0';
   }

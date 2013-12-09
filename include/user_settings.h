@@ -33,7 +33,6 @@
 
 #define ROW_SEPARATORS      "\n\r"													/* NEED TO IMPLEMENT */
 #define COLUMN_SEPARATORS   "\t"          										/* NEED TO IMPLEMENT */
-#define NUM_SEPARATORS      16												/* NEED TO IMPLEMENT */
 
 /************************************************************************** 
  *** USER-DEFINED TRANSACTION STATUSES CODES ******************************
