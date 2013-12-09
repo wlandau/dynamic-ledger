@@ -71,7 +71,7 @@ typedef struct {
 
 err_t bad_input_file(const char *filename);
 err_t bad_output_file(const char *filename); 
-int check_legal_double(char *s, int row);                     /* NEEDS TESTING */
+int check_legal_double(char *s, int row); 
 int contains_column_delim(char *s);                                        
 int contains_row_delim(char *s); 
 const char *get_color(double);                                       /* ADD OPTION TO DISABLE COLORS. ADD BACKGROUND COLOR. */

@@ -13,6 +13,9 @@
 #include <user_settings.h>
 
 const char *get_color(double d){ 
+  if(!USE_COLOR)
+    return "";
+  
   if(d > EPS)
     return POSITIVE_COLOR;
   else if(d < -EPS)
