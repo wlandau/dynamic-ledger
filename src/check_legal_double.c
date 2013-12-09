@@ -16,14 +16,17 @@ int check_legal_double(char *s, int row){
   char *testbufref, testbuf[ENTRYSIZE];
   
   errno = 0;
+  str_strip(s);
   strcpy(testbuf, s);
-    testbufref = testbuf;
-    strtod(testbuf, &testbufref); 
-    if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf)){
-      fprintf(stderr, "Error: bad number \"%s\" at row %d column 2.\n", 
-              s, row + 1);
-      fprintf(stderr, "Fix your ledger file.\n");
-      return 1;   
-    }
+  testbufref = testbuf;
+  strtod(testbuf, &testbufref); 
+
+  if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf)){
+    fprintf(stderr, "Error: bad number \"%s\" at row %d column 2.\n", 
+            s, row + 1);
+    fprintf(stderr, "Fix your ledger file.\n");
+    return 1;   
+  }
+
   return 0;
 }

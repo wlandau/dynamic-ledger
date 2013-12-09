@@ -10,7 +10,6 @@ DEP=alloc_entries
 DEP+=bad_input_file 
 DEP+=bad_output_file
 DEP+=check_legal_double
-DEP+=check_legal_double_modify_entry
 DEP+=condense 
 DEP+=condense_and_print
 DEP+=condense_str
