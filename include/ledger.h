@@ -74,7 +74,7 @@ err_t bad_output_file(const char *filename);
 int check_legal_double(char *s, int row); 
 int contains_column_delim(char *s);                                        
 int contains_row_delim(char *s); 
-const char *get_color(double);                                       /* ADD OPTION TO DISABLE COLORS. ADD BACKGROUND COLOR. */
+const char *get_color(double);            
 int is_space(char c);                                                       /* NEEDS TESTING */
 int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING */
 int legal_status_codes(Ledger *ledger);                           /* NEED TO IMPLEMENT */
