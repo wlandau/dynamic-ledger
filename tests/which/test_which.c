@@ -31,8 +31,44 @@ int main(){
   
   for(i = 0; i < n; ++i)
     printf("%s at %d\n", a[i], which(a, a[i], n));            
-  printf("NULL at %d\n", which(a, NULL, n));
-  printf("goober at %d\n\n", which(a, "goober", n));
+  printf("\nNULL at %d\n", which(a, NULL, n));
+  printf("goober at %d\n", which(a, "goober", n));
+  printf("goo at %d\n\n", which(a, "goo", n));
+        
+  for(i = 0; i < n; ++i)
+    free(a[i]);
+  free(a);
+
+printf("\n\n TEST 2!!!\n\n");
+
+a = malloc(n * sizeof(char*));
+  for(i = 0; i < n; ++i){
+    if(i == 1)
+      a[i] = NULL;
+    else
+      a[i] = malloc(100 * sizeof(char));
+  }
+   
+  strcpy(a[0], "good");  
+  strcpy(a[2], "");  
+  strcpy(a[3], "\0");  
+  strcpy(a[4], "gooda");  
+  strcpy(a[5], "badd");  
+  strcpy(a[6], "badd");  
+  strcpy(a[7], "THREE");    
+  strcpy(a[8], " ");    
+  strcpy(a[9], "good");     
+
+  printf("\n");   
+  for(i = 0; i < n; ++i)
+    printf("a[%d] = %s\n",i, a[i]);
+  printf("\n");   
+        
+  
+  for(i = 0; i < n; ++i)
+    printf("%s at %d\n", a[i], which(a, a[i], n));            
+  printf("\nNULL at %d\n", which(a, NULL, n));
+  printf("goober at %d\n", which(a, "goober", n));
   printf("goo at %d\n\n", which(a, "goo", n));
         
   for(i = 0; i < n; ++i)
@@ -40,15 +76,13 @@ int main(){
   free(a);
 
 
-
-printf("\n\n TEST 2!!!\n\n");
+printf("\n\n TEST 3!!!\n\n");
 
 
   a = malloc(n * sizeof(char*));
   for(i = 0; i < n; ++i)
     a[i] = malloc(100 * sizeof(char));
-    
-  printf("\n");  
+     
   strcpy(a[0], "good");  
   strcpy(a[1], "");  
   strcpy(a[2], "");  
@@ -59,7 +93,8 @@ printf("\n\n TEST 2!!!\n\n");
   strcpy(a[7], "THREE");    
   strcpy(a[8], " ");    
   strcpy(a[9], "good");     
-  
+
+  printf("\n");   
   for(i = 0; i < n; ++i)
     printf("a[%d] = %s\n",i, a[i]);
   printf("\n");   
