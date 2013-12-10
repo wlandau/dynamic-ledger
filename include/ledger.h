@@ -110,6 +110,8 @@ void rename_credit(Ledger *ledger, char *from, char *to);                       
 void rename_partition(Ledger *ledger, char *bank, char *from, char *to);              /* NEEDS TESTING */
 void remove_row(Ledger *ledger, int row);                                                     /* NEEDS TESTING */
 void trim_ledger(Ledger *ledger);                                                         /* NEEDS TESTING */
+err_t partition_transaction(Ledger *ledger, int row, char **partitions, double *amounts);		/* NEED TO IMPLEMENT ****/
+err_t partition_bank(Ledger *ledger, char *bank, char **partitions, double *amounts);					/* NEED TO IMPLEMENT ****/
 
 
 /*************************************************************************************** 
@@ -127,6 +129,8 @@ void rename_credit_str(char **s, char *from, char *to);                         
 void rename_partition_str(char **s, char *bank, char *from, char *to);               /* NEEDS TESTING */
 void remove_row_str(char **s, int row);                                                 /* NEEDS TESTING */
 void trim_ledger_str(char **s);                                                              /* NEEDS TESTING */
+err_t partition_transaction_str(char **s, int row, char **partitions, double *amounts);		/* NEED TO IMPLEMENT ****/
+err_t partition_bank_str(char **s, char *bank, char **partitions, double *amounts);					/* NEED TO IMPLEMENT ****/
 
 
 /*************************************************************************************** 

@@ -1,0 +1,7 @@
+COPYRIGHT STATUS
+----------------
+
+  Copyright (c) 2013 Will Landau
+
+All code is subject to the GNU General Public License, Version 3. You
+may only redistribute it under the conditions listed in LICENSE.txt
