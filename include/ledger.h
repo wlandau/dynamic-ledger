@@ -81,8 +81,8 @@ int legal_status_codes(Ledger *ledger);                           /* NEED TO IMP
 int qcmp(const void *a, const void *b);                                     
 int str_equal(const char *s1, const char *s2); 
 void str_strip(char *s);     
-void unique(char **s, int n, char ***ret, int *nunique);                        /* NEEDS TESTING */
-void usage(); 
+void unique(char **s, int n, char ***ret, int *nunique);
+void usage();
 int which(const char **);										/**NEED TO IMPLEMENT AND ADD TO CONDENSE & OTHER FUNCTIONS */
 
 

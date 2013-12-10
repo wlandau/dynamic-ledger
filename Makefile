@@ -52,6 +52,7 @@ DEP+=trim_ledger
 DEP+=trim_ledger_str 
 DEP+=unique 
 DEP+=usage
+DEP+=which
 
 OBJ=$(foreach name, $(DEP), $(OBJDIR)$(name).o)
 

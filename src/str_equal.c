@@ -13,5 +13,12 @@
 #include <user_settings.h>
 
 int str_equal(const char *s1, const char *s2){
-  return !strcmp(s1, s2);
+  if(s1 == NULL && s2 != NULL)
+    return 0;
+  else if(s1 != NULL && s2 == NULL)    
+    return 0;
+  else if(s1 == NULL && s2 == NULL)
+    return 1;
+  else
+    return !strcmp(s1, s2);
 }

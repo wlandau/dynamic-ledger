@@ -18,13 +18,12 @@ int main(){
   *b = malloc(100 * sizeof(char));
   *c = malloc(100 * sizeof(char));   
   *d = malloc(100 * sizeof(char));
-  *e = malloc(100 * sizeof(char));
 
   strcpy(*a, "good");
   strcpy(*b, "badd");
   strcpy(*c, "gooda");
   strcpy(*d, "\0");
-  strcpy(*e, "");
+  *e = NULL;
    
   printf("%s\t%s\t%d\n", *a, *a, str_equal(* a, *a));
   printf("%s\t%s\t%d\n", *a, *b, str_equal(* a, *b));
