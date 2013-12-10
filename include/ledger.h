@@ -79,7 +79,7 @@ int is_space(char c);
 int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING */
 int legal_status_codes(Ledger *ledger);                           /* NEED TO IMPLEMENT */
 int qcmp(const void *a, const void *b);                                     
-int str_equal(const char *s1, const char *s2);                            /* NEEDS TESTING */
+int str_equal(const char *s1, const char *s2); 
 void str_strip(char *s);                                                /* NEEDS TESTING */
 void unique(char **s, int n, char ***ret, int *nunique);                        /* NEEDS TESTING */
 void usage();                                                                        /* NEEDS TESTING */
