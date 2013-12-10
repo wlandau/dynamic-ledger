@@ -12,6 +12,15 @@
 #include <string.h>
 #include <user_settings.h>
 
-int which(const char **s){
-  return 0;
+int which(char **s, const char *find, int n){
+  int i;
+  
+  if(s == NULL || n < 1)
+    return -1;
+    
+  for(i = 0; i < n; ++i)
+    if(str_equal(s[i], find))
+      return i;
+  
+  return -1;
 }
