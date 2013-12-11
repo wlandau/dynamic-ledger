@@ -49,6 +49,7 @@ printf("\n\n TEST 2!!!\n\n");
   }
    
   strcpy(a[0], "good");  
+  strcpy(a[1], "fun");  
   strcpy(a[2], "");  
   strcpy(a[3], "\0");  
   strcpy(a[4], "gooda");  
