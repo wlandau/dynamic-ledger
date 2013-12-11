@@ -14,15 +14,17 @@ int main(){
     
   printf("\n");  
   strcpy(a[0], "good");  
-  strcpy(a[1], "");  
-  strcpy(a[2], "");  
-  strcpy(a[3], "\0");  
+  strcpy(a[1], "eating");  
+  strcpy(a[2], "your nose");  
+  strcpy(a[3], "boogie");  
   strcpy(a[4], "gooda");  
   strcpy(a[5], "badd");  
   strcpy(a[6], "badd");  
   strcpy(a[7], "THREE");    
-  strcpy(a[8], " ");    
+  strcpy(a[8], "doogie");    
   strcpy(a[9], "good");     
+
+  qsort(a, 10, sizeof(char*), qcmp);
   
   for(i = 0; i < n; ++i)
     printf("a[%d] = %s\n",i, a[i]);
@@ -41,12 +43,9 @@ int main(){
 
 printf("\n\n TEST 2!!!\n\n");
 
-a = malloc(n * sizeof(char*));
+  a = malloc(n * sizeof(char*));
   for(i = 0; i < n; ++i){
-    if(i == 1)
-      a[i] = NULL;
-    else
-      a[i] = malloc(100 * sizeof(char));
+    a[i] = malloc(100 * sizeof(char));
   }
    
   strcpy(a[0], "good");  
@@ -58,6 +57,8 @@ a = malloc(n * sizeof(char*));
   strcpy(a[7], "THREE");    
   strcpy(a[8], " ");    
   strcpy(a[9], "good");     
+  
+  qsort(a, 10, sizeof(char*), qcmp);
 
   printf("\n");   
   for(i = 0; i < n; ++i)
@@ -94,6 +95,8 @@ printf("\n\n TEST 3!!!\n\n");
   strcpy(a[8], " ");    
   strcpy(a[9], "good");     
 
+  qsort(a, 10, sizeof(char*), qcmp);
+
   printf("\n");   
   for(i = 0; i < n; ++i)
     printf("a[%d] = %s\n",i, a[i]);
@@ -109,7 +112,7 @@ printf("\n\n TEST 3!!!\n\n");
   if(a != NULL)
     free(a);
 
-printf("\n\nTEST 3!!! \n\n");
+printf("\n\nTEST 4!!! \n\n");
 
   a = NULL;
   n = 5;

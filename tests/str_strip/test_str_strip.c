@@ -7,7 +7,7 @@
 #include <user_settings.h>
 
 int main(){
-  char **a, **b, **c, **d, **e;
+  char **a, **b, **c, **d, **e, *f;
   a = malloc(sizeof(char*));
   b = malloc(sizeof(char*)); 
   c = malloc(sizeof(char*));
@@ -57,5 +57,11 @@ int main(){
   free(c);
   free(d);
   free(e);
+  
+  f = NULL;
+  printf("\n\n\nf = %s\n", f); 
+  str_strip(f);
+  printf("f = %s\n", f);   
+  
   return 0;
 }
