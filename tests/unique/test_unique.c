@@ -13,12 +13,12 @@ int main(){
     a[i] = malloc(100 * sizeof(char));
     
   printf("\n");  
-  strcpy(a[0], "good");  
+  strcpy(a[0], "a");  
   strcpy(a[1], "");  
   strcpy(a[2], "");  
   strcpy(a[3], "\0");  
-  strcpy(a[4], "gooda");  
-  strcpy(a[5], "badd");  
+  strcpy(a[4], "ab");  
+  strcpy(a[5], "b");  
   strcpy(a[6], "badd");  
   strcpy(a[7], "THREE");    
   strcpy(a[8], " ");    

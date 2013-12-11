@@ -21,6 +21,7 @@ void unique(char **a, int n, char ***ret, int *nunique){
   
   s = malloc(n * sizeof(char*));
   for(j = 0; j < n; ++j){
+    str_strip(a[j]);
     s[j] = malloc(ENTRYSIZE * sizeof(char));
     
     if(a[j] == NULL)
@@ -52,6 +53,8 @@ void unique(char **a, int n, char ***ret, int *nunique){
       strcpy((*ret)[k], s[j]);
       ++k;
     }  
+
+  qsort(*ret, *nunique, sizeof(char*), qcmp);
     
   for(j = 0; j < n; ++j)
     free(s[j]);
