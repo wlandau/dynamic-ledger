@@ -13,8 +13,7 @@ int main(){
   ret = alloc_entries(ledger);
   printf("\n----\nRETURN VALUE = %d\n---\n", ret);
 
-  ledger = malloc(sizeof(Ledger));
-  ledger->nrows = 0;
+  ledger = new_ledger();
   ret = alloc_entries(ledger);
   printf("\n----\nRETURN VALUE = %d\n---\n", ret);
   
