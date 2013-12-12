@@ -55,6 +55,8 @@ int main(){
   for(i = 0; i < n; ++i){
     if(i != 1)
       a[i] = malloc(100 * sizeof(char));
+    else
+      a[i] = NULL;
   }
     
   printf("\n");  
