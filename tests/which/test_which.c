@@ -105,6 +105,7 @@ printf("\n\n TEST 3!!!\n\n");
   
   n = 0;
   printf("\nNULL at %d\n", which(a, NULL, n));
+  printf("good at %d\n", which(a, "good", n));
   printf("goober at %d\n", which(a, "goober", n));     
         
   for(i = 0; i < 10; ++i)
@@ -118,6 +119,7 @@ printf("\n\nTEST 4!!! \n\n");
   a = NULL;
   n = 5;
   printf("\nNULL at %d\n", which(a, NULL, n));
+  printf("good at %d\n\n", which(a, "good", n)); 
   printf("goober at %d\n\n", which(a, "goober", n));      
 
   return 0;
