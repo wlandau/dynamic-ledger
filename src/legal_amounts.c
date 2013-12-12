@@ -19,7 +19,7 @@ int legal_amounts(Ledger *ledger){
     return 1;
 
   for(i = 0; i < ledger->nrows; ++i)
-    if(check_legal_double(ledger->entries[AMOUNT][i], i))
+    if(legal_double(ledger->entries[AMOUNT][i], i))
       return 1;
 
   return 0;

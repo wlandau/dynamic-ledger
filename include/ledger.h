@@ -33,11 +33,14 @@
 
 
 /*************************************************************************************** 
- *** ERROR CODES ***********************************************************************
+ *** RETURN CODES **********************************************************************
  ***************************************************************************************/
 
 #define LSUCCESS   0
 #define LFAILURE   1
+
+#define LNO   0
+#define LYES   1
 
 
 /*************************************************************************************** 
@@ -57,6 +60,7 @@
  ***************************************************************************************/
 
 typedef int err_t;
+typedef int bool_t;
 
 typedef struct {
   char *filename, **banks, **credits, ***partitions, ***entries;
@@ -71,9 +75,9 @@ typedef struct {
 
 err_t bad_input_file(const char *filename);
 err_t bad_output_file(const char *filename); 
-int check_legal_double(char *s, int row); 
-int contains_column_delim(char *s);                                        
-int contains_row_delim(char *s); 
+bool_t legal_double(char *s, int row); 
+int column_delim(char *s);                                        
+int row_delim(char *s); 
 const char *get_color(double);            
 int is_space(char c);                     
 int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING */
@@ -110,9 +114,8 @@ void rename_credit(Ledger *ledger, char *from, char *to);                       
 void rename_partition(Ledger *ledger, char *bank, char *from, char *to);              /* NEEDS TESTING */
 void remove_row(Ledger *ledger, int row);                                                     /* NEEDS TESTING */
 void trim_ledger(Ledger *ledger);                                                         /* NEEDS TESTING */
-err_t partition_transaction(Ledger *ledger, int row, char **partitions, double *amounts);		/* NEED TO IMPLEMENT ****/
-err_t partition_bank(Ledger *ledger, char *bank, char **partitions, double *amounts);					/* NEED TO IMPLEMENT ****/
-
+err_t repartition(Ledger *ledger, char *bank, char **partitions, double *amounts);					/* NEED TO IMPLEMENT ****/
+err_t repartition_percent(Ledger *ledger, char *bank, char **partitions, double *percentages);					/* NEED TO IMPLEMENT ****/
 
 /*************************************************************************************** 
  *** FUNCTIONS TO MODIFY LEDGERS REPRESENTED AS STRINGS ********************************
@@ -129,9 +132,8 @@ void rename_credit_str(char **s, char *from, char *to);                         
 void rename_partition_str(char **s, char *bank, char *from, char *to);               /* NEEDS TESTING */
 void remove_row_str(char **s, int row);                                                 /* NEEDS TESTING */
 void trim_ledger_str(char **s);                                                              /* NEEDS TESTING */
-err_t partition_transaction_str(char **s, int row, char **partitions, double *amounts);		/* NEED TO IMPLEMENT ****/
-err_t partition_bank_str(char **s, char *bank, char **partitions, double *amounts);					/* NEED TO IMPLEMENT ****/
-
+err_t repartition_str(char **s, char *bank, char **partitions, double *amounts);					/* NEED TO IMPLEMENT ****/
+err_t repartition_percent_str(char **s, char *bank, char **partitions, double *percentages);					/* NEED TO IMPLEMENT ****/
 
 /*************************************************************************************** 
  *** FUNCTIONS TO PARSE INPUT INTO LEDGER OBJECTS **************************************

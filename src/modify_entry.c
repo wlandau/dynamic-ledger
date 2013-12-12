@@ -31,13 +31,13 @@ void modify_entry(Ledger *ledger, int row, int col, char *next){
   }
   
   if(!col)
-    if(check_legal_double(next, row))
+    if(legal_double(next, row))
       return;
   
   strcpy(next_local, next);
   str_strip(next_local);  
   
-  if((i = contains_column_delim(next_local))){
+  if((i = column_delim(next_local))){
     fprintf(stderr, "Warning: entries must not contain tabs. Truncating input.\n");
     next_local[i] = '\0';
   }
