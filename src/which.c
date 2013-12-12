@@ -12,11 +12,11 @@
 #include <string.h>
 #include <user_settings.h>
 
-int which(char **s, const char *find, int n){
+index_t which(char **s, const char *find, int n){
   int low = 0, high = n - 1, mid, c;
   
   if(s == NULL || find == NULL || n < 1)
-    return -1;
+    return NO_INDEX;
     
   while(abs(high - low) > 1){
     mid = (high + low)/2;
@@ -34,5 +34,5 @@ int which(char **s, const char *find, int n){
   else if(!strcmp(s[high], find))
     return high;
   else
-    return -1;
+    return NO_INDEX;
 }

@@ -91,7 +91,7 @@ bool_t str_equal(const char *s1, const char *s2);
 void str_strip(char *s);     
 err_t unique(char **s, int n, char ***ret, int *nunique);
 void usage();
-int which(char **s, const char *find, int n);
+index_t which(char **s, const char *find, int n);
 
 
 /*************************************************************************************** 
