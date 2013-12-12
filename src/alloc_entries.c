@@ -12,11 +12,14 @@
 #include <string.h>
 #include <user_settings.h>
 
-void alloc_entries(Ledger *ledger){
+err_t alloc_entries(Ledger *ledger){
   int i, j;
   
   if(ledger == NULL)
-    return;
+    return LFAILURE;
+
+  if(ledger->nrows < 1)
+    return LFAILURE;
 
   ledger->entries = malloc(NFIELDS * sizeof(char**));
   for(i = 0; i < NFIELDS; ++i){
@@ -24,4 +27,6 @@ void alloc_entries(Ledger *ledger){
     for(j = 0; j < ledger->nrows; ++j)
       ledger->entries[i][j] = calloc(ENTRYSIZE, sizeof(char));
   }
+  
+  return LSUCCESS;
 }
