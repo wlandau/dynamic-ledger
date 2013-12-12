@@ -12,7 +12,7 @@
 #include <string.h>
 #include <user_settings.h>
 
-const char *get_color(double d){ 
+color_t color(double d){ 
   if(!USE_COLOR)
     return "";
   

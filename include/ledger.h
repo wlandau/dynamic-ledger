@@ -82,7 +82,7 @@ err_t bad_output_file(const char *filename);
 bool_t legal_double(char *s, int row); 
 index_t column_delim(char *s);                                        
 index_t row_delim(char *s); 
-color_t get_color(double);            
+color_t color(double);            
 bool_t space(char c);                     
 int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING (bool_t) */
 int legal_status_codes(Ledger *ledger);                           /* NEED TO IMPLEMENT (bool_t) */

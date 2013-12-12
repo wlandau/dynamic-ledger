@@ -1,4 +1,4 @@
-TEST=test_get_color
+TEST=test_color
 
 CC=gcc
 CCFLAGS=-c -Wall -pedantic -I../../include/
