@@ -118,7 +118,7 @@ printf("\n\nTEST 4!!! \n\n");
   a = NULL;
   n = 5;
   printf("\nNULL at %d\n", which(a, NULL, n));
-  printf("goober at %d\n", which(a, "goober", n));      
+  printf("goober at %d\n\n", which(a, "goober", n));      
 
   return 0;
 }
