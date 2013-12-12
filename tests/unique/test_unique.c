@@ -7,7 +7,7 @@
 #include <user_settings.h>
 
 int main(){
-  int i, n = 10, nunique;
+  int i, n = 10, nunique, ret;
   char **a = malloc(n * sizeof(char*)), **s;
   for(i = 0; i < n; ++i)
     a[i] = malloc(100 * sizeof(char));
@@ -28,7 +28,8 @@ int main(){
     printf("a[%d] = %s\n",i, a[i]);
   printf("\n");   
   
-  unique(a, n, &s, &nunique);
+  ret = unique(a, n, &s, &nunique);
+    printf("\n---\nRETURN VALUE OF UNIQUE() IS %d\n---\n", ret);
         
   printf("nunique = %d\n\n", nunique);
   
@@ -74,8 +75,9 @@ int main(){
     printf("a[%d] = %s\n",i, a[i]);
   printf("\n");   
   
-  unique(a, n, &s, &nunique);
-        
+  ret = unique(a, n, &s, &nunique);
+    printf("\n---\nRETURN VALUE OF UNIQUE() IS %d\n---\n", ret);
+          
   printf("nunique = %d\n\n", nunique);
   
   for(i = 0; i < nunique; ++i)
@@ -119,7 +121,8 @@ a = malloc(n * sizeof(char*));
     printf("a[%d] = %s\n",i, a[i]);
   printf("\n");   
   
-  unique(a, n, &s, &nunique);
+  ret = unique(a, n, &s, &nunique);
+    printf("\n---\nRETURN VALUE OF UNIQUE() IS %d\n---\n", ret);
         
   printf("nunique = %d\n\n", nunique);
   
@@ -160,7 +163,8 @@ a = malloc(n * sizeof(char*));
     printf("a[%d] = %s\n",i, a[i]);
   printf("\n");   
   
-  unique(a, n, &s, &nunique);
+  ret = unique(a, n, &s, &nunique);
+    printf("\n---\nRETURN VALUE OF UNIQUE() IS %d\n---\n", ret);
         
   printf("nunique = %d\n\n", nunique);
   
@@ -201,7 +205,8 @@ a = malloc(n * sizeof(char*));
     printf("a[%d] = %s\n",i, a[i]);
   printf("\n");   
   
-  unique(a, n, &s, &nunique);
+  ret = unique(a, n, &s, &nunique);
+    printf("\n---\nRETURN VALUE OF UNIQUE() IS %d\n---\n", ret);
         
   printf("nunique = %d\n\n", nunique);
   
@@ -247,7 +252,8 @@ printf("\n\n TEST 3!!!\n\n");
   printf("\n");   
   
   n = 0;
-  unique(a, n, &s, &nunique);
+  ret = unique(a, n, &s, &nunique);
+    printf("\n---\nRETURN VALUE OF UNIQUE() IS %d\n---\n", ret);
 
   printf("nunique = %d\n\n", nunique);
   
@@ -266,8 +272,8 @@ printf("\n\nTEST 4!!! \n\n");
 
   a = NULL;
   n = 5;
-  unique(a, n, &s, &nunique);
-
+  ret = unique(a, n, &s, &nunique);
+    printf("\n---\nRETURN VALUE OF UNIQUE() IS %d\n---\n", ret);
 
 printf("\n\nTEST 5!!! \n\n");
 
@@ -276,9 +282,14 @@ printf("\n\nTEST 5!!! \n\n");
   a = malloc(n * sizeof(char*));
   *a = NULL;
 
-  unique(a, n, &s, &nunique);
+  printf("*a = %s\n", *a);
+
+  ret = unique(a, n, &s, &nunique);
+    printf("\n---\nRETURN VALUE OF UNIQUE() IS %d\n---\n", ret);
         
   printf("nunique = %d\n\n", nunique);
+  
+  printf("*a = %s\n", *a);
   
   for(i = 0; i < nunique; ++i)
     printf("s[%d] = %s\n",i, s[i]);
