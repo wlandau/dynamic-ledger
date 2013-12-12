@@ -13,7 +13,7 @@
 #include <user_settings.h>
 
 int get_entries_from_stream(Ledger *ledger, FILE *fp){
-  int i, row, field; 
+  int char_index, row, field; 
   char c, line[LINESIZE];
   
   if(ledger == NULL)
@@ -34,30 +34,11 @@ int get_entries_from_stream(Ledger *ledger, FILE *fp){
   
   field = 0;
   row = 0;
-  i = 0;
+  char_index = 0;
   
-  /* ignore the header */
   fgets(line, LINESIZE, fp);
-  
-  /* parse the data */
-  while((c = fgetc(fp)) != EOF){
-
-    if(c== '\t'){
-      if(field < ENTRYSIZE){
-        i = 0;
-      }
-      ++field; 
-    } else if(c == '\n' || c == '\r'){
-      if(field < ENTRYSIZE){
-        i= 0;
-      }
-      field = 0;
-      ++row; 
-    } else if(field < NFIELDS && i < ENTRYSIZE - 1){
-      ledger->entries[field][row][i] = c;
-      ++i; 
-    }
-  }
+  while((c = fgetc(fp)) != EOF)
+    parse_char(ledger, c, &char_index, &field, &row);
   
   rewind(fp);
   return legal_amounts(ledger);

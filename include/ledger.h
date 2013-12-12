@@ -81,7 +81,7 @@ err_t bad_input_file(const char *filename);
 err_t bad_output_file(const char *filename); 
 bool_t legal_double(char *s, int row); 
 index_t column_delim(char *s);                                        
-index_t row_delim(char *s); 
+index_t row_delim(char *s);
 color_t color(double);            
 bool_t space(char c);                     
 int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING (bool_t) */
@@ -128,8 +128,6 @@ err_t repartition_percent(Ledger *ledger, char *bank, char **partitions, double 
 err_t new_ledger_str();                                                      /* NEED TO IMPLEMENT ****/
 void condense_str(char **s);                                                                   /* NEEDS TESTING */
 void insert_row_str(char **s, int row);                                                              /* NEEDS TESTING */
-void is_row_separator(char c);												/* NEED TO IMPLEMENT ****/
-void is_column_separator(char c);											/* NEED TO IMPLEMENT ****/
 void modify_entry_str(char **s, int row, int col, char *next);                              /* NEEDS TESTING */
 void rename_bank_str(char **s, char *from, char *to);                              /* NEEDS TESTING */
 void rename_credit_str(char **s, char *from, char *to);                              /* NEEDS TESTING */
@@ -143,11 +141,12 @@ err_t repartition_percent_str(char **s, char *bank, char **partitions, double *p
  *** FUNCTIONS TO PARSE INPUT INTO LEDGER OBJECTS **************************************
  ***************************************************************************************/
 
+void parse_char(Ledger *ledger, char c, int *char_index, int *field, int *row);
+int get_entries_from_stream(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
+int get_entries_from_string(Ledger *ledger, char *s);                              /* NEEDS TESTING */
 Ledger *get_ledger_from_filename(const char* filename);                              /* NEEDS TESTING */
 Ledger *get_ledger_from_stream(FILE *fp);                                              /* NEEDS TESTING */
 Ledger *get_ledger_from_string(char *s);                                             /* NEEDS TESTING */
-int get_entries_from_stream(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
-int get_entries_from_string(Ledger *ledger, char *s);                              /* NEEDS TESTING */
 
 
 /*************************************************************************************** 
