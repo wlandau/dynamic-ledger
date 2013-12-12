@@ -39,8 +39,10 @@
 #define LSUCCESS   0
 #define LFAILURE   1
 
-#define LNO   0
+#define LNO    0
 #define LYES   1
+
+#define NONE_FOUND   -1
 
 
 /*************************************************************************************** 

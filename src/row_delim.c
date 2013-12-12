@@ -18,6 +18,6 @@ int row_delim(char *s){
   for(i = 0; i < n; ++i)
     for(j = 0; j < ndelims; ++j)
       if(s[i] == delims[j])
-        return 1;
-  return 0;
+        return i;
+  return NONE_FOUND;
 }
