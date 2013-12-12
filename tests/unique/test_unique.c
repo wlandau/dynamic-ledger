@@ -44,6 +44,55 @@ int main(){
     free(s[i]);
   free(s);
   nunique = 0;
+  
+  
+  
+  printf("\n\n TEST 1A!!!\n\n");
+  
+  
+  n = 10;
+  a = malloc(n * sizeof(char*));
+  for(i = 0; i < n; ++i){
+    if(i != 1)
+      a[i] = malloc(100 * sizeof(char));
+  }
+    
+  printf("\n");  
+  strcpy(a[0], "a");   
+  strcpy(a[2], "");  
+  strcpy(a[3], "\0");  
+  strcpy(a[4], "ab");  
+  strcpy(a[5], "b");  
+  strcpy(a[6], "badd");  
+  strcpy(a[7], "THREE");    
+  strcpy(a[8], " ");    
+  strcpy(a[9], "good");     
+  
+  for(i = 0; i < n; ++i)
+    printf("a[%d] = %s\n",i, a[i]);
+  printf("\n");   
+  
+  unique(a, n, &s, &nunique);
+        
+  printf("nunique = %d\n\n", nunique);
+  
+  for(i = 0; i < nunique; ++i)
+    printf("s[%d] = %s\n",i, s[i]);
+  printf("\n");              
+        
+  for(i = 0; i < n; ++i)
+    if(a[i] != NULL)
+      free(a[i]);
+  free(a);
+
+  for(i = 0; i < nunique; ++i)
+    free(s[i]);
+  free(s);
+  nunique = 0;
+
+  
+  
+  
 
 printf("\n\n TEST 2!!!\n\n");
 

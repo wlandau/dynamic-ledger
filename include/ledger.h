@@ -89,7 +89,7 @@ int legal_status_codes(Ledger *ledger);                           /* NEED TO IMP
 int qcmp(const void *a, const void *b);                                     
 bool_t str_equal(const char *s1, const char *s2); 
 void str_strip(char *s);     
-void unique(char **s, int n, char ***ret, int *nunique);
+err_t unique(char **s, int n, char ***ret, int *nunique);
 void usage();
 int which(char **s, const char *find, int n);
 
