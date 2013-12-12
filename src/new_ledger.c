@@ -14,9 +14,9 @@
 
 Ledger *new_ledger(){
   Ledger *ledger = malloc(sizeof(Ledger));
-  ledger->nrows = 0;
   ledger->nbanks = 0;
   ledger->ncredits = 0;
+  ledger->nrows = 0;
   ledger->banks = NULL;
   ledger->bank_totals = NULL;
   ledger->credits = NULL;
