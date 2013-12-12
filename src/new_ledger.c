@@ -12,19 +12,11 @@
 #include <string.h>
 #include <user_settings.h>
 
-
-typedef struct {
-  char *filename, **banks, **credits, ***partitions, ***entries;
-  int nrows, nbanks, ncredits, *npartitions; 
-  double **bank_totals, **credit_totals, **partition_totals;            
-} Ledger;
-
-
 Ledger *new_ledger(){
   Ledger *ledger = malloc(sizeof(Ledger));
   ledger->nrows = 0;
   ledger->nbanks = 0;
-  ledger->ncredits;
+  ledger->ncredits = 0;
   ledger->banks = NULL;
   ledger->bank_totals = NULL;
   ledger->credits = NULL;
