@@ -80,8 +80,10 @@ typedef struct {
 err_t bad_input_file(const char *filename);
 err_t bad_output_file(const char *filename); 
 bool_t legal_double(char *s, int row); 
-index_t column_delim(char *s);                                        
-index_t row_delim(char *s);
+bool_t col_delim_char(char c);   
+index_t col_delim_str(char *s);                                        
+bool_t row_delim_char(char c);
+index_t row_delim_str(char *s);
 color_t color(double);            
 bool_t space(char c);                     
 int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING (bool_t) */

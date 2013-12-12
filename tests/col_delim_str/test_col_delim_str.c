@@ -10,18 +10,18 @@ int main(){
   char str[1000];
 
   strcpy(str, "	hi");
-  printf("\"%s\" ret = %d\n", str, column_delim(str));
+  printf("\"%s\" ret = %d\n", str, col_delim_str(str));
   
   strcpy(str, "goobah	klj");
-  printf("\"%s\" ret = %d\n", str, column_delim(str));
+  printf("\"%s\" ret = %d\n", str, col_delim_str(str));
 
   strcpy(str, "	doogdoogie");
-  printf("\"%s\" ret = %d\n", str, column_delim(str));
+  printf("\"%s\" ret = %d\n", str, col_delim_str(str));
   
   strcpy(str, "DERP!");
-  printf("\"%s\" ret = %d\n", str, column_delim(str));
+  printf("\"%s\" ret = %d\n", str, col_delim_str(str));
   
   strcpy(str, "DE	RP!");
-  printf("\"%s\" ret = %d\n", str, column_delim(str));
+  printf("\"%s\" ret = %d\n", str, col_delim_str(str));
   return 0;
 }

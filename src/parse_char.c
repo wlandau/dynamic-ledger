@@ -7,10 +7,10 @@
 #include <user_settings.h>
 
 void parse_char(Ledger *ledger, char c, int *char_index, int *field, int *row){
-  if(c == '\t'){
+  if(col_delim_char(c)){
     *char_index = 0;
     ++(*field); 
-  } else if(c == '\n' || c == '\r'){
+  } else if(row_delim_char(c)){
     *char_index = 0;
     *field = 0;
     ++(*row); 
