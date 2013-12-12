@@ -84,10 +84,10 @@ index_t column_delim(char *s);
 index_t row_delim(char *s); 
 color_t get_color(double);            
 bool_t space(char c);                     
-int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING */
-int legal_status_codes(Ledger *ledger);                           /* NEED TO IMPLEMENT */
+int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING (bool_t) */
+int legal_status_codes(Ledger *ledger);                           /* NEED TO IMPLEMENT (bool_t) */
 int qcmp(const void *a, const void *b);                                     
-int str_equal(const char *s1, const char *s2); 
+bool_t str_equal(const char *s1, const char *s2); 
 void str_strip(char *s);     
 void unique(char **s, int n, char ***ret, int *nunique);
 void usage();

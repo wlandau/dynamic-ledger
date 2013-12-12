@@ -12,13 +12,15 @@
 #include <string.h>
 #include <user_settings.h>
 
-int str_equal(const char *s1, const char *s2){
+bool_t str_equal(const char *s1, const char *s2){
   if(s1 == NULL && s2 != NULL)
-    return 0;
+    return LNO;
   else if(s1 != NULL && s2 == NULL)    
-    return 0;
+    return LNO;
   else if(s1 == NULL && s2 == NULL)
-    return 1;
+    return LYES;
+  else if(strcmp(s1, s2))
+    return LNO;
   else
-    return !strcmp(s1, s2);
+    return LYES;
 }

@@ -13,5 +13,8 @@
 #include <user_settings.h>
 
 bool_t space(char c){
-  return (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == '\v');
+  if (c == ' ' || c == '\f' || c == '\n' || c == '\r' || c == '\t' || c == '\v')
+    return LYES;
+  else
+    return LNO;
 }
