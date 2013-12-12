@@ -22,7 +22,7 @@ void str_strip(char *s){ /* taken from a stackoverflow forum */
 
   /* Skip over leading whitespace */
   start = s;
-  while ((*start) && is_space(*start))
+  while ((*start) && space(*start))
     start++;      
 
   /* Is string just whitespace? */
@@ -40,7 +40,7 @@ void str_strip(char *s){ /* taken from a stackoverflow forum */
   end--;      
 
   /* Step backward until first non-whitespace */
-  while ((end != start) && is_space(*end))         
+  while ((end != start) && space(*end))         
     end--;     
 
   /* Chop off trailing whitespace */

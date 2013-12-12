@@ -12,12 +12,12 @@
 #include <string.h>
 #include <user_settings.h>
 
-int column_delim(char *s){
+index_t column_delim(char *s){
   char delims[] = COLUMN_SEPARATORS;
   int i, j, n = strlen(s), ndelims = strlen(delims);
   for(i = 0; i < n; ++i)
     for(j = 0; j < ndelims; ++j)
       if(s[i] == delims[j])
         return i;
-  return NONE_FOUND;
+  return NO_INDEX;
 }

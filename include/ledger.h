@@ -42,7 +42,7 @@
 #define LNO    0
 #define LYES   1
 
-#define NONE_FOUND   -1
+#define NO_INDEX   -1
 
 
 /*************************************************************************************** 
@@ -63,6 +63,8 @@
 
 typedef int err_t;
 typedef int bool_t;
+typedef int index_t;
+typedef const char* color_t;
 
 typedef struct {
   char *filename, **banks, **credits, ***partitions, ***entries;
@@ -78,10 +80,10 @@ typedef struct {
 err_t bad_input_file(const char *filename);
 err_t bad_output_file(const char *filename); 
 bool_t legal_double(char *s, int row); 
-int column_delim(char *s);                                        
-int row_delim(char *s); 
-const char *get_color(double);            
-int is_space(char c);                     
+index_t column_delim(char *s);                                        
+index_t row_delim(char *s); 
+color_t get_color(double);            
+bool_t space(char c);                     
 int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING */
 int legal_status_codes(Ledger *ledger);                           /* NEED TO IMPLEMENT */
 int qcmp(const void *a, const void *b);                                     
