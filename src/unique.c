@@ -22,10 +22,10 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
   s = malloc(n * sizeof(char*));
   for(j = 0; j < n; ++j){
     str_strip(a[j]);
-    s[j] = malloc(ENTRYSIZE * sizeof(char));
+    s[j] = calloc(ENTRYSIZE, sizeof(char));
     
     if(a[j] == NULL) {
-      a[j] = malloc(ENTRYSIZE * sizeof(char));
+      a[j] = calloc(ENTRYSIZE, sizeof(char));
       strcpy(s[j], NIL);
     } else {
       strcpy(s[j], a[j]);
