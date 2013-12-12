@@ -98,12 +98,12 @@ index_t which(char **s, const char *find, int n);
  *** FUNCTIONS TO CREATE, INITIALIZE, AND DESTROY LEDGER OBJECTS ***********************
  ***************************************************************************************/
 
-err_t alloc_entries(Ledger*);                                                       /* NEEDS TESTING */
+err_t alloc_entries(Ledger*);
 void free_ledger(Ledger*);                                                    /* NEEDS TESTING */
 void free_for_retotal(Ledger*);                                                    /* NEEDS TESTING */
 void get_names(Ledger *ledger);                                                    /* NEEDS TESTING */
 void get_totals(Ledger *ledger);                                                    /* NEEDS TESTING */
-Ledger *new_ledger();                                                    /* NEEDS TESTING */
+Ledger *new_ledger(); 
 
 
 /*************************************************************************************** 

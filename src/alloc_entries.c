@@ -21,6 +21,18 @@ err_t alloc_entries(Ledger *ledger){
   if(ledger->nrows < 1)
     return LFAILURE;
 
+  if(ledger->entries != NULL){
+    for(i = 0; i < NFIELDS; ++i){
+      if(ledger->entries[i] != NULL){
+        for(j = 0; j < ledger->nrows; ++j)
+          if(ledger->entries[i][j] != NULL)
+            free(ledger->entries[i][j]);
+        free(ledger->entries[i]);
+      }
+    }
+    free(ledger->entries);
+  }
+
   ledger->entries = malloc(NFIELDS * sizeof(char**));
   for(i = 0; i < NFIELDS; ++i){
     ledger->entries[i] = malloc(ledger->nrows * sizeof(char*));
