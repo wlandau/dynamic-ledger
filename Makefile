@@ -7,6 +7,7 @@ OBJDIR=obj/
 BIN=ledger
 
 DEP=alloc_entries 
+DEP+=alloc_totals
 DEP+=col_delim_char
 DEP+=col_delim_str
 DEP+=color

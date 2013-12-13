@@ -12,23 +12,14 @@
 #include <string.h>
 #include <user_settings.h>
 
-void get_totals(Ledger *ledger){
+err_t get_totals(Ledger *ledger){
   int i, j, k;
   double amount;
   char *status;
 
-  ledger->credit_totals = calloc(ledger->ncredits, sizeof(double*));
-  for(i = 0; i < ledger->ncredits; ++i)
-    ledger->credit_totals[i] = calloc(4, sizeof(double));
-      
-  ledger->bank_totals = calloc(ledger->nbanks, sizeof(double*));  
-  for(i = 0; i < ledger->nbanks; ++i)
-    ledger->bank_totals[i] = calloc(4, sizeof(double));
-  
-  ledger->partition_totals = malloc(ledger->nbanks * sizeof(double*));
-  for(i = 0; i < ledger->nbanks; ++i)
-    ledger->partition_totals[i] = calloc(ledger->npartitions[i], sizeof(double));
-    
+  if(alloc_totals(ledger) == LFAILURE)
+    return LFAILURE;
+
   for(i = 0; i < ledger->nrows; ++i){
     status = ledger->entries[STATUS][i];
     amount = atof(ledger->entries[AMOUNT][i]);
@@ -84,4 +75,6 @@ void get_totals(Ledger *ledger){
     for(k = 0; k < 3; ++k){
       ledger->bank_totals[j][I_OVERALL] += ledger->bank_totals[j][k];
     }  
+    
+  return LSUCCESS;
 }

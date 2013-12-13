@@ -12,15 +12,15 @@
 #include <string.h>
 #include <user_settings.h>
 
-void get_names(Ledger *ledger){
+err_t get_names(Ledger *ledger){
   int i, j;
   char **s;
   
   if(ledger == NULL) 
-    return;
+    return LFAILURE;
     
   if(ledger->nrows < 1)
-    return;
+    return LFAILURE;
   
   s = malloc(ledger->nrows * sizeof(char*));
   for(i = 0; i < ledger->nrows; ++i)
@@ -46,4 +46,6 @@ void get_names(Ledger *ledger){
   for(i = 0; i < ledger->nrows; ++i)
     free(s[i]);
   free(s);
+  
+  return LSUCCESS;
 }
