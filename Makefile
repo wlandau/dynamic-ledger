@@ -62,8 +62,8 @@ DEP+=trim_ledger_str
 DEP+=unique 
 DEP+=usage
 DEP+=which
-DEP+=which_status_bank
-DEP+=which_status_credit
+DEP+=which_bank_total
+DEP+=which_credit_total
 
 OBJ=$(foreach name, $(DEP), $(OBJDIR)$(name).o)
 

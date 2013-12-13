@@ -1,4 +1,4 @@
-TEST=test_which_status_credit
+TEST=test_which_credit_total
 
 CC=gcc
 CCFLAGS=-c -Wall -pedantic -I../../include/
