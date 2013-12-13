@@ -37,7 +37,7 @@ int main(){
   strcpy(strs[8], L8);
   strcpy(strs[9], L9);
 
-  for(test = 0; test < 1/*ntests */; ++test){
+  for(test = 0; test < ntests; ++test){
     printf("\n--------\nTEST %d\n", test);
     ledger = new_ledger();
     get_entries_from_string(ledger, strs[test]);
