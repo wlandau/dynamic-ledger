@@ -40,11 +40,6 @@ int main(){
   for(test = 0; test < 1/*ntests */; ++test){
     printf("\n--------\nTEST %d\n", test);
     ledger = new_ledger();
-    ledger->nrows = 1;
-    for(i = 0; i < strlen(strs[test]); ++i)
-      if(row_delim_char(strs[test][i]))
-        ++ledger->nrows;
-    alloc_entries(ledger);
     get_entries_from_string(ledger, strs[test]);
     
     printf("\nENTRIES %d\n\n", test);
