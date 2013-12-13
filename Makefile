@@ -15,6 +15,7 @@ DEP+=condense_and_print
 DEP+=condense_str
 DEP+=free_for_retotal 
 DEP+=free_ledger
+DEP+=get_entries_from_filename
 DEP+=get_entries_from_stream 
 DEP+=get_entries_from_string 
 DEP+=get_ledger_from_filename 

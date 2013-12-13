@@ -13,13 +13,20 @@
 #include <user_settings.h>
 
 err_t get_entries_from_filename(Ledger *ledger, char *filename){
-  int ret;
+  err_t ret;
   FILE *fp;
   
   if(input_file(filename) == LNO)
     return LFAILURE;
     
+  fp = fopen(filename, "r");
+  if(fp == NULL)
+    return LFAILURE;
   
+  ret = get_entries_from_stream(ledger, fp);
+    
+  if(fp != NULL)
+    fclose(fp);
   
-  return 0;
+  return ret;
 }
