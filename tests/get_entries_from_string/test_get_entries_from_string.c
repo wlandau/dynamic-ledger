@@ -36,8 +36,8 @@ int main(){
   strcpy(strs[7], L7);
   strcpy(strs[8], L8);
   strcpy(strs[9], L9);
-/*    
-  for(test = 0; test < ntests; ++test){
+
+  for(test = 0; test < 1/*ntests */; ++test){
     printf("\n--------\nTEST %d\n", test);
     ledger = new_ledger();
     ledger->nrows = 1;
@@ -59,7 +59,7 @@ int main(){
     
     free_ledger(ledger);
   }  
-*/
+
   for(test = 0; test < ntests; ++test)
     free(strs[test]);
   free(strs);
