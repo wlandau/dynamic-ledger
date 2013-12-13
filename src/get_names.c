@@ -14,6 +14,13 @@
 
 void get_names(Ledger *ledger){
   int i, j;
+  
+  if(ledger == NULL) 
+    return;
+    
+  if(ledger->nrows < 1)
+    return;
+  
   char **s = malloc(ledger->nrows * sizeof(char*));
   for(i = 0; i < ledger->nrows; ++i)
     s[i] = calloc(ENTRYSIZE, sizeof(char));
