@@ -37,10 +37,16 @@ int main(){
   strcpy(strs[8], L8);
   strcpy(strs[9], L9);
 
+    printf("\n--------\nTEST -1\n");
+    ledger = new_ledger();
+    printf("ret = %d\n", get_entries_from_string(ledger, NULL));
+    
+    printf("\nENTRIES %d\n\n", -1);
+
   for(test = 0; test < ntests; ++test){
     printf("\n--------\nTEST %d\n", test);
     ledger = new_ledger();
-    get_entries_from_string(ledger, strs[test]);
+    printf("ret = %d\n", get_entries_from_string(ledger, strs[test]));
     
     printf("\nENTRIES %d\n\n", test);
  

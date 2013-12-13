@@ -1,4 +1,13 @@
 [0m
+Credit account with no name:
+
+          Delayed money:
+[32m                        305.26[0m  pending
+
+          Balances:
+[32m                        112.21[0m  "available"
+[32m                        417.47[0m  true balance
+
 Credit account: ch
 
           Delayed money:
@@ -9,25 +18,6 @@ Credit account: ch
 [34m                          0.00[0m  "available"
 [31m                         -7.31[0m  pending balance
 [31m                        -22.67[0m  true balance
-
-Credit account with no name:
-
-          Delayed money:
-[32m                        305.26[0m  pending
-
-          Balances:
-[32m                        112.21[0m  "available"
-[32m                        417.47[0m  true balance
-
-Bank account: bank
-
-          Balances:
-[32m                        394.36[0m  true balance
-                                All charges cleared.
-
-          Partitions:
-[32m                        256.03[0m  c
-[32m                        138.33[0m  d
 
 Bank account: cp
 

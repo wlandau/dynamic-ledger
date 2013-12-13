@@ -11,8 +11,8 @@ amount	status	credit	bank	partition	description
 -500.00	c	card		rent	rent2
 800.00	c			rent	paycheck2
 -51.25	cp	card		travel	travel expenses2
+110.00					condensed
 50.00				b	condensed
 500.00				food	condensed
 1400.00				rent	condensed
 50.00				travel	condensed
-110.00					condensed

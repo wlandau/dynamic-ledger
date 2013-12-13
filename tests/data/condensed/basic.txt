@@ -5,8 +5,6 @@ amount	status	credit	bank	partition	description
 112.21	c		cp	b	hihohiho
 2114.56	l		cp	r	wiggles
 3553.04	l		cps		Goodfried
-256.03			bank	c	condensed
-138.33			bank	d	condensed
 305.26			cp	a	condensed
 112.21			cp	b	condensed
 512.06			cp	c	condensed

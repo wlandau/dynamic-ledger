@@ -10,6 +10,21 @@ Credit account with no name:
 [31m                       -829.50[0m  pending balance
 [31m                       -632.50[0m  true balance
 
+Bank account with no name
+
+          Delayed money:
+[32m                        800.00[0m  not arrived
+
+          Balances:
+[32m                         60.00[0m  "available"
+[32m                        860.00[0m  true balance
+
+[32m                         10.00[0m  unpartitioned
+
+          Partitions:
+[32m                         50.00[0m  b
+[32m                        800.00[0m  rent
+
 Bank account: checking
 
           Delayed money:
@@ -21,12 +36,13 @@ Bank account: checking
 [32m                       2400.00[0m  pending balance
 [32m                        967.50[0m  true balance
 
+[31m                       -500.00[0m  unpartitioned
+
           Partitions:
 [32m                        224.00[0m  dood
 [32m                       1000.00[0m  food
 [32m                        346.00[0m  rent
 [31m                       -102.50[0m  travel
-[31m                       -500.00[0m  unpartitioned
 
 Bank account: savingss
 
@@ -34,21 +50,8 @@ Bank account: savingss
 [32m                        300.00[0m  true balance
                                 All charges cleared.
 
-          Partitions:
-[32m                        100.00[0m  travel
 [32m                        200.00[0m  unpartitioned
 
-Bank account with no name
-
-          Delayed money:
-[32m                        800.00[0m  not arrived
-
-          Balances:
-[32m                         60.00[0m  "available"
-[32m                        860.00[0m  true balance
-
           Partitions:
-[32m                         50.00[0m  b
-[32m                        800.00[0m  rent
-[32m                         10.00[0m  unpartitioned
+[32m                        100.00[0m  travel
 
