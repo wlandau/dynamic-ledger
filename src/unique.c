@@ -61,7 +61,7 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
 
   qsort(*ret, *nunique, sizeof(char*), qcmp);
     
-  for(j = 0; j < n; ++j)
+  for(j = 0; j < n + 1; ++j)
     free(s[j]);
   free(s);  
   
