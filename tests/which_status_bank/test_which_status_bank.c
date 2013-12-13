@@ -16,6 +16,7 @@ int main(){
   printf("%s %d\n", "c", which_status_bank("c"));
   printf("%s %d\n", "n", which_status_bank("n"));
   printf("%s %d\n", "p", which_status_bank("p"));
+  printf("%s %d\n", "l", which_status_credit("l"));
   printf("%s %d\n", "alskfdj", which_status_bank("alskfdj"));
   return 0;
 }
