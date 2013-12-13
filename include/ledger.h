@@ -97,6 +97,7 @@ void usage();
 index_t which(char **s, const char *find, int n);
 index_t which_bank_total(char *status);
 index_t which_credit_total(char *status);
+bool_t locked(char *status);
 
 /*************************************************************************************** 
  *** FUNCTIONS TO CREATE, INITIALIZE, AND DESTROY LEDGER OBJECTS ***********************

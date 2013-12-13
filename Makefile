@@ -30,6 +30,7 @@ DEP+=legal_amounts
 DEP+=legal_double
 DEP+=legal_status_code
 DEP+=legal_status_codes
+DEP+=locked
 DEP+=modify_entry
 DEP+=modify_entry_str 
 DEP+=new_ledger
