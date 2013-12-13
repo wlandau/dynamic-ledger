@@ -30,24 +30,15 @@ err_t get_totals(Ledger *ledger){
     bank = which(ledger->banks, ledger->entries[BANK][row], ledger->nbanks);
     partition = which(ledger->partitions[bank], ledger->entries[PARTITION][row], 
                       ledger->npartitions[bank]);  
-
-      printf("1row = %d | %d\n", row, ledger->nrows);
       
     if(credit_total != NO_INDEX)
       ledger->credit_totals[credit][credit_total] += amount;
       
-      printf("2row = %d | %d\n", row, ledger->nrows);
-      
-      printf("  bank total = %d, bank = %d\n", bank_total, bank);
     if(bank_total != NO_INDEX)
       ledger->bank_totals[bank][bank_total] += amount;
       
-            printf("3row = %d | %d\n", row, ledger->nrows);
-      
     if(partition != NO_INDEX)
       ledger->partition_totals[bank][partition] += amount;
-      
-            printf("4row = %d | %d\n", row, ledger->nrows);
   }
 
   for(credit = 0; credit < ledger->ncredits; ++credit){

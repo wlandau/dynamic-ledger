@@ -58,8 +58,6 @@ int main(){
     
     printf("\nTOTALS %d\n\n", test);
     get_names(ledger);
-
-    printf("\ngot names..\n\n");
     get_totals(ledger);
     
     printf("\ncredits: \n");
