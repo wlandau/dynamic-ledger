@@ -49,7 +49,8 @@ int main(){
     fp = fopen(strs[test], "r");
     printf("\nret = %d\n", get_entries_from_stream(ledger, fp));
     bad_input_file(strs[test]);
-    fclose(fp);
+    if(fp != NULL)
+      fclose(fp);
     
     printf("\nENTRIES %d\n\n", test);
  
