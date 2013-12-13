@@ -19,24 +19,26 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
   if(a == NULL || n < 1)
     return LFAILURE;
   
-  s = malloc(n * sizeof(char*));
-  for(j = 0; j < n; ++j){
-    str_strip(a[j]);
+  s = malloc((n + 1) * sizeof(char*));
+  s[0] = calloc(ENTRYSIZE, sizeof(char));
+  strcpy(s[0], NIL);
+  for(j = 1; j < n + 1; ++j){
+    str_strip(a[j - 1]);
     s[j] = calloc(ENTRYSIZE, sizeof(char));
     
-    if(a[j] == NULL) {
-      a[j] = calloc(ENTRYSIZE, sizeof(char));
+    if(a[j - 1] == NULL) {
+      a[j - 1] = calloc(ENTRYSIZE, sizeof(char));
       strcpy(s[j], NIL);
     } else {
-      strcpy(s[j], a[j]);
+      strcpy(s[j], a[j - 1]);
     }
   }
 
-  qsort(s, n, sizeof(char*), qcmp);
+  qsort(s, n + 1, sizeof(char*), qcmp);
 
   i = 0;
   *nunique = 1;  
-  for(j = 0; j < n; ++j)
+  for(j = 1; j < n + 1; ++j)
     if(!str_equal(s[i], s[j])){
       i = j;
       ++(*nunique);
@@ -49,8 +51,9 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
   i = 0;
   k = 0;
  
-  for(j = 1; j < n; ++j)
-    if(!str_equal(s[i], s[j]) && !str_equal(NIL, s[j])){
+  strcpy((*ret)[0], s[0]);
+  for(j = 1; j < n + 1; ++j)
+    if(!str_equal(s[i], s[j])){
       i = j;
       strcpy((*ret)[k], s[j]);
       ++k;

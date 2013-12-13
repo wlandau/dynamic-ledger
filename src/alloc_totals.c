@@ -21,11 +21,11 @@ err_t alloc_totals(Ledger *ledger){
   
   ledger->credit_totals = malloc(ledger->ncredits * sizeof(double*));
   for(i = 0; i < ledger->ncredits; ++i)
-    ledger->credit_totals[i] = calloc(4, sizeof(double));
+    ledger->credit_totals[i] = calloc(N_TOTALS, sizeof(double));
       
   ledger->bank_totals = malloc(ledger->nbanks * sizeof(double*));  
   for(i = 0; i < ledger->nbanks; ++i)
-    ledger->bank_totals[i] = calloc(4, sizeof(double));
+    ledger->bank_totals[i] = calloc(N_TOTALS, sizeof(double));
   
   ledger->partition_totals = malloc(ledger->nbanks * sizeof(double*));
   for(i = 0; i < ledger->nbanks; ++i)

@@ -106,7 +106,7 @@ a = malloc(n * sizeof(char*));
     a[i] = malloc(100 * sizeof(char));
     
   printf("\n");  
-  strcpy(a[0], "good");  
+  strcpy(a[0], "only");  
   strcpy(a[1], "n");  
   strcpy(a[2], "n");  
   strcpy(a[3], "n");  

@@ -13,71 +13,63 @@
 #include <user_settings.h>
 
 err_t get_totals(Ledger *ledger){
-  int i, j, k, status, bank, credit, partition;
+  int row, bank, credit, partition, bank_total, credit_total;
   double amount;
 
+  if(ledger == NULL)
+    return LFAILURE;  
+  
   if(alloc_totals(ledger) == LFAILURE)
     return LFAILURE;
 
+  for(row = 0; row < ledger->nrows; ++row){
+    amount = atof(ledger->entries[AMOUNT][row]);
+    bank_total = which_bank_total(ledger->entries[STATUS][row]);
+    credit_total = which_credit_total(ledger->entries[STATUS][row]);
+    credit = which(ledger->credits, ledger->entries[CREDIT][row], ledger->ncredits);  
+    bank = which(ledger->banks, ledger->entries[BANK][row], ledger->nbanks);
+    partition = which(ledger->partitions[bank], ledger->entries[PARTITION][row], 
+                      ledger->npartitions[bank]);  
 
-/*
-
-  for(i = 0; i < ledger->nrows; ++i){
-    
-    status = which_status_bank(ledger->entries[STATUS][i]);
-    amount = atof(ledger->entries[AMOUNT][i]);
-
-    k = -1;
-    if(str_equal(status, CREDIT_NOT_THERE_YET)){
-      k = 0;
-    } else if(str_equal(status, CREDIT_PENDING)){
-      k = 1;
-    } else if(str_equal(status, CREDIT_CLEARED)){
-      k = 2;
-    } 
-
-    if(k != -1)
-      for(j = 0; j < ledger->ncredits; ++j) 
-        if(str_equal(ledger->entries[CREDIT][i], ledger->credits[j])){
-          ledger->credit_totals[j][k] += amount;
-          break;
-        }
+      printf("1row = %d | %d\n", row, ledger->nrows);
       
-    if(str_equal(status, CREDIT_NOT_THERE_YET) || 
-       str_equal(status, CREDIT_PENDING) || 
-       str_equal(status, CREDIT_CLEARED) || 
-       str_equal(status, NOT_THERE_YET)){
-      k = 0;
-    } else if(str_equal(status, PENDING)){
-      k = 1;
-    } else {
-      k = 2;
-    }
-    
-    for(j = 0; j < ledger->nbanks; ++j){
-      if(str_equal(ledger->entries[BANK][i], ledger->banks[j])){
-        ledger->bank_totals[j][k] += amount;
+    if(credit_total != NO_INDEX)
+      ledger->credit_totals[credit][credit_total] += amount;
+      
+      printf("2row = %d | %d\n", row, ledger->nrows);
+      
+      printf("  bank total = %d, bank = %d\n", bank_total, bank);
+    if(bank_total != NO_INDEX)
+      ledger->bank_totals[bank][bank_total] += amount;
+      
+            printf("3row = %d | %d\n", row, ledger->nrows);
+      
+    if(partition != NO_INDEX)
+      ledger->partition_totals[bank][partition] += amount;
+      
+            printf("4row = %d | %d\n", row, ledger->nrows);
+  }
 
-        for(k = 0; k < ledger->npartitions[j]; ++k){
-          if(str_equal(ledger->entries[PARTITION][i], ledger->partitions[j][k])){
-            ledger->partition_totals[j][k] += amount;
-            break;
-          }
-        } 
-
-        break;
-      }
-    }
+  for(credit = 0; credit < ledger->ncredits; ++credit){
+  
+    ledger->credit_totals[credit][I_PENDING_BAL] = 
+        ledger->credit_totals[credit][I_PENDING]
+      + ledger->credit_totals[credit][I_CLEARED];
+  
+    ledger->credit_totals[credit][I_OVERALL_BAL] = 
+        ledger->credit_totals[credit][I_NOT_THERE_YET]
+      + ledger->credit_totals[credit][I_PENDING_BAL];
   }
   
-  for(j = 0; j < ledger->ncredits; ++j)
-    for(k = 0; k < 3; ++k)
-      ledger->credit_totals[j][I_OVERALL] += ledger->credit_totals[j][k];
+  for(bank = 0; bank < ledger->nbanks; ++bank){
+    ledger->bank_totals[bank][I_PENDING_BAL] = 
+        ledger->bank_totals[bank][I_PENDING]
+      + ledger->bank_totals[bank][I_CLEARED];
+  
+    ledger->bank_totals[bank][I_OVERALL_BAL] = 
+        ledger->bank_totals[bank][I_NOT_THERE_YET]
+      + ledger->bank_totals[bank][I_PENDING_BAL];
+  }
 
-  for(j = 0; j < ledger->nbanks; ++j)
-    for(k = 0; k < 3; ++k){
-      ledger->bank_totals[j][I_OVERALL] += ledger->bank_totals[j][k];
-    }  
-    */
   return LSUCCESS;
 }

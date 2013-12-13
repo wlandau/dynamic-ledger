@@ -27,7 +27,7 @@ err_t get_names(Ledger *ledger){
     s[i] = calloc(ENTRYSIZE, sizeof(char));
 
   unique(ledger->entries[CREDIT], ledger->nrows, &ledger->credits, &ledger->ncredits);
-  unique(ledger->entries[BANK], ledger->nrows, &ledger->banks, &ledger->nbanks);
+  unique(ledger->entries[BANK], ledger->nrows, &ledger->banks, &ledger->nbanks);  
   
   ledger->npartitions = calloc(ledger->nbanks, sizeof(int*));
   ledger->partitions = malloc(ledger->nbanks * sizeof(char***));
