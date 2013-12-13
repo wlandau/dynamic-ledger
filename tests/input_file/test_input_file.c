@@ -8,6 +8,9 @@
 
 int main(){
   char good[400], bad[400];
+
+  printf("\n\nError status = %d for file, %s\n\n", input_file(NULL), NULL);
+
   strcpy(good, "../data/ledgers/basic.txt");
   printf("\n\nError status = %d for file, %s\n\n", input_file(good), good);
 
