@@ -15,7 +15,7 @@ amount	status	credit	bank	partition	description
 90.00			cp	knee	marzapan
 2114.56			cp	r	wiggles
 3553.04			cps	a	Goodfried
-256.03		2nd	bank	c	good
+256.03		2nd	bank		good
 138.33		2nd	bank	d	boggle
 90.00			cp	knee	marzapan
 2114.56			cp	r	wiggles
