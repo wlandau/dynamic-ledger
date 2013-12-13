@@ -19,8 +19,12 @@ bool_t legal_amounts(Ledger *ledger){
     return LNO;
 
   for(i = 0; i < ledger->nrows; ++i)
-    if(legal_double(ledger->entries[AMOUNT][i], i) == LNO)
+    if(legal_double(ledger->entries[AMOUNT][i]) == LNO){
+      fprintf(stderr, "Error: bad transaction amount \"%s\" at row %d.\n", 
+              ledger->entries[AMOUNT][i], i + 1);
+      fprintf(stderr, "Fix your ledger file.\n");
       return LNO;
+    }
 
   return LYES;
 }

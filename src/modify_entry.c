@@ -31,7 +31,7 @@ void modify_entry(Ledger *ledger, int row, int col, char *next){
   }
   
   if(!col)
-    if(legal_double(next, row))
+    if(legal_double(next))
       return;
   
   strcpy(next_local, next);

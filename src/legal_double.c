@@ -12,7 +12,7 @@
 #include <string.h>
 #include <user_settings.h>
 
-bool_t legal_double(char *s, int row){
+bool_t legal_double(char *s){
   char *testbufref, testbuf[ENTRYSIZE];
   
   errno = 0;
@@ -21,12 +21,8 @@ bool_t legal_double(char *s, int row){
   testbufref = testbuf;
   strtod(testbuf, &testbufref); 
 
-  if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf)){
-    fprintf(stderr, "Error: bad number \"%s\" at row %d column 2.\n", 
-            s, row + 1);
-    fprintf(stderr, "Fix your ledger file.\n");
+  if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf))
     return LNO;   
-  }
 
   return LYES;
 }

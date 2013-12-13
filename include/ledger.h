@@ -79,16 +79,16 @@ typedef struct {
 
 err_t bad_input_file(const char *filename);
 err_t bad_output_file(const char *filename); 
-bool_t legal_double(char *s, int row); 
+bool_t legal_double(char *s); 
 bool_t col_delim_char(char c);   
 index_t col_delim_str(char *s);                                        
 bool_t row_delim_char(char c);
 index_t row_delim_str(char *s);
 color_t color(double);            
 bool_t space(char c);                     
-bool_t legal_amounts(Ledger *ledger);                           /* NEEDS TESTING (bool_t) */
+bool_t legal_amounts(Ledger *ledger); 
 bool_t legal_status_code(char *s); 
-bool_t legal_status_codes(Ledger *ledger);                           /* NEED TO IMPLEMENT (bool_t) */
+bool_t legal_status_codes(Ledger *ledger); 
 int qcmp(const void *a, const void *b);                                     
 bool_t str_equal(const char *s1, const char *s2); 
 void str_strip(char *s);     

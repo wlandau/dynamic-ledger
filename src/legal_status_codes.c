@@ -20,7 +20,8 @@ bool_t legal_status_codes(Ledger *ledger){
 
   for(i = 0; i < ledger->nrows; ++i)
     if(legal_status_code(ledger->entries[STATUS][i]) == LNO){
-      fprintf(stderr, "Error: illegal status code at line %d\n", i);
+      fprintf(stderr, "Error: illegal transaction status code \"%s\" at line %d\n",
+              ledger->entries[STATUS][i], i + 1);
       return LNO;
     }
     
