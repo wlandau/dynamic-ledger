@@ -25,7 +25,7 @@ err_t get_entries_from_string(Ledger *ledger, char *s){
       
   alloc_entries(ledger);
 
-  for(i = 0; row_delim_char(s[i]) == LNO; ++i);
+  for(i = 0; i < strlen(s) && row_delim_char(s[i]) == LNO; ++i);
   ++i;
   
   char_index = 0;
