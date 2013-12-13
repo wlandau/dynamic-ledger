@@ -86,8 +86,9 @@ bool_t row_delim_char(char c);
 index_t row_delim_str(char *s);
 color_t color(double);            
 bool_t space(char c);                     
-int legal_amounts(Ledger *ledger);                           /* NEEDS TESTING (bool_t) */
-int legal_status_codes(Ledger *ledger);                           /* NEED TO IMPLEMENT (bool_t) */
+bool_t legal_amounts(Ledger *ledger);                           /* NEEDS TESTING (bool_t) */
+bool_t legal_status_code(char *s); 
+bool_t legal_status_codes(Ledger *ledger);                           /* NEED TO IMPLEMENT (bool_t) */
 int qcmp(const void *a, const void *b);                                     
 bool_t str_equal(const char *s1, const char *s2); 
 void str_strip(char *s);     
@@ -144,8 +145,8 @@ err_t repartition_percent_str(char **s, char *bank, char **partitions, double *p
  ***************************************************************************************/
 
 void parse_char(Ledger *ledger, char c, int *char_index, int *field, int *row);
-int get_entries_from_stream(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
-int get_entries_from_string(Ledger *ledger, char *s);                              /* NEEDS TESTING */
+err_t get_entries_from_stream(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
+err_t get_entries_from_string(Ledger *ledger, char *s);                              /* NEEDS TESTING */
 Ledger *get_ledger_from_filename(const char* filename);                              /* NEEDS TESTING */
 Ledger *get_ledger_from_stream(FILE *fp);                                              /* NEEDS TESTING */
 Ledger *get_ledger_from_string(char *s);                                             /* NEEDS TESTING */

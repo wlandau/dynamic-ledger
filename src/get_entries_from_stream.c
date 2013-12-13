@@ -12,12 +12,12 @@
 #include <string.h>
 #include <user_settings.h>
 
-int get_entries_from_stream(Ledger *ledger, FILE *fp){
+err_t get_entries_from_stream(Ledger *ledger, FILE *fp){
   int char_index, row, field; 
   char c, line[LINESIZE];
   
-  if(ledger == NULL)
-    return 1;
+  if(ledger == NULL || fp == NULL)
+    return LFAILURE;
   
   ledger->nrows = -1;
   while(fgets(line, LINESIZE, fp))
@@ -26,11 +26,13 @@ int get_entries_from_stream(Ledger *ledger, FILE *fp){
   if(ledger->nrows < 1){
     ledger->nrows = 1;
     alloc_entries(ledger);
-    return 0;
+    return LSUCCESS;
   }
     
   rewind(fp);
-  alloc_entries(ledger);
+  
+  if(alloc_entries(ledger) == LFAILURE)
+    return LFAILURE;
   
   field = 0;
   row = 0;
@@ -41,5 +43,5 @@ int get_entries_from_stream(Ledger *ledger, FILE *fp){
     parse_char(ledger, c, &char_index, &field, &row);
   
   rewind(fp);
-  return legal_amounts(ledger);
+  return legal_amounts(ledger) && legal_status_codes(ledger) ? LSUCCESS : LFAILURE;
 }

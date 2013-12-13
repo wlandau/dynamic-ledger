@@ -12,7 +12,7 @@
 #include <string.h>
 #include <user_settings.h>
 
-int legal_double(char *s, int row){
+bool_t legal_double(char *s, int row){
   char *testbufref, testbuf[ENTRYSIZE];
   
   errno = 0;
