@@ -16,7 +16,7 @@ Ledger *get_ledger_from_filename(const char* filename){
   FILE *fp;
   Ledger *ledger = NULL;
   
-  if(bad_input_file(filename))
+  if(input_file(filename) == LNO)
     return NULL;
   
   fp = fopen(filename, "r");

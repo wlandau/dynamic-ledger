@@ -77,8 +77,8 @@ typedef struct {
  *** UTILITY FUNCTIONS *****************************************************************
  ***************************************************************************************/
 
-err_t bad_input_file(const char *filename);
-err_t bad_output_file(const char *filename); 
+bool_t input_file(const char *filename);
+bool_t output_file(const char *filename); 
 bool_t legal_double(char *s); 
 bool_t col_delim_char(char c);   
 index_t col_delim_str(char *s);                                        
@@ -145,8 +145,9 @@ err_t repartition_percent_str(char **s, char *bank, char **partitions, double *p
  ***************************************************************************************/
 
 void parse_char(Ledger *ledger, char c, int *char_index, int *field, int *row);
-err_t get_entries_from_stream(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
-err_t get_entries_from_string(Ledger *ledger, char *s);                              /* NEEDS TESTING */
+err_t get_entries_from_filename(Ledger *ledger, char *filename); 
+err_t get_entries_from_stream(Ledger *ledger, FILE *fp); 
+err_t get_entries_from_string(Ledger *ledger, char *s);  
 Ledger *get_ledger_from_filename(const char* filename);                              /* NEEDS TESTING */
 Ledger *get_ledger_from_stream(FILE *fp);                                              /* NEEDS TESTING */
 Ledger *get_ledger_from_string(char *s);                                             /* NEEDS TESTING */

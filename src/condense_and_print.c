@@ -15,7 +15,7 @@ int condense_and_print(const char* infile, const char *outfile){
   FILE *fp;
   Ledger *ledger;
   
-  if(bad_input_file(infile))
+  if(input_file(infile) == LNO)
     return 1;
   
   ledger = get_ledger_from_filename(infile);
@@ -26,7 +26,7 @@ int condense_and_print(const char* infile, const char *outfile){
   
   condense(&ledger);
       
-  if(!bad_output_file(outfile)){
+  if(output_file(outfile) == LYES){
     fp = fopen(outfile, "w");
     print_ledger_to_stream(ledger, fp);
     fclose(fp);
