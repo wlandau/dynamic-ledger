@@ -39,9 +39,9 @@ int main(){
 
     printf("\n--------\nTEST -1\n");
     ledger = new_ledger();
-    printf("ret = %d\n", get_entries_from_string(NULL, NULL));
-    
+    printf("ret = %d\n", get_entries_from_string(ledger, NULL));
     printf("\nENTRIES %d\n\n", -1);
+    free_ledger(ledger);
 
   for(test = 0; test < ntests; ++test){
     printf("\n--------\nTEST %d\n", test);
