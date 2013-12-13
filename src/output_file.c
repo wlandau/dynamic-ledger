@@ -13,7 +13,14 @@
 #include <user_settings.h>
 
 bool_t output_file(const char *filename){
-  FILE *fp = fopen(filename, "w");
+  FILE *fp;
+
+  if(filename == NULL){
+    fprintf(stderr, "Error: filename is null.\n");
+    return LNO;
+  }
+
+  fp = fopen(filename, "w");
   if(fp == NULL){
     fprintf(stderr, 
             "Error: cannot create file, %s.\nCheck your permissions.\n", filename);
