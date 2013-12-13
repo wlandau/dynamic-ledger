@@ -15,6 +15,7 @@
 err_t get_entries_from_stream(Ledger *ledger, FILE *fp){
   int char_index, row, field; 
   char c, line[LINESIZE];
+  err_t ret;
   
   if(ledger == NULL || fp == NULL)
     return LFAILURE;
@@ -41,7 +42,9 @@ err_t get_entries_from_stream(Ledger *ledger, FILE *fp){
   fgets(line, LINESIZE, fp);
   while((c = fgetc(fp)) != EOF)
     parse_char(ledger, c, &char_index, &field, &row);
-  
   rewind(fp);
-  return legal_amounts(ledger) && legal_status_codes(ledger) ? LSUCCESS : LFAILURE;
+  
+  ret = (strip_ledger(ledger) == LSUCCESS);
+  ret = ret && (legal_amounts(ledger) == LYES) && (legal_status_codes(ledger) == LYES);
+  return ret ? LSUCCESS : LFAILURE;
 }

@@ -15,26 +15,20 @@
 void get_names(Ledger *ledger){
   int i, j;
   char **s = malloc(ledger->nrows * sizeof(char*));
-
-  for(i = 0; i < ledger->nrows; ++i){
-    s[i] = calloc(ENTRYSIZE, sizeof(char));
-    strcpy(s[i], ledger->entries[CREDIT][i]);
-  }
-     
-  unique(s, ledger->nrows, &ledger->credits, &ledger->ncredits);
-    
   for(i = 0; i < ledger->nrows; ++i)
-    strcpy(s[i], ledger->entries[BANK][i]);
-  
-  unique(s, ledger->nrows, &ledger->banks, &ledger->nbanks);
+    s[i] = calloc(ENTRYSIZE, sizeof(char));
+
+  unique(ledger->entries[CREDIT], ledger->nrows, &ledger->credits, &ledger->ncredits);
+  unique(ledger->entries[BANK], ledger->nrows, &ledger->banks, &ledger->nbanks);
   
   ledger->npartitions = calloc(ledger->nbanks, sizeof(int*));
   ledger->partitions = malloc(ledger->nbanks * sizeof(char***));
         
   for(i = 0; i < ledger->nbanks; ++i){
-    for(j = 0; j < ledger->nrows; ++j){         
-      strcpy(s[j], ledger->entries[PARTITION][j]);
-      if(!str_equal(ledger->banks[i], ledger->entries[BANK][j]))
+    for(j = 0; j < ledger->nrows; ++j){    
+      if(str_equal(ledger->banks[i], ledger->entries[BANK][j]))     
+        strcpy(s[j], ledger->entries[PARTITION][j]);
+      else
         strcpy(s[j], NIL);
     }
      

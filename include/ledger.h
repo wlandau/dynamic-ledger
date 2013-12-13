@@ -121,6 +121,7 @@ void rename_credit(Ledger *ledger, char *from, char *to);                       
 void rename_partition(Ledger *ledger, char *bank, char *from, char *to);              /* NEEDS TESTING */
 void remove_row(Ledger *ledger, int row);                                                     /* NEEDS TESTING */
 void trim_ledger(Ledger *ledger);                                                         /* NEEDS TESTING */
+err_t strip_ledger(Ledger *ledger);     
 err_t repartition(Ledger *ledger, char *bank, char **partitions, double *amounts);					/* NEED TO IMPLEMENT ****/
 err_t repartition_percent(Ledger *ledger, char *bank, char **partitions, double *percentages);					/* NEED TO IMPLEMENT ****/
 

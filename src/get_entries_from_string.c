@@ -14,6 +14,7 @@
 
 err_t get_entries_from_string(Ledger *ledger, char *s){
   int i, char_index, field, row;
+  err_t ret;
   
   if(ledger == NULL || s == NULL)
     return LFAILURE;
@@ -33,6 +34,9 @@ err_t get_entries_from_string(Ledger *ledger, char *s){
   row = 0;
   for(; i < strlen(s); ++i)
     parse_char(ledger, s[i], &char_index, &field, &row);
-   
-  return legal_amounts(ledger) && legal_status_codes(ledger) ? LSUCCESS : LFAILURE;
+  strip_ledger(ledger);
+    
+  ret = (strip_ledger(ledger) == LSUCCESS);
+  ret = ret && (legal_amounts(ledger) == LYES) && (legal_status_codes(ledger) == LYES);
+  return ret ? LSUCCESS : LFAILURE;
 }
