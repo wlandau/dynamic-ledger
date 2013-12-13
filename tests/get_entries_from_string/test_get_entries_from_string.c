@@ -39,7 +39,7 @@ int main(){
 
     printf("\n--------\nTEST -1\n");
     ledger = new_ledger();
-    printf("ret = %d\n", get_entries_from_string(ledger, NULL));
+    printf("ret = %d\n", get_entries_from_string(NULL, NULL));
     
     printf("\nENTRIES %d\n\n", -1);
 
