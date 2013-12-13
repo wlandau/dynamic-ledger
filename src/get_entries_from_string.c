@@ -12,48 +12,27 @@
 #include <string.h>
 #include <user_settings.h>
 
-int get_entries_from_string(Ledger *ledger, char *s){
-  int i, j, row, field;
-  char c;
+err_t get_entries_from_string(Ledger *ledger, char *s){
+  int i, char_index, field, row;
   
   if(ledger == NULL || s == NULL)
-    return 1;
+    return LFAILURE;
 
   ledger->nrows = 1;
   for(i = 0; i < strlen(s); ++i)
-    if(s[i] == '\n' || s[i] == '\r')
+    if(row_delim_char(s[i]) == LYES)
       ++ledger->nrows;
       
   alloc_entries(ledger);
 
-  field = 0;
-  row = 0;
-  j = 0;
-  
-  /* ignore header */
-  for(i = 0; s[i] != '\n' && s[i] != '\r'; ++i);
+  for(i = 0; row_delim_char(s[i]) == LNO; ++i);
   ++i;
   
-  /* parse the data */
-  for(; i < strlen(s); ++i){
-    c = s[i];
-      
-    if(c== '\t'){
-      if(field < ENTRYSIZE){
-        j = 0;
-      }
-      ++field; 
-    } else if(c == '\n' || c == '\r'){
-      if(field < ENTRYSIZE){
-        j = 0;
-      }
-      field = 0;
-      ++row; 
-    } else if(field < NFIELDS && j < ENTRYSIZE - 1){
-      ledger->entries[field][row][j] = c;
-      ++j;
-    }
-  } 
+  char_index = 0;
+  field = 0;
+  row = 0;
+  for(; i < strlen(s); ++i)
+    parse_char(ledger, s[i], &char_index, &field, &row);
    
-  return legal_amounts(ledger);
+  return legal_amounts(ledger) && legal_status_codes(ledger) ? LSUCCESS : LFAILURE;
 }
