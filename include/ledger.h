@@ -27,8 +27,8 @@
 #define I_NOT_THERE_YET   0
 #define I_PENDING         1
 #define I_CLEARED         2
-#define I_OVERALL         3
-#define I_PENDING_BAL     4														/* NEED TO IMPLEMENT WHEN ALLOCATING/CALCULATING TOTALS AND SUMMARIZING */
+#define I_PENDING_BAL     3	
+#define I_OVERALL_BAL     4													/* NEED TO IMPLEMENT WHEN ALLOCATING/CALCULATING TOTALS AND SUMMARIZING */
 #define N_TOTALS          5														/* NEED TO IMPLEMENT WHEN ALLOCATING/CALCULATING TOTALS AND SUMMARIZING */
 
 
@@ -95,7 +95,8 @@ void str_strip(char *s);
 err_t unique(char **s, int n, char ***ret, int *nunique);
 void usage();
 index_t which(char **s, const char *find, int n);
-
+index_t which_status_bank(char *status);
+index_t which_status_credit(char *status);
 
 /*************************************************************************************** 
  *** FUNCTIONS TO CREATE, INITIALIZE, AND DESTROY LEDGER OBJECTS ***********************

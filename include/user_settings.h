@@ -38,12 +38,12 @@
  *** USER-DEFINED TRANSACTION STATUSES CODES ******************************
  **************************************************************************/
 
-#define CREDIT_NOT_THERE_YET   "cn"   /*** HASN'T REACHED CREDIT COMPANY YET ***/
-#define CREDIT_PENDING         "cp"   /*** PENDING CHARGE IN CREDIT ACCOUNT ****/
-#define CREDIT_CLEARED         "c"    /*** CLEARED IN CREDIT ACCOUNT ***********/
-#define NOT_THERE_YET          "n"    /*** HASN'T REACHED BANK YET *************/
-#define PENDING                "p"    /*** PENDING IN BANK *********************/
-#define LOCKED                 "l"    /*** CLEARED, BUT NOT OKAY TO CONDENSE ***/
+#define CREDIT_NOT_THERE_YET   "cn"   /*** HASN'T REACHED CREDIT COMPANY YET ********/
+#define CREDIT_PENDING         "cp"   /*** PENDING CHARGE IN CREDIT ACCOUNT *********/
+#define CREDIT_CHARGED         "c"    /*** CLEARED IN CREDIT ACCOUNT BUT NOT PAID ***/
+#define NOT_THERE_YET          "n"    /*** HASN'T REACHED BANK YET ******************/
+#define PENDING                "p"    /*** PENDING IN BANK **************************/
+#define LOCKED                 "l"    /*** CLEARED, BUT NOT OKAY TO CONDENSE ********/
 
 
 /************************************************************************** 

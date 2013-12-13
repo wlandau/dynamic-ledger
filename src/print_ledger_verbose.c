@@ -29,7 +29,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
     fprintf(fp, "    %0.2f not arrived\n", ledger->credit_totals[i][I_NOT_THERE_YET]);
     fprintf(fp, "    %0.2f pending\n", ledger->credit_totals[i][I_PENDING]);
     fprintf(fp, "    %0.2f online balance\n", ledger->credit_totals[i][I_CLEARED]);
-    fprintf(fp, "    %0.2f total\n", ledger->credit_totals[i][I_OVERALL]);
+    fprintf(fp, "    %0.2f total\n", ledger->credit_totals[i][I_OVERALL_BAL]);
   }
   
   fprintf(fp, "\n%d bank accounts:\n", ledger->nbanks);
@@ -38,7 +38,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
     fprintf(fp, "    %0.2f\tnot arrived\n", ledger->bank_totals[i][I_NOT_THERE_YET]);
     fprintf(fp, "    %0.2f\tpending\n", ledger->bank_totals[i][I_PENDING]);
     fprintf(fp, "    %0.2f\tonline balance\n", ledger->bank_totals[i][I_CLEARED]);
-    fprintf(fp, "    %0.2f\ttotal\n\n", ledger->bank_totals[i][I_OVERALL]);
+    fprintf(fp, "    %0.2f\ttotal\n\n", ledger->bank_totals[i][I_OVERALL_BAL]);
     fprintf(fp, "    %d partitions\n", ledger->npartitions[i]);
     for(j = 0; j < ledger->npartitions[i]; ++j){
       if(strlen(ledger->partitions[i][j]))

@@ -58,13 +58,13 @@ char *print_summary_to_string(Ledger *ledger){
                 + ledger->credit_totals[i][I_CLEARED],
                   NORMAL_COLOR);
         sprintf(s,"%s%s%30.2f%s  true balance\n",s, 
-                color(ledger->credit_totals[i][I_OVERALL]),
-                ledger->credit_totals[i][I_OVERALL], NORMAL_COLOR);
+                color(ledger->credit_totals[i][I_OVERALL_BAL]),
+                ledger->credit_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
       } else {
         sprintf(s,"%s          Balances:\n",s);
         sprintf(s,"%s%s%30.2f%s  true balance\n", s, 
-                color(ledger->credit_totals[i][I_OVERALL]), 
-                ledger->credit_totals[i][I_OVERALL], NORMAL_COLOR); 
+                color(ledger->credit_totals[i][I_OVERALL_BAL]), 
+                ledger->credit_totals[i][I_OVERALL_BAL], NORMAL_COLOR); 
         sprintf(s,"%s                                All charges cleared.\n", s);
       }
     }
@@ -97,12 +97,12 @@ char *print_summary_to_string(Ledger *ledger){
           sprintf(s,"%s%s%30.2f%s  pending balance\n", s,
                   color(ledger->bank_totals[i][I_PENDING] + ledger->bank_totals[i][I_CLEARED]),
                   ledger->bank_totals[i][I_PENDING] + ledger->bank_totals[i][I_CLEARED], NORMAL_COLOR);
-        sprintf(s,"%s%s%30.2f%s  true balance\n", s,color(ledger->bank_totals[i][I_OVERALL]),
-                ledger->bank_totals[i][I_OVERALL], NORMAL_COLOR);
+        sprintf(s,"%s%s%30.2f%s  true balance\n", s,color(ledger->bank_totals[i][I_OVERALL_BAL]),
+                ledger->bank_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
       } else {
         sprintf(s,"%s          Balances:\n",s);
-        sprintf(s,"%s%s%30.2f%s  true balance\n", s,color(ledger->bank_totals[i][I_OVERALL]),
-                ledger->bank_totals[i][I_OVERALL], NORMAL_COLOR);
+        sprintf(s,"%s%s%30.2f%s  true balance\n", s,color(ledger->bank_totals[i][I_OVERALL_BAL]),
+                ledger->bank_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
         sprintf(s,"%s                                All charges cleared.\n",s);
       } 
     }

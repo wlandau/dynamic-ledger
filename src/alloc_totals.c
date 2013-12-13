@@ -19,11 +19,11 @@ err_t alloc_totals(Ledger *ledger){
      ledger->banks == NULL || ledger->npartitions == NULL)
     return LFAILURE;
   
-  ledger->credit_totals = calloc(ledger->ncredits, sizeof(double*));
+  ledger->credit_totals = malloc(ledger->ncredits * sizeof(double*));
   for(i = 0; i < ledger->ncredits; ++i)
     ledger->credit_totals[i] = calloc(4, sizeof(double));
       
-  ledger->bank_totals = calloc(ledger->nbanks, sizeof(double*));  
+  ledger->bank_totals = malloc(ledger->nbanks * sizeof(double*));  
   for(i = 0; i < ledger->nbanks; ++i)
     ledger->bank_totals[i] = calloc(4, sizeof(double));
   

@@ -54,13 +54,13 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
                 + ledger->credit_totals[i][I_CLEARED],
                   NORMAL_COLOR);
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                color(ledger->credit_totals[i][I_OVERALL]),
-                ledger->credit_totals[i][I_OVERALL], NORMAL_COLOR);
+                color(ledger->credit_totals[i][I_OVERALL_BAL]),
+                ledger->credit_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
       } else {
         fprintf(fp,"          Balances:\n");
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                color(ledger->credit_totals[i][I_OVERALL]), 
-                ledger->credit_totals[i][I_OVERALL], NORMAL_COLOR); 
+                color(ledger->credit_totals[i][I_OVERALL_BAL]), 
+                ledger->credit_totals[i][I_OVERALL_BAL], NORMAL_COLOR); 
         fprintf(fp,"                                All charges cleared.\n");
       }
     }
@@ -99,13 +99,13 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
                   ledger->bank_totals[i][I_PENDING] 
                 + ledger->bank_totals[i][I_CLEARED], NORMAL_COLOR);
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                color(ledger->bank_totals[i][I_OVERALL]),
-                ledger->bank_totals[i][I_OVERALL], NORMAL_COLOR);
+                color(ledger->bank_totals[i][I_OVERALL_BAL]),
+                ledger->bank_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
       } else {
         fprintf(fp,"          Balances:\n");
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                color(ledger->bank_totals[i][I_OVERALL]),
-                ledger->bank_totals[i][I_OVERALL], NORMAL_COLOR);
+                color(ledger->bank_totals[i][I_OVERALL_BAL]),
+                ledger->bank_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
         fprintf(fp,"                                All charges cleared.\n");
       } 
     }

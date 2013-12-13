@@ -34,7 +34,7 @@ void condense(Ledger **ledger){
   
     if(str_equal(status, CREDIT_NOT_THERE_YET) || 
        str_equal(status, CREDIT_PENDING) || 
-       str_equal(status, CREDIT_CLEARED) ||
+       str_equal(status, CREDIT_CHARGED) ||
        str_equal(status, NOT_THERE_YET) || 
        str_equal(status, PENDING) ||
        str_equal(status, LOCKED)){ 
@@ -72,7 +72,7 @@ void condense(Ledger **ledger){
   
     if(str_equal(status, CREDIT_NOT_THERE_YET) || 
        str_equal(status, CREDIT_PENDING) || 
-       str_equal(status, CREDIT_CLEARED) ||
+       str_equal(status, CREDIT_CHARGED) ||
        str_equal(status, NOT_THERE_YET) || 
        str_equal(status, PENDING) || 
        str_equal(status, LOCKED)){ 

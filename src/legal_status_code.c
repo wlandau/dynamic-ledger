@@ -17,7 +17,7 @@ bool_t legal_status_code(char *s){
 
   ret = str_equal(CREDIT_NOT_THERE_YET, s) ||
         str_equal(CREDIT_PENDING      , s) ||  
-        str_equal(CREDIT_CLEARED      , s) ||  
+        str_equal(CREDIT_CHARGED      , s) ||  
         str_equal(NOT_THERE_YET       , s) ||  
         str_equal(PENDING             , s) ||
         str_equal(LOCKED              , s) ||  

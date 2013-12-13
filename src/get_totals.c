@@ -13,15 +13,18 @@
 #include <user_settings.h>
 
 err_t get_totals(Ledger *ledger){
-  int i, j, k;
+  int i, j, k, status, bank, credit, partition;
   double amount;
-  char *status;
 
   if(alloc_totals(ledger) == LFAILURE)
     return LFAILURE;
 
+
+/*
+
   for(i = 0; i < ledger->nrows; ++i){
-    status = ledger->entries[STATUS][i];
+    
+    status = which_status_bank(ledger->entries[STATUS][i]);
     amount = atof(ledger->entries[AMOUNT][i]);
 
     k = -1;
@@ -75,6 +78,6 @@ err_t get_totals(Ledger *ledger){
     for(k = 0; k < 3; ++k){
       ledger->bank_totals[j][I_OVERALL] += ledger->bank_totals[j][k];
     }  
-    
+    */
   return LSUCCESS;
 }
