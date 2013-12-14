@@ -170,7 +170,7 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp);
  *** FUNCTIONS TO OUTPUT SUMMARIES OF LEDGER OBJECTS ***********************************
  ***************************************************************************************/
 
-err_t print_summary_to_filename(Ledger *ledger,  char *filename, int usecolor);     /* NEED TO IMPLEMENT ***/ /* ADD OPTION TO DISABLE COLORS */      /* TRIM AFTERWARDS */
+err_t print_summary_to_filename(Ledger *ledger,  char *filename, int usecolor);
 err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor);                     
 err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor);
 int summarize_file_to_stream(char* filename, FILE *fp);                         /* REMOVE WHEN READY */

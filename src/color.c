@@ -13,7 +13,7 @@
 #include <user_settings.h>
 
 color_t color(double d, int usecolor){ 
-  if(!USE_COLOR || !usecolor)
+  if(!usecolor)
     return "";
   
   if(d > EPS)
