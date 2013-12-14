@@ -12,11 +12,11 @@
 #include <string.h>
 #include <user_settings.h>
 
-void print_ledger_verbose(Ledger *ledger, FILE *fp){
+err_t print_ledger_verbose(Ledger *ledger, FILE *fp){
   int i, j;
 
   if(ledger == NULL || fp == NULL)
-    return;
+    return LFAILURE;
     
   if(ledger->filename != NULL)
     fprintf(fp, "filename = %s.\n", ledger->filename);
@@ -50,5 +50,5 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp){
   }  
 
   fprintf(fp, "\n");
-  print_ledger_to_stream(ledger, fp);
+  return print_ledger_to_stream(ledger, fp);
 }

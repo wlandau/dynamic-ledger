@@ -12,13 +12,16 @@
 #include <string.h>
 #include <user_settings.h>
 
-void trim_ledger(Ledger *ledger){
+err_t trim_ledger(Ledger *ledger){
   int i; 
 
   if(ledger == NULL)
-    return;
+    return LFAILURE;
 
   for(i = (ledger->nrows - 1); i >= 0; --i)
     if(abs(atof(ledger->entries[AMOUNT][i])) < EPS)
-      remove_row(ledger, i);
+      if(remove_row(ledger, i) == LFAILURE)
+        return LFAILURE;
+
+  return LSUCCESS;
 }

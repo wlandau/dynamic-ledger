@@ -12,11 +12,11 @@
 #include <string.h>
 #include <user_settings.h>
 
-void free_for_retotal(Ledger *ledger){
+err_t free_for_retotal(Ledger *ledger){
   int i, j;
 
   if(ledger == NULL)
-    return;
+    return LFAILURE;
   
   if(ledger->partitions != NULL){
     for(i = 0; i < ledger->nbanks; ++i){
@@ -88,4 +88,6 @@ void free_for_retotal(Ledger *ledger){
     free(ledger->npartitions);
     ledger->npartitions = NULL;
   }
+
+  return LSUCCESS;
 }

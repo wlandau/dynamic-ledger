@@ -12,20 +12,20 @@
 #include <string.h>
 #include <user_settings.h>
 
-void remove_row(Ledger *ledger, int row){
+err_t remove_row(Ledger *ledger, int row){
   int i, j, recalculate;
   
   if(ledger == NULL)
-    return;
+    return LFAILURE;
   
   if(row < 0 || row >= ledger->nrows){
     fprintf(stderr, "Error: illegal row index in remove_row().\n");
-    return;
+    return LFAILURE;
   }
   
   if(ledger->nrows < 1){
     fprintf(stderr, "Error: data already too small.\n");
-    return;  
+    return LFAILURE;  
   }
 
   recalculate = (abs(atof(ledger->entries[AMOUNT][row])) > EPS);
@@ -45,8 +45,14 @@ void remove_row(Ledger *ledger, int row){
 
   if(recalculate){
     free_for_retotal(ledger);
-    get_names(ledger);
-    get_totals(ledger); 
+    
+    if(get_names(ledger) == LFAILURE)
+      return LFAILURE;
+      
+    if(get_totals(ledger) == LFAILURE)
+      return LFAILURE; 
   }
+  
+  return LSUCCESS;
 }
  

@@ -105,8 +105,8 @@ bool_t locked(char *status);
 
 err_t alloc_entries(Ledger*);
 err_t alloc_totals(Ledger*);
-void free_ledger(Ledger**); 
-void free_for_retotal(Ledger*);
+err_t free_ledger(Ledger**); 
+err_t free_for_retotal(Ledger*);
 err_t get_names(Ledger *ledger);
 err_t get_totals(Ledger *ledger);
 err_t new_ledger(Ledger **ledger); 
@@ -123,8 +123,8 @@ void modify_entry(Ledger *ledger, int row, int col, char *next);                
 void rename_bank(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
 void rename_credit(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
 void rename_partition(Ledger *ledger, char *bank, char *from, char *to);              /* NEEDS TESTING */
-void remove_row(Ledger *ledger, int row);                                                     /* NEEDS TESTING */
-void trim_ledger(Ledger *ledger);                                                         /* NEEDS TESTING */
+err_t remove_row(Ledger *ledger, int row);                                                     /* NEEDS TESTING */
+err_t trim_ledger(Ledger *ledger);                                                         /* NEEDS TESTING */
 err_t strip_ledger(Ledger *ledger);     
 err_t repartition(Ledger *ledger, char *bank, char **partitions, double *amounts);					/* NEED TO IMPLEMENT ****/
 err_t repartition_percent(Ledger *ledger, char *bank, char **partitions, double *percentages);					/* NEED TO IMPLEMENT ****/
@@ -149,7 +149,7 @@ err_t repartition_percent_str(char **s, char *bank, char **partitions, double *p
  *** FUNCTIONS TO PARSE INPUT INTO LEDGER OBJECTS **************************************
  ***************************************************************************************/
 
-void parse_char(Ledger *ledger, char c, int *char_index, int *field, int *row);
+err_t parse_char(Ledger *ledger, char c, int *char_index, int *field, int *row);
 err_t get_entries_from_filename(Ledger *ledger, char *filename); 
 err_t get_entries_from_stream(Ledger *ledger, FILE *fp); 
 err_t get_entries_from_string(Ledger *ledger, char *s);  
@@ -163,7 +163,7 @@ err_t get_ledger(Ledger **ledger, char* filename, FILE *fp, char *str);
 err_t print_ledger_to_filename(Ledger *ledger,  char *filename);
 err_t print_ledger_to_stream(Ledger *ledger, FILE *fp);
 err_t print_ledger_to_string(Ledger *ledger, char **s);
-void print_ledger_verbose(Ledger *ledger, FILE *fp);
+err_t print_ledger_verbose(Ledger *ledger, FILE *fp);
 
 
 /*************************************************************************************** 

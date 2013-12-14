@@ -12,14 +12,15 @@
 #include <string.h>
 #include <user_settings.h>
 
-void free_ledger(Ledger **ledger){
+err_t free_ledger(Ledger **ledger){
   int i, j;
+  err_t ret;
 
   if(ledger == NULL)
-    return;
+    return LFAILURE;
     
   if(*ledger == NULL)
-    return;
+    return LFAILURE;
 
   if((*ledger)->filename != NULL){
     free((*ledger)->filename);
@@ -42,7 +43,9 @@ void free_ledger(Ledger **ledger){
     (*ledger)->entries = NULL;
   }
   
-  free_for_retotal(*ledger);
+  ret = free_for_retotal(*ledger);
   free(*ledger);
   *ledger = NULL;
+  
+  return ret;
 }
