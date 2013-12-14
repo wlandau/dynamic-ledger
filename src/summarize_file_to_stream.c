@@ -15,9 +15,8 @@
 int summarize_file_to_stream(char* filename, FILE *fp){
   Ledger *ledger;
   get_ledger(&ledger, filename, NULL, NULL);
-  int ind = (ledger == NULL);
   
-  if(ind)
+  if(ledger == NULL)
     return 1;
 
   print_summary_to_stream(ledger, fp);
