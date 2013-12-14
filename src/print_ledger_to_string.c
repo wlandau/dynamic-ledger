@@ -12,37 +12,49 @@
 #include <string.h>
 #include <user_settings.h>
 
-char *print_ledger_to_string(Ledger *ledger){
-  char *s, entry[ENTRYSIZE], 
-        header[] = "amount\tstatus\tcredit\tbank\tpartition\tdescription\n"; 
-  int i, j, n = 1;
+err_t print_ledger_to_string(Ledger *ledger, char **s){
+  int field, row, n = 1;
   
   if(ledger == NULL)
-    return NULL;
+    return LFAILURE;
+
+  strip_ledger(ledger);
   
-  for(i = 0; i < NFIELDS; ++i){
-    for(j = 0; j < ledger->nrows; ++j){
-      n += strlen(ledger->entries[i][j]) + 1;
-    }
-  }
+  for(field = 0; field < NFIELDS; ++field)  
+    for(row = 0; row < ledger->nrows; ++row)
+      n += strlen(ledger->entries[field][row]) + 1;
   
-  s = calloc(n + strlen(header), sizeof(char));
-  strcat(s, header);
-  for(j = 0; j < ledger->nrows; ++j){
-    strcat(s, ledger->entries[AMOUNT][j]);
-    
-    for(i = 1; i < NFIELDS; ++i){
-      strcat(s, "\t");
+  *s = calloc(n + LINESIZE, sizeof(char));
+  
+  for(field = 0; field < NFIELDS; ++field){
+    if(field == AMOUNT)
+      strcat(*s, "amount");
+    else if(field == STATUS)
+      strcat(*s, "status");
+    else if(field == CREDIT)
+      strcat(*s, "credit");
+    else if(field == BANK)
+      strcat(*s, "bank");
+    else if(field == PARTITION)
+      strcat(*s, "partition");
+    else if(field == DESCRIPTION)
+      strcat(*s, "description");
       
-      if(strlen(ledger->entries[i][j])){
-        sprintf(entry, "%s", ledger->entries[i][j]);
-        
-        str_strip(entry);
-        strcat(s, entry);
-      }
+    if(field < NFIELDS - 1)
+      strcat(*s, "\t");
+    else
+      strcat(*s, "\n");
+  }  
+  
+  for(row = 0; row < ledger->nrows; ++row){
+    for(field = 0; field < NFIELDS - 1; ++field){
+      strcat(*s, ledger->entries[field][row]);
+      strcat(*s, "\t");
     }
-    
-    strcat(s, "\n"); 
+    strcat(*s, ledger->entries[NFIELDS - 1][row]);
+    strcat(*s, "\n");
   }
-  return s;
+  
+  str_strip(*s);
+  return LSUCCESS;
 }

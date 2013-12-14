@@ -25,7 +25,7 @@ void trim_ledger_str(char **s){
     return;
   
   trim_ledger(ledger);
-  s2 = print_ledger_to_string(ledger);
+  print_ledger_to_string(ledger, &s2);
   free_ledger(&ledger);
   
   tmp = *s;

@@ -25,7 +25,7 @@ void remove_row_str(char **s, int row){
     return;
   
   remove_row(ledger, row);
-  s2 = print_ledger_to_string(ledger);
+  print_ledger_to_string(ledger, &s2);
   free_ledger(&ledger);
   
   tmp = *s;

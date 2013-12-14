@@ -37,7 +37,7 @@ void modify_entry_str(char **s, int row, int col, char *next){
     return;
   
   modify_entry(ledger, row, col, next);
-  s2 = print_ledger_to_string(ledger);
+  print_ledger_to_string(ledger, &s2);
   free_ledger(&ledger);
   
   tmp = *s;

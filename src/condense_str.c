@@ -25,7 +25,7 @@ void condense_str(char **s){
     return;
   
   condense(&ledger);
-  s2 = print_ledger_to_string(ledger);
+  print_ledger_to_string(ledger, &s2);
   free_ledger(&ledger);
   
   tmp = *s;
