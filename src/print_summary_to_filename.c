@@ -12,7 +12,7 @@
 #include <string.h>
 #include <user_settings.h>
 
-err_t print_summary_to_filename(Ledger *ledger, char *filename){
+err_t print_summary_to_filename(Ledger *ledger, char *filename, int usecolor){
   err_t ret;
   FILE *fp;
   
@@ -20,7 +20,7 @@ err_t print_summary_to_filename(Ledger *ledger, char *filename){
     return LFAILURE;
 
   fp = fopen(filename, "w");
-  ret = print_summary_to_stream(ledger, fp);
+  ret = print_summary_to_stream(ledger, fp, usecolor);
   if(fp != NULL)
     fclose(fp);
     

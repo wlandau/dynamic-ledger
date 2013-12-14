@@ -12,7 +12,7 @@
 #include <string.h>
 #include <user_settings.h>
 
-err_t print_summary_to_stream(Ledger *ledger, FILE *fp){ 
+err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){ 
   int i, j, l0, l1, l2, any = 0, anyp = 0;
 
   if(ledger == NULL || fp == NULL)
@@ -41,30 +41,27 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp){
         fprintf(fp,"          Delayed money:\n");
         if(l0)
           fprintf(fp,"%s%30.2f%s  not arrived\n", 
-                  color(ledger->credit_totals[i][I_NOT_THERE_YET]), 
+                  color(ledger->credit_totals[i][I_NOT_THERE_YET], usecolor), 
                   ledger->credit_totals[i][I_NOT_THERE_YET], NORMAL_COLOR); 
         if(l1)
           fprintf(fp,"%s%30.2f%s  pending\n", 
-                  color(ledger->credit_totals[i][I_PENDING]), 
+                  color(ledger->credit_totals[i][I_PENDING], usecolor), 
                   ledger->credit_totals[i][I_PENDING], NORMAL_COLOR);
         fprintf(fp, "\n          Balances:\n");
         fprintf(fp,"%s%30.2f%s  \"available\"\n", 
-                color(ledger->credit_totals[i][I_CLEARED]),
+                color(ledger->credit_totals[i][I_CLEARED], usecolor),
                 ledger->credit_totals[i][I_CLEARED], NORMAL_COLOR);
         if(l1 && l0)
           fprintf(fp,"%s%30.2f%s  pending balance\n", 
-                  color(ledger->credit_totals[i][I_PENDING] 
-                + ledger->credit_totals[i][I_CLEARED]),
-                  ledger->credit_totals[i][I_PENDING] 
-                + ledger->credit_totals[i][I_CLEARED],
-                  NORMAL_COLOR);
+                  color(ledger->credit_totals[i][I_PENDING_BAL], usecolor),
+                  ledger->credit_totals[i][I_PENDING_BAL], NORMAL_COLOR);
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                color(ledger->credit_totals[i][I_OVERALL_BAL]),
+                color(ledger->credit_totals[i][I_OVERALL_BAL], usecolor),
                 ledger->credit_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
       } else {
         fprintf(fp,"          Balances:\n");
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                color(ledger->credit_totals[i][I_OVERALL_BAL]), 
+                color(ledger->credit_totals[i][I_OVERALL_BAL], usecolor), 
                 ledger->credit_totals[i][I_OVERALL_BAL], NORMAL_COLOR); 
         fprintf(fp,"                                All charges cleared.\n");
       }
@@ -87,29 +84,27 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp){
         fprintf(fp,"          Delayed money:\n");
         if(l0)
           fprintf(fp,"%s%30.2f%s  not arrived\n", 
-                  color(ledger->bank_totals[i][I_NOT_THERE_YET]),
+                  color(ledger->bank_totals[i][I_NOT_THERE_YET], usecolor),
                   ledger->bank_totals[i][I_NOT_THERE_YET], NORMAL_COLOR); 
         if(l1)
           fprintf(fp,"%s%30.2f%s  pending\n", 
-                  color(ledger->bank_totals[i][I_PENDING]), 
+                  color(ledger->bank_totals[i][I_PENDING], usecolor), 
                   ledger->bank_totals[i][I_PENDING], NORMAL_COLOR); 
         fprintf(fp,"\n          Balances:\n");
         fprintf(fp,"%s%30.2f%s  \"available\"\n", 
-                color(ledger->bank_totals[i][I_CLEARED]),
+                color(ledger->bank_totals[i][I_CLEARED], usecolor),
                 ledger->bank_totals[i][I_CLEARED], NORMAL_COLOR);
         if(l1 && l0)
           fprintf(fp,"%s%30.2f%s  pending balance\n", 
-                  color(ledger->bank_totals[i][I_PENDING] 
-                + ledger->bank_totals[i][I_CLEARED]),
-                  ledger->bank_totals[i][I_PENDING] 
-                + ledger->bank_totals[i][I_CLEARED], NORMAL_COLOR);
+                  color(ledger->bank_totals[i][I_PENDING_BAL], usecolor),
+                  ledger->bank_totals[i][I_PENDING_BAL], NORMAL_COLOR);
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                color(ledger->bank_totals[i][I_OVERALL_BAL]),
+                color(ledger->bank_totals[i][I_OVERALL_BAL], usecolor),
                 ledger->bank_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
       } else {
         fprintf(fp,"          Balances:\n");
         fprintf(fp,"%s%30.2f%s  true balance\n", 
-                color(ledger->bank_totals[i][I_OVERALL_BAL]),
+                color(ledger->bank_totals[i][I_OVERALL_BAL], usecolor),
                 ledger->bank_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
         fprintf(fp,"                                All charges cleared.\n");
       } 
@@ -123,12 +118,13 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp){
             fprintf(fp,"\n          Partitions:\n");
             ++anyp;
           }
-          fprintf(fp,"%s%30.2f%s  %s\n", color(ledger->partition_totals[i][j]), 
+          fprintf(fp,"%s%30.2f%s  %s\n", color(ledger->partition_totals[i][j], usecolor), 
                   ledger->partition_totals[i][j], NORMAL_COLOR, ledger->partitions[i][j]);
         }
         else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][I_CLEARED]) > EPS){
           if(!j) fprintf(fp, "\n");
-          fprintf(fp,"%s%30.2f%s  unpartitioned\n", color(ledger->partition_totals[i][j]),
+          fprintf(fp,"%s%30.2f%s  unpartitioned\n", 
+                  color(ledger->partition_totals[i][j], usecolor),
                   ledger->partition_totals[i][j], NORMAL_COLOR);
         }
       } 

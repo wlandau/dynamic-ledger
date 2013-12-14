@@ -84,7 +84,7 @@ bool_t col_delim_char(char c);
 index_t col_delim_str(char *s);                                        
 bool_t row_delim_char(char c);
 index_t row_delim_str(char *s);
-color_t color(double);            
+color_t color(double d, int usecolor);            
 bool_t space(char c);                     
 bool_t legal_amounts(Ledger *ledger); 
 bool_t legal_status_code(char *s); 
@@ -170,9 +170,9 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp);
  *** FUNCTIONS TO OUTPUT SUMMARIES OF LEDGER OBJECTS ***********************************
  ***************************************************************************************/
 
-err_t print_summary_to_filename(Ledger *ledger,  char *filename);     /* NEED TO IMPLEMENT ***/ /* ADD OPTION TO DISABLE COLORS */      /* TRIM AFTERWARDS */
-err_t print_summary_to_stream(Ledger *ledger, FILE *fp);                     
-err_t print_summary_to_string(Ledger *ledger, char **s);
+err_t print_summary_to_filename(Ledger *ledger,  char *filename, int usecolor);     /* NEED TO IMPLEMENT ***/ /* ADD OPTION TO DISABLE COLORS */      /* TRIM AFTERWARDS */
+err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor);                     
+err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor);
 int summarize_file_to_stream(char* filename, FILE *fp);                         /* REMOVE WHEN READY */
 
 

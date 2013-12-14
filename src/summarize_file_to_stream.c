@@ -19,7 +19,7 @@ int summarize_file_to_stream(char* filename, FILE *fp){
   if(ledger == NULL)
     return 1;
 
-  print_summary_to_stream(ledger, fp);
+  print_summary_to_stream(ledger, fp, 1);
   
   free_ledger(&ledger);
   return 0;

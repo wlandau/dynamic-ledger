@@ -12,8 +12,8 @@
 #include <string.h>
 #include <user_settings.h>
 
-color_t color(double d){ 
-  if(!USE_COLOR)
+color_t color(double d, int usecolor){ 
+  if(!USE_COLOR || !usecolor)
     return "";
   
   if(d > EPS)
