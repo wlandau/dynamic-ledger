@@ -40,6 +40,14 @@ int main(){
   FILE *fp;
   char **strs;
 
+  printf("------------------------------------\n");
+  printf("------------------------------------\n");
+  printf("------------------------------------\n");
+  printf("  FROM FILENAMES \n");
+  printf("------------------------------------\n");
+  printf("------------------------------------\n");
+  printf("------------------------------------\n");
+
   strs = malloc(ntests * sizeof(char*));
   for(i = 0; i < ntests; ++i)
     strs[i] = calloc(2000, sizeof(char));
@@ -55,20 +63,13 @@ int main(){
   strcpy(strs[8], L8);
   strcpy(strs[9], L9);
   strcpy(strs[10], L10);
-  
-  
-  printf("------------------------------------\n");
-  printf("------------------------------------\n");
-  printf("------------------------------------\n");
-  printf("  FROM FILENAMES \n");
-  printf("------------------------------------\n");
-  printf("------------------------------------\n");
-  printf("------------------------------------\n");
 
-  printf("\n--------\nTEST -1 | ret = %d\n",  get_entries_from_filename(ledger, NULL));
+printf("\n--------\nTEST -1 | ret = %d\n",  get_entries_from_filename(ledger, NULL));
 
+/*
   for(test = 0; test < 1; ++test){
     new_ledger(&ledger);
+      
 
     printf("\n--------\nTEST %d", test);
     printf("\nret = %d\n", get_ledger(&ledger, strs[test], NULL, NULL));
@@ -113,19 +114,20 @@ int main(){
       
     free_ledger(ledger);
   }  
+*/
 
   for(test = 0; test < ntests; ++test)
     free(strs[test]);
   free(strs);
 
 
-
-
-
-
-
-
 /*
+
+
+
+
+
+
 
   strs = malloc(ntests * sizeof(char*));
   for(i = 0; i < ntests; ++i)
