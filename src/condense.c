@@ -13,7 +13,7 @@
 #include <user_settings.h>
 
 err_t condense(Ledger *ledger){
-  int row, bank, partition;
+  int row, credit, bank, partition, i;
   
   if(ledger == NULL)
     return LFAILURE;
@@ -47,7 +47,13 @@ err_t condense(Ledger *ledger){
 
   trim_ledger(ledger); 
   
-  
+  for(bank = 0; bank < ledger->nbanks; ++bank)
+    for(i = 0; i < N_TOTALS; ++i)
+      ledger->bank_totals[bank][i] = 0;
+
+  for(credit = 0; credit < ledger->ncredits; ++credit)
+    for(i = 0; i < N_TOTALS; ++i)
+      ledger->credit_totals[credit][i] = 0;
   
   get_totals(ledger); 
   
