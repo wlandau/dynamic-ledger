@@ -40,11 +40,14 @@ err_t condense(Ledger *ledger){
         sprintf(ledger->entries[AMOUNT][row], "%0.2f", 
                 ledger->partition_totals[bank][partition]);
         strcpy(ledger->entries[DESCRIPTION][row], "condensed");
-        ledger->partition_totals[bank][partition] = 0;
+        ledger->partition_totals[bank][partition] = 0.0;
       }                  
     }
   }
-
+  
+  printf("\n about to condense:\n");
+  print_ledger_to_stream(ledger, stdout);
+  
   trim_ledger(ledger); 
   
   for(bank = 0; bank < ledger->nbanks; ++bank)
@@ -54,7 +57,7 @@ err_t condense(Ledger *ledger){
   for(credit = 0; credit < ledger->ncredits; ++credit)
     for(i = 0; i < N_TOTALS; ++i)
       ledger->credit_totals[credit][i] = 0;
-  
+        
   get_totals(ledger); 
   
   return LSUCCESS;

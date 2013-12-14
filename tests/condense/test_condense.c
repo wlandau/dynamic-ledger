@@ -11,7 +11,7 @@
 #define L2 "../data/ledgers/empty.txt"
 
 int main(){
-  int i, test, ntests = 2;
+  int i, test, ntests = 1;
   Ledger *ledger = NULL;
   char **strs;
 
@@ -20,12 +20,12 @@ int main(){
     strs[i] = calloc(2000, sizeof(char));
 
   strcpy(strs[0], L0);
-  strcpy(strs[1], L1);
+  /*strcpy(strs[1], L1);*/
 /*  strcpy(strs[2], L2);*/
 
   printf("\n--------\nTEST -1 | ret = %d\n", condense(ledger));
 
-  for(test = 0; test < ntests; ++test){
+ for(test = 0; test < ntests; ++test){
     printf("\n--------\nTEST %d", test);
     get_ledger(&ledger, strs[test], NULL, NULL);
     print_ledger_verbose(ledger, stdout);

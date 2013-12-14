@@ -29,4 +29,3 @@ amount	status	credit	bank	partition	description
 50			savingss	travel	saving for next trip2
 50				b	saving for next trip2						wheedle
 10		freebee
-

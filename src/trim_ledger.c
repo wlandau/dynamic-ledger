@@ -35,7 +35,6 @@ err_t trim_ledger(Ledger *ledger){
           strcpy(ledger->entries[field][pos], tmp);
         }
       } else{
-        ++row;
         break;
       }
     }
