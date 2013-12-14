@@ -13,7 +13,7 @@ amount	status	credit	bank	partition	description
 
 
 
-100	l		savingss		paycheck
+0	l		savingss		paycheck
 50	l		savingss	travel	saving for next trip
 
 -27	cp	card	checking	rent	electric bill2
