@@ -128,11 +128,9 @@ err_t print_summary_to_string(Ledger *ledger, char **s){
         }
       } 
   }
-  
-  if(any)
-    sprintf(*s, "%s\n", *s);
  
   str_strip(*s);
+  sprintf(*s, "%s\n\n", *s);
     
   return LSUCCESS;
 }
