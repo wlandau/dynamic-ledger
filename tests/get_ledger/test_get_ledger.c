@@ -125,7 +125,7 @@ int main(){
 
 
 
-
+/*
 
   strs = malloc(ntests * sizeof(char*));
   for(i = 0; i < ntests; ++i)
@@ -214,7 +214,7 @@ int main(){
 
 
 
-/*
+
 
 
   strs = malloc(ntests * sizeof(char*));
