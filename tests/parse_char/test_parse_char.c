@@ -23,39 +23,7 @@
 int main(){
   int i, j, char_index, field, row, test, ntests = 10;
   Ledger *ledger;
-  char c = 0, **strs, line[LINESIZE];
-  err_t ret;
-  
-  
-  FILE *fp = fopen(F, "r");
-  if(fp == NULL)
-    printf("nofile\n");
-    
-  new_ledger(&ledger);
-
-  ledger->nrows = 0;
-  while(fgets(line, LINESIZE, fp))
-    ++ledger->nrows;
-  rewind(fp);
-  alloc_entries(ledger);
-
-  printf("ledger->nrows = %d\n", ledger->nrows);
-
-  char_index = 0;
-  field = 0;
-  row = 0;   
-  while(1){
-    c = fgetc(fp);
-    ret = parse_char(ledger, c, &char_index, &field, &row);
-    printf("%d", ret);
-    if(ret == LFAILURE)
-      break;
-  }
-  
-  free_ledger(&ledger);
-  fclose(fp);
-
-
+  char **strs;
 
   strs = malloc(ntests * sizeof(char*));
   for(i = 0; i < ntests; ++i)
