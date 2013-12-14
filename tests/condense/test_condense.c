@@ -8,7 +8,7 @@
 
 #define L0 "../data/ledgers/basic.txt"
 #define L1 "../data/ledgers/example_ledger.txt"
-#define L2 "../data/ledgers/empty.txt"
+#define L2 "../data/ledgers/empty.txt" 
 
 int main(){
   int i, test, ntests = 3;
