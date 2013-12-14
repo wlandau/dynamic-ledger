@@ -28,8 +28,8 @@
 #define I_PENDING         1
 #define I_CLEARED         2
 #define I_PENDING_BAL     3	
-#define I_OVERALL_BAL     4													/* NEED TO IMPLEMENT WHEN ALLOCATING/CALCULATING TOTALS AND SUMMARIZING */
-#define N_TOTALS          5														/* NEED TO IMPLEMENT WHEN ALLOCATING/CALCULATING TOTALS AND SUMMARIZING */
+#define I_OVERALL_BAL     4
+#define N_TOTALS          5
 
 
 /*************************************************************************************** 
@@ -100,7 +100,7 @@ index_t which_credit_total(char *status);
 bool_t locked(char *status);
 
 /*************************************************************************************** 
- *** FUNCTIONS TO CREATE, INITIALIZE, AND DESTROY LEDGER OBJECTS ***********************
+ *** FUNCTIONS TO CREATE, INITIALIZE, COPY AND DESTROY LEDGER OBJECTS ******************
  ***************************************************************************************/
 
 err_t alloc_entries(Ledger*);
@@ -110,6 +110,7 @@ void free_for_retotal(Ledger*);
 err_t get_names(Ledger *ledger);
 err_t get_totals(Ledger *ledger);
 err_t new_ledger(Ledger **ledger); 
+err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
 
 
 /*************************************************************************************** 
@@ -159,7 +160,6 @@ err_t get_ledger(Ledger **ledger, char* filename, FILE *fp, char *str);
  *** FUNCTIONS TO PRINT LEDGER OBJECTS *************************************************
  ***************************************************************************************/
 
-err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
 err_t print_ledger_to_filename(Ledger *ledger,  char *filename);
 err_t print_ledger_to_stream(Ledger *ledger, FILE *fp);
 err_t print_ledger_to_string(Ledger *ledger, char **s);
@@ -179,11 +179,8 @@ int summarize_file_to_stream(char* filename, FILE *fp);                         
 /*************************************************************************************** 
  *** FUNCTIONS TO OUTPUT CONDENSED LEDGERS *********************************************
  ***************************************************************************************/
-
-err_t condense_ledger_to_filename(Ledger *ledger,  char *filename);        /* NEED TO IMPLEMENT ****/
-void condense_ledger_to_stream(Ledger *ledger, FILE *fp);
-char *condense_ledger_to_string(Ledger *ledger);
-
+void condense_ledger_to_stream(Ledger *ledger, FILE *fp);                /* REMOVE WHEN READY ****/
+char *condense_ledger_to_string(Ledger *ledger); 						/* REMOVE WHEN READY ****/
 int condense_and_print( char* infile,  char *outfile);                     /* REMOVE WHEN READY */
 
 
