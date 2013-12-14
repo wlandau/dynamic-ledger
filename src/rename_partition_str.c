@@ -26,7 +26,7 @@ void rename_partition_str(char **s, char *bank, char *from, char *to){
   
   rename_partition(ledger, bank, from, to);
   s2 = print_ledger_to_string(ledger);
-  free_ledger(ledger);
+  free_ledger(&ledger);
   
   tmp = *s;
   *s = s2;

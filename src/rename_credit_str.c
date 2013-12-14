@@ -26,7 +26,7 @@ void rename_credit_str(char **s, char *from, char *to){
   
   rename_credit(ledger, from, to);
   s2 = print_ledger_to_string(ledger);
-  free_ledger(ledger);
+  free_ledger(&ledger);
   
   tmp = *s;
   *s = s2;

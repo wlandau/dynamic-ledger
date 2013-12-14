@@ -106,5 +106,5 @@ void condense(Ledger **ledger){
   
   tmpledger = *ledger;
   *ledger = newledger;
-  free_ledger(tmpledger); 
+  free_ledger(&tmpledger); 
 }

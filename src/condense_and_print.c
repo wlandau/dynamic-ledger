@@ -32,6 +32,6 @@ int condense_and_print(char* infile, char *outfile){
     fclose(fp);
   }
   
-  free_ledger(ledger);
+  free_ledger(&ledger);
   return 0;
 }

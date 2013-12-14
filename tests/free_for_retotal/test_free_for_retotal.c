@@ -26,7 +26,7 @@ int main(){
   get_totals(ledger);
 
   free_for_retotal(ledger); 
-  free_ledger(ledger);
+  free_ledger(&ledger);
 
   return 0;
 }

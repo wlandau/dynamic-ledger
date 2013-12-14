@@ -21,6 +21,6 @@ int summarize_file_to_stream(char* filename, FILE *fp){
 
   print_summary_to_stream(ledger, fp);
   
-  free_ledger(ledger);
+  free_ledger(&ledger);
   return 0;
 }

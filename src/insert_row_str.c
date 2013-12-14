@@ -26,7 +26,7 @@ void insert_row_str(char **s, int row){
   
   insert_row(ledger, row);
   s2 = print_ledger_to_string(ledger);
-  free_ledger(ledger);
+  free_ledger(&ledger);
   
   tmp = *s;
   *s = s2;
