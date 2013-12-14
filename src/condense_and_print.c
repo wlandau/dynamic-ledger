@@ -24,7 +24,7 @@ int condense_and_print(char* infile, char *outfile){
     return 1;
   }  
   
-  condense(&ledger);
+  condense(ledger);
       
   if(output_file(outfile) == LYES){
     fp = fopen(outfile, "w");
