@@ -105,8 +105,8 @@ bool_t locked(char *status);
 
 err_t alloc_entries(Ledger*);
 err_t alloc_totals(Ledger*);
-void free_ledger(Ledger**);                                                    /* NEEDS TESTING */
-void free_for_retotal(Ledger*);                                                    /* NEEDS TESTING */
+void free_ledger(Ledger**); 
+void free_for_retotal(Ledger*);
 err_t get_names(Ledger *ledger);
 err_t get_totals(Ledger *ledger);
 err_t new_ledger(Ledger **ledger); 
