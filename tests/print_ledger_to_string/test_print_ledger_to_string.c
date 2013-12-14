@@ -17,7 +17,8 @@ int main(){
   print_ledger_to_string(ledger, &s);
   printf("%s", s);
   free_ledger(&ledger);
-  
+  free(s);
+    
   printf("\n----\n");
   
   get_ledger(&ledger, L3, NULL, NULL);
