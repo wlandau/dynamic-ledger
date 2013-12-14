@@ -11,7 +11,7 @@
 
 int main(){
   Ledger *ledger = NULL;
-  char *s;
+  char *s = NULL;
   
   printf("\n----\nRET = %d\n---\n", print_summary_to_string(ledger, &s));
   printf("%s", s);  
