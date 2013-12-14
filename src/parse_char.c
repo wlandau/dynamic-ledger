@@ -14,12 +14,12 @@ err_t parse_char(Ledger *ledger, char c, int *char_index, int *field, int *row){
     *char_index = 0;
     *field = 0;
     ++(*row); 
+  } else if(c == EOF){
+    return LFAILURE;
   } else if(*field < NFIELDS && *char_index < ENTRYSIZE - 1){
     ledger->entries[*field][*row][*char_index] = c;
     ++(*char_index); 
-  } else if(c == EOF){
-    return LFAILURE;
-  }
+  } 
   
   return LSUCCESS;
 }

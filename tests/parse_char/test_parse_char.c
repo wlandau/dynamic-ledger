@@ -17,10 +17,34 @@
 #define L8 "-27.58	cp	ch	cp	a	hyvee-12/10/13\tgagagadada\n-6.76		ch	cp	a	hyvee-1711902571-65.98\tgagagadada\n-30.14		ch	cp	a	hyvee-1711902571-65.98\n-6.41		ch	cp	a	hyvee-1711902571-65.98\n-15.36		ch	cp	a	hyvee-1711902571-65.98\n-7.31		ch	cp	a	hyvee-1711902571-65.98\n305.26			cp	a	condensed\n112.21			cp	b	condensed\n256.03			cp	c	condensed\n138.33			cp	d	condensed\n90.00			cp	knee	condensed\n2114.56			cp	r	condensed\n3553.04			cps		condensed\n"
 #define L9 "-27.58	cp	ch	cp	a	hyvee-12/10/13abcdefghijklmnopqrstuvwxyz__hyvee-12/10/13abcdefghijklmnopqrstuvwxyz__hyvee-12/10/13abcdefghijklmnopqrstuvwxyz__abcdefghijklmnopqrstuvwxyz__abcdefghijklmnopqrstuvwxyz__abcdefghijklmnopqrstuvwxyz__abcdefghijklmnopqrstuvwxyz__abcdefghijklmnopqrstuvwxyz__abcdefghijklmnopqrstuvwxyz__abcdefghijklmnopqrstuvwxyz__abcdefghijklmnopqrstuvwxyz__abcdefghijklmnopqrstuvwxyz__\tgagagadada\n-6.76		ch	cp	a	hyvee-1711902571-65.98\n-30.14		ch	cp	a	hyvee-1711902571-65.98\n-6.41		ch	cp	a	hyvee-1711902571-65.98\n-15.36		ch	cp	a	hyvee-1711902571-65.98\n-7.31		ch	cp	a	hyvee-1711902571-65.98\n305.26			cp	a	condensed\n112.21			cp	b	condensed\n256.03			cp	c	condensed\n138.33			cp	d	condensed\n90.00			cp	knee	condensed\n2114.56			cp	r	condensed\n3553.04			cps		condensed\n"
 
+
+#define F "../data/ledgers/bad.txt"
+
 int main(){
   int i, j, char_index, field, row, test, ntests = 10;
   Ledger *ledger;
-  char **strs;
+  char c = 0, **strs;
+  err_t ret;
+  
+  
+  FILE *fp = fopen(F, "r");
+  new_ledger(&ledger);
+
+  char_index = 0;
+  field = 0;
+  row = 0;   
+  while(1){
+    c = fgetc(fp);
+    ret = parse_char(ledger, c, &char_index, &field, &row);
+    printf("%d", ret);
+    if(ret == LFAILURE)
+      break;
+  }
+  
+  free_ledger(&ledger);
+  fclose(fp);
+
+
 
   strs = malloc(ntests * sizeof(char*));
   for(i = 0; i < ntests; ++i)
