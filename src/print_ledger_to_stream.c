@@ -12,11 +12,11 @@
 #include <string.h>
 #include <user_settings.h>
 
-void print_ledger_to_stream(Ledger *ledger, FILE *fp){
+err_t print_ledger_to_stream(Ledger *ledger, FILE *fp){
   int row, field;
   
   if(ledger == NULL || fp == NULL)
-    return;
+    return LFAILURE;
 
   for(field = 0; field < NFIELDS; ++field){
     if(field == AMOUNT)
@@ -43,4 +43,6 @@ void print_ledger_to_stream(Ledger *ledger, FILE *fp){
       fprintf(fp, "%s\t", ledger->entries[field][row]);
     fprintf(fp, "%s\n", ledger->entries[NFIELDS - 1][row]);
   }
+  
+  return LSUCCESS;
 }
