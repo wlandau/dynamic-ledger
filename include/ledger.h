@@ -117,7 +117,7 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
  *** FUNCTIONS TO MODIFY LEDGER OBJECTS ************************************************
  ***************************************************************************************/
 
-void condense(Ledger **ledger);                                                    /* NEEDS TESTING */
+err_t condense(Ledger *ledger);                                                    /* NEEDS TESTING */
 void insert_row(Ledger *ledger, int row);                              /* NEEDS TESTING */
 void modify_entry(Ledger *ledger, int row, int col, char *next);                  /* NEEDS TESTING */
 void rename_bank(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */

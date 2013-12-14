@@ -12,99 +12,41 @@
 #include <string.h>
 #include <user_settings.h>
 
-void condense(Ledger **ledger){
-  int i, j, k, new_n, row = 0;
-  double **local_partition_totals;
-  char status[ENTRYSIZE], amount[ENTRYSIZE];
-  Ledger *newledger, *tmpledger;
+err_t condense(Ledger *ledger){
+  int row, bank, partition;
   
-  if(ledger == NULL || *ledger == NULL)
-    return;
+  if(ledger == NULL)
+    return LFAILURE;
+    
+  for(row = 0; row < ledger->nrows; ++row){
+    if(locked(ledger->entries[STATUS][row]) == LYES){ 
+      bank = which(ledger->banks, ledger->entries[BANK][row], ledger->nbanks);
+      partition = which(ledger->partitions[bank], ledger->entries[PARTITION][row], 
+                        ledger->npartitions[bank]);  
 
-  local_partition_totals = malloc((*ledger)->nbanks * sizeof(double*));
-  for(i = 0; i < (*ledger)->nbanks; ++i){
-    local_partition_totals[i] = calloc((*ledger)->npartitions[i], sizeof(double));  
-    for(j = 0; j < (*ledger)->npartitions[i]; ++j)
-      local_partition_totals[i][j] = (*ledger)->partition_totals[i][j];
+      ledger->partition_totals[bank][partition] -= atof(ledger->entries[AMOUNT][row]);
+    } else {
+      strcpy(ledger->entries[AMOUNT][row], NIL); 
+    }
+  }
+   
+  for(row = 0; row < ledger->nrows; ++row){ 
+    if(locked(ledger->entries[STATUS][row]) == LNO){
+      bank = which(ledger->banks, ledger->entries[BANK][row], ledger->nbanks);
+      partition = which(ledger->partitions[bank], ledger->entries[PARTITION][row], 
+                        ledger->npartitions[bank]);
+                        
+      if(ledger->partition_totals[bank][partition] > EPS){
+        sprintf(ledger->entries[AMOUNT][row], "%0.2f", 
+                ledger->partition_totals[bank][partition]);
+        strcpy(ledger->entries[DESCRIPTION][row], "condensed");
+        ledger->partition_totals[bank][partition] = 0;
+      }                  
+    }
   }
 
-  for(i = 0; i < (*ledger)->nrows; ++i){
-    strcpy(status, (*ledger)->entries[STATUS][i]);
-    strcpy(amount, (*ledger)->entries[AMOUNT][i]);
+  trim_ledger(ledger); 
+  get_totals(ledger); 
   
-    if(str_equal(status, CREDIT_NOT_THERE_YET) || 
-       str_equal(status, CREDIT_PENDING) || 
-       str_equal(status, CREDIT_CHARGED) ||
-       str_equal(status, NOT_THERE_YET) || 
-       str_equal(status, PENDING) ||
-       str_equal(status, LOCKED)){ 
-
-      for(j = 0; j < (*ledger)->nbanks; ++j)
-        if(str_equal((*ledger)->entries[BANK][i], (*ledger)->banks[j])){
-         for(k = 0; k < (*ledger)->npartitions[j]; ++k){
-            if(str_equal((*ledger)->entries[PARTITION][i], (*ledger)->partitions[j][k])){
-              local_partition_totals[j][k] -= atof(amount);
-              
-              break;
-            } 
-          }
-          break;
-        }
-    }
-  } 
-    
-  newledger = malloc(sizeof(Ledger));
-  newledger->filename = NULL;
-  
-  new_n = 0;
-  for(i = 0; i < (*ledger)->nrows; ++i)
-    new_n += (strlen((*ledger)->entries[STATUS][i]) > 0);
-
-  for(i = 0; i < (*ledger)->nbanks; ++i)
-    new_n += (*ledger)->npartitions[i];
-
-  newledger->nrows = new_n;
-  alloc_entries(newledger);  
-  
-  for(i = 0; i < (*ledger)->nrows; ++i){
-    strcpy(status, (*ledger)->entries[STATUS][i]);
-    strcpy(amount, (*ledger)->entries[AMOUNT][i]);
-  
-    if(str_equal(status, CREDIT_NOT_THERE_YET) || 
-       str_equal(status, CREDIT_PENDING) || 
-       str_equal(status, CREDIT_CHARGED) ||
-       str_equal(status, NOT_THERE_YET) || 
-       str_equal(status, PENDING) || 
-       str_equal(status, LOCKED)){ 
-      
-      if(abs(atof(amount)) > EPS){
-        for(j = 0; j < NFIELDS; ++j)
-          strcpy(newledger->entries[j][row], (*ledger)->entries[j][i]);
-        ++row;
-      }
-    }
-  } 
-   
-  for(i = 0; i < (*ledger)->nbanks; ++i)
-    for(j = 0; j < (*ledger)->npartitions[i]; ++j)
-      if(abs(local_partition_totals[i][j]) > EPS){
-        sprintf(amount, "%0.2f", local_partition_totals[i][j]);
-        strcpy(newledger->entries[AMOUNT][row], amount);
-        strcpy(newledger->entries[BANK][row], (*ledger)->banks[i]);
-        strcpy(newledger->entries[PARTITION][row], (*ledger)->partitions[i][j]);
-        strcpy(newledger->entries[DESCRIPTION][row], "condensed");
-        ++row;
-      }
-
-  for(i = 0; i < (*ledger)->nbanks; ++i)
-    free(local_partition_totals[i]);  
-  free(local_partition_totals); 
-
-  get_names(newledger);
-  get_totals(newledger); 
-  trim_ledger(newledger); 
-  
-  tmpledger = *ledger;
-  *ledger = newledger;
-  free_ledger(&tmpledger); 
+  return LSUCCESS;
 }
