@@ -110,7 +110,7 @@ printf("\n--------\nTEST -1 | ret = %d\n",  get_entries_from_filename(ledger, NU
     }
      printf("\n\n");   
       
-    free_ledger(ledger);
+    free_ledger(&ledger);
   }  
 
 
@@ -197,7 +197,7 @@ printf("\n--------\nTEST -1 | ret = %d\n",  get_entries_from_filename(ledger, NU
     }
      printf("\n\n");   
       
-    free_ledger(ledger);
+    free_ledger(&ledger);
   }  
 
   for(test = 0; test < ntests; ++test)
@@ -284,7 +284,7 @@ printf("\n--------\nTEST -1 | ret = %d\n",  get_entries_from_filename(ledger, NU
     }
      printf("\n\n");   
       
-    free_ledger(ledger);
+    free_ledger(&ledger);
   }  
 
   for(test = 0; test < ntests; ++test)

@@ -28,7 +28,11 @@ err_t get_ledger(Ledger **ledger, char* filename, FILE *fp, char *str){
   if(stat == LFAILURE)
     return LFAILURE;
 
-  get_names(*ledger);
-  get_totals(*ledger);
+  if(get_names(*ledger) == LFAILURE)
+    return LFAILURE;
+    
+  if(get_totals(*ledger) == LFAILURE)
+    return LFAILURE;
+    
   return LSUCCESS;
 }

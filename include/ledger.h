@@ -159,14 +159,11 @@ err_t get_ledger(Ledger **ledger, char* filename, FILE *fp, char *str);
  *** FUNCTIONS TO PRINT LEDGER OBJECTS *************************************************
  ***************************************************************************************/
 
-err_t print_ledger_to_filename(Ledger *ledger,  char *filename);        /* NEED TO IMPLEMENT ****/
-err_t print_ledger_to_stream(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
-err_t print_ledger_to_string(Ledger *ledger, char **s);                              /* NEEDS TESTING */
+err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
+err_t print_ledger_to_filename(Ledger *ledger,  char *filename);
+err_t print_ledger_to_stream(Ledger *ledger, FILE *fp);
+err_t print_ledger_to_string(Ledger *ledger, char **s);
 void print_ledger_verbose(Ledger *ledger, FILE *fp);
-
-err_t print_ledger_wrap(Ledger *in_ledger,  char *in_string,            /* NEED TO IMPLEMENT ****/
-  FILE *in_stream,  char *in_filename, Ledger *out_ledger, 
-  char **out_string, FILE *out_stream,  char *out_filename);
 
 
 /*************************************************************************************** 
@@ -184,10 +181,6 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp);
 char *print_summary_to_string(Ledger *ledger);
 int summarize_file_to_stream(char* filename, FILE *fp);                         /* REMOVE WHEN READY */
 
-err_t print_summary_wrap(Ledger *in_ledger,  char *in_string,            /* NEED TO IMPLEMENT ***/
-  FILE *in_stream,  char *in_filename, Ledger *out_ledger, 
-  char **out_string, FILE *out_stream,  char *out_filename);
-
 
 /*************************************************************************************** 
  *** FUNCTIONS TO OUTPUT CONDENSED LEDGERS *********************************************
@@ -196,10 +189,6 @@ err_t print_summary_wrap(Ledger *in_ledger,  char *in_string,            /* NEED
 err_t condense_ledger_to_filename(Ledger *ledger,  char *filename);        /* NEED TO IMPLEMENT ****/
 void condense_ledger_to_stream(Ledger *ledger, FILE *fp);
 char *condense_ledger_to_string(Ledger *ledger);
-
-err_t condense_wrap(Ledger *in_ledger,  char *in_string, 					/* NEED TO IMPLEMENT ***/
-  FILE *in_stream,  char *in_filename, Ledger *out_ledger, 
-  char **out_string, FILE *out_stream,  char *out_filename);
 
 int condense_and_print( char* infile,  char *outfile);                     /* REMOVE WHEN READY */
 

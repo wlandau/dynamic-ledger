@@ -14,6 +14,7 @@ DEP+=color
 DEP+=condense 
 DEP+=condense_and_print
 DEP+=condense_str
+DEP+=copy_ledger
 DEP+=free_for_retotal 
 DEP+=free_ledger
 DEP+=get_entries_from_filename
