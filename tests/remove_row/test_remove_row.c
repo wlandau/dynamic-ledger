@@ -8,14 +8,12 @@
 
 
 #define L0 "../data/ledgers/basic.txt"
-#define L1 "../data/ledgers/condensed.txt"
-#define L2 "../data/ledgers/empty.txt"
+#define L1 "../data/ledgers/empty.txt"
 
 int main(){
-  int i, test, ntests = 3;
+  int i, test, ntests = 2;
   Ledger *ledger = NULL;
   char **strs;
-
 
   strs = malloc(ntests * sizeof(char*));
   for(i = 0; i < ntests; ++i)
@@ -23,9 +21,9 @@ int main(){
 
   strcpy(strs[0], L0);
   strcpy(strs[1], L1);
-  strcpy(strs[2], L2);
 
-  printf("\n--------\nTEST -1 | ret = %d\n",  trim_ledger(ledger));
+  printf("\n--------\nTEST -2 | ret = %d\n",  remove_row(ledger, 0));
+  printf("\n--------\nTEST -1 | ret = %d\n",  remove_row(ledger, 5));
 
   for(test = 0; test < 2; ++test){
     printf("\n--------\nTEST %d", test);
