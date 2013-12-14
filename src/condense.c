@@ -46,6 +46,9 @@ err_t condense(Ledger *ledger){
   }
 
   trim_ledger(ledger); 
+  
+  
+  
   get_totals(ledger); 
   
   return LSUCCESS;

@@ -19,17 +19,23 @@ err_t alloc_totals(Ledger *ledger){
      ledger->banks == NULL || ledger->npartitions == NULL)
     return LFAILURE;
   
-  ledger->credit_totals = malloc(ledger->ncredits * sizeof(double*));
-  for(i = 0; i < ledger->ncredits; ++i)
-    ledger->credit_totals[i] = calloc(N_TOTALS, sizeof(double));
-      
-  ledger->bank_totals = malloc(ledger->nbanks * sizeof(double*));  
-  for(i = 0; i < ledger->nbanks; ++i)
-    ledger->bank_totals[i] = calloc(N_TOTALS, sizeof(double));
+  if(ledger->credit_totals == NULL){
+    ledger->credit_totals = malloc(ledger->ncredits * sizeof(double*));
+    for(i = 0; i < ledger->ncredits; ++i)
+      ledger->credit_totals[i] = calloc(N_TOTALS, sizeof(double));
+  }
+    
+  if(ledger->bank_totals == NULL){
+    ledger->bank_totals = malloc(ledger->nbanks * sizeof(double*));  
+    for(i = 0; i < ledger->nbanks; ++i)
+      ledger->bank_totals[i] = calloc(N_TOTALS, sizeof(double));
+  }
   
-  ledger->partition_totals = malloc(ledger->nbanks * sizeof(double*));
-  for(i = 0; i < ledger->nbanks; ++i)
-    ledger->partition_totals[i] = calloc(ledger->npartitions[i], sizeof(double));
-
+  if(ledger->partition_totals == NULL){
+    ledger->partition_totals = malloc(ledger->nbanks * sizeof(double*));
+    for(i = 0; i < ledger->nbanks; ++i)
+      ledger->partition_totals[i] = calloc(ledger->npartitions[i], sizeof(double));
+  }
+  
   return LSUCCESS;
 }
