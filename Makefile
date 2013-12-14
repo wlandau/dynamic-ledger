@@ -40,6 +40,7 @@ DEP+=print_ledger_to_filename
 DEP+=print_ledger_to_stream 
 DEP+=print_ledger_to_string
 DEP+=print_ledger_verbose
+DEP+=print_summary_to_filename
 DEP+=print_summary_to_stream
 DEP+=print_summary_to_string 
 DEP+=qcmp
