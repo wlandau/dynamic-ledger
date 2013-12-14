@@ -35,6 +35,7 @@ DEP+=modify_entry_str
 DEP+=new_ledger
 DEP+=output_file
 DEP+=parse_char
+DEP+=print_ledger_to_filename
 DEP+=print_ledger_to_stream 
 DEP+=print_ledger_to_string
 DEP+=print_ledger_verbose
