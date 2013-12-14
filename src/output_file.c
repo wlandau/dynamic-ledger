@@ -12,7 +12,7 @@
 #include <string.h>
 #include <user_settings.h>
 
-bool_t output_file(const char *filename){
+bool_t output_file(char *filename){
   FILE *fp;
 
   if(filename == NULL){

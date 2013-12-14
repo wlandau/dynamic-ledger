@@ -12,7 +12,7 @@
 #include <string.h>
 #include <user_settings.h>
 
-index_t which(char **s, const char *find, int n){
+index_t which(char **s, char *find, int n){
   int low = 0, high = n - 1, mid, c;
   
   if(s == NULL || find == NULL || n < 1)

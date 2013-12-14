@@ -64,7 +64,7 @@
 typedef int err_t;
 typedef int bool_t;
 typedef int index_t;
-typedef const char* color_t;
+typedef  char* color_t;
 
 typedef struct {
   char *filename, **banks, **credits, ***partitions, ***entries;
@@ -77,8 +77,8 @@ typedef struct {
  *** UTILITY FUNCTIONS *****************************************************************
  ***************************************************************************************/
 
-bool_t input_file(const char *filename);
-bool_t output_file(const char *filename); 
+bool_t input_file( char *filename);
+bool_t output_file( char *filename); 
 bool_t legal_double(char *s); 
 bool_t col_delim_char(char c);   
 index_t col_delim_str(char *s);                                        
@@ -94,7 +94,7 @@ bool_t str_equal(const char *s1, const char *s2);
 void str_strip(char *s);     
 err_t unique(char **s, int n, char ***ret, int *nunique);
 void usage();
-index_t which(char **s, const char *find, int n);
+index_t which(char **s,  char *find, int n);
 index_t which_bank_total(char *status);
 index_t which_credit_total(char *status);
 bool_t locked(char *status);
@@ -107,9 +107,9 @@ err_t alloc_entries(Ledger*);
 err_t alloc_totals(Ledger*);
 void free_ledger(Ledger*);                                                    /* NEEDS TESTING */
 void free_for_retotal(Ledger*);                                                    /* NEEDS TESTING */
-err_t get_names(Ledger *ledger);                                                    /* NEEDS TESTING */
-err_t get_totals(Ledger *ledger);                                                    /* NEEDS TESTING */
-Ledger *new_ledger(); 
+err_t get_names(Ledger *ledger);
+err_t get_totals(Ledger *ledger);
+err_t new_ledger(Ledger **ledger); 
 
 
 /*************************************************************************************** 
@@ -152,38 +152,36 @@ void parse_char(Ledger *ledger, char c, int *char_index, int *field, int *row);
 err_t get_entries_from_filename(Ledger *ledger, char *filename); 
 err_t get_entries_from_stream(Ledger *ledger, FILE *fp); 
 err_t get_entries_from_string(Ledger *ledger, char *s);  
-Ledger *get_ledger_from_filename(const char* filename);                              /* NEEDS TESTING */
-Ledger *get_ledger_from_stream(FILE *fp);                                              /* NEEDS TESTING */
-Ledger *get_ledger_from_string(char *s);                                             /* NEEDS TESTING */
+err_t get_ledger(Ledger **ledger, char* filename, FILE *fp, char *str);                              /* NEEDS TESTING */
 
 
 /*************************************************************************************** 
  *** FUNCTIONS TO PRINT LEDGER OBJECTS *************************************************
  ***************************************************************************************/
 
-err_t print_ledger_to_filename(Ledger *ledger, const char *filename);        /* NEED TO IMPLEMENT ****/
+err_t print_ledger_to_filename(Ledger *ledger,  char *filename);        /* NEED TO IMPLEMENT ****/
 void print_ledger_to_stream(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
 char *print_ledger_to_string(Ledger *ledger);                              /* NEEDS TESTING */
 void print_ledger_verbose(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
 
-err_t print_ledger_wrap(Ledger *in_ledger, const char *in_string,            /* NEED TO IMPLEMENT ****/
-  FILE *in_stream, const char *in_filename, Ledger *out_ledger, 
-  char **out_string, FILE *out_stream, const char *out_filename);
+err_t print_ledger_wrap(Ledger *in_ledger,  char *in_string,            /* NEED TO IMPLEMENT ****/
+  FILE *in_stream,  char *in_filename, Ledger *out_ledger, 
+  char **out_string, FILE *out_stream,  char *out_filename);
 
-err_t print_ledger_cl(const char *s, Ledger **ledger);                     /* NEED TO IMPLEMENT ****/
-err_t print_ledger_cf(const char *s, const char *filename);                    /* NEED TO IMPLEMENT ****/
-err_t print_ledger_cs(const char *s, FILE *fp);                           /* NEED TO IMPLEMENT ****/
+err_t print_ledger_cl( char *s, Ledger **ledger);                     /* NEED TO IMPLEMENT ****/
+err_t print_ledger_cf( char *s,  char *filename);                    /* NEED TO IMPLEMENT ****/
+err_t print_ledger_cs( char *s, FILE *fp);                           /* NEED TO IMPLEMENT ****/
 
-err_t print_ledger_fc(const char *filename, char **s);                           /* NEED TO IMPLEMENT ****/
-err_t print_ledger_fl(const char *filename, Ledger **ledger);                    /* NEED TO IMPLEMENT ****/
-err_t print_ledger_fs(const char *filename, FILE *fp);                           /* NEED TO IMPLEMENT ****/
+err_t print_ledger_fc( char *filename, char **s);                           /* NEED TO IMPLEMENT ****/
+err_t print_ledger_fl( char *filename, Ledger **ledger);                    /* NEED TO IMPLEMENT ****/
+err_t print_ledger_fs( char *filename, FILE *fp);                           /* NEED TO IMPLEMENT ****/
 
 err_t print_ledger_lc(Ledger *ledger, char **s);                           /* NEED TO IMPLEMENT ****/
 err_t print_ledger_lf(Ledger *ledger, char *filename);                           /* NEED TO IMPLEMENT ****/
 err_t print_ledger_ls(Ledger *ledger, FILE *fp);                           /* NEED TO IMPLEMENT ****/
 
 err_t print_ledger_sc(FILE *fp, char **s);                               /* NEED TO IMPLEMENT ****/
-err_t print_ledger_sf(FILE *fp, const char *filename);                           /* NEED TO IMPLEMENT ****/
+err_t print_ledger_sf(FILE *fp,  char *filename);                           /* NEED TO IMPLEMENT ****/
 err_t print_ledger_sl(FILE *fp, Ledger **ledger);                           /* NEED TO IMPLEMENT ****/
 
 
@@ -197,29 +195,29 @@ err_t print_partitions(char **partition, int npartition, char **s); 			/* NEED T
 err_t print_banks(Ledger *ledger, char **s);							/* NEED TO IMPLEMENT ***/  /* ADD OPTION TO DISABLE COLORS */        /* TRIM AFTERWARDS */
 err_t print_credits(Ledger *ledger, char **s);								/* NEED TO IMPLEMENT ***/  /* ADD OPTION TO DISABLE COLORS */    /* TRIM AFTERWARDS */
 
-err_t print_summary_to_filename(Ledger *ledger, const char *filename);     /* NEED TO IMPLEMENT ***/ /* ADD OPTION TO DISABLE COLORS */      /* TRIM AFTERWARDS */
+err_t print_summary_to_filename(Ledger *ledger,  char *filename);     /* NEED TO IMPLEMENT ***/ /* ADD OPTION TO DISABLE COLORS */      /* TRIM AFTERWARDS */
 void print_summary_to_stream(Ledger *ledger, FILE *fp);                     
 char *print_summary_to_string(Ledger *ledger);
-int summarize_file_to_stream(const char* filename, FILE *fp);                         /* REMOVE WHEN READY */
+int summarize_file_to_stream(char* filename, FILE *fp);                         /* REMOVE WHEN READY */
 
-err_t print_summary_wrap(Ledger *in_ledger, const char *in_string,            /* NEED TO IMPLEMENT ***/
-  FILE *in_stream, const char *in_filename, Ledger *out_ledger, 
-  char **out_string, FILE *out_stream, const char *out_filename);
+err_t print_summary_wrap(Ledger *in_ledger,  char *in_string,            /* NEED TO IMPLEMENT ***/
+  FILE *in_stream,  char *in_filename, Ledger *out_ledger, 
+  char **out_string, FILE *out_stream,  char *out_filename);
 
-err_t print_summary_cl(const char *s, Ledger **ledger);                     /* NEED TO IMPLEMENT ****/
-err_t print_summary_cf(const char *s, const char *filename);                    /* NEED TO IMPLEMENT ****/
-err_t print_summary_cs(const char *s, FILE *fp);                           /* NEED TO IMPLEMENT ****/
+err_t print_summary_cl( char *s, Ledger **ledger);                     /* NEED TO IMPLEMENT ****/
+err_t print_summary_cf( char *s,  char *filename);                    /* NEED TO IMPLEMENT ****/
+err_t print_summary_cs( char *s, FILE *fp);                           /* NEED TO IMPLEMENT ****/
 
-err_t print_summary_fc(const char *filename, char **s);                           /* NEED TO IMPLEMENT ****/
-err_t print_summary_fl(const char *filename, Ledger **ledger);                    /* NEED TO IMPLEMENT ****/
-err_t print_summary_fs(const char *filename, FILE *fp);                           /* NEED TO IMPLEMENT ****/
+err_t print_summary_fc( char *filename, char **s);                           /* NEED TO IMPLEMENT ****/
+err_t print_summary_fl( char *filename, Ledger **ledger);                    /* NEED TO IMPLEMENT ****/
+err_t print_summary_fs( char *filename, FILE *fp);                           /* NEED TO IMPLEMENT ****/
 
 err_t print_summary_lc(Ledger *ledger, char **s);                           /* NEED TO IMPLEMENT ****/
 err_t print_summary_lf(Ledger *ledger, char *filename);                           /* NEED TO IMPLEMENT ****/
 err_t print_summary_ls(Ledger *ledger, FILE *fp);                           /* NEED TO IMPLEMENT ****/
 
 err_t print_summary_sc(FILE *fp, char **s);                               /* NEED TO IMPLEMENT ****/
-err_t print_summary_sf(FILE *fp, const char *filename);                           /* NEED TO IMPLEMENT ****/
+err_t print_summary_sf(FILE *fp,  char *filename);                           /* NEED TO IMPLEMENT ****/
 err_t print_summary_sl(FILE *fp, Ledger **ledger);                           /* NEED TO IMPLEMENT ****/
 
 
@@ -227,30 +225,30 @@ err_t print_summary_sl(FILE *fp, Ledger **ledger);                           /* 
  *** FUNCTIONS TO OUTPUT CONDENSED LEDGERS *********************************************
  ***************************************************************************************/
 
-err_t condense_ledger_to_filename(Ledger *ledger, const char *filename);        /* NEED TO IMPLEMENT ****/
+err_t condense_ledger_to_filename(Ledger *ledger,  char *filename);        /* NEED TO IMPLEMENT ****/
 void condense_ledger_to_stream(Ledger *ledger, FILE *fp);
 char *condense_ledger_to_string(Ledger *ledger);
 
-err_t condense_wrap(Ledger *in_ledger, const char *in_string, 					/* NEED TO IMPLEMENT ***/
-  FILE *in_stream, const char *in_filename, Ledger *out_ledger, 
-  char **out_string, FILE *out_stream, const char *out_filename);
+err_t condense_wrap(Ledger *in_ledger,  char *in_string, 					/* NEED TO IMPLEMENT ***/
+  FILE *in_stream,  char *in_filename, Ledger *out_ledger, 
+  char **out_string, FILE *out_stream,  char *out_filename);
 
-int condense_and_print(const char* infile, const char *outfile);                     /* REMOVE WHEN READY */
+int condense_and_print( char* infile,  char *outfile);                     /* REMOVE WHEN READY */
 
-err_t print_condense_cl(const char *s, Ledger **ledger);                     /* NEED TO IMPLEMENT ****/
-err_t print_condense_cf(const char *s, const char *filename);                    /* NEED TO IMPLEMENT ****/
-err_t print_condense_cs(const char *s, FILE *fp);                           /* NEED TO IMPLEMENT ****/
+err_t print_condense_cl( char *s, Ledger **ledger);                     /* NEED TO IMPLEMENT ****/
+err_t print_condense_cf( char *s,  char *filename);                    /* NEED TO IMPLEMENT ****/
+err_t print_condense_cs( char *s, FILE *fp);                           /* NEED TO IMPLEMENT ****/
 
-err_t print_condense_fc(const char *filename, char **s);                           /* NEED TO IMPLEMENT ****/
-err_t print_condense_fl(const char *filename, Ledger **ledger);                    /* NEED TO IMPLEMENT ****/
-err_t print_condense_fs(const char *filename, FILE *fp);                           /* NEED TO IMPLEMENT ****/
+err_t print_condense_fc( char *filename, char **s);                           /* NEED TO IMPLEMENT ****/
+err_t print_condense_fl( char *filename, Ledger **ledger);                    /* NEED TO IMPLEMENT ****/
+err_t print_condense_fs( char *filename, FILE *fp);                           /* NEED TO IMPLEMENT ****/
 
 err_t print_condense_lc(Ledger *ledger, char **s);                           /* NEED TO IMPLEMENT ****/
 err_t print_condense_lf(Ledger *ledger, char *filename);                           /* NEED TO IMPLEMENT ****/
 err_t print_condense_ls(Ledger *ledger, FILE *fp);                           /* NEED TO IMPLEMENT ****/
 
 err_t print_condense_sc(FILE *fp, char **s);                               /* NEED TO IMPLEMENT ****/
-err_t print_condense_sf(FILE *fp, const char *filename);                           /* NEED TO IMPLEMENT ****/
+err_t print_condense_sf(FILE *fp,  char *filename);                           /* NEED TO IMPLEMENT ****/
 err_t print_condense_sl(FILE *fp, Ledger **ledger);                           /* NEED TO IMPLEMENT ****/
 
 

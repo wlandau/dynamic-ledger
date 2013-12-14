@@ -19,7 +19,7 @@ void remove_row_str(char **s, int row){
   if(s == NULL || *s == NULL)
     return;
   
-  ledger = get_ledger_from_string(*s);
+  get_ledger(&ledger, NULL, NULL, *s);
   
   if(ledger == NULL)
     return;

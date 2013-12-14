@@ -7,7 +7,9 @@
 #include <user_settings.h>
 
 int main(){
-  Ledger *ledger = new_ledger();
+  Ledger *ledger;
+  int ret = new_ledger(&ledger);
   free_ledger(ledger);
+  printf("stat = %d\n", ret);
   return 0;
 }

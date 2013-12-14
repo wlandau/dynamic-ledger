@@ -11,14 +11,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <user_settings.h>
-int condense_and_print(const char* infile, const char *outfile){
+int condense_and_print(char* infile, char *outfile){
   FILE *fp;
   Ledger *ledger;
   
   if(input_file(infile) == LNO)
     return 1;
   
-  ledger = get_ledger_from_filename(infile);
+  get_ledger(&ledger, infile, NULL, NULL);
   if(ledger == NULL){
     fprintf(stderr, "Failed to read ledger.\n");
     return 1;

@@ -12,20 +12,25 @@
 #include <string.h>
 #include <user_settings.h>
 
-Ledger *new_ledger(){
-  Ledger *ledger = malloc(sizeof(Ledger));
-  ledger->nbanks = 0;
-  ledger->ncredits = 0;
-  ledger->nrows = 0;
-  ledger->banks = NULL;
-  ledger->bank_totals = NULL;
-  ledger->credits = NULL;
-  ledger->credit_totals = NULL;
-  ledger->entries= NULL;
-  ledger->filename = NULL;
-  ledger->npartitions = NULL;
-  ledger->partitions = NULL;
-  ledger->partition_totals = NULL;
-  return ledger; 
+err_t new_ledger(Ledger **ledger){
+  *ledger = malloc(sizeof(Ledger));
+  
+  if(*ledger == NULL)
+    return LFAILURE;
+  
+  (*ledger)->nbanks = 0;
+  (*ledger)->ncredits = 0;
+  (*ledger)->nrows = 0;
+  (*ledger)->banks = NULL;
+  (*ledger)->bank_totals = NULL;
+  (*ledger)->credits = NULL;
+  (*ledger)->credit_totals = NULL;
+  (*ledger)->entries= NULL;
+  (*ledger)->filename = NULL;
+  (*ledger)->npartitions = NULL;
+  (*ledger)->partitions = NULL;
+  (*ledger)->partition_totals = NULL;
+  
+  return LSUCCESS; 
 }
 

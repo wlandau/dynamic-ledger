@@ -19,7 +19,7 @@ void trim_ledger_str(char **s){
   if(s == NULL || *s == NULL)
     return;
   
-  ledger = get_ledger_from_string(*s);
+  get_ledger(&ledger, NULL, NULL, *s);
   
   if(ledger == NULL)
     return;

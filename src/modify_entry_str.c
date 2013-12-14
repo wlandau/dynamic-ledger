@@ -31,7 +31,7 @@ void modify_entry_str(char **s, int row, int col, char *next){
   if(s == NULL || *s == NULL)
     return;
   
-  ledger = get_ledger_from_string(*s);
+  get_ledger(&ledger, NULL, NULL, *s);
   
   if(ledger == NULL)
     return;

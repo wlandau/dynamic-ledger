@@ -12,8 +12,9 @@
 #include <string.h>
 #include <user_settings.h>
 
-int summarize_file_to_stream(const char* filename, FILE *fp){
-  Ledger *ledger = get_ledger_from_filename(filename);
+int summarize_file_to_stream(char* filename, FILE *fp){
+  Ledger *ledger;
+  get_ledger(&ledger, filename, NULL, NULL);
   int ind = (ledger == NULL);
   
   if(ind)
