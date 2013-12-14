@@ -26,5 +26,6 @@ int main(){
   free_ledger(&ledger);  
   printf("\n");
   
+  free(s);
   return 0;
 }
