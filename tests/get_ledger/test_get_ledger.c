@@ -214,7 +214,7 @@ int main(){
 
 
 
-
+/*
 
 
   strs = malloc(ntests * sizeof(char*));
@@ -297,7 +297,7 @@ int main(){
     free(strs[test]);
   free(strs);
 
-
+*/
 
 
 
