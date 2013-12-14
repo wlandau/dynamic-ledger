@@ -14,19 +14,24 @@ int main(){
   Ledger *ledger = NULL;
   
   get_ledger(&ledger, L2, NULL, NULL);
-  ret = print_summary_to_filename(ledger, "../parse_char/");
+  ret = print_summary_to_filename(ledger, "../parse_char/", 1);
   free_ledger(&ledger);
   printf("\nRET = %d\n", ret);
   printf("\n----\n");
   
   get_ledger(&ledger, L2, NULL, NULL);
-  ret = print_summary_to_filename(ledger, "out1.txt");
+  ret = print_summary_to_filename(ledger, "out1.txt", 1);
   free_ledger(&ledger);
   printf("\nRET = %d\n", ret);
   printf("\n----\n");
   
   get_ledger(&ledger, L3, NULL, NULL);
-  ret = print_summary_to_filename(ledger, "out2.txt");
+  ret = print_summary_to_filename(ledger, "out2.txt", 1);
+  free_ledger(&ledger);
+  printf("\nRET = %d\n", ret);
+
+  get_ledger(&ledger, L3, NULL, NULL);
+  ret = print_summary_to_filename(ledger, "out_nocolor.txt", 0);
   free_ledger(&ledger);
   printf("\nRET = %d\n", ret);
   
