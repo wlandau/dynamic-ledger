@@ -45,9 +45,6 @@ err_t condense(Ledger *ledger){
     }
   }
   
-  printf("\n about to condense:\n");
-  print_ledger_to_stream(ledger, stdout);
-  
   trim_ledger(ledger); 
   
   for(bank = 0; bank < ledger->nbanks; ++bank)
