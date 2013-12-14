@@ -25,6 +25,7 @@ int main(){
   get_names(ledger);
   get_totals(ledger);
 
+  printf("RET = %d\n", free_for_retotal(ledger));
   printf("RET = %d\n", free_for_retotal(ledger)); 
   free_ledger(&ledger);
 

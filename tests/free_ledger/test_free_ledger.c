@@ -11,22 +11,24 @@
 int main(){
   Ledger *ledger = NULL;
   
-  free_ledger(&ledger);
-  free_ledger(&ledger);
+  printf("RET = %d\n", free_ledger(&ledger));
+  printf("RET = %d\n", free_ledger(&ledger));
     
   new_ledger(&ledger);
-  free_ledger(&ledger);
-  free_ledger(&ledger);
+  printf("RET = %d\n", free_ledger(&ledger));
+  printf("RET = %d\n", free_ledger(&ledger));
 
+  new_ledger(&ledger);
   get_entries_from_filename(ledger, L3); 
   get_names(ledger);
-  free_ledger(&ledger); 
+  printf("RET = %d\n", free_ledger(&ledger));
 
+  new_ledger(&ledger);
   get_entries_from_filename(ledger, L3); 
   get_names(ledger);
   get_totals(ledger);
-  free_ledger(&ledger);
-  free_ledger(&ledger);
+  printf("RET = %d\n", free_ledger(&ledger));
+  printf("RET = %d\n", free_ledger(&ledger));
 
   return 0;
 }
