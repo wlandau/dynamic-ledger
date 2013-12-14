@@ -67,7 +67,7 @@ int main(){
 
   printf("\n--------\nTEST -1 | ret = %d\n",  get_entries_from_filename(ledger, NULL));
 
-  for(test = 0; test < ntests; ++test){
+  for(test = 0; test < 1; ++test){
     new_ledger(&ledger);
 
     printf("\n--------\nTEST %d", test);
