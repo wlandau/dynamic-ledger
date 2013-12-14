@@ -13,18 +13,15 @@
 #include <user_settings.h>
 
 void print_ledger_to_stream(Ledger *ledger, FILE *fp){
-  int i, j;
-  double amount;
+  int row, field;
   
   if(ledger == NULL || fp == NULL)
     return;
   
   fprintf(fp, "amount\tstatus\tcredit\tbank\tpartition\tdescription\n");
-  for(i = 0; i < ledger->nrows; ++i){
-    amount = atof(ledger->entries[AMOUNT][i]);
-    fprintf(fp, "%0.2f", amount);
-    for(j = 1; j < NFIELDS; ++j)
-      fprintf(fp, "\t%s", ledger->entries[j][i]);
+  for(row = 0; row < ledger->nrows; ++row){
+    for(field = 0; field < NFIELDS; ++field)
+      fprintf(fp, "\t%s", ledger->entries[field][row]);
     fprintf(fp, "\n");
   }
 }

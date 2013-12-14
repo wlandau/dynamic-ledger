@@ -162,7 +162,7 @@ err_t get_ledger(Ledger **ledger, char* filename, FILE *fp, char *str);
 err_t print_ledger_to_filename(Ledger *ledger,  char *filename);        /* NEED TO IMPLEMENT ****/
 void print_ledger_to_stream(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
 char *print_ledger_to_string(Ledger *ledger);                              /* NEEDS TESTING */
-void print_ledger_verbose(Ledger *ledger, FILE *fp);                              /* NEEDS TESTING */
+void print_ledger_verbose(Ledger *ledger, FILE *fp);
 
 err_t print_ledger_wrap(Ledger *in_ledger,  char *in_string,            /* NEED TO IMPLEMENT ****/
   FILE *in_stream,  char *in_filename, Ledger *out_ledger, 
