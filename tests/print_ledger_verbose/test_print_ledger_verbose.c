@@ -11,15 +11,16 @@
 
 int main(){
   Ledger *ledger = NULL;
+  printf("RET = %d\n", print_ledger_verbose(ledger, stdout));
   
   get_ledger(&ledger, L2, NULL, NULL);
-  print_ledger_verbose(ledger, stdout);
+  printf("RET = %d\n", print_ledger_verbose(ledger, stdout));
   free_ledger(&ledger);
   
   printf("\n\n--------\n\n");
 
   get_ledger(&ledger, L3, NULL, NULL);
-  print_ledger_verbose(ledger, stdout);
+  printf("RET = %d\n", print_ledger_verbose(ledger, stdout));
   free_ledger(&ledger);
   
 
