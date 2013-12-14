@@ -69,11 +69,11 @@ printf("\n--------\nTEST -1 | ret = %d\n",  get_entries_from_filename(ledger, NU
 
   for(test = 0; test < 1; ++test){
     new_ledger(&ledger);
-/*      
+     
 
     printf("\n--------\nTEST %d", test);
     printf("\nret = %d\n", get_ledger(&ledger, strs[test], NULL, NULL));
-    
+ /*    
     printf("\nENTRIES %d\n\n", test); 
  
     for(j = 0; j < ledger->nrows; ++j){   
