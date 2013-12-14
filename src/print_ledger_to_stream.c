@@ -17,11 +17,30 @@ void print_ledger_to_stream(Ledger *ledger, FILE *fp){
   
   if(ledger == NULL || fp == NULL)
     return;
-  
-  fprintf(fp, "amount\tstatus\tcredit\tbank\tpartition\tdescription\n");
+
+  for(field = 0; field < NFIELDS; ++field){
+    if(field == AMOUNT)
+      fprintf(fp, "amount");
+    else if(field == STATUS)
+      fprintf(fp, "status");
+    else if(field == CREDIT)
+      fprintf(fp, "credit");
+    else if(field == BANK)
+      fprintf(fp, "bank");
+    else if(field == PARTITION)
+      fprintf(fp, "partition");
+    else if(field == DESCRIPTION)
+      fprintf(fp, "description");
+      
+    if(field < NFIELDS - 1)
+      fprintf(fp, "\t");
+    else
+      fprintf(fp, "\n");
+  }
+
   for(row = 0; row < ledger->nrows; ++row){
-    for(field = 0; field < NFIELDS; ++field)
-      fprintf(fp, "\t%s", ledger->entries[field][row]);
-    fprintf(fp, "\n");
+    for(field = 0; field < NFIELDS - 1; ++field)
+      fprintf(fp, "%s\t", ledger->entries[field][row]);
+    fprintf(fp, "%s\n", ledger->entries[NFIELDS - 1][row]);
   }
 }
