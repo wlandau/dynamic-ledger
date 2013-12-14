@@ -18,10 +18,7 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger){
   if(in_ledger == NULL)
     return LFAILURE;
 
-  *out_ledger = malloc(sizeof(Ledger));
-  
-  (*out_ledger)->nbanks = in_ledger->nbanks;
-  (*out_ledger)->ncredits = in_ledger->ncredits;
+  new_ledger(out_ledger);
   (*out_ledger)->nrows = in_ledger->nrows;
   
   if(alloc_entries(*out_ledger) == LFAILURE)
