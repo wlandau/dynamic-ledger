@@ -12,15 +12,18 @@
 #include <string.h>
 #include <user_settings.h>
 
-char *print_summary_to_string(Ledger *ledger){
+err_t print_summary_to_string(Ledger *ledger, char **s){
   int i, j, l0, l1, l2, any = 0, anyp = 0;
-  
-  char *s;
 
   if(ledger == NULL)
-    return NULL;
+    return LFAILURE;
+ 
+  if(ledger->credit_totals == NULL || 
+     ledger->bank_totals == NULL || 
+     ledger->partition_totals == NULL)
+     return LFAILURE; 
     
-  s = calloc(ledger->nrows * NFIELDS * ENTRYSIZE, sizeof(char));
+  *s = calloc(ledger->nrows * NFIELDS * ENTRYSIZE, sizeof(char));
 
   for(i = 0; i < ledger->ncredits; ++i){
     l0 = (abs(ledger->credit_totals[i][I_NOT_THERE_YET]) > EPS);
@@ -30,42 +33,42 @@ char *print_summary_to_string(Ledger *ledger){
     if(l0 || l1 || l2){
       ++any;
       if(strlen(ledger->credits[i]))
-        sprintf(s,"%s\nCredit account: %s\n\n", s, ledger->credits[i]);
+        sprintf(*s,"%s\nCredit account: %s\n\n", *s, ledger->credits[i]);
       else
-        sprintf(s,"%s\nCredit account with no name:\n\n", s);
+        sprintf(*s,"%s\nCredit account with no name:\n\n", *s);
  
       if(l0 || l1){
       
-        sprintf(s,"%s          Delayed money:\n",s);
+        sprintf(*s,"%s          Delayed money:\n", *s);
         if(l0)
-          sprintf(s,"%s%s%30.2f%s  not arrived\n", s, 
+          sprintf(*s,"%s%s%30.2f%s  not arrived\n", *s, 
                   color(ledger->credit_totals[i][I_NOT_THERE_YET]), 
                   ledger->credit_totals[i][I_NOT_THERE_YET], NORMAL_COLOR); 
         if(l1)
-          sprintf(s,"%s%s%30.2f%s  pending\n", s, 
+          sprintf(*s,"%s%s%30.2f%s  pending\n", *s, 
                   color(ledger->credit_totals[i][I_PENDING]), 
                   ledger->credit_totals[i][I_PENDING], NORMAL_COLOR);
 
-        sprintf(s, "%s\n          Balances:\n", s);
-        sprintf(s,"%s%s%30.2f%s  \"available\"\n",s, 
+        sprintf(*s, "%s\n          Balances:\n", *s);
+        sprintf(*s,"%s%s%30.2f%s  \"available\"\n", *s, 
                 color(ledger->credit_totals[i][I_CLEARED]),
                 ledger->credit_totals[i][I_CLEARED], NORMAL_COLOR);
         if(l1 && l0)
-          sprintf(s,"%s%s%30.2f%s  pending balance\n", s,
+          sprintf(*s,"%s%s%30.2f%s  pending balance\n", *s,
                   color(ledger->credit_totals[i][I_PENDING] 
                 + ledger->credit_totals[i][I_CLEARED]),
                   ledger->credit_totals[i][I_PENDING] 
                 + ledger->credit_totals[i][I_CLEARED],
                   NORMAL_COLOR);
-        sprintf(s,"%s%s%30.2f%s  true balance\n",s, 
+        sprintf(*s,"%s%s%30.2f%s  true balance\n", *s, 
                 color(ledger->credit_totals[i][I_OVERALL_BAL]),
                 ledger->credit_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
       } else {
-        sprintf(s,"%s          Balances:\n",s);
-        sprintf(s,"%s%s%30.2f%s  true balance\n", s, 
+        sprintf(*s, "%s          Balances:\n", *s);
+        sprintf(*s, "%s%s%30.2f%s  true balance\n", *s, 
                 color(ledger->credit_totals[i][I_OVERALL_BAL]), 
                 ledger->credit_totals[i][I_OVERALL_BAL], NORMAL_COLOR); 
-        sprintf(s,"%s                                All charges cleared.\n", s);
+        sprintf(*s, "%s                                All charges cleared.\n", *s);
       }
     }
   }     
@@ -78,32 +81,32 @@ char *print_summary_to_string(Ledger *ledger){
     if(l0 || l1 || l2){
       ++any;
       if(strlen(ledger->banks[i]))
-        sprintf(s,"%s\nBank account: %s\n\n", s, ledger->banks[i]);
+        sprintf(*s,"%s\nBank account: %s\n\n", *s, ledger->banks[i]);
       else 
-        sprintf(s,"%s\nBank account with no name\n\n", s);
+        sprintf(*s,"%s\nBank account with no name\n\n", *s);
  
       if(l0 || l1){
-        sprintf(s,"%s          Delayed money:\n", s);
+        sprintf(*s,"%s          Delayed money:\n", *s);
         if(l0)
-          sprintf(s,"%s%s%30.2f%s  not arrived\n", s, color(ledger->bank_totals[i][I_NOT_THERE_YET]),
+          sprintf(*s,"%s%s%30.2f%s  not arrived\n", *s, color(ledger->bank_totals[i][I_NOT_THERE_YET]),
                   ledger->bank_totals[i][I_NOT_THERE_YET], NORMAL_COLOR); 
         if(l1)
-          sprintf(s,"%s%s%30.2f%s  pending\n",s, color(ledger->bank_totals[i][I_PENDING]), 
+          sprintf(*s,"%s%s%30.2f%s  pending\n",*s, color(ledger->bank_totals[i][I_PENDING]), 
                   ledger->bank_totals[i][I_PENDING], NORMAL_COLOR); 
-        sprintf(s,"%s\n          Balances:\n",s);
-        sprintf(s,"%s%s%30.2f%s  \"available\"\n",s, color(ledger->bank_totals[i][I_CLEARED]),
+        sprintf(*s, "%s\n          Balances:\n", *s);
+        sprintf(*s, "%s%s%30.2f%s  \"available\"\n", *s, color(ledger->bank_totals[i][I_CLEARED]),
                 ledger->bank_totals[i][I_CLEARED], NORMAL_COLOR);
         if(l1 && l0)
-          sprintf(s,"%s%s%30.2f%s  pending balance\n", s,
+          sprintf(*s, "%s%s%30.2f%s  pending balance\n", *s,
                   color(ledger->bank_totals[i][I_PENDING] + ledger->bank_totals[i][I_CLEARED]),
                   ledger->bank_totals[i][I_PENDING] + ledger->bank_totals[i][I_CLEARED], NORMAL_COLOR);
-        sprintf(s,"%s%s%30.2f%s  true balance\n", s,color(ledger->bank_totals[i][I_OVERALL_BAL]),
+        sprintf(*s, "%s%s%30.2f%s  true balance\n", *s, color(ledger->bank_totals[i][I_OVERALL_BAL]),
                 ledger->bank_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
       } else {
-        sprintf(s,"%s          Balances:\n",s);
-        sprintf(s,"%s%s%30.2f%s  true balance\n", s,color(ledger->bank_totals[i][I_OVERALL_BAL]),
+        sprintf(*s, "%s          Balances:\n", *s);
+        sprintf(*s, "%s%s%30.2f%s  true balance\n", *s,color(ledger->bank_totals[i][I_OVERALL_BAL]),
                 ledger->bank_totals[i][I_OVERALL_BAL], NORMAL_COLOR);
-        sprintf(s,"%s                                All charges cleared.\n",s);
+        sprintf(*s, "%s                                All charges cleared.\n", *s);
       } 
     }
 
@@ -112,23 +115,25 @@ char *print_summary_to_string(Ledger *ledger){
       if(abs(ledger->partition_totals[i][j]) > EPS){
         if(strlen(ledger->partitions[i][j])){
           if(!anyp){
-            sprintf(s,"%s\n          Partitions:\n",s);
+            sprintf(*s, "%s\n          Partitions:\n", *s);
             ++anyp;
           }
-          sprintf(s,"%s%s%30.2f%s  %s\n",s, color(ledger->partition_totals[i][j]), 
+          sprintf(*s, "%s%s%30.2f%s  %s\n", *s, color(ledger->partition_totals[i][j]), 
                   ledger->partition_totals[i][j], NORMAL_COLOR, ledger->partitions[i][j]);
         }
         else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][I_CLEARED]) > EPS){
-          if(!j) sprintf(s, "%s\n",s);
-          sprintf(s,"%s%s%30.2f%s  unpartitioned\n",s, color(ledger->partition_totals[i][j]),
+          if(!j) sprintf(*s, "%s\n", *s);
+          sprintf(*s, "%s%s%30.2f%s  unpartitioned\n", *s, color(ledger->partition_totals[i][j]),
                   ledger->partition_totals[i][j], NORMAL_COLOR);
         }
       } 
   }
   
   if(any)
-    sprintf(s,"%s\n",s);
+    sprintf(*s, "%s\n", *s);
+ 
+  str_strip(*s);
     
-  return s;
+  return LSUCCESS;
 }
 

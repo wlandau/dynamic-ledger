@@ -12,11 +12,16 @@
 #include <string.h>
 #include <user_settings.h>
 
-void print_summary_to_stream(Ledger *ledger, FILE *fp){ 
+err_t print_summary_to_stream(Ledger *ledger, FILE *fp){ 
   int i, j, l0, l1, l2, any = 0, anyp = 0;
 
   if(ledger == NULL || fp == NULL)
-    return;
+    return LFAILURE;
+    
+  if(ledger->credit_totals == NULL || 
+     ledger->bank_totals == NULL || 
+     ledger->partition_totals == NULL)
+     return LFAILURE;  
 
   fprintf(fp, "%s", NORMAL_COLOR);
 
@@ -131,5 +136,7 @@ void print_summary_to_stream(Ledger *ledger, FILE *fp){
   
   if(any)
     fprintf(fp,"\n");
+    
+  return LSUCCESS;
 }
 

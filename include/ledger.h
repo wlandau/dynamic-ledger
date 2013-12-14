@@ -170,15 +170,9 @@ void print_ledger_verbose(Ledger *ledger, FILE *fp);
  *** FUNCTIONS TO OUTPUT SUMMARIES OF LEDGER OBJECTS ***********************************
  ***************************************************************************************/
 
-err_t init_summary(Ledger *ledger, char **s);								/* NEED TO IMPLEMENT */  /* ADD OPTION TO DISABLE COLORS */    /* TRIM AFTERWARDS */
-err_t print_totals(float *totals, char **s); 								/* NEED TO IMPLEMENT ***/  /* ADD OPTION TO DISABLE COLORS */     /* TRIM AFTERWARDS */
-err_t print_partitions(char **partition, int npartition, char **s); 			/* NEED TO IMPLEMENT ***/  /* ADD OPTION TO DISABLE COLORS */    /* TRIM AFTERWARDS */
-err_t print_banks(Ledger *ledger, char **s);							/* NEED TO IMPLEMENT ***/  /* ADD OPTION TO DISABLE COLORS */        /* TRIM AFTERWARDS */
-err_t print_credits(Ledger *ledger, char **s);								/* NEED TO IMPLEMENT ***/  /* ADD OPTION TO DISABLE COLORS */    /* TRIM AFTERWARDS */
-
 err_t print_summary_to_filename(Ledger *ledger,  char *filename);     /* NEED TO IMPLEMENT ***/ /* ADD OPTION TO DISABLE COLORS */      /* TRIM AFTERWARDS */
-void print_summary_to_stream(Ledger *ledger, FILE *fp);                     
-char *print_summary_to_string(Ledger *ledger);
+err_t print_summary_to_stream(Ledger *ledger, FILE *fp);                     
+err_t print_summary_to_string(Ledger *ledger, char **s);
 int summarize_file_to_stream(char* filename, FILE *fp);                         /* REMOVE WHEN READY */
 
 
