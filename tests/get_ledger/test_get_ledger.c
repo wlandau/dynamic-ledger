@@ -66,10 +66,10 @@ int main(){
 
 printf("\n--------\nTEST -1 | ret = %d\n",  get_entries_from_filename(ledger, NULL));
 
-/*
+
   for(test = 0; test < 1; ++test){
     new_ledger(&ledger);
-      
+/*      
 
     printf("\n--------\nTEST %d", test);
     printf("\nret = %d\n", get_ledger(&ledger, strs[test], NULL, NULL));
@@ -111,10 +111,10 @@ printf("\n--------\nTEST -1 | ret = %d\n",  get_entries_from_filename(ledger, NU
              printf("\n");     
     }
      printf("\n\n");   
-      
+*/      
     free_ledger(ledger);
   }  
-*/
+
 
   for(test = 0; test < ntests; ++test)
     free(strs[test]);
