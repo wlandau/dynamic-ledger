@@ -23,7 +23,7 @@ int main(){
   strcpy(strs[1], L1);
 /*  strcpy(strs[2], L2);*/
 
-  printf("\n--------\nTEST -1 | ret = %d\n",  trim_ledger(ledger));
+  printf("\n--------\nTEST -1 | ret = %d\n", condense(ledger));
 
   for(test = 0; test < ntests; ++test){
     printf("\n--------\nTEST %d", test);
