@@ -23,12 +23,23 @@
 int main(){
   int i, j, char_index, field, row, test, ntests = 10;
   Ledger *ledger;
-  char c = 0, **strs;
+  char c = 0, **strs, line[LINESIZE];
   err_t ret;
   
   
   FILE *fp = fopen(F, "r");
+  if(fp == NULL)
+    printf("nofile\n");
+    
   new_ledger(&ledger);
+
+  ledger->nrows = 0;
+  while(fgets(line, LINESIZE, fp))
+    ++ledger->nrows;
+  rewind(fp);
+  alloc_entries(ledger);
+
+  printf("ledger->nrows = %d\n", ledger->nrows);
 
   char_index = 0;
   field = 0;
