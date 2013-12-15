@@ -39,6 +39,13 @@ err_t remove_rows(Ledger *ledger){
       }
     }
   
+  if(!row){
+    fprintf(stderr, "Warning: cannot remove all rows. Leaving one blank row instead.\n");
+    for(field = 0; field < NFIELDS; ++field)
+      strcpy(ledger->entries[field][0], NIL);
+    ++row;
+  }
+  
   for(field = 0; field < NFIELDS; ++field)
     for(i = row; i < ledger->nrows; ++i)
       free(ledger->entries[field][i]);

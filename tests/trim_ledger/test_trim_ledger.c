@@ -28,7 +28,7 @@ int main(){
   printf("\n--------\nTEST -1 | ret = %d\n",  trim_ledger(ledger));
 
   for(test = 0; test < ntests; ++test){
-    printf("\n--------\nTEST %d", test);
+    printf("\n--------\nTEST %d\n", test);
     get_ledger(&ledger, strs[test], NULL, NULL);
     print_ledger_verbose(ledger, stdout);
     printf("\nret = %d\n", trim_ledger(ledger));
