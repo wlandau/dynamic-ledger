@@ -117,33 +117,18 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
  *** FUNCTIONS TO MODIFY LEDGER OBJECTS ************************************************
  ***************************************************************************************/
 
-err_t condense(Ledger *ledger);                                                    /* NEEDS TESTING */
+err_t condense(Ledger *ledger); 
 void insert_row(Ledger *ledger, int row);                              /* NEEDS TESTING */
 void modify_entry(Ledger *ledger, int row, int col, char *next);                  /* NEEDS TESTING */
 void rename_bank(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
 void rename_credit(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
 void rename_partition(Ledger *ledger, char *bank, char *from, char *to);              /* NEEDS TESTING */
-err_t remove_row(Ledger *ledger, int row);                                                     /* NEEDS TESTING */
-err_t trim_ledger(Ledger *ledger);                                                         /* NEEDS TESTING */
+err_t remove_row(Ledger *ledger, int row); 
+err_t trim_ledger(Ledger *ledger);
 err_t strip_ledger(Ledger *ledger);     
 err_t repartition(Ledger *ledger, char *bank, char **partitions, double *amounts);					/* NEED TO IMPLEMENT ****/
 err_t repartition_percent(Ledger *ledger, char *bank, char **partitions, double *percentages);					/* NEED TO IMPLEMENT ****/
 
-/*************************************************************************************** 
- *** FUNCTIONS TO MODIFY LEDGERS REPRESENTED AS STRINGS ********************************
- ***************************************************************************************/
-
-err_t new_ledger_str();                                                      /* NEED TO IMPLEMENT ****/
-void condense_str(char **s);                                                                   /* NEEDS TESTING */
-void insert_row_str(char **s, int row);                                                              /* NEEDS TESTING */
-void modify_entry_str(char **s, int row, int col, char *next);                              /* NEEDS TESTING */
-void rename_bank_str(char **s, char *from, char *to);                              /* NEEDS TESTING */
-void rename_credit_str(char **s, char *from, char *to);                              /* NEEDS TESTING */
-void rename_partition_str(char **s, char *bank, char *from, char *to);               /* NEEDS TESTING */
-void remove_row_str(char **s, int row);                                                 /* NEEDS TESTING */
-void trim_ledger_str(char **s);                                                              /* NEEDS TESTING */
-err_t repartition_str(char **s, char *bank, char **partitions, double *amounts);					/* NEED TO IMPLEMENT ****/
-err_t repartition_percent_str(char **s, char *bank, char **partitions, double *percentages);					/* NEED TO IMPLEMENT ****/
 
 /*************************************************************************************** 
  *** FUNCTIONS TO PARSE INPUT INTO LEDGER OBJECTS **************************************
@@ -173,14 +158,9 @@ err_t print_ledger_verbose(Ledger *ledger, FILE *fp);
 err_t print_summary_to_filename(Ledger *ledger,  char *filename, int usecolor);
 err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor);                     
 err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor);
+
+
 int summarize_file_to_stream(char* filename, FILE *fp);                         /* REMOVE WHEN READY */
-
-
-/*************************************************************************************** 
- *** FUNCTIONS TO OUTPUT CONDENSED LEDGERS *********************************************
- ***************************************************************************************/
-void condense_ledger_to_stream(Ledger *ledger, FILE *fp);                /* REMOVE WHEN READY ****/
-char *condense_ledger_to_string(Ledger *ledger); 						/* REMOVE WHEN READY ****/
 int condense_and_print( char* infile,  char *outfile);                     /* REMOVE WHEN READY */
 
 
