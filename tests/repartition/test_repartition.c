@@ -74,6 +74,7 @@ int main(){
     free(partitions[i]);
   free(partitions);
 
+  free_ledger(&ledger);
   free(amounts);
 
   return 0;
