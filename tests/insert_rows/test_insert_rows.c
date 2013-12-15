@@ -25,7 +25,18 @@ int main(){
    
   printf("RET = %d\n", insert_rows(ledger, 8, 5));  
   print_ledger_verbose(ledger, stdout); 
+
+
+  printf("RET = %d\n", insert_rows(ledger, ledger->nrows, 4)); 
+  print_ledger_verbose(ledger, stdout); 
+
+  printf("RET = %d\n", insert_rows(ledger, 0, 4)); 
+  print_ledger_verbose(ledger, stdout); 
   
+  printf("RET = %d\n", insert_rows(ledger, 90898, 0)); 
+  print_ledger_verbose(ledger, stdout); 
+  
+    
   free_ledger(&ledger);
   return 0;
 }

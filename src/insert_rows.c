@@ -16,6 +16,9 @@ err_t insert_rows(Ledger *ledger, int row, int howmany){
   int i, j;
   char ***x, ***tmp;
  
+  if(!howmany)
+    return LSUCCESS;
+ 
   if(ledger == NULL)
     return LFAILURE;
     
