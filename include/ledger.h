@@ -123,10 +123,10 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
  ***************************************************************************************/
 
 err_t condense(Ledger *ledger);					                             /* NEEDS TESTING */
-err_t modify_entry(Ledger *ledger, int row, int col, char *next);                  /* NEEDS TESTING */
-err_t rename_bank(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
-err_t rename_credit(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
-err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to);              /* NEEDS TESTING */
+err_t modify_entry(Ledger *ledger, int row, int col, char *next);
+err_t rename_bank(Ledger *ledger, char *from, char *to);
+err_t rename_credit(Ledger *ledger, char *from, char *to);
+err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to);
 err_t insert_row(Ledger *ledger, int row);                              /* NEEDS TESTING */
 err_t remove_row(Ledger *ledger, int row);                              /* NEEDS TESTING */
 err_t trim_ledger(Ledger *ledger);                              /* NEEDS TESTING */
