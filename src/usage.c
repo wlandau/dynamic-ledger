@@ -12,9 +12,11 @@
 #include <string.h>
 #include <user_settings.h>
 
-void usage(){
+err_t usage(){
   printf("\nUsage: to summarize the ledger,\n$ ./ledger [LEDGER_FILE]\n");
   printf("\nTo condense the ledger,\n$ ");
   printf("./ledger [INTPUT_LEDGER_FILE] [OUTTPUT_LEDGER_FILE]\n");
   printf("\nSee README.txt for details.\n");
+  
+  return LSUCCESS;
 }

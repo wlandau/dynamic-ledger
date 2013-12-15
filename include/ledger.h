@@ -100,7 +100,7 @@ index_t which_credit_total(char *status);
 int qcmp(const void *a, const void *b); 
 err_t str_strip(char *s);     
 err_t unique(char **s, int n, char ***ret, int *nunique);
-void usage();
+err_t usage();
 
 
 
