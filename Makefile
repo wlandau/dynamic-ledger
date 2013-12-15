@@ -55,6 +55,7 @@ DEP+=str_equal
 DEP+=str_strip
 DEP+=strip_ledger 
 DEP+=summarize_file_to_stream
+DEP+=swap_rows
 DEP+=trim_ledger  
 DEP+=unique
 DEP+=untotaled 

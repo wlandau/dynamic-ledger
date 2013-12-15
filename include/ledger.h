@@ -102,7 +102,7 @@ index_t which_credit_total(char *status);
 
 int qcmp(const void *a, const void *b);
 
-err_t str_strip(char *s);     
+err_t str_strip(char *s);
 err_t unique(char **s, int n, char ***ret, int *nunique);
 err_t usage();
 
@@ -134,6 +134,7 @@ err_t insert_rows(Ledger *ledger, int row, int howmany);                        
 err_t remove_rows(Ledger *ledger);                            /* NEEDS TESTING */
 err_t trim_ledger(Ledger *ledger);                              /* NEEDS TESTING */
 err_t strip_ledger(Ledger *ledger);     
+err_t swap_rows(Ledger *ledger, int row1, int row2);
 err_t repartition(Ledger *ledger, char *bank, char **partitions, 
                   double *amounts, int npartitions, int as_percentages);			/* NEED TO IMPLEMENT ****/
 
