@@ -32,7 +32,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
     l1 = (abs(ledger->credit_totals[i][I_PENDING]) > EPS);
     l2 = (abs(ledger->credit_totals[i][I_CLEARED]) > EPS);      
  
-    if(l0 || l1 || l2 || (PRINT_ZEROED_ACCOUNTS && strlen(ledger->credits[i]))){
+    if(l0 || l1 || l2 || (PRINT_EMPTY_ACCOUNTS && strlen(ledger->credits[i]))){
       ++any;
       if(strlen(ledger->credits[i]))
         sprintf(*s,"%s\nCredit account: %s\n\n", *s, ledger->credits[i]);
@@ -78,7 +78,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
     l1 = (abs(ledger->bank_totals[i][I_PENDING]) > EPS);
     l2 = (abs(ledger->bank_totals[i][I_CLEARED]) > EPS); 
   
-    if(l0 || l1 || l2 || (PRINT_ZEROED_ACCOUNTS && strlen(ledger->banks[i]))){
+    if(l0 || l1 || l2 || (PRINT_EMPTY_ACCOUNTS && strlen(ledger->banks[i]))){
       ++any;
       if(strlen(ledger->banks[i]))
         sprintf(*s,"%s\nBank account: %s\n\n", *s, ledger->banks[i]);
