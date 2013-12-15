@@ -43,12 +43,12 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
   }
   
   oldnrows = ledger->nrows;
-  if(insert_rows(ledger, ledger->n, ledger->npartitions[ibank] + npartitions) == LFAILURE)
+  if(insert_rows(ledger, ledger->nrows, ledger->npartitions[ibank] + npartitions) == LFAILURE)
     return LFAILURE;
     
   for(i = 0; i < ledger->npartitions[ibank]; ++i){
     row = i + oldnrows;
-    strcpy(ledger->entries[AMOUNT][row], -(ledger->partition_totals[ibank][i]));
+    sprintf(ledger->entries[AMOUNT][row], "%0.2f", -ledger->partition_totals[ibank][i]);
     strcpy(ledger->entries[PARTITION][row], ledger->partitions[ibank][i]);
     strcpy(ledger->entries[BANK][row], bank);
     strcpy(ledger->entries[DESCRIPTION][row], "repartition");
@@ -56,7 +56,7 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
   
   for(i = 0; i < npartitions; ++i){
     row = i + oldnrows + ledger->npartitions[ibank];
-    strcpy(ledger->entries[AMOUNT][row], amounts[i]);    
+    sprintf(ledger->entries[AMOUNT][row], "%0.2f", amounts[i]);    
     strcpy(ledger->entries[PARTITION][row], partitions[i]); 
     strcpy(ledger->entries[BANK][row], bank);       
     strcpy(ledger->entries[DESCRIPTION][row], "repartition");    
