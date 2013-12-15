@@ -16,8 +16,6 @@ err_t modify_entry(Ledger *ledger, int row, int col, char *next){
   int i;
   char *next_local;
 
- 
-
   if(ledger == NULL)
     return LFAILURE;
 

@@ -12,11 +12,11 @@
 #include <string.h>
 #include <user_settings.h>
 
-void rename_credit(Ledger *ledger, char *from, char *to){
+err_t rename_credit(Ledger *ledger, char *from, char *to){
   int i;
 
   if(ledger == NULL)
-    return;
+    return LFAILURE;
 
   for(i = 0; i < ledger->nrows; ++i)
     if(str_equal(ledger->entries[CREDIT][i], from))
@@ -24,4 +24,6 @@ void rename_credit(Ledger *ledger, char *from, char *to){
   free_for_retotal(ledger);
   get_names(ledger);
   get_totals(ledger);   
+  
+  return LSUCCESS;
 }

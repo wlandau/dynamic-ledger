@@ -12,11 +12,11 @@
 #include <string.h>
 #include <user_settings.h>
 
-void rename_partition(Ledger *ledger, char *bank, char *from, char *to){
+err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to){
   int i;
   
   if(ledger == NULL)
-    return;
+    return LFAILURE;
   
   for(i = 0; i < ledger->nrows; ++i)
     if(str_equal(ledger->entries[BANK][i], bank) && 
@@ -24,5 +24,7 @@ void rename_partition(Ledger *ledger, char *bank, char *from, char *to){
       strcpy(ledger->entries[PARTITION][i], to);
   free_for_retotal(ledger);
   get_names(ledger);
-  get_totals(ledger);   
+  get_totals(ledger);  
+  
+  return LSUCCESS; 
 }

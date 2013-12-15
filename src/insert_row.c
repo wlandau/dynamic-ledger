@@ -12,16 +12,16 @@
 #include <string.h>
 #include <user_settings.h>
 
-void insert_row(Ledger *ledger, int row){
+err_t insert_row(Ledger *ledger, int row){
   int i, j;
   char ***x, ***tmp;
  
   if(ledger == NULL)
-    return;
+    return LFAILURE;
     
   if(row < 0 || row > ledger->nrows){
     printf("Error: illegal row index in insert_row().\n");
-    return;
+    return LFAILURE;
   }
 
   x = malloc(NFIELDS * sizeof(char**));
@@ -57,5 +57,6 @@ void insert_row(Ledger *ledger, int row){
   }
   
   ++(ledger->nrows); 
+  return LSUCCESS;
 }
 

@@ -80,24 +80,29 @@ typedef struct {
 bool_t input_file( char *filename);
 bool_t output_file( char *filename); 
 bool_t legal_double(char *s); 
-bool_t col_delim_char(char c);   
-index_t col_delim_str(char *s);                                        
+bool_t col_delim_char(char c);  
 bool_t row_delim_char(char c);
-index_t row_delim_str(char *s);
-color_t color(double d, int usecolor);            
 bool_t space(char c);                     
 bool_t legal_amounts(Ledger *ledger); 
 bool_t legal_status_code(char *s); 
 bool_t legal_status_codes(Ledger *ledger); 
-int qcmp(const void *a, const void *b);                                     
-bool_t str_equal(const char *s1, const char *s2); 
-void str_strip(char *s);     
-err_t unique(char **s, int n, char ***ret, int *nunique);
-void usage();
+bool_t locked(char *status);
+bool_t str_equal(const char *s1, const char *s2);
+
+color_t color(double d, int usecolor); 
+ 
+index_t col_delim_str(char *s);                                        
+index_t row_delim_str(char *s);
 index_t which(char **s,  char *find, int n);
 index_t which_bank_total(char *status);
 index_t which_credit_total(char *status);
-bool_t locked(char *status);
+
+int qcmp(const void *a, const void *b); 
+void str_strip(char *s);     
+err_t unique(char **s, int n, char ***ret, int *nunique);
+void usage();
+
+
 
 /*************************************************************************************** 
  *** FUNCTIONS TO CREATE, INITIALIZE, COPY AND DESTROY LEDGER OBJECTS ******************
@@ -117,17 +122,17 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
  *** FUNCTIONS TO MODIFY LEDGER OBJECTS ************************************************
  ***************************************************************************************/
 
-err_t condense(Ledger *ledger); 
-void insert_row(Ledger *ledger, int row);                              /* NEEDS TESTING */
+err_t condense(Ledger *ledger);					                             /* NEEDS TESTING */
 err_t modify_entry(Ledger *ledger, int row, int col, char *next);                  /* NEEDS TESTING */
-void rename_bank(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
-void rename_credit(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
-void rename_partition(Ledger *ledger, char *bank, char *from, char *to);              /* NEEDS TESTING */
-err_t remove_row(Ledger *ledger, int row); 
-err_t trim_ledger(Ledger *ledger);
+err_t rename_bank(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
+err_t rename_credit(Ledger *ledger, char *from, char *to);                              /* NEEDS TESTING */
+err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to);              /* NEEDS TESTING */
+err_t insert_row(Ledger *ledger, int row);                              /* NEEDS TESTING */
+err_t remove_row(Ledger *ledger, int row);                              /* NEEDS TESTING */
+err_t trim_ledger(Ledger *ledger);                              /* NEEDS TESTING */
 err_t strip_ledger(Ledger *ledger);     
-err_t repartition(Ledger *ledger, char *bank, char **partitions, double *amounts);					/* NEED TO IMPLEMENT ****/
-err_t repartition_percent(Ledger *ledger, char *bank, char **partitions, double *percentages);					/* NEED TO IMPLEMENT ****/
+err_t repartition(Ledger *ledger, char *bank, char **partitions, 
+                  double *amounts, int npartitions, int as_percentages);			/* NEED TO IMPLEMENT ****/
 
 
 /*************************************************************************************** 

@@ -12,17 +12,19 @@
 #include <string.h>
 #include <user_settings.h>
 
-void rename_bank(Ledger *ledger, char *from, char *to){
+err_t rename_bank(Ledger *ledger, char *from, char *to){
   int i;
   
   if(ledger == NULL)
-    return;
+    return LFAILURE;
   
   for(i = 0; i < ledger->nrows; ++i)
     if(str_equal(ledger->entries[BANK][i], from))
       strcpy(ledger->entries[BANK][i], to);
   free_for_retotal(ledger);
   get_names(ledger);
-  get_totals(ledger);   
+  get_totals(ledger); 
+  
+  return LSUCCESS;  
 }
 
