@@ -1,5 +1,5 @@
 /***
- *** @file insert_row.c
+ *** @file insert_rows.c
  *** @author Will Landau
  *** @email will.landau@gmail.com
  ***/

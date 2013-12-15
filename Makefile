@@ -45,6 +45,7 @@ DEP+=remove_rows
 DEP+=rename_bank
 DEP+=rename_credit 
 DEP+=rename_partition 
+DEP+=repartition
 DEP+=row_delim_char
 DEP+=row_delim_str
 DEP+=space 
