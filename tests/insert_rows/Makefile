@@ -1,4 +1,4 @@
-TEST=test_remove_row
+TEST=test_insert_rows
 
 CC=gcc
 CCFLAGS=-c -Wall -pedantic -I../../include/
