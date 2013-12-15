@@ -21,8 +21,6 @@ err_t trim_ledger(Ledger *ledger){
   for(row = 0; row < ledger->nrows; ++row)
     if(abs(atof(ledger->entries[AMOUNT][row])) < EPS)
       strcpy(ledger->entries[STATUS][row], REMOVE);    
-  
-  print_ledger_to_stream(ledger, stdout); 
    
   remove_rows(ledger);
   return LSUCCESS;
