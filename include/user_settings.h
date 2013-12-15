@@ -31,8 +31,8 @@
  *** STRINGS OF SEPARATORS MUST BE NO LONGER THAN NUM_SEPARATORS **********
  **************************************************************************/
 
-#define ROW_SEPARATORS      "\n\r"													/* NEED TO IMPLEMENT */
-#define COLUMN_SEPARATORS   "\t"          										/* NEED TO IMPLEMENT */
+#define ROW_SEPARATORS      "\n\r"
+#define COLUMN_SEPARATORS   "\t"
 
 /************************************************************************** 
  *** USER-DEFINED TRANSACTION STATUSES CODES ******************************
@@ -50,7 +50,7 @@
  *** USER-DEFINED OPTIONS FOR OUTPUT SUMMARIES ****************************
  **************************************************************************/
 
-#define PRINT_ZEROED_ACCOUNTS 0  /*** SET TO 1 TO INCLUDE EMPTY ACCOUNTS IN SUMMARY ****    NEED TO IMPLEMENT
+#define PRINT_ZEROED_ACCOUNTS 1  /*** SET TO 1 TO INCLUDE EMPTY ACCOUNTS IN SUMMARY ****    NEED TO IMPLEMENT
                                   *** SET TO 0 TO IGNORE ACCOUNTS WITH $0.00 BALANCE ***/
 
 #define USE_COLOR   1  /*** SET TO 1 TO ENABLE COLOR-CODED PRINTING TO THE TERMINAL ***/  	/* NEED TO IMPLEMENT */

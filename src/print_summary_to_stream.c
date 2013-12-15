@@ -32,7 +32,7 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){
     l1 = (abs(ledger->credit_totals[i][I_PENDING]) > EPS);
     l2 = (abs(ledger->credit_totals[i][I_CLEARED]) > EPS);      
  
-    if(l0 || l1 || l2){
+    if(l0 || l1 || l2 || (PRINT_ZEROED_ACCOUNTS && strlen(ledger->credits[i]))){
       ++any;
       if(strlen(ledger->credits[i]))
         fprintf(fp,"\nCredit account: %s\n\n", ledger->credits[i]);
@@ -75,7 +75,7 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){
     l1 = (abs(ledger->bank_totals[i][I_PENDING]) > EPS);
     l2 = (abs(ledger->bank_totals[i][I_CLEARED]) > EPS); 
   
-    if(l0 || l1 || l2){
+    if(l0 || l1 || l2 || (PRINT_ZEROED_ACCOUNTS && strlen(ledger->banks[i]))){
       ++any;
       if(strlen(ledger->banks[i]))
         fprintf(fp,"\nBank account: %s\n\n", ledger->banks[i]);
