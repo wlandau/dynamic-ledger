@@ -34,6 +34,7 @@ DEP+=modify_entry
 DEP+=new_ledger
 DEP+=output_file
 DEP+=parse_char
+DEP+=permute_rows
 DEP+=print_ledger_to_filename
 DEP+=print_ledger_to_stream 
 DEP+=print_ledger_to_string

@@ -125,18 +125,19 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
  *** FUNCTIONS TO MODIFY LEDGER OBJECTS ************************************************
  ***************************************************************************************/
 
-err_t condense(Ledger *ledger);					                             /* NEEDS TESTING */
+err_t condense(Ledger *ledger);
+err_t insert_rows(Ledger *ledger, int row, int howmany); 
 err_t modify_entry(Ledger *ledger, int row, int col, char *next);
+err_t permute_rows(Ledger *ledger, int *order);
 err_t rename_bank(Ledger *ledger, char *from, char *to);
 err_t rename_credit(Ledger *ledger, char *from, char *to);
 err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to);
-err_t insert_rows(Ledger *ledger, int row, int howmany);                              /* NEEDS TESTING */
-err_t remove_rows(Ledger *ledger);                            /* NEEDS TESTING */
-err_t trim_ledger(Ledger *ledger);                              /* NEEDS TESTING */
+err_t remove_rows(Ledger *ledger);
+err_t trim_ledger(Ledger *ledger);
 err_t strip_ledger(Ledger *ledger);     
 err_t swap_rows(Ledger *ledger, int row1, int row2);
 err_t repartition(Ledger *ledger, char *bank, char **partitions, 
-                  double *amounts, int npartitions, int as_percentages);			/* NEED TO IMPLEMENT ****/
+                  double *amounts, int npartitions, int as_percentages);
 
 
 /*************************************************************************************** 
