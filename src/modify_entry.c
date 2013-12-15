@@ -12,33 +12,50 @@
 #include <string.h>
 #include <user_settings.h>
 
-void modify_entry(Ledger *ledger, int row, int col, char *next){
-
-  char next_local[ENTRYSIZE];
+err_t modify_entry(Ledger *ledger, int row, int col, char *next){
   int i;
+  char *next_local = malloc(ENTRYSIZE * sizeof(char));
+
+  strcpy(next_local, next);
+  str_strip(next_local);  
 
   if(ledger == NULL)
-    return;
+    return LFAILURE;
 
   if(row < 0 || row >= ledger->nrows){
-    fprintf(stderr, "Error: illegal row index in modify_entry().\n");
-    return;
+    fprintf(stderr, "Error: illegal row index \"%d\" in modify_entry().\n", row);
+    return LFAILURE;
   }
   
   if(col < 0 || col >= NFIELDS){
-    fprintf(stderr, "Error: illegal column index in modify_entry().\n");
-    return;
+    fprintf(stderr, "Error: illegal column index \"%d\" in modify_entry().\n", col);
+    return LFAILURE;
   }
   
-  if(!col)
-    if(legal_double(next))
-      return;
-  
-  strcpy(next_local, next);
-  str_strip(next_local);  
+  if(col == AMOUNT){
+    if(legal_double(next_local) == LNO){
+      fprintf(stderr, 
+              "Error: illegal transaction amount \"%s\" in modify_entry().\n", next);
+      return LFAILURE;
+    }
+  } else if(col == STATUS){
+    if(legal_status_code(next_local) == LNO){
+      fprintf(stderr, 
+              "Error: illegal transaction status code \"%s\" in modify_entry().\n", 
+              next);
+      return LFAILURE;
+    }
+  }
   
   if((i = col_delim_str(next_local)) != NO_INDEX){
-    fprintf(stderr, "Warning: entries must not contain tabs. Truncating input.\n");
+    fprintf(stderr, 
+            "Warning: entries must not contain column delimiters. Truncating input.\n");
+    next_local[i] = '\0';
+  }
+
+  if((i = row_delim_str(next_local)) != NO_INDEX){
+    fprintf(stderr, 
+            "Warning: entries must not contain row delimiters. Truncating input.\n");
     next_local[i] = '\0';
   }
   
@@ -47,4 +64,7 @@ void modify_entry(Ledger *ledger, int row, int col, char *next){
   free_for_retotal(ledger);
   get_names(ledger);
   get_totals(ledger); 
+  
+  free(next_local);
+  return LSUCCESS;
 }
