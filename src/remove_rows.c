@@ -11,7 +11,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <user_settings.h>
-
+ 
 err_t remove_rows(Ledger *ledger, int *remove){
   int row, field, pos, i; 
   char tmp[ENTRYSIZE];
