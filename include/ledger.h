@@ -128,7 +128,8 @@ err_t rename_bank(Ledger *ledger, char *from, char *to);
 err_t rename_credit(Ledger *ledger, char *from, char *to);
 err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to);
 err_t insert_row(Ledger *ledger, int row);                              /* NEEDS TESTING */
-err_t remove_row(Ledger *ledger, int row);                              /* NEEDS TESTING */
+err_t remove_row(Ledger *ledger, int row);
+err_t remove_rows(Ledger *ledger, int *remove);                            /* NEEDS TESTING */
 err_t trim_ledger(Ledger *ledger);                              /* NEEDS TESTING */
 err_t strip_ledger(Ledger *ledger);     
 err_t repartition(Ledger *ledger, char *bank, char **partitions, 

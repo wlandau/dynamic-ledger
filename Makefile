@@ -42,6 +42,7 @@ DEP+=print_summary_to_stream
 DEP+=print_summary_to_string 
 DEP+=qcmp
 DEP+=remove_row 
+DEP+=remove_rows
 DEP+=rename_bank
 DEP+=rename_credit 
 DEP+=rename_partition 
