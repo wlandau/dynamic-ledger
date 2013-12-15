@@ -18,7 +18,7 @@ err_t trim_ledger(Ledger *ledger){
 
   if(ledger == NULL)
     return LFAILURE;
-
+/*
   for(row = 0; row < ledger->nrows; ++row)
     if(abs(atof(ledger->entries[AMOUNT][row])) < EPS){
       pos = 0;
@@ -42,7 +42,7 @@ err_t trim_ledger(Ledger *ledger){
   for(field = 0; field < NFIELDS; ++field)
     for(i = row; i < ledger->nrows; ++i)
       free(ledger->entries[field][i]);
-      
+      */
   ledger->nrows = row;
   return LSUCCESS;
 }

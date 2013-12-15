@@ -23,6 +23,8 @@ int main(){
   for(i = 0; i < ledger->nrows; ++i)
     if(i == 2 || i == 6 || i == 7 || i == 8)
       strcpy(ledger->entries[STATUS][i], REMOVE);
+      
+   
   printf("\n--------\nTEST -1 | ret = %d\n",  remove_rows(ledger));
   print_ledger_verbose(ledger, stdout);
 
