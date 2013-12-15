@@ -20,3 +20,4 @@ amount	status	credit	bank	partition	description
 90.00			cp	knee	marzapan
 2114.56			cp	r	wiggles
 3553.04			cps	a	Goodfried
+0			boz		boz
