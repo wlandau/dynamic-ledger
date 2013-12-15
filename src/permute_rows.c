@@ -34,7 +34,8 @@ err_t permute_rows(Ledger *ledger, int *order){
         order[j - 1] = order[j];
         order[j] = tmp;
       
-        swap_rows(ledger, j - 1, j);
+        if(swap_rows(ledger, j - 1, j) == LFAILURE)
+          return LFAILURE;
         swapped = 1;
       }
     if(!swapped)
