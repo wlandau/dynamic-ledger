@@ -20,7 +20,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   if(ledger == NULL)
     return LFAILURE;
  
-  if(untotaled(ledger))
+  if(untotaled(ledger) == LYES)
      return LFAILURE; 
     
   *s = calloc(ledger->nrows * NFIELDS * ENTRYSIZE, sizeof(char));

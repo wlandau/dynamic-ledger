@@ -24,7 +24,6 @@ err_t print_ledger_verbose(Ledger *ledger, FILE *fp){
    
   fprintf(fp, "%d rows in data\n\n", ledger->nrows);  
   
-  
   ret = print_ledger_to_stream(ledger, fp);  
   if(ret == LFAILURE)
     return LFAILURE;  
@@ -32,7 +31,7 @@ err_t print_ledger_verbose(Ledger *ledger, FILE *fp){
   if(untotaled(ledger) == LYES)
     return LSUCCESS;
     
-  fprintf(fp, "%d credit accounts:\n", ledger->ncredits);
+  fprintf(fp, "\n%d credit accounts:\n", ledger->ncredits);
   for(i = 0; i < ledger->ncredits; ++i){
     fprintf(fp, "\n  %s credit account:\n", ledger->credits[i]);
     fprintf(fp, "    %0.2f not arrived\n", ledger->credit_totals[i][I_NOT_THERE_YET]);

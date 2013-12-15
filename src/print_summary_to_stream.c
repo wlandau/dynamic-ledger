@@ -20,7 +20,7 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){
   if(ledger == NULL || fp == NULL)
     return LFAILURE;
     
-  if(untotaled(ledger))
+  if(untotaled(ledger) == LYES)
      return LFAILURE;  
 
   strcpy(norm, usecolor ? NORMAL_COLOR : "");

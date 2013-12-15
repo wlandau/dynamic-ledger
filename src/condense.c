@@ -19,7 +19,7 @@ err_t condense(Ledger *ledger){
   if(ledger == NULL)
     return LFAILURE;
     
-  if(untotaled(ledger))
+  if(untotaled(ledger) == LYES)
     return LFAILURE;
     
   for(row = 0; row < ledger->nrows; ++row){
