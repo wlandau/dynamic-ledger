@@ -24,6 +24,10 @@ err_t get_entries_from_filename(Ledger *ledger, char *filename){
   if(fp == NULL)
     return LFAILURE;
   
+  if(ledger->filename != NULL)
+    ledger->filename = malloc(FILENAMESIZE * sizeof(char));
+  strcpy(ledger->filename, filename);
+  
   ret = get_entries_from_stream(ledger, fp);
     
   if(fp != NULL)

@@ -42,7 +42,7 @@ int main(){
   printf("\n--------\nTEST -1 | ret = %d\n",  get_entries_from_filename(ledger, NULL));
 
   for(test = 0; test < ntests; ++test){
-    ledger = new_ledger();
+    new_ledger(&ledger);
 
     printf("\n--------\nTEST %d", test);
     printf("\nret = %d\n", get_entries_from_filename(ledger, strs[test]));
@@ -57,7 +57,7 @@ int main(){
       printf("\n");     
     }
     
-    free_ledger(ledger);
+    free_ledger(&ledger);
   }  
 
   for(test = 0; test < ntests; ++test)

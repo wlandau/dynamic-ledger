@@ -43,12 +43,11 @@ int main(){
   printf("\n--------\nTEST -1 | ret = %d\n",  get_entries_from_stream(ledger, fp));
 
   for(test = 0; test < ntests; ++test){
-    ledger = new_ledger();
+    new_ledger(&ledger);
 
     printf("\n--------\nTEST %d", test);
     fp = fopen(strs[test], "r");
     printf("\nret = %d\n", get_entries_from_stream(ledger, fp));
-    bad_input_file(strs[test]);
     if(fp != NULL)
       fclose(fp);
     
@@ -62,7 +61,7 @@ int main(){
       printf("\n");     
     }
     
-    free_ledger(ledger);
+    free_ledger(&ledger);
   }  
 
   for(test = 0; test < ntests; ++test)
