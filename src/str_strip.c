@@ -12,13 +12,13 @@
 #include <string.h>
 #include <user_settings.h>
 
-void str_strip(char *s){ /* taken from a stackoverflow forum */
+err_t str_strip(char *s){ /* taken from a stackoverflow forum */
   char *start;
   char *end;
 
   /* Exit if param is NULL pointer */
   if (s == NULL)
-    return;
+    return LFAILURE;
 
   /* Skip over leading whitespace */
   start = s;
@@ -28,7 +28,7 @@ void str_strip(char *s){ /* taken from a stackoverflow forum */
   /* Is string just whitespace? */
   if (!(*start)){         
     *s = 0x00; /* Truncate entire string */
-    return;     
+    return LSUCCESS;     
   }     
 
   /* Find end of string */
@@ -50,5 +50,5 @@ void str_strip(char *s){ /* taken from a stackoverflow forum */
   if (s != start)
     memmove(s, start, end-start+2);      
 
-  return; 
+  return LSUCCESS; 
 } 

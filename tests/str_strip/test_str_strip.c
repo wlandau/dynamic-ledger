@@ -32,11 +32,12 @@ int main(){
   printf("|%s|\n", *d);
   printf("|%s|\n", *e);
 
-  str_strip(*a);
-  str_strip(*b);
-  str_strip(*c);
-  str_strip(*d);
-  str_strip(*e);
+  printf("%d\n", str_strip(NULL));
+  printf("%d\n", str_strip(*a));
+  printf("%d\n", str_strip(*b));
+  printf("%d\n", str_strip(*c));
+  printf("%d\n", str_strip(*d));
+  printf("%d\n", str_strip(*e));
 
   printf("\n\nnew strings:\n\n");
 
