@@ -14,7 +14,7 @@
 #include <user_settings.h>
 
 err_t print_ledger_verbose(Ledger *ledger, FILE *fp){
-  int i, j;
+  int i, j, ret;;
 
   if(ledger == NULL || fp == NULL)
     return LFAILURE;
@@ -23,6 +23,14 @@ err_t print_ledger_verbose(Ledger *ledger, FILE *fp){
     fprintf(fp, "filename = %s.\n", ledger->filename);
    
   fprintf(fp, "%d rows in data\n\n", ledger->nrows);  
+  
+  
+  ret = print_ledger_to_stream(ledger, fp);  
+  if(ret == LFAILURE)
+    return LFAILURE;  
+    
+  if(untotaled(ledger) == LYES)
+    return LSUCCESS;
     
   fprintf(fp, "%d credit accounts:\n", ledger->ncredits);
   for(i = 0; i < ledger->ncredits; ++i){
@@ -51,5 +59,5 @@ err_t print_ledger_verbose(Ledger *ledger, FILE *fp){
   }  
 
   fprintf(fp, "\n");
-  return print_ledger_to_stream(ledger, fp);
+  return LSUCCESS;
 }
