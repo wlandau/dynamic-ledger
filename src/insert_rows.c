@@ -16,8 +16,10 @@ err_t insert_rows(Ledger *ledger, int row, int howmany){
   int i, j;
   char ***x, ***tmp;
  
-  if(!howmany)
-    return LSUCCESS;
+  if(howmany < 1){
+    printf("Error: number of rows inserted must be positive.\n");
+    return LFAILURE;
+  }
  
   if(ledger == NULL)
     return LFAILURE;
