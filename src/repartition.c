@@ -7,24 +7,30 @@
 #include <errno.h>
 #include <getopt.h>
 #include <ledger.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <user_settings.h>
 
 err_t repartition(Ledger *ledger, char *bank, char **partitions, 
-                  double *amounts, int npartitions, int as_percentages){
+                  double *amounts_arg, int npartitions, int as_percentages){
   
   int i, row, ibank, oldnrows;
-  double sum;
+  double sum, *amounts;
   
-  if(ledger == NULL || npartitions < 1)
+  if(ledger == NULL || bank == NULL || partitions == NULL || 
+     amounts_arg == NULL || npartitions < 1)
     return LFAILURE;
 
   ibank = which(ledger->banks, bank, ledger->nbanks);
 
   if(ibank == NO_INDEX)
     return LFAILURE;
+    
+  amounts = malloc(npartitions * sizeof(double));
+  for(i = 0; i < npartitions; ++i)
+    amounts[i] = amounts_arg[i];    
     
   if(as_percentages)
     for(i = 0; i < npartitions; ++i)
@@ -34,17 +40,21 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
   for(i = 0; i < npartitions; ++i)  
     sum += amounts[i];
 
-  if((sum - ledger->bank_totals[ibank][I_OVERALL_BAL]) > EPS){
+  if(fabs(sum - ledger->bank_totals[ibank][I_OVERALL_BAL]) > EPS){
     fprintf(stderr, "Error: your partition totals sum to %0.2f.\n", sum);
     fprintf(stderr, "They should sum to the true total balance, %0.2f,\n", 
             ledger->bank_totals[ibank][I_OVERALL_BAL]); 
     fprintf(stderr, "of bank account \"%s\".\n", bank);
+    free(amounts);
     return LFAILURE; 
   }
   
   oldnrows = ledger->nrows;
-  if(insert_rows(ledger, ledger->nrows, ledger->npartitions[ibank] + npartitions) == LFAILURE)
+  if(insert_rows(ledger, ledger->nrows, 
+                 ledger->npartitions[ibank] + npartitions) == LFAILURE){
+    free(amounts);
     return LFAILURE;
+  }
     
   for(i = 0; i < ledger->npartitions[ibank]; ++i){
     row = i + oldnrows;
@@ -64,6 +74,8 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
   
   free_for_retotal(ledger);
   get_names(ledger);
-  get_totals(ledger);    
+  get_totals(ledger); 
+
+  free(amounts);   
   return LSUCCESS;
 }
