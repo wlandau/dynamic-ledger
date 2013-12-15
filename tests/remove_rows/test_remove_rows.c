@@ -10,24 +10,22 @@
 #define F "../data/ledgers/example_ledger2.txt"
 
 int main(){
-  int i, *remove;
+  int i;
   Ledger *ledger = NULL;
 
-  printf("\n--------\nTEST -2 | ret = %d\n",  remove_rows(ledger, 0));
+  printf("\n--------\nTEST -2 | ret = %d\n",  remove_rows(ledger));
 
   get_ledger(&ledger, F, NULL, NULL);
-  printf("\n--------\nTEST -1 | ret = %d\n",  remove_rows(ledger, NULL));
-
-  remove = calloc(ledger->nrows, sizeof(int));  
+  print_ledger_verbose(ledger, stdout);
+  printf("\n--------\nTEST -1 | ret = %d\n",  remove_rows(ledger));
+  print_ledger_verbose(ledger, stdout);
+  
   for(i = 0; i < ledger->nrows; ++i)
     if(i == 2 || i == 6 || i == 7 || i == 8)
-      remove[i] = 1;
-
-  print_ledger_verbose(ledger, stdout);
-  printf("\n--------\nTEST -1 | ret = %d\n",  remove_rows(ledger, remove));
+      strcpy(ledger->entries[STATUS][i], REMOVE);
+  printf("\n--------\nTEST -1 | ret = %d\n",  remove_rows(ledger));
   print_ledger_verbose(ledger, stdout);
 
-  free(remove);
   free_ledger(&ledger);
   return 0;
 }
