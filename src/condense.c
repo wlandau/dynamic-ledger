@@ -19,6 +19,9 @@ err_t condense(Ledger *ledger){
   if(ledger == NULL)
     return LFAILURE;
     
+  if(untotaled(ledger))
+    return LFAILURE;
+    
   for(row = 0; row < ledger->nrows; ++row){
     if(locked(ledger->entries[STATUS][row]) == LYES){ 
       bank = which(ledger->banks, ledger->entries[BANK][row], ledger->nbanks);
