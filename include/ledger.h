@@ -82,7 +82,7 @@ bool_t input_file( char *filename);
 bool_t output_file( char *filename); 
 bool_t legal_double(char *s); 
 bool_t col_delim_char(char c);  
-bool_t filled_partitions(Ledger *ledger);     
+bool_t filled_partitions(Ledger *ledger, int bank);     
 bool_t legal_amounts(Ledger *ledger); 
 bool_t legal_status_code(char *s); 
 bool_t legal_status_codes(Ledger *ledger); 

@@ -1,0 +1,4 @@
+amount	status	credit	bank	partition	description		
+200				bike	gift money
+-200					October	paycheck
+
