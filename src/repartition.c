@@ -18,7 +18,7 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
   int i, row, ibank, oldnrows;
   double sum;
   
-  if(ledger == NULL || npartitions == 0)
+  if(ledger == NULL || npartitions < 1)
     return LFAILURE;
 
   ibank = which(ledger->banks, bank, ledger->nbanks);

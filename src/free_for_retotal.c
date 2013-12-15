@@ -89,5 +89,8 @@ err_t free_for_retotal(Ledger *ledger){
     ledger->npartitions = NULL;
   }
 
+  ledger->nbanks = 0;
+  ledger->ncredits = 0;
+  
   return LSUCCESS;
 }
