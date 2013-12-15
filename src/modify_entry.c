@@ -14,10 +14,9 @@
 
 err_t modify_entry(Ledger *ledger, int row, int col, char *next){
   int i;
-  char *next_local = malloc(ENTRYSIZE * sizeof(char));
+  char *next_local;
 
-  strcpy(next_local, next);
-  str_strip(next_local);  
+ 
 
   if(ledger == NULL)
     return LFAILURE;
@@ -32,10 +31,15 @@ err_t modify_entry(Ledger *ledger, int row, int col, char *next){
     return LFAILURE;
   }
   
+  next_local = malloc(ENTRYSIZE * sizeof(char));
+  strcpy(next_local, next);
+  str_strip(next_local); 
+  
   if(col == AMOUNT){
     if(legal_double(next_local) == LNO){
       fprintf(stderr, 
               "Error: illegal transaction amount \"%s\" in modify_entry().\n", next);
+      free(next_local);
       return LFAILURE;
     }
   } else if(col == STATUS){
@@ -43,6 +47,7 @@ err_t modify_entry(Ledger *ledger, int row, int col, char *next){
       fprintf(stderr, 
               "Error: illegal transaction status code \"%s\" in modify_entry().\n", 
               next);
+      free(next_local);
       return LFAILURE;
     }
   }
