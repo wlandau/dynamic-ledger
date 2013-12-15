@@ -22,6 +22,9 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
   if(ledger == NULL || bank == NULL || partitions == NULL || 
      amounts_arg == NULL || npartitions < 1)
     return LFAILURE;
+    
+  if(untotaled(ledger))
+    return LFAILURE;
 
   ibank = which(ledger->banks, bank, ledger->nbanks);
 

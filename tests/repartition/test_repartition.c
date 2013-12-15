@@ -14,7 +14,8 @@ int main(){
   int npartitions = 3, i;
   double *amounts = NULL;
 
-  printf("TEST 1 RET = %d\n", repartition(ledger, "hi", partitions, amounts, npartitions, 1));
+  printf("TEST -1 RET = %d\n", repartition(ledger, "hi", partitions, amounts, npartitions, 1));
+
 
   amounts = malloc(npartitions * sizeof(double));
   amounts[0] = 30;
@@ -28,6 +29,13 @@ int main(){
   strcpy(partitions[0], "wheedle");
   strcpy(partitions[1], "goofus");
   strcpy(partitions[2], "poofdoofus");
+  
+  
+  new_ledger(&ledger);
+  printf("TEST 0 RET = %d\n", repartition(ledger, NIL, partitions, amounts, npartitions, 1));
+  free_ledger(&ledger);  
+  
+  
 
   get_ledger(&ledger, F, NULL, NULL);
   print_ledger_verbose(ledger, stdout);  
