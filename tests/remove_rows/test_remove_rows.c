@@ -28,5 +28,6 @@ int main(){
   print_ledger_verbose(ledger, stdout);
 
   free(remove);
+  free_ledger(&ledger);
   return 0;
 }
