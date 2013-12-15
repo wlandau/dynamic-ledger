@@ -14,15 +14,13 @@
 #include <user_settings.h>
 
 err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){ 
-  int i, j, l0, l1, l2, any = 0, anyp = 0;
+  int i, j, l0, l1, l2, any = 0, anyp = 0, nullp;
   char norm[64];
 
   if(ledger == NULL || fp == NULL)
     return LFAILURE;
     
-  if(ledger->credit_totals == NULL || 
-     ledger->bank_totals == NULL || 
-     ledger->partition_totals == NULL)
+  if(untotaled(ledger))
      return LFAILURE;  
 
   strcpy(norm, usecolor ? NORMAL_COLOR : "");
@@ -74,7 +72,8 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){
   for(i = 0; i < ledger->nbanks; ++i){
     l0 = (fabs(ledger->bank_totals[i][I_NOT_THERE_YET]) > EPS);
     l1 = (fabs(ledger->bank_totals[i][I_PENDING]) > EPS);
-    l2 = (fabs(ledger->bank_totals[i][I_CLEARED]) > EPS); 
+    l2 = (fabs(ledger->bank_totals[i][I_CLEARED]) > EPS) || 
+         filled_partitions(ledger, i);
   
     if(l0 || l1 || l2 || (PRINT_EMPTY_ACCOUNTS && strlen(ledger->banks[i]))){
       ++any;
@@ -124,13 +123,13 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){
           fprintf(fp,"%s%30.2f%s  %s\n", color(ledger->partition_totals[i][j], usecolor), 
                   ledger->partition_totals[i][j], norm, ledger->partitions[i][j]);
         }
-        else if(fabs(ledger->partition_totals[i][j] - ledger->bank_totals[i][I_CLEARED]) > EPS){
-          if(!j) fprintf(fp, "\n");
-          fprintf(fp,"%s%30.2f%s  unpartitioned\n", 
-                  color(ledger->partition_totals[i][j], usecolor),
-                  ledger->partition_totals[i][j], norm);
-        }
-      } 
+      }
+      
+    nullp = which(ledger->partitions[i], NIL, ledger->npartitions[i]);
+    if(anyp && fabs(ledger->partition_totals[i][nullp]) > EPS)
+      fprintf(fp,"%s%30.2f%s  unpartitioned\n", 
+                  color(ledger->partition_totals[i][nullp], usecolor),
+                  ledger->partition_totals[i][nullp], norm);
   }
   
   if(any)

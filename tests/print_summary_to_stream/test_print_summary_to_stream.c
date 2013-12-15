@@ -51,8 +51,27 @@ int main(){
   get_totals(ledger);
   printf("\n----\nRET = %d L3\n---\n", print_summary_to_stream(ledger, stdout, 0));
   free_ledger(&ledger);
-  
 
+  new_ledger(&ledger);
+  get_entries_from_filename(ledger, "../data/ledgers/small.txt"); 
+  get_names(ledger);
+  get_totals(ledger);
+  printf("\n----\nRET = %d L3\n---\n", print_summary_to_stream(ledger, stdout, 1));
+  free_ledger(&ledger);
+  
+  new_ledger(&ledger);
+  get_entries_from_filename(ledger, "../data/ledgers/small2.txt"); 
+  get_names(ledger);
+  get_totals(ledger);
+  printf("\n----\nRET = %d L3\n---\n", print_summary_to_stream(ledger, stdout, 1));
+  free_ledger(&ledger);
+
+  new_ledger(&ledger);
+  get_entries_from_filename(ledger, "../data/ledgers/empty.txt"); 
+  get_names(ledger);
+  get_totals(ledger);
+  printf("\n----\nRET = %d L3\n---\n", print_summary_to_stream(ledger, stdout, 1));
+  free_ledger(&ledger);
 
   return 0;
 }

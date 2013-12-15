@@ -14,15 +14,13 @@
 #include <user_settings.h>
 
 err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
-  int i, j, l0, l1, l2, any = 0, anyp = 0;
+  int i, j, l0, l1, l2, any = 0, anyp = 0, nullp;
   char norm[64]; 
 
   if(ledger == NULL)
     return LFAILURE;
  
-  if(ledger->credit_totals == NULL || 
-     ledger->bank_totals == NULL || 
-     ledger->partition_totals == NULL)
+  if(untotaled(ledger))
      return LFAILURE; 
     
   *s = calloc(ledger->nrows * NFIELDS * ENTRYSIZE, sizeof(char));
@@ -31,7 +29,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   for(i = 0; i < ledger->ncredits; ++i){
     l0 = (fabs(ledger->credit_totals[i][I_NOT_THERE_YET]) > EPS);
     l1 = (fabs(ledger->credit_totals[i][I_PENDING]) > EPS);
-    l2 = (fabs(ledger->credit_totals[i][I_CLEARED]) > EPS);      
+    l2 = (fabs(ledger->credit_totals[i][I_CLEARED]) > EPS);
  
     if(l0 || l1 || l2 || (PRINT_EMPTY_ACCOUNTS && strlen(ledger->credits[i]))){
       ++any;
@@ -77,7 +75,8 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   for(i = 0; i < ledger->nbanks; ++i){
     l0 = (fabs(ledger->bank_totals[i][I_NOT_THERE_YET]) > EPS);
     l1 = (fabs(ledger->bank_totals[i][I_PENDING]) > EPS);
-    l2 = (fabs(ledger->bank_totals[i][I_CLEARED]) > EPS); 
+    l2 = (fabs(ledger->bank_totals[i][I_CLEARED]) > EPS) ||      
+         filled_partitions(ledger, i); 
   
     if(l0 || l1 || l2 || (PRINT_EMPTY_ACCOUNTS && strlen(ledger->banks[i]))){
       ++any;
@@ -121,23 +120,21 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
       if(fabs(ledger->partition_totals[i][j]) > EPS){
         if(strlen(ledger->partitions[i][j])){
           if(!anyp){
-            sprintf(*s, "%s\n          Partitions:\n", *s);
+            sprintf(*s,"%s\n          Partitions:\n", *s);
             ++anyp;
           }
-          sprintf(*s, "%s%s%30.2f%s  %s\n", *s, 
-                  color(ledger->partition_totals[i][j], usecolor), 
-                  ledger->partition_totals[i][j], 
-                  norm, ledger->partitions[i][j]);
+          sprintf(*s,"%s%s%30.2f%s  %s\n", *s, color(ledger->partition_totals[i][j], usecolor), 
+                  ledger->partition_totals[i][j], norm, ledger->partitions[i][j]);
         }
-        else if(fabs(ledger->partition_totals[i][j] - ledger->bank_totals[i][I_CLEARED]) > EPS){
-          if(!j) sprintf(*s, "%s\n", *s);
-          sprintf(*s, "%s%s%30.2f%s  unpartitioned\n", *s, 
-                  color(ledger->partition_totals[i][j], usecolor),
-                  ledger->partition_totals[i][j], norm);
-        }
-      } 
+      }
+      
+    nullp = which(ledger->partitions[i], NIL, ledger->npartitions[i]);
+    if(anyp && fabs(ledger->partition_totals[i][nullp]) > EPS)
+      sprintf(*s,"%s%s%30.2f%s  unpartitioned\n", *s,
+                  color(ledger->partition_totals[i][nullp], usecolor),
+                  ledger->partition_totals[i][nullp], norm);
   }
-
+  
   str_strip(*s);  
   if(any)
     sprintf(*s, "%s\n\n", *s);
