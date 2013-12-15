@@ -14,6 +14,7 @@
 
 #include <errno.h>
 #include <getopt.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -81,13 +82,15 @@ bool_t input_file( char *filename);
 bool_t output_file( char *filename); 
 bool_t legal_double(char *s); 
 bool_t col_delim_char(char c);  
-bool_t row_delim_char(char c);
-bool_t space(char c);                     
+bool_t filled_partitions(Ledger *ledger);     
 bool_t legal_amounts(Ledger *ledger); 
 bool_t legal_status_code(char *s); 
 bool_t legal_status_codes(Ledger *ledger); 
 bool_t locked(char *status);
+bool_t row_delim_char(char c);
+bool_t space(char c);    
 bool_t str_equal(const char *s1, const char *s2);
+bool_t untotaled(Ledger *ledger);
 
 color_t color(double d, int usecolor); 
  

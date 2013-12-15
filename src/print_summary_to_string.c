@@ -7,6 +7,7 @@
 #include <errno.h>
 #include <getopt.h>
 #include <ledger.h>
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,9 +29,9 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   strcpy(norm, usecolor ? NORMAL_COLOR : "");
 
   for(i = 0; i < ledger->ncredits; ++i){
-    l0 = (abs(ledger->credit_totals[i][I_NOT_THERE_YET]) > EPS);
-    l1 = (abs(ledger->credit_totals[i][I_PENDING]) > EPS);
-    l2 = (abs(ledger->credit_totals[i][I_CLEARED]) > EPS);      
+    l0 = (fabs(ledger->credit_totals[i][I_NOT_THERE_YET]) > EPS);
+    l1 = (fabs(ledger->credit_totals[i][I_PENDING]) > EPS);
+    l2 = (fabs(ledger->credit_totals[i][I_CLEARED]) > EPS);      
  
     if(l0 || l1 || l2 || (PRINT_EMPTY_ACCOUNTS && strlen(ledger->credits[i]))){
       ++any;
@@ -74,9 +75,9 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   }     
           
   for(i = 0; i < ledger->nbanks; ++i){
-    l0 = (abs(ledger->bank_totals[i][I_NOT_THERE_YET]) > EPS);
-    l1 = (abs(ledger->bank_totals[i][I_PENDING]) > EPS);
-    l2 = (abs(ledger->bank_totals[i][I_CLEARED]) > EPS); 
+    l0 = (fabs(ledger->bank_totals[i][I_NOT_THERE_YET]) > EPS);
+    l1 = (fabs(ledger->bank_totals[i][I_PENDING]) > EPS);
+    l2 = (fabs(ledger->bank_totals[i][I_CLEARED]) > EPS); 
   
     if(l0 || l1 || l2 || (PRINT_EMPTY_ACCOUNTS && strlen(ledger->banks[i]))){
       ++any;
@@ -117,7 +118,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
 
     anyp = 0;
     for(j = 0; j < ledger->npartitions[i]; ++j)
-      if(abs(ledger->partition_totals[i][j]) > EPS){
+      if(fabs(ledger->partition_totals[i][j]) > EPS){
         if(strlen(ledger->partitions[i][j])){
           if(!anyp){
             sprintf(*s, "%s\n          Partitions:\n", *s);
@@ -128,7 +129,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
                   ledger->partition_totals[i][j], 
                   norm, ledger->partitions[i][j]);
         }
-        else if(abs(ledger->partition_totals[i][j] - ledger->bank_totals[i][I_CLEARED]) > EPS){
+        else if(fabs(ledger->partition_totals[i][j] - ledger->bank_totals[i][I_CLEARED]) > EPS){
           if(!j) sprintf(*s, "%s\n", *s);
           sprintf(*s, "%s%s%30.2f%s  unpartitioned\n", *s, 
                   color(ledger->partition_totals[i][j], usecolor),
