@@ -17,7 +17,7 @@ int main(){
   
   print_ledger_verbose(ledger, stdout);
   printf("\nTEST 2 RET = %d\n", modify_entry(ledger, 0, 0, "hi"));
-
+/*
   print_ledger_verbose(ledger, stdout);
   printf("\nTEST 3 RET = %d\n", modify_entry(ledger, 0, 3, "hi"));
   print_ledger_verbose(ledger, stdout);
@@ -40,7 +40,7 @@ int main(){
 
   printf("\nTEST 11 RET = %d\n", modify_entry(ledger, 2, 0, "0.5"));
   print_ledger_verbose(ledger, stdout);
-
+*/
   free_ledger(&ledger);
   return 0;
 }
