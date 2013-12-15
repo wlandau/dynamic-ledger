@@ -22,7 +22,7 @@
 #define CREDIT        2   /*** COLUMN FOR NAMES OF CREDIT ACCOUNTS ********/
 #define BANK          3   /*** COLUMN FOR NAMES OF BANK ACCOUNTS **********/       
 #define PARTITION     4   /*** COLUMN FOR NAMES OF BANK PARTITIONS ********/
-#define DESCRIPTION   5   /*** COLUMN FOR DESCRIPTIONS OF TRANSACTIONS **å**/
+#define DESCRIPTION   5   /*** COLUMN FOR DESCRIPTIONS OF TRANSACTIONS ****/
 
 
 /************************************************************************** 
@@ -50,7 +50,7 @@
  *** USER-DEFINED OPTIONS FOR OUTPUT SUMMARIES ****************************
  **************************************************************************/
 
-#define PRINT_EMPTY_ACCOUNTS 1  /*** SET TO 1 TO INCLUDE EMPTY ACCOUNTS IN SUMMARY ****    NEED TO IMPLEMENT
+#define PRINT_EMPTY_ACCOUNTS 0  /*** SET TO 1 TO INCLUDE EMPTY ACCOUNTS IN SUMMARY ****
                                  *** SET TO 0 TO IGNORE ACCOUNTS WITH $0.00 BALANCE ***/
 
 #define USE_COLOR   1  /*** SET TO 1 TO ENABLE COLOR-CODED PRINTING TO THE TERMINAL ***/  	/* NEED TO IMPLEMENT */
