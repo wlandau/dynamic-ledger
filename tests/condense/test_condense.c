@@ -25,7 +25,7 @@ int main(){
 
   printf("\n--------\nTEST -1 | ret = %d\n", condense(ledger));
 
- for(test = 0; test < 1; ++test){
+ for(test = 0; test < 3; ++test){
     printf("\n--------\nTEST %d", test);
     get_ledger(&ledger, strs[test], NULL, NULL);
     print_ledger_verbose(ledger, stdout);
