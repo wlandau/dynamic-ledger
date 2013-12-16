@@ -14,7 +14,9 @@
 
 err_t get_ledger(Ledger **ledger, char* filename, FILE *fp, char *str){
   int stat;
-  new_ledger(ledger);
+  
+  if(new_ledger(ledger) == LFAILURE)
+    return LFAILURE;
   
   if(filename != NULL)
     stat = get_entries_from_filename(*ledger, filename);
