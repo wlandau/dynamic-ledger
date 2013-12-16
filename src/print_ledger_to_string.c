@@ -18,7 +18,8 @@ err_t print_ledger_to_string(Ledger *ledger, char **s){
   if(ledger == NULL)
     return LFAILURE;
 
-  strip_ledger(ledger);
+  if(strip_ledger(ledger) == LFAILURE)
+    return LFAILURE;
   
   for(field = 0; field < NFIELDS; ++field)  
     for(row = 0; row < ledger->nrows; ++row)
@@ -55,6 +56,8 @@ err_t print_ledger_to_string(Ledger *ledger, char **s){
     strcat(*s, "\n");
   }
   
-  str_strip(*s);
+  if(str_strip(*s) == LFAILURE)
+    return LFAILURE;
+    
   return LSUCCESS;
 }
