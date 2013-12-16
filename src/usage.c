@@ -16,7 +16,7 @@ err_t usage(){
   printf("\nUsage: to summarize the ledger,\n$ ./ledger [LEDGER_FILE]\n");
   printf("\nTo condense the ledger,\n$ ");
   printf("./ledger [INTPUT_LEDGER_FILE] [OUTTPUT_LEDGER_FILE]\n");
-  printf("\nSee README.txt for details.\n");
+  printf("\nSee the tutorial for details.\n");
   
   return LSUCCESS;
 }
