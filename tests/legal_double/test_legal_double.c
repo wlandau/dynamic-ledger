@@ -7,15 +7,15 @@
 #include <user_settings.h>
 
 int main(){
+
   char str[1000];
   
   strcpy(str, "  l  -14.2 ");
-  printf("%s\t%d\n", str, legal_double(str, 1));
+  printf("%s\t%d\n", str, legal_double(str));
   printf("%s\n", str);
   
-  
   strcpy(str, "    -14.2 \t\t ");
-  printf("%s\t%d\n", str, legal_double(str, 1));
+  printf("%s\t%d\n", str, legal_double(str));
   printf("%s\n", str);
   
   return 0;
