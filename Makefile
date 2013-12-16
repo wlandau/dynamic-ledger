@@ -6,7 +6,8 @@ SRCDIR=src/
 OBJDIR=obj/
 BIN=ledger
 
-DEP=alloc_entries 
+DEP=main
+DEP+=alloc_entries 
 DEP+=alloc_totals
 DEP+=clean
 DEP+=col_delim_char
@@ -31,7 +32,6 @@ DEP+=legal_double
 DEP+=legal_status_code
 DEP+=legal_status_codes
 DEP+=locked
-DEP+=main
 DEP+=modify_entry
 DEP+=move_rows
 DEP+=new_ledger
