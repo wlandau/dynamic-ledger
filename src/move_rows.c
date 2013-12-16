@@ -13,10 +13,6 @@
 #include <string.h>
 #include <user_settings.h>
 
-int icmp (const void * a, const void * b){
-  return ( *(int*)a - *(int*)b );
-}
-
 err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto){
   int i, *order;
   

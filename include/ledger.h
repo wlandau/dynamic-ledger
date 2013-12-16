@@ -100,6 +100,7 @@ index_t which(char **s,  char *find, int n);
 index_t which_bank_total(char *status);
 index_t which_credit_total(char *status);
 
+int icmp(const void *a, const void *b);
 int qcmp(const void *a, const void *b);
 
 err_t str_strip(char *s);
