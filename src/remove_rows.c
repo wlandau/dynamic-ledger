@@ -23,7 +23,6 @@ err_t remove_rows(Ledger *ledger){
     return LFAILURE;  
     
   order = calloc(ledger->nrows, sizeof(int));
-
   row = ledger->nrows;
   for(i = 0; i < ledger->nrows; ++i)
     if(str_equal(ledger->entries[STATUS][i], REMOVE)){
@@ -35,6 +34,7 @@ err_t remove_rows(Ledger *ledger){
     free(order);
     return LFAILURE;
   }
+  free(order);
 
   if(!row){
     fprintf(stderr, "Warning: cannot remove all rows. Leaving one blank row instead.\n");
