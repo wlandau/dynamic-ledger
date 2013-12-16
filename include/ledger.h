@@ -78,15 +78,15 @@ typedef struct {
  *** UTILITY FUNCTIONS *****************************************************************
  ***************************************************************************************/
 
+bool_t col_delim_char(char c);
+bool_t filled_partitions(Ledger *ledger, int bank);    
 bool_t input_file( char *filename);
-bool_t output_file( char *filename); 
-bool_t legal_double(char *s); 
-bool_t col_delim_char(char c);  
-bool_t filled_partitions(Ledger *ledger, int bank);     
+bool_t legal_double(char *s);  
 bool_t legal_amounts(Ledger *ledger); 
 bool_t legal_status_code(char *s); 
 bool_t legal_status_codes(Ledger *ledger); 
 bool_t locked(char *status);
+bool_t output_file( char *filename); 
 bool_t row_delim_char(char c);
 bool_t space(char c);    
 bool_t str_equal(const char *s1, const char *s2);
@@ -126,6 +126,7 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
  *** FUNCTIONS TO MODIFY LEDGER OBJECTS ************************************************
  ***************************************************************************************/
 
+err_t clean(Ledger *ledger, int sort_locked);
 err_t condense(Ledger *ledger);
 err_t insert_rows(Ledger *ledger, int row, int howmany); 
 err_t modify_entry(Ledger *ledger, int row, int col, char *next);
