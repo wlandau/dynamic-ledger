@@ -1,6 +1,6 @@
 amount	status	credit	bank	partition	description
-224	cn	card	bank		electric bill
--500	cp	card	bank		rent
-800	c	card	bank	rent	paycheck
--27		card	bank	rent	electric bill
--500		card	bank	rent	rent
+10	cn	card	bank		electric bill
+20	cp	card	bank		rent
+30	c	card	bank	rent	paycheck
+40		card	bank	rent	electric bill
+50		card	bank	rent	rent
