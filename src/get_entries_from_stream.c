@@ -13,7 +13,7 @@
 #include <user_settings.h>
 
 err_t get_entries_from_stream(Ledger *ledger, FILE *fp){
-  int char_index, row, field; 
+  int char_index, row, field, nfail = 0; 
   char c, line[LINESIZE];
   err_t ret;
   
@@ -41,10 +41,10 @@ err_t get_entries_from_stream(Ledger *ledger, FILE *fp){
   
   fgets(line, LINESIZE, fp);
   while((c = fgetc(fp)) != EOF)
-    parse_char(ledger, c, &char_index, &field, &row);
+    nfail += (parse_char(ledger, c, &char_index, &field, &row) == LFAILURE);
   rewind(fp);
   
-  ret = (strip_ledger(ledger) == LSUCCESS);
+  ret = (strip_ledger(ledger) == LSUCCESS) && (!nfail);
   ret = ret && (legal_amounts(ledger) == LYES) && (legal_status_codes(ledger) == LYES);
   return ret ? LSUCCESS : LFAILURE;
 }
