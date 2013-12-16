@@ -135,6 +135,7 @@ err_t rename_credit(Ledger *ledger, char *from, char *to);
 err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to);
 err_t remove_rows(Ledger *ledger);
 err_t trim_ledger(Ledger *ledger);
+err_t sort_by_status(Ledger *ledger, int sort_locked);
 err_t strip_ledger(Ledger *ledger);     
 err_t swap_rows(Ledger *ledger, int row1, int row2);
 err_t repartition(Ledger *ledger, char *bank, char **partitions, 
