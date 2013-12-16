@@ -25,19 +25,29 @@ int main(){
   printf("%d\t%d\t%d\n", *a, *c, icmp((void *) a, (void *)c));
   printf("%d\t%d\t%d\n", *a, *d, icmp((void *) a, (void *)d));
   printf("%d\t%d\t%d\n\n", *a, *e, icmp((void *) a, (void *)e));
-  
+
+  printf("%d\t%d\t%d\n", *b, *a, icmp((void *) b, (void *)a));  
   printf("%d\t%d\t%d\n", *b, *b, icmp((void *) b, (void *)b));
   printf("%d\t%d\t%d\n", *b, *c, icmp((void *) b, (void *)c));
   printf("%d\t%d\t%d\n", *b, *d, icmp((void *) b, (void *)d));
   printf("%d\t%d\t%d\n\n", *b, *e, icmp((void *) b, (void *)e));
 
+  printf("%d\t%d\t%d\n", *c, *a, icmp((void *) c, (void *)a));
+  printf("%d\t%d\t%d\n", *c, *b, icmp((void *) c, (void *)b));
   printf("%d\t%d\t%d\n", *c, *c, icmp((void *) c, (void *)c));
   printf("%d\t%d\t%d\n", *c, *d, icmp((void *) c, (void *)d));
   printf("%d\t%d\t%d\n\n", *c, *e, icmp((void *) c, (void *)e));
 
+  printf("%d\t%d\t%d\n", *d, *a, icmp((void *) d, (void *)a));
+  printf("%d\t%d\t%d\n", *d, *b, icmp((void *) d, (void *)b));
+  printf("%d\t%d\t%d\n", *d, *c, icmp((void *) d, (void *)c));
   printf("%d\t%d\t%d\n", *d, *d, icmp((void *) d, (void *)d));
   printf("%d\t%d\t%d\n\n", *d, *e, icmp((void *) d, (void *)e));
 
+  printf("%d\t%d\t%d\n", *e, *a, icmp((void *) e, (void *)a));
+  printf("%d\t%d\t%d\n", *e, *b, icmp((void *) e, (void *)b));
+  printf("%d\t%d\t%d\n", *e, *c, icmp((void *) e, (void *)c));
+  printf("%d\t%d\t%d\n", *e, *d, icmp((void *) e, (void *)d));
   printf("%d\t%d\t%d\n\n", *e, *e, icmp((void *) e, (void *)e));
 
   
