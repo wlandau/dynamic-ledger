@@ -44,8 +44,10 @@ err_t sort_by_status(Ledger *ledger, int sort_locked){
       order[i] = 6;
   }
   
-  if(permute_rows(ledger, order) == LFAILURE)
+  if(permute_rows(ledger, order) == LFAILURE){
+    free(order);
     return LFAILURE;
+  }
   
   free(order);
   return LSUCCESS;

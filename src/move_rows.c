@@ -34,8 +34,10 @@ err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto){
   for(i = 0; i < nrows; ++i)
     order[rows[i]] = 1;
   
-  if(permute_rows(ledger, order) == LFAILURE)
+  if(permute_rows(ledger, order) == LFAILURE){
+    free(order);
     return LFAILURE;
+  }
   
   free(order);
   return LSUCCESS;

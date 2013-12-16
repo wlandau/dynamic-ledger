@@ -14,32 +14,28 @@
 #include <user_settings.h>
 
 err_t remove_rows(Ledger *ledger){
-  int row, field, pos, i; 
-  char tmp[ENTRYSIZE];
+  int i, *order, row, field;
 
   if(ledger == NULL)
     return LFAILURE;
+    
+  if(ledger->entries == NULL)
+    return LFAILURE;  
+    
+  order = calloc(ledger->nrows, sizeof(int));
 
-  for(row = 0; row < ledger->nrows; ++row)
-    if(str_equal(ledger->entries[STATUS][row], REMOVE)){
-      pos = 0;
-      for(i = row + 1; i < ledger->nrows; ++i)
-        if(!str_equal(ledger->entries[STATUS][i], REMOVE)){
-          pos = i;
-          break;
-        }
-      
-      if(pos){
-        for(field = 0; field < NFIELDS; ++field){
-          strcpy(tmp, ledger->entries[field][row]);
-          strcpy(ledger->entries[field][row], ledger->entries[field][pos]);
-          strcpy(ledger->entries[field][pos], tmp);
-        }
-      } else{
-        break;
-      }
+  row = ledger->nrows;
+  for(i = 0; i < ledger->nrows; ++i)
+    if(str_equal(ledger->entries[STATUS][i], REMOVE)){
+      ++order[i];
+      --row;
     }
-  
+
+  if(permute_rows(ledger, order) == LFAILURE){
+    free(order);
+    return LFAILURE;
+  }
+
   if(!row){
     fprintf(stderr, "Warning: cannot remove all rows. Leaving one blank row instead.\n");
     for(field = 0; field < NFIELDS; ++field)
@@ -55,5 +51,6 @@ err_t remove_rows(Ledger *ledger){
   free_for_retotal(ledger);
   get_names(ledger);
   get_totals(ledger);
+  
   return LSUCCESS;
 }
