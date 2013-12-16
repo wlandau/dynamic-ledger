@@ -18,6 +18,8 @@ err_t copy_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany){
   if(ledger == NULL || rows == NULL || howmany < 1)
     return LFAILURE;
 
+  free_ledger(clipboard);
+
   if(new_ledger(clipboard) == LFAILURE)
     return LFAILURE;
      
