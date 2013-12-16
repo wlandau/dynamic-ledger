@@ -9,6 +9,8 @@
 int main(){
   char str[1000];
 
+  printf("\"NULL\" ret = %d\n", col_delim_str(NULL));  
+
   strcpy(str, "	hi");
   printf("\"%s\" ret = %d\n", str, col_delim_str(str));
   

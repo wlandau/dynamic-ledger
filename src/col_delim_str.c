@@ -13,7 +13,13 @@
 #include <user_settings.h>
 
 index_t col_delim_str(char *s){
-  int i, n = strlen(s);
+  int i, n;
+  
+  if(s == NULL)
+    return NO_INDEX;
+    
+  n = strlen(s);  
+  
   for(i = 0; i < n; ++i)
     if(col_delim_char(s[i]))
       return i;
