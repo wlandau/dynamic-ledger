@@ -53,7 +53,7 @@
 #define PRINT_EMPTY_ACCOUNTS 0  /*** SET TO 1 TO INCLUDE EMPTY ACCOUNTS IN SUMMARY ****
                                  *** SET TO 0 TO IGNORE ACCOUNTS WITH $0.00 BALANCE ***/
 
-#define USE_COLOR   1  /*** SET TO 1 TO ENABLE COLOR-CODED PRINTING TO THE TERMINAL ***/  	/* NEED TO IMPLEMENT */
+#define USE_COLOR   1  /*** SET TO 1 TO ENABLE COLOR-CODED PRINTING TO THE TERMINAL ***/
                        /*** SET TO 0 FOR NO COLORING **********************************/
 
 #define NORMAL_COLOR     "\x1B[0m"    /*** REGULAR TEXT ******/

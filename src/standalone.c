@@ -14,24 +14,45 @@
 #include <string.h>
 #include <user_settings.h>
 
-int standalone(int argc, char **argv){
+err_t standalone(int argc, char **argv){
+  Ledger *ledger;
+
   if(argc == 2){
-    if(summarize_file_to_stream(argv[1], stdout)){
-      fprintf(stderr, "Exiting.\n");
-      return 1;
+
+    if(get_ledger(&ledger, argv[1], NULL, NULL) == LFAILURE){
+      free_ledger(ledger);
+      return LFAILURE;
     }
+
+    if(print_summary_to_stream(ledger, stdout, USE_COLOR) == LFAILURE){
+      free_ledger(ledger);
+      return LFAILURE;
+    }
+
+    free_ledger(ledger);
+
   } else if(argc == 3){
-    if(condense_and_print(argv[1], argv[2])){
-      fprintf(stderr, "No output produced.\nExiting.\n");
-      return 1;
+
+    if(get_ledger(&ledger, argv[1], NULL, NULL) == LFAILURE){
+      free_ledger(ledger);
+      return LFAILURE;
     }
+
+    if(clean(ledger) == LFAILURE){
+      free_ledger(ledger);
+      return LFAILURE;
+    }
+
+    if(print_ledger_to_filename(ledger, argv[2]) == LFAILURE){
+      free_ledger(ledger);
+      return LFAILURE;
+    }
+
+    free_ledger(ledger);
+
   } else{
     usage(); 
   }
 
-  return 0;
-}
-
-int main(int argc, char **argv){ 
-  return standalone(argc, argv) ? EXIT_FAILURE : EXIT_SUCCESS;
+  return LSUCCESS;
 }

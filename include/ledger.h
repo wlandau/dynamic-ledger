@@ -174,14 +174,10 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor);
 err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor);
 
 
-int summarize_file_to_stream(char* filename, FILE *fp);                         /* REMOVE WHEN READY */
-int condense_and_print( char* infile,  char *outfile);                     /* REMOVE WHEN READY */
-
-
 /*************************************************************************************** 
  *** TOP-LEVEL ROUTINE OF COMMAND LINE INTERFACE VERSION *******************************
  ***************************************************************************************/
 
-int standalone(int argc, char **argv);                                       /* NEEDS TESTING */
+err_t standalone(int argc, char **argv);                                       /* NEEDS TESTING */
 
 #endif
