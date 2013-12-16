@@ -1,7 +1,8 @@
 /***
- *** @file contains_tabs.c
+ *** @file col_delim_char.c
  *** @author Will Landau
  *** @email will.landau@gmail.com
+ *** @web http://www.will-landau.com/
  ***/
  
 #include <errno.h>

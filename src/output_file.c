@@ -1,7 +1,8 @@
 /***
- *** @file bad_output_file.c
+ *** @file output_file.c
  *** @author Will Landau
  *** @email will.landau@gmail.com
+ *** @web http://www.will-landau.com/
  ***/
 
 #include <errno.h>

@@ -1,7 +1,8 @@
 /***
- *** @file alloc_text_content.c
+ *** @file which_bank_total.c
  *** @author Will Landau
  *** @email will.landau@gmail.com
+ *** @web http://www.will-landau.com/
  ***/
 
 #include <errno.h>

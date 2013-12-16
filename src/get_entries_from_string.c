@@ -2,6 +2,7 @@
  *** @file get_entries_from_string.c
  *** @author Will Landau
  *** @email will.landau@gmail.com
+ *** @web http://www.will-landau.com/
  ***/
 
 #include <errno.h>

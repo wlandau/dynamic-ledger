@@ -1,7 +1,8 @@
 /***
- *** @file get_ledger_from_filename.c
+ *** @file get_ledger.c
  *** @author Will Landau
  *** @email will.landau@gmail.com
+ *** @web http://www.will-landau.com/
  ***/
 
 #include <errno.h>

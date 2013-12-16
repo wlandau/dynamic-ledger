@@ -1,7 +1,8 @@
 /***
- *** @file totaled.c
+ *** @file untotaled.c
  *** @author Will Landau
  *** @email will.landau@gmail.com
+ *** @web http://www.will-landau.com/
  ***/
 
 #include <errno.h>
