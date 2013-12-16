@@ -40,6 +40,7 @@ DEP+=move_rows
 DEP+=new_ledger
 DEP+=output_file
 DEP+=parse_char
+DEP+=paste_rows
 DEP+=permute_rows
 DEP+=print_ledger_to_filename
 DEP+=print_ledger_to_stream 

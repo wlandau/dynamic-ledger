@@ -16,9 +16,11 @@ int main(){
   
   get_ledger(&ledger, F, NULL, NULL);
   print_ledger_to_stream(ledger, stdout);
+  print_summary_to_stream(ledger, stdout, 1);
 
   printf("\nTEST 2: RET = %d\n", cut_rows(ledger, &clipboard, rows, 5));
   print_ledger_to_stream(ledger, stdout);
+  print_summary_to_stream(ledger, stdout, 1);
   
   printf("\n");
   print_ledger_to_stream(clipboard, stdout);  

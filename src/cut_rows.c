@@ -24,7 +24,7 @@ err_t cut_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany){
     strcpy(ledger->entries[STATUS][rows[row]], REMOVE);
     
   remove_rows(ledger);
-  
+
   return LSUCCESS; 
 }
 

@@ -134,6 +134,7 @@ err_t edit_entry(Ledger *ledger, char *entry, int row, int col);
 err_t edit_row(Ledger *ledger, char **entries, int row);
 err_t insert_rows(Ledger *ledger, int row, int howmany); 
 err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto);
+err_t paste_rows(Ledger *ledger, Ledger *clipboard, int where);
 err_t permute_rows(Ledger *ledger, int *order);
 err_t rename_bank(Ledger *ledger, char *from, char *to);
 err_t rename_credit(Ledger *ledger, char *from, char *to);
