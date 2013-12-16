@@ -1,6 +1,5 @@
 CC=gcc
 CCFLAGS=-c -Wall -pedantic -Iinclude/
-LDFLAGS=-lm
 
 SRCDIR=src/
 OBJDIR=obj/
@@ -74,7 +73,7 @@ OBJ=$(foreach name, $(DEP), $(OBJDIR)$(name).o)
 all: $(BIN)
 	
 $(BIN): $(OBJ) 
-	$(CC) $(OBJ) $(LDFLAGS) -o $(BIN) 
+	$(CC) $(OBJ) -o $(BIN) 
 
 $(OBJDIR)%.o: $(SRCDIR)%.c dirs
 	$(CC) $(CCFLAGS) $< -o $@ 

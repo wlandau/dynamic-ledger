@@ -6,9 +6,7 @@
  ***/
 
 #include <errno.h>
-#include <getopt.h>
 #include <ledger.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,7 +19,7 @@ err_t trim_ledger(Ledger *ledger){
     return LFAILURE;
 
   for(row = 0; row < ledger->nrows; ++row)
-    if(fabs(atof(ledger->entries[AMOUNT][row])) < EPS)
+    if(small_norm(atof(ledger->entries[AMOUNT][row])) == LYES)
       strcpy(ledger->entries[STATUS][row], REMOVE);    
    
   remove_rows(ledger);

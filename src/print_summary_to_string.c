@@ -6,9 +6,7 @@
  ***/
 
 #include <errno.h>
-#include <getopt.h>
 #include <ledger.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -28,9 +26,9 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   strcpy(norm, usecolor ? NORMAL_COLOR : "");
 
   for(i = 0; i < ledger->ncredits; ++i){
-    l0 = (fabs(ledger->credit_totals[i][I_NOT_THERE_YET]) > EPS);
-    l1 = (fabs(ledger->credit_totals[i][I_PENDING]) > EPS);
-    l2 = (fabs(ledger->credit_totals[i][I_CLEARED]) > EPS);
+    l0 = (small_norm(ledger->credit_totals[i][I_NOT_THERE_YET]) == LNO);
+    l1 = (small_norm(ledger->credit_totals[i][I_PENDING]) == LNO);
+    l2 = (small_norm(ledger->credit_totals[i][I_CLEARED]) == LNO);
  
     if(l0 || l1 || l2 || (PRINT_EMPTY_ACCOUNTS && strlen(ledger->credits[i]))){
       ++any;
@@ -74,9 +72,9 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   }     
           
   for(i = 0; i < ledger->nbanks; ++i){
-    l0 = (fabs(ledger->bank_totals[i][I_NOT_THERE_YET]) > EPS);
-    l1 = (fabs(ledger->bank_totals[i][I_PENDING]) > EPS);
-    l2 = (fabs(ledger->bank_totals[i][I_CLEARED]) > EPS) ||      
+    l0 = (small_norm(ledger->bank_totals[i][I_NOT_THERE_YET]) == LNO);
+    l1 = (small_norm(ledger->bank_totals[i][I_PENDING]) == LNO);
+    l2 = (small_norm(ledger->bank_totals[i][I_CLEARED]) == LNO) ||      
          filled_partitions(ledger, i); 
   
     if(l0 || l1 || l2 || (PRINT_EMPTY_ACCOUNTS && strlen(ledger->banks[i]))){
@@ -118,7 +116,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
 
     anyp = 0;
     for(j = 0; j < ledger->npartitions[i]; ++j)
-      if(fabs(ledger->partition_totals[i][j]) > EPS){
+      if(small_norm(ledger->partition_totals[i][j]) == LNO){
         if(strlen(ledger->partitions[i][j])){
           if(!anyp){
             sprintf(*s,"%s\n          Partitions:\n", *s);
@@ -130,7 +128,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
       }
       
     nullp = which(ledger->partitions[i], NIL, ledger->npartitions[i]);
-    if(anyp && fabs(ledger->partition_totals[i][nullp]) > EPS)
+    if(anyp && (small_norm(ledger->partition_totals[i][nullp]) == LNO))
       sprintf(*s,"%s%s%30.2f%s  unpartitioned\n", *s,
                   color(ledger->partition_totals[i][nullp], usecolor),
                   ledger->partition_totals[i][nullp], norm);

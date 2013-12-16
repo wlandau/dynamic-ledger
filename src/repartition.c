@@ -6,9 +6,7 @@
  ***/
 
 #include <errno.h>
-#include <getopt.h>
 #include <ledger.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,7 +42,7 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
   for(i = 0; i < npartitions; ++i)  
     sum += amounts[i];
 
-  if(fabs(sum - ledger->bank_totals[ibank][I_OVERALL_BAL]) > EPS){
+  if(small_norm(sum - ledger->bank_totals[ibank][I_OVERALL_BAL]) == LNO){
     fprintf(stderr, "Error: your partition totals sum to %0.2f.\n", sum);
     fprintf(stderr, "They should sum to the true total balance, %0.2f,\n", 
             ledger->bank_totals[ibank][I_OVERALL_BAL]); 

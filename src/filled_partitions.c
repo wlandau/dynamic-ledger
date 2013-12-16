@@ -6,9 +6,7 @@
  ***/
 
 #include <errno.h>
-#include <getopt.h>
 #include <ledger.h>
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,7 +20,7 @@ bool_t filled_partitions(Ledger *ledger, int bank){
     return LNO;
 
   for(i = 0; i < ledger->npartitions[bank]; ++i)
-    if(fabs(ledger->partition_totals[bank][i]) > EPS){
+    if(small_norm(ledger->partition_totals[bank][i]) == LNO){
       ret = LYES;
       break;
     }
