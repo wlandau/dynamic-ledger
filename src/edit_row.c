@@ -17,7 +17,7 @@ err_t edit_row(Ledger *ledger, char **entries, int row){
   int field, i;
   char local_entry[ENTRYSIZE];
 
-  if(ledger == NULL)
+  if(ledger == NULL || entries == NULL)
     return LFAILURE;
 
   if(row < 0 || row >= ledger->nrows){
