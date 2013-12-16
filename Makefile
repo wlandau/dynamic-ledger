@@ -3,6 +3,7 @@ CCFLAGS=-c -Wall -pedantic -Iinclude/
 
 SRCDIR=src/
 OBJDIR=obj/
+TESTDIR=tests/
 BIN=ledger
 
 DEP=main
@@ -68,6 +69,8 @@ DEP+=which_bank_total
 DEP+=which_credit_total
 
 OBJ=$(foreach name, $(DEP), $(OBJDIR)$(name).o)
+TESTOBJ=$(foreach name, $(DEP), $(TESTDIR)$(name)/test_$(name).o)
+TESTBIN=$(foreach name, $(DEP), $(TESTDIR)$(name)/test)
 
 all: $(BIN)
 	
@@ -85,3 +88,12 @@ dirs:
 clean:
 	rm -rf $(OBJDIR)
 	rm -f  $(BIN)
+
+clean-tests:
+	rm -f $(TESTOBJ)
+	rm -f $(TESTBIN)
+	rm -rf $(TESTDIR)main/condensed
+	rm -rf $(TESTDIR)main/summaries
+	rm -f $(TESTDIR)main/*.txt
+	rm -f $(TESTDIR)print_ledger_to_filename/*.txt
+	rm -f $(TESTDIR)print_summary_to_filename/*.txt

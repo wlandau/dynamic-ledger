@@ -1,3 +1,0 @@
-Error: bad transaction amount "sdlkfj" at row 22.
-Fix your ledger file.
-Exiting.

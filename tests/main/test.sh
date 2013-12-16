@@ -12,8 +12,4 @@ do
   f=`basename $l`
   $DIR/../../ledger $DIR/../data/ledgers/$f &> $DIR/summaries/$f
   $DIR/../../ledger $DIR/../data/ledgers/$f $DIR/condensed/$f 2>> $DIR/stderr.txt
-
-#  diff $DIR/../data/condensed/$f $DIR/condensed/$f 2>> $DIR/stderr.txt
-#  diff $DIR/../data/summaries/$f $DIR/summaries/$f 2>> $DIR/stderr.txt
-
 done
