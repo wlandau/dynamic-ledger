@@ -128,8 +128,8 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
 
 err_t clean(Ledger *ledger, int sort_locked);
 err_t condense(Ledger *ledger);
+err_t edit_entry(Ledger *ledger, int row, int col, char *next);
 err_t insert_rows(Ledger *ledger, int row, int howmany); 
-err_t modify_entry(Ledger *ledger, int row, int col, char *next);
 err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto);
 err_t permute_rows(Ledger *ledger, int *order);
 err_t rename_bank(Ledger *ledger, char *from, char *to);

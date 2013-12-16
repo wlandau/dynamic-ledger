@@ -1,4 +1,4 @@
-TEST=test_modify_entry
+TEST=test_edit_entry
 
 CC=gcc
 CCFLAGS=-c -Wall -pedantic -I../../include/

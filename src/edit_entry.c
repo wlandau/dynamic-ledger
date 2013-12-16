@@ -12,7 +12,7 @@
 #include <string.h>
 #include <user_settings.h>
 
-err_t modify_entry(Ledger *ledger, int row, int col, char *next){
+err_t edit_entry(Ledger *ledger, int row, int col, char *next){
   int i;
   char *next_local;
 
