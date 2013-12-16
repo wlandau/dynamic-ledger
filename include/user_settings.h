@@ -2,7 +2,7 @@
 #define USER_SETTINGS_H
 
 /***
- *** @file ledger.h
+ *** @file user_settings.h
  *** @author Will Landau
  *** @email will.landau@gmail.com
  *** @web http://will-landau.com
