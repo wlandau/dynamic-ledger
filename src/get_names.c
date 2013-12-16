@@ -26,8 +26,17 @@ err_t get_names(Ledger *ledger){
   for(i = 0; i < ledger->nrows; ++i)
     s[i] = calloc(ENTRYSIZE, sizeof(char));
 
-  unique(ledger->entries[CREDIT], ledger->nrows, &ledger->credits, &ledger->ncredits);
-  unique(ledger->entries[BANK], ledger->nrows, &ledger->banks, &ledger->nbanks);  
+  if(unique(ledger->entries[CREDIT], 
+          ledger->nrows, 
+          &ledger->credits, 
+          &ledger->ncredits) == LFAILURE)
+    return LFAILURE;
+    
+  if(unique(ledger->entries[BANK], 
+            ledger->nrows, 
+            &ledger->banks, 
+            &ledger->nbanks) == LFAILURE)
+    return LFAILURE;  
   
   ledger->npartitions = calloc(ledger->nbanks, sizeof(int*));
   ledger->partitions = malloc(ledger->nbanks * sizeof(char***));
@@ -40,7 +49,10 @@ err_t get_names(Ledger *ledger){
         strcpy(s[j], NIL);
     }
      
-    unique(s, ledger->nrows, &(ledger->partitions[i]), &(ledger->npartitions[i]));
+    if(unique(s, ledger->nrows, 
+              &(ledger->partitions[i]), 
+              &(ledger->npartitions[i])) == LFAILURE)
+      return LFAILURE;
   }
   
   for(i = 0; i < ledger->nrows; ++i)
