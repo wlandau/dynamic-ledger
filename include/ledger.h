@@ -129,6 +129,7 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
 err_t clean(Ledger *ledger, int sort_locked);
 err_t condense(Ledger *ledger);
 err_t copy_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany);
+err_t cut_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany);
 err_t edit_entry(Ledger *ledger, char *entry, int row, int col);
 err_t edit_row(Ledger *ledger, char **entries, int row);
 err_t insert_rows(Ledger *ledger, int row, int howmany); 
