@@ -18,12 +18,14 @@ err_t cut_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany){
   if(ledger == NULL || rows == NULL || howmany < 1)
     return LFAILURE;
      
-  copy_rows(ledger, clipboard, rows, howmany);
+  if(copy_rows(ledger, clipboard, rows, howmany) == LFAILURE)
+    return LFAILURE;
   
   for(row = 0; row < howmany; ++row)
     strcpy(ledger->entries[STATUS][rows[row]], REMOVE);
     
-  remove_rows(ledger);
+  if(remove_rows(ledger) == LFAILURE)
+    return LFAILURE;
 
   return LSUCCESS; 
 }
