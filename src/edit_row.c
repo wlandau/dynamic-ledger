@@ -68,9 +68,14 @@ err_t edit_row(Ledger *ledger, char **entries, int row){
     strcpy(ledger->entries[field][row], local_entry);  
   } 
   
-  free_for_retotal(ledger);
-  get_names(ledger);
-  get_totals(ledger); 
+  if(free_for_retotal(ledger) == LFAILURE)
+    return LFAILURE;
+      
+  if(get_names(ledger) == LFAILURE)
+    return LFAILURE;
+        
+  if(get_totals(ledger) == LFAILURE)
+    return LFAILURE; 
   
   return LSUCCESS;
 }
