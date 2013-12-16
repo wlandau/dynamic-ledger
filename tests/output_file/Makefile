@@ -1,14 +1,21 @@
+TEST=test_output_file
+
+CC=gcc
+CCFLAGS=-c -Wall -pedantic -I../../include/
+LDFLAGS=-lm
+ALLOBJ=$(wildcard ../../obj/*.o)
+OBJ=$(filter-out ../../obj/main.o, $(ALLOBJ))
+
 all: test
 
-test: test_output_file.o output_file.o
-	gcc test_output_file.o output_file.o -o test
+test: $(TEST).o $(OBJ)
+	$(CC) $(TEST).o $(OBJ) $(LDFLAGS) -o test
 
-test_output_file.o:
-	gcc -c test_output_file.c -o test_output_file.o -Wall -ansi -pedantic -I../../include
+$(TEST).o: $(TEST).c
+	$(CC) $(CCFLAGS) $(TEST).c -o $(TEST).o
 
-output_file.o:
-	gcc -c ../../src/output_file.c -o output_file.o -Wall -ansi -pedantic -I../../include
+
 
 clean:
-	rm -f *.o
-	rm -f test
+	rm -rf *.o
+	rm -f  $(BIN)

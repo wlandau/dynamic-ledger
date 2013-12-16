@@ -4,7 +4,7 @@ CC=gcc
 CCFLAGS=-c -Wall -pedantic -I../../include/
 LDFLAGS=-lm
 ALLOBJ=$(wildcard ../../obj/*.o)
-OBJ=$(filter-out ../../obj/standalone.o, $(ALLOBJ))
+OBJ=$(filter-out ../../obj/main.o, $(ALLOBJ))
 
 all: test
 

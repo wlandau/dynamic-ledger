@@ -1,14 +1,21 @@
+TEST=test_col_delim_char
+
+CC=gcc
+CCFLAGS=-c -Wall -pedantic -I../../include/
+LDFLAGS=-lm
+ALLOBJ=$(wildcard ../../obj/*.o)
+OBJ=$(filter-out ../../obj/main.o, $(ALLOBJ))
+
 all: test
 
-test: test_col_delim_char.o col_delim_char.o
-	gcc test_col_delim_char.o col_delim_char.o -o test
+test: $(TEST).o $(OBJ)
+	$(CC) $(TEST).o $(OBJ) $(LDFLAGS) -o test
 
-test_col_delim_char.o:
-	gcc -c test_col_delim_char.c -o test_col_delim_char.o -Wall -ansi -pedantic -I../../include
+$(TEST).o: $(TEST).c
+	$(CC) $(CCFLAGS) $(TEST).c -o $(TEST).o
 
-col_delim_char.o:
-	gcc -c ../../src/col_delim_char.c -o col_delim_char.o -Wall -ansi -pedantic -I../../include
+
 
 clean:
-	rm -f *.o
-	rm -f test
+	rm -rf *.o
+	rm -f  $(BIN)

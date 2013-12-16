@@ -39,7 +39,7 @@ err_t sort_by_status(Ledger *ledger, int sort_locked){
       order[i] = 3;
     else if(str_equal(ledger->entries[STATUS][i], PENDING))
       order[i] = 4;
-    else if(str_equal(ledger->entries[STATUS][i], LOCKED) && sort_locked)
+    else if(str_equal(ledger->entries[STATUS][i], LOCKED) && (sort_locked == LYES))
       order[i] = 5;
     else
       order[i] = 6;
