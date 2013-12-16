@@ -13,7 +13,7 @@
 #include <user_settings.h>
 
 err_t get_entries_from_string(Ledger *ledger, char *s){
-  int i, char_index, field, row;
+  int i, char_index, field, row, nfail = 0;
   err_t ret;
   
   if(ledger == NULL || s == NULL)
@@ -33,10 +33,10 @@ err_t get_entries_from_string(Ledger *ledger, char *s){
   field = 0;
   row = 0;
   for(; i < strlen(s); ++i)
-    parse_char(ledger, s[i], &char_index, &field, &row);
+    nfail += (parse_char(ledger, s[i], &char_index, &field, &row) == LFAILURE);
   strip_ledger(ledger);
     
-  ret = (strip_ledger(ledger) == LSUCCESS);
+  ret = (strip_ledger(ledger) == LSUCCESS) && (!nfail);
   ret = ret && (legal_amounts(ledger) == LYES) && (legal_status_codes(ledger) == LYES);
   return ret ? LSUCCESS : LFAILURE;
 }

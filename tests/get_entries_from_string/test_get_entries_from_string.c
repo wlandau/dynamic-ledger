@@ -39,14 +39,14 @@ int main(){
   strcpy(strs[9], L9);
 
     printf("\n--------\nTEST -1\n");
-    ledger = new_ledger();
+    new_ledger(&ledger);
     printf("ret = %d\n", get_entries_from_string(ledger, NULL));
     printf("\nENTRIES %d\n\n", -1);
-    free_ledger(ledger);
+    free_ledger(&ledger);
 
   for(test = 0; test < ntests; ++test){
     printf("\n--------\nTEST %d\n", test);
-    ledger = new_ledger();
+    new_ledger(&ledger);
     printf("ret = %d\n", get_entries_from_string(ledger, strs[test]));
     
     printf("\nENTRIES %d\n\n", test);
@@ -59,7 +59,7 @@ int main(){
       printf("\n");     
     }
     
-    free_ledger(ledger);
+    free_ledger(&ledger);
   }  
 
   for(test = 0; test < ntests; ++test)
