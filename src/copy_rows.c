@@ -16,7 +16,7 @@ err_t copy_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany){
   int row, field;
 
   if(ledger == NULL || rows == NULL || howmany < 1)
-    return LSUCCESS;
+    return LFAILURE;
 
   if(new_ledger(clipboard) == LFAILURE)
     return LFAILURE;
