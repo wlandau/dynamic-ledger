@@ -4,6 +4,7 @@ CCFLAGS=-c -Wall -pedantic -Iinclude/
 SRCDIR=src/
 OBJDIR=obj/
 TESTDIR=tests/
+TUTORIALDIR=tutorial/
 BIN=ledger
 
 DEP=main
@@ -85,6 +86,8 @@ $(OBJDIR)%.o: $(SRCDIR)%.c dirs
 dirs:
 	mkdir -p $(OBJDIR)
 
+clean-all: clean clean-tests clean-tutorial
+
 clean:
 	rm -rf $(OBJDIR)
 	rm -f  $(BIN)
@@ -97,3 +100,10 @@ clean-tests:
 	rm -f $(TESTDIR)main/*.txt
 	rm -f $(TESTDIR)print_ledger_to_filename/*.txt
 	rm -f $(TESTDIR)print_summary_to_filename/*.txt
+
+clean-tutorial:
+	rm -f $(TUTORIALDIR)tutorial.aux
+	rm -f $(TUTORIALDIR)tutorial.log
+	rm -f $(TUTORIALDIR)tutorial.out
+	rm -f $(TUTORIALDIR)tutorial.synctex.gz
+	rm -f $(TUTORIALDIR)tutorial.toc
