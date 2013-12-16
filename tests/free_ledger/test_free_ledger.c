@@ -11,6 +11,7 @@
 int main(){
   Ledger *ledger = NULL;
   
+  printf("RET = %d\n", free_ledger(NULL));
   printf("RET = %d\n", free_ledger(&ledger));
   printf("RET = %d\n", free_ledger(&ledger));
     
