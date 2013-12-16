@@ -1,5 +1,5 @@
 CC=gcc
-CCFLAGS=-c -Wall -pedantic -ansi -Iinclude/
+CCFLAGS=-c -Wall -pedantic -Iinclude/
 
 SRCDIR=src/
 OBJDIR=obj/
