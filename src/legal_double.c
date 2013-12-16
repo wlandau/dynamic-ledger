@@ -13,15 +13,18 @@
 #include <user_settings.h>
 
 bool_t legal_double(char *s){
+  int e = 0;
   char *testbufref, testbuf[ENTRYSIZE];
   
-  errno = 0;
   str_strip(s);
   strcpy(testbuf, s);
   testbufref = testbuf;
-  strtod(testbuf, &testbufref); 
 
-  if((errno || testbuf == testbufref || *testbufref != 0) && strlen(testbuf))
+  errno = 0;
+  strtod(testbuf, &testbufref); 
+  e = errno;
+
+  if((e || testbuf == testbufref || *testbufref != 0) && strlen(testbuf))
     return LNO;   
 
   return LYES;

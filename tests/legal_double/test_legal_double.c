@@ -12,11 +12,39 @@ int main(){
   
   strcpy(str, "  l  -14.2 ");
   printf("%s\t%d\n", str, legal_double(str));
-  printf("%s\n", str);
   
   strcpy(str, "    -14.2 \t\t ");
   printf("%s\t%d\n", str, legal_double(str));
-  printf("%s\n", str);
+
+  strcpy(str, "0");
+  printf("%s\t%d\n", str, legal_double(str));
   
+  strcpy(str, "");
+  printf("%s\t%d\n", str, legal_double(str));
+  
+  strcpy(str, "0.01");
+  printf("%s\t%d\n", str, legal_double(str));
+  
+  strcpy(str, "0.0.1");
+  printf("%s\t%d\n", str, legal_double(str));
+  
+  strcpy(str, "1..0");
+  printf("%s\t%d\n", str, legal_double(str));
+  
+  strcpy(str, "1.0");
+  printf("%s\t%d\n", str, legal_double(str));
+  
+  strcpy(str, "-1..0");
+  printf("%s\t%d\n", str, legal_double(str));
+  
+  strcpy(str, "-1.0");
+  printf("%s\t%d\n", str, legal_double(str));
+  
+  strcpy(str, "-1 0");
+  printf("%s\t%d\n", str, legal_double(str));
+
+  strcpy(str, "1 0");
+  printf("%s\t%d\n", str, legal_double(str));
+    
   return 0;
 }
