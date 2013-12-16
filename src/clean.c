@@ -16,11 +16,15 @@
 
 err_t clean(Ledger *ledger, int sort_locked){
   
-  if(condense(ledger) == LFAILURE)
+  if(condense(ledger) == LFAILURE){
+    fprintf(stderr, "Error: could not condense ledger.\n");
     return LFAILURE;
-    
-  if(sort_by_status(ledger, sort_locked) == LFAILURE);
+  }
+
+  if(sort_by_status(ledger, sort_locked) == LFAILURE){
+    fprintf(stderr, "Error: could not sort transactions by status.\n");
     return LFAILURE;
-    
+  }
+ 
   return LSUCCESS;
 }
