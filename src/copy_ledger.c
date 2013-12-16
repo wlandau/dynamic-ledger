@@ -18,7 +18,9 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger){
   if(in_ledger == NULL)
     return LFAILURE;
 
-  new_ledger(out_ledger);
+  if(new_ledger(out_ledger) == LFAILURE)
+    return LFAILURE;
+  
   (*out_ledger)->nrows = in_ledger->nrows;
   
   if(alloc_entries(*out_ledger) == LFAILURE)
