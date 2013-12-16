@@ -53,6 +53,7 @@ DEP+=rename_partition
 DEP+=repartition
 DEP+=row_delim_char
 DEP+=row_delim_str
+DEP+=small_norm
 DEP+=sort_by_status
 DEP+=space 
 DEP+=standalone 

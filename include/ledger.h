@@ -47,11 +47,11 @@
 
 
 /*************************************************************************************** 
- *** MISC INTERNAL PARAMETERS **********************************************************
+ *** MISC INTERNAL MACROS **************************************************************
  ***************************************************************************************/
 
 #define ENTRYSIZE      256
-#define EPS            0.004999
+#define EPS            0.000025
 #define FILENAMESIZE   256
 #define LINESIZE       4096
 #define NFIELDS        6
@@ -88,6 +88,7 @@ bool_t legal_status_codes(Ledger *ledger);
 bool_t locked(char *status);
 bool_t output_file( char *filename); 
 bool_t row_delim_char(char c);
+bool_t small_norm(double d);
 bool_t space(char c);    
 bool_t str_equal(const char *s1, const char *s2);
 bool_t untotaled(Ledger *ledger);
