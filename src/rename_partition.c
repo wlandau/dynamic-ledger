@@ -22,9 +22,15 @@ err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to){
     if(str_equal(ledger->entries[BANK][i], bank) && 
        str_equal(ledger->entries[PARTITION][i], from))
       strcpy(ledger->entries[PARTITION][i], to);
-  free_for_retotal(ledger);
-  get_names(ledger);
-  get_totals(ledger);  
+      
+  if(free_for_retotal(ledger) == LFAILURE)
+    return LFAILURE;
+    
+  if(get_names(ledger) == LFAILURE)
+    return LFAILURE;
+    
+  if(get_totals(ledger) == LFAILURE)
+    return LFAILURE; 
   
   return LSUCCESS; 
 }
