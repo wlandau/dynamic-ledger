@@ -28,9 +28,14 @@ err_t paste_rows(Ledger *ledger, Ledger *clipboard, int where){
     for(row = 0; row < clipboard->nrows; ++row)
       strcpy(ledger->entries[field][row + where], clipboard->entries[field][row]);
   
-  free_for_retotal(ledger);
-  get_names(ledger);
-  get_totals(ledger);
+  if(free_for_retotal(ledger) == LFAILURE)
+    return LFAILURE;
+
+  if(get_names(ledger) == LFAILURE)
+    return LFAILURE;
+    
+  if(get_totals(ledger) == LFAILURE)
+    return LFAILURE;
   
   return LSUCCESS; 
 }
