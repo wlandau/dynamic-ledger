@@ -22,9 +22,8 @@ int main(){
   print_ledger_to_stream(ledger, stdout);
   print_summary_to_stream(ledger, stdout, 1);
   
-  printf("\n");
+  printf("PRINTING CLIPBOARD\n");
   print_ledger_to_stream(clipboard, stdout);  
-  
   
   free_ledger(&ledger);
   free_ledger(&clipboard);
