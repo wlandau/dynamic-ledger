@@ -18,7 +18,8 @@ err_t print_ledger_to_stream(Ledger *ledger, FILE *fp){
   if(ledger == NULL || fp == NULL)
     return LFAILURE;
 
-  strip_ledger(ledger);
+  if(strip_ledger(ledger) == LFAILURE)
+    return LFAILURE;
 
   for(field = 0; field < NFIELDS; ++field){
     if(field == AMOUNT)
