@@ -25,7 +25,6 @@ err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto){
     return LSUCCESS;
   
   order = calloc(ledger->nrows, sizeof(int));
-  qsort(rows, nrows, sizeof(int), icmp);
   
   for(i = moveto; i < ledger->nrows; ++i)
     order[i] = 2;

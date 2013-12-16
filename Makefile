@@ -24,7 +24,6 @@ DEP+=get_ledger
 DEP+=get_names 
 DEP+=get_totals 
 DEP+=input_file 
-DEP+=icmp
 DEP+=insert_rows
 DEP+=legal_amounts 
 DEP+=legal_double

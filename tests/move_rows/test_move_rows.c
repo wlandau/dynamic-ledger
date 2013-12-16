@@ -26,16 +26,15 @@ int main(){
   printf("1 RET = %d\n", move_rows(ledger, rows, 3, 0));
   print_ledger_to_stream(ledger, stdout);
  
- 
   rows[0] = 0; 
-  rows[1] = 1;  
-  rows[2] = 2;  
+  rows[1] = 2;  
+  rows[2] = 1;  
   printf("2 RET = %d\n", move_rows(ledger, rows, 3, ledger->nrows));
     print_ledger_to_stream(ledger, stdout);
   
-  rows[0] = 3; 
-  rows[1] = 4;  
-  rows[2] = 6;  
+  rows[0] = 4; 
+  rows[1] = 6;  
+  rows[2] = 3;  
   
   printf("3 RET = %d\n", move_rows(ledger, rows, 3, 0));
     print_ledger_to_stream(ledger, stdout);
