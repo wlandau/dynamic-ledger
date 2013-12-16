@@ -24,7 +24,8 @@ err_t get_entries_from_string(Ledger *ledger, char *s){
     if(row_delim_char(s[i]) == LYES)
       ++ledger->nrows;
       
-  alloc_entries(ledger);
+  if(alloc_entries(ledger) == LFAILURE)
+    return LFAILURE;
 
   for(i = 0; i < strlen(s) && row_delim_char(s[i]) == LNO; ++i);
   ++i;
@@ -34,7 +35,6 @@ err_t get_entries_from_string(Ledger *ledger, char *s){
   row = 0;
   for(; i < strlen(s); ++i)
     nfail += (parse_char(ledger, s[i], &char_index, &field, &row) == LFAILURE);
-  strip_ledger(ledger);
     
   ret = (strip_ledger(ledger) == LSUCCESS) && (!nfail);
   ret = ret && (legal_amounts(ledger) == LYES) && (legal_status_codes(ledger) == LYES);
