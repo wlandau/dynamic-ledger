@@ -48,6 +48,8 @@ err_t condense(Ledger *ledger){
     }
   }
   
-  trim_ledger(ledger);
+  if(trim_ledger(ledger) == LFAILURE)
+    return LFAILURE;
+
   return LSUCCESS;
 }
