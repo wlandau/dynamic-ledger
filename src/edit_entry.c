@@ -32,9 +32,14 @@ err_t edit_entry(Ledger *ledger, char *entry, int row, int field){
   if(entry == NULL){
     strcpy(ledger->entries[field][row], NIL);
     
-    free_for_retotal(ledger);
-    get_names(ledger);
-    get_totals(ledger); 
+    if(free_for_retotal(ledger) == LFAILURE)
+      return LFAILURE;
+      
+    if(get_names(ledger) == LFAILURE)
+      return LFAILURE;
+        
+    if(get_totals(ledger) == LFAILURE)
+      return LFAILURE; 
     
     return LSUCCESS;
   }
@@ -71,9 +76,14 @@ err_t edit_entry(Ledger *ledger, char *entry, int row, int field){
   
   strcpy(ledger->entries[field][row], local_entry);
 
-  free_for_retotal(ledger);
-  get_names(ledger);
-  get_totals(ledger); 
-  
+  if(free_for_retotal(ledger) == LFAILURE)
+    return LFAILURE;
+      
+  if(get_names(ledger) == LFAILURE)
+    return LFAILURE;
+        
+  if(get_totals(ledger) == LFAILURE)
+    return LFAILURE; 
+      
   return LSUCCESS;
 }
