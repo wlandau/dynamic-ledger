@@ -23,7 +23,7 @@ int main(){
   strcpy(entries[DESCRIPTION], "dunkyhory\tblah");
 
   printf("TEST 1 RET = %d\n", edit_row(ledger, entries, 1));
-  
+
   get_ledger(&ledger, F, NULL, NULL);
   print_ledger_to_stream(ledger, stdout);  
   print_summary_to_stream(ledger, stdout, 1);
@@ -45,6 +45,14 @@ int main(){
   strcpy(entries[STATUS], "cn");
 
   printf("TEST 5 RET = %d\n", edit_row(ledger, entries, 1));
+  print_ledger_to_stream(ledger, stdout);  
+  print_summary_to_stream(ledger, stdout, 1);
+
+  printf("TEST 6 RET = %d\n", edit_row(ledger, entries, -5));
+  print_ledger_to_stream(ledger, stdout);  
+  print_summary_to_stream(ledger, stdout, 1);
+
+  printf("TEST 7 RET = %d\n", edit_row(ledger, entries, 5000));
   print_ledger_to_stream(ledger, stdout);  
   print_summary_to_stream(ledger, stdout, 1);
 
