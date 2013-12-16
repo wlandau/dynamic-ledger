@@ -1,5 +1,5 @@
 /***
- *** @file modify_entry.c
+ *** @file edit_entry.c
  *** @author Will Landau
  *** @email will.landau@gmail.com
  *** @web http://www.will-landau.com/
@@ -12,7 +12,7 @@
 #include <string.h>
 #include <user_settings.h>
 
-err_t edit_entry(Ledger *ledger, int row, int col, char *next){
+err_t edit_entry(Ledger *ledger, char *next, int row, int col, int retotal){
   int i;
   char *next_local;
 
@@ -20,13 +20,25 @@ err_t edit_entry(Ledger *ledger, int row, int col, char *next){
     return LFAILURE;
 
   if(row < 0 || row >= ledger->nrows){
-    fprintf(stderr, "Error: illegal row index \"%d\" in modify_entry().\n", row);
+    fprintf(stderr, "Error: illegal row index \"%d\" in edit_entry().\n", row);
     return LFAILURE;
   }
   
   if(col < 0 || col >= NFIELDS){
-    fprintf(stderr, "Error: illegal column index \"%d\" in modify_entry().\n", col);
+    fprintf(stderr, "Error: illegal column index \"%d\" in edit_entry().\n", col);
     return LFAILURE;
+  }
+  
+  if(next == NULL){
+    strcpy(ledger->entries[col][row], NIL);
+    
+    if(retotal){
+      free_for_retotal(ledger);
+      get_names(ledger);
+      get_totals(ledger); 
+    }
+    
+    return LSUCCESS;
   }
   
   next_local = malloc(ENTRYSIZE * sizeof(char));
@@ -36,14 +48,14 @@ err_t edit_entry(Ledger *ledger, int row, int col, char *next){
   if(col == AMOUNT){
     if(legal_double(next_local) == LNO){
       fprintf(stderr, 
-              "Error: illegal transaction amount \"%s\" in modify_entry().\n", next);
+              "Error: illegal transaction amount \"%s\" in edit_entry().\n", next);
       free(next_local);
       return LFAILURE;
     }
   } else if(col == STATUS){
     if(legal_status_code(next_local) == LNO){
       fprintf(stderr, 
-              "Error: illegal transaction status code \"%s\" in modify_entry().\n", 
+              "Error: illegal transaction status code \"%s\" in edit_entry().\n", 
               next);
       free(next_local);
       return LFAILURE;
@@ -64,9 +76,11 @@ err_t edit_entry(Ledger *ledger, int row, int col, char *next){
   
   strcpy(ledger->entries[col][row], next_local);
 
-  free_for_retotal(ledger);
-  get_names(ledger);
-  get_totals(ledger); 
+  if(retotal){
+    free_for_retotal(ledger);
+    get_names(ledger);
+    get_totals(ledger); 
+  }
   
   free(next_local);
   return LSUCCESS;
