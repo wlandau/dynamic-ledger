@@ -13,6 +13,9 @@
 #include <user_settings.h>
 
 bool_t locked(char *status){
+  if(status == NULL)
+    return LNO;
+
   bool_t ret = str_equal(status, CREDIT_NOT_THERE_YET) ||
                str_equal(status, CREDIT_PENDING)       ||
                str_equal(status, CREDIT_CHARGED)       ||
