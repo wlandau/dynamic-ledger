@@ -12,9 +12,9 @@
 #include <string.h>
 #include <user_settings.h>
 
-err_t edit_entry(Ledger *ledger, char *next, int row, int col, int retotal){
+err_t edit_entry(Ledger *ledger, char *entry, int row, int field){
   int i;
-  char *next_local;
+  char local_entry[ENTRYSIZE];
 
   if(ledger == NULL)
     return LFAILURE;
@@ -24,64 +24,56 @@ err_t edit_entry(Ledger *ledger, char *next, int row, int col, int retotal){
     return LFAILURE;
   }
   
-  if(col < 0 || col >= NFIELDS){
-    fprintf(stderr, "Error: illegal column index \"%d\" in edit_entry().\n", col);
+  if(field < 0 || field >= NFIELDS){
+    fprintf(stderr, "Error: illegal column index \"%d\" in edit_entry().\n", field);
     return LFAILURE;
   }
   
-  if(next == NULL){
-    strcpy(ledger->entries[col][row], NIL);
+  if(entry == NULL){
+    strcpy(ledger->entries[field][row], NIL);
     
-    if(retotal){
-      free_for_retotal(ledger);
-      get_names(ledger);
-      get_totals(ledger); 
-    }
+    free_for_retotal(ledger);
+    get_names(ledger);
+    get_totals(ledger); 
     
     return LSUCCESS;
   }
   
-  next_local = malloc(ENTRYSIZE * sizeof(char));
-  strcpy(next_local, next);
-  str_strip(next_local); 
+  strcpy(local_entry, entry);
+  str_strip(local_entry);
   
-  if(col == AMOUNT){
-    if(legal_double(next_local) == LNO){
+  if(field == AMOUNT){
+    if(legal_double(local_entry) == LNO){
       fprintf(stderr, 
-              "Error: illegal transaction amount \"%s\" in edit_entry().\n", next);
-      free(next_local);
+              "Error: illegal transaction amount \"%s\" in edit_entry().\n", entry);
       return LFAILURE;
     }
-  } else if(col == STATUS){
-    if(legal_status_code(next_local) == LNO){
+  } else if(field == STATUS){
+    if(legal_status_code(local_entry) == LNO){
       fprintf(stderr, 
               "Error: illegal transaction status code \"%s\" in edit_entry().\n", 
-              next);
-      free(next_local);
+              entry);
       return LFAILURE;
     }
   }
   
-  if((i = col_delim_str(next_local)) != NO_INDEX){
+  if((i = col_delim_str(local_entry)) != NO_INDEX){
     fprintf(stderr, 
             "Warning: entries must not contain column delimiters. Truncating input.\n");
-    next_local[i] = '\0';
+    local_entry[i] = '\0';
   }
 
-  if((i = row_delim_str(next_local)) != NO_INDEX){
+  if((i = row_delim_str(local_entry)) != NO_INDEX){
     fprintf(stderr, 
             "Warning: entries must not contain row delimiters. Truncating input.\n");
-    next_local[i] = '\0';
+    local_entry[i] = '\0';
   }
   
-  strcpy(ledger->entries[col][row], next_local);
+  strcpy(ledger->entries[field][row], local_entry);
 
-  if(retotal){
-    free_for_retotal(ledger);
-    get_names(ledger);
-    get_totals(ledger); 
-  }
+  free_for_retotal(ledger);
+  get_names(ledger);
+  get_totals(ledger); 
   
-  free(next_local);
   return LSUCCESS;
 }

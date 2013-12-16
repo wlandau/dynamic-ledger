@@ -17,6 +17,7 @@ DEP+=color
 DEP+=condense 
 DEP+=copy_ledger
 DEP+=edit_entry
+DEP+=edit_row
 DEP+=filled_partitions
 DEP+=free_for_retotal 
 DEP+=free_ledger
