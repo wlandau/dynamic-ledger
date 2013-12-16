@@ -134,7 +134,9 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
                   ledger->partition_totals[i][nullp], norm);
   }
   
-  str_strip(*s);  
+  if(str_strip(*s) == LFAILURE)
+    return LFAILURE;
+  
   if(any)
     sprintf(*s, "%s\n\n", *s);
  

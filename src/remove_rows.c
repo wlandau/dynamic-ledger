@@ -47,9 +47,14 @@ err_t remove_rows(Ledger *ledger){
       free(ledger->entries[field][i]);
   ledger->nrows = row;
   
-  free_for_retotal(ledger);
-  get_names(ledger);
-  get_totals(ledger);
+  if(free_for_retotal(ledger) == LFAILURE)
+    return LFAILURE;
+    
+  if(get_names(ledger) == LFAILURE)
+    return LFAILURE;
+    
+  if(get_totals(ledger) == LFAILURE)
+    return LFAILURE;
   
   return LSUCCESS;
 }
