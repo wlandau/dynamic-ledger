@@ -11,7 +11,7 @@ amount	status	credit	bank	partition	description
 305.26			cp	a	condensed
 112.21			cp	b	condensed
 			cp	c	good
-			cp	d	boggle
+	l		cp	d	boggle
 			cp	knee	marzapan
 4229.12			cp	r	condensed
 7106.08			cps	a	condensed
