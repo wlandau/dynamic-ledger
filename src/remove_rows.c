@@ -15,19 +15,32 @@
 err_t remove_rows(Ledger *ledger){
   int i, *order, row, field;
 
+  /* CHECK FOR NULL INPUT */
+
   if(ledger == NULL)
     return LFAILURE;
     
   if(ledger->entries == NULL)
     return LFAILURE;  
     
+  /* ALLOCATE SPACE FOR PERMUTATION AND CHECK IF MALLOC WORKED */
+    
   order = calloc(ledger->nrows, sizeof(int));
+  if(order == NULL){
+    fprintf(stderr, "Error: malloc failed.\n");
+    return LFAILURE;
+  }
+  
+  /* CALCULATE PERMUTATION */  
+  
   row = ledger->nrows;
   for(i = 0; i < ledger->nrows; ++i)
     if(str_equal(ledger->entries[STATUS][i], REMOVE)){
       ++order[i];
       --row;
     }
+
+  /* PERMUTE ROWS FOR REMOVAL */ 
 
   if(permute_rows(ledger, order) == LFAILURE){
     free(order);
@@ -42,10 +55,14 @@ err_t remove_rows(Ledger *ledger){
     ++row;
   }
   
+  /* FREE THE ROWS AT THE BOTTOM */ 
+  
   for(field = 0; field < NFIELDS; ++field)
     for(i = row; i < ledger->nrows; ++i)
       free(ledger->entries[field][i]);
   ledger->nrows = row;
+
+  /* RECALCULATE NAMES AND TOTALS */ 
   
   if(free_for_retotal(ledger) == LFAILURE)
     return LFAILURE;
