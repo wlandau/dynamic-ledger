@@ -14,25 +14,19 @@
 
 err_t alloc_entries(Ledger *ledger){
   int i, j;
+  err_t ret;
   
+  /* check for null input */
   if(ledger == NULL)
     return LFAILURE;
 
   if(ledger->nrows < 1)
     return LFAILURE;
 
-  if(ledger->entries != NULL){
-    for(i = 0; i < NFIELDS; ++i){
-      if(ledger->entries[i] != NULL){
-        for(j = 0; j < ledger->nrows; ++j)
-          if(ledger->entries[i][j] != NULL)
-            free(ledger->entries[i][j]);
-        free(ledger->entries[i]);
-      }
-    }
-    free(ledger->entries);
-  }
+  /* clear previous entries */
+  free_entries(ledger);
 
+  /* allocate entries */
   ledger->entries = malloc(NFIELDS * sizeof(char**));
   for(i = 0; i < NFIELDS; ++i){
     ledger->entries[i] = malloc(ledger->nrows * sizeof(char*));
@@ -40,5 +34,23 @@ err_t alloc_entries(Ledger *ledger){
       ledger->entries[i][j] = calloc(ENTRYSIZE, sizeof(char));
   }
   
-  return LSUCCESS;
+  /* test if malloc worked */
+  ret = LSUCCESS;
+  for(i = 0; i < NFIELDS; ++i){
+    if(ledger->entries[i] == NULL){
+      fprintf(stderr, "Error: malloc failed\n");
+      ret = LFAILURE;
+    }
+    for(j = 0; j < ledger->nrows; ++j)
+      if(ledger->entries[i][j] == NULL){
+        fprintf(stderr,"Error: malloc failed\n");
+        ret = LFAILURE;
+      }
+  }
+  if(ledger->entries == NULL){
+    fprintf(stderr, "Error: malloc failed\n");
+    ret = LFAILURE;
+  }
+  
+  return ret;
 }
