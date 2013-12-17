@@ -27,7 +27,8 @@ err_t standalone(int argc, char **argv){
       return LFAILURE;
     }
 
-    free_ledger(&ledger);
+    if(free_ledger(&ledger) == LFAILURE)
+      return LFAILURE;
 
   } else if(argc == 3){
 
@@ -46,10 +47,12 @@ err_t standalone(int argc, char **argv){
       return LFAILURE;
     }
 
-    free_ledger(&ledger);
+    if(free_ledger(&ledger) == LFAILURE)
+      return LFAILURE;
 
   } else{
-    usage(); 
+    if(usage() == LFAILURE)
+      return LFAILURE; 
   }
 
   return LSUCCESS;

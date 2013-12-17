@@ -23,7 +23,8 @@ err_t strip_ledger(Ledger *ledger){
 
   for(i = 0; i < NFIELDS; ++i)
     for(j = 0; j < ledger->nrows; ++j)
-      str_strip(ledger->entries[i][j]);
+      if(str_strip(ledger->entries[i][j]) == LFAILURE)
+        return LFAILURE;
   
   return LSUCCESS;
 }
