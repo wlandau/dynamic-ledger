@@ -27,9 +27,6 @@ err_t free_ledger(Ledger **ledger){
     (*ledger)->filename = NULL;
   }
   
-  if(free_for_retotal(*ledger) == LFAILURE)
-    ret = LFAILURE;
-  
   if(free_entries(*ledger) == LFAILURE)
     ret = LFAILURE; 
 

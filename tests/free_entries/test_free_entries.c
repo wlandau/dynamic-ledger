@@ -22,9 +22,10 @@ int main(){
   new_ledger(&ledger);
   get_entries_from_filename(ledger, L3); 
   get_names(ledger);
-  print_ledger_to_stream(ledger, stdout);
+  get_totals(ledger);
+  print_ledger_verbose(ledger, stdout);
   printf("6 RET = %d\n", free_entries(ledger));
-  print_ledger_to_stream(ledger, stdout);
+  print_ledger_verbose(ledger, stdout);
   free_ledger(&ledger);
 
   return 0;
