@@ -14,26 +14,21 @@
 
 err_t get_names(Ledger *ledger){
   int i, j;
+  err_t ret;
   char **s;
+  
+  /* CHECK FOR NULL INPUT */
   
   if(ledger == NULL) 
     return LFAILURE;
     
   if(ledger->nrows < 1)
     return LFAILURE;
-  
-  s = malloc(ledger->nrows * sizeof(char*));
-  for(i = 0; i < ledger->nrows; ++i)
-    s[i] = calloc(ENTRYSIZE, sizeof(char));
 
   if(unique(ledger->entries[CREDIT], 
           ledger->nrows, 
           &ledger->credits, 
           &ledger->ncredits) == LFAILURE){
-
-    for(i = 0; i < ledger->nrows; ++i)
-      free(s[i]);
-    free(s);
 
     return LFAILURE;
   }
@@ -43,15 +38,52 @@ err_t get_names(Ledger *ledger){
             &ledger->banks, 
             &ledger->nbanks) == LFAILURE){
 
-    for(i = 0; i < ledger->nrows; ++i)
-      free(s[i]);
-    free(s);
-
     return LFAILURE;  
   }
   
+  /* ALLOCATE ARRAYS FOR PARTITION NAMES */
+  
   ledger->npartitions = calloc(ledger->nbanks, sizeof(int*));
   ledger->partitions = malloc(ledger->nbanks * sizeof(char***));
+
+  /* CHECK IF MALLOC WORKED */
+
+  if(ledger->partitions == NULL || ledger->npartitions == NULL){
+    fprintf(stderr, "Error: malloc failed\n");
+    return LFAILURE;
+  }
+
+  /* ALLOCATE ARRAY FOR SORTED PARTITION NAMES */
+  
+  s = malloc(ledger->nrows * sizeof(char*));
+  for(i = 0; i < ledger->nrows; ++i)
+    s[i] = calloc(ENTRYSIZE, sizeof(char));
+
+  /* CHECK IF MALLOC WORKED */
+
+  ret = LSUCCESS;
+  if(s == NULL){
+    fprintf(stderr, "Error: malloc failed\n");
+    ret = LFAILURE;
+  } else {
+    for(i = 0; i < ledger->nrows; ++i)
+      if(s[i] == NULL){
+        fprintf(stderr, "Error: malloc failed\n");
+        ret = LFAILURE;
+      }
+  }
+  
+  if(ret == LFAILURE){
+    if(s != NULL){
+      for(i = 0; i < ledger->nrows; ++i)
+        if(s[i] != NULL)
+          free(s[i]);
+      free(s);
+    }
+    return LFAILURE;
+  }
+  
+  /* GET PARTITION NAMES */
         
   for(i = 0; i < ledger->nbanks; ++i){
     for(j = 0; j < ledger->nrows; ++j){    
@@ -72,6 +104,8 @@ err_t get_names(Ledger *ledger){
       return LFAILURE;
     }
   }
+  
+  /* CLEAN UP AND RETURN */
   
   for(i = 0; i < ledger->nrows; ++i)
     free(s[i]);
