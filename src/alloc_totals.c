@@ -16,9 +16,13 @@ err_t alloc_totals(Ledger *ledger){
   int i;
   err_t ret;
 
+  /* check for null input */
+  
   if(ledger == NULL || ledger->credits == NULL || 
      ledger->banks == NULL || ledger->npartitions == NULL)
     return LFAILURE;
+  
+  /* allocate totals */
   
   if(ledger->credit_totals == NULL){
     ledger->credit_totals = malloc(ledger->ncredits * sizeof(double*));
@@ -38,14 +42,31 @@ err_t alloc_totals(Ledger *ledger){
       ledger->partition_totals[i] = calloc(ledger->npartitions[i], sizeof(double));
   }
   
+  /* check if malloc worked */
   
+  ret = LSUCCESS;
   if(ledger->credit_totals == NULL || 
      ledger->bank_totals == NULL || 
      ledger->partition_totals == NULL){
     fprintf(stderr, "Error: malloc failed\n"); 
     ret = LFAILURE; 
-  }
-     
+  } else {
+    for(i = 0; i < ledger->ncredits; ++i){
+      if(ledger->credit_totals[i] == NULL){
+        fprintf(stderr, "Error: malloc failed\n"); 
+        ret = LFAILURE;
+        break;
+      }
+    }
   
-  return LSUCCESS;
+    for(i = 0; i < ledger->nbanks; ++i){
+      if(ledger->bank_totals[i] == NULL || ledger->partition_totals[i] == NULL){
+        fprintf(stderr, "Error: malloc failed\n"); 
+        ret = LFAILURE;
+        break;
+      }  
+    }
+  }
+  
+  return ret;
 }

@@ -13,7 +13,7 @@ int main(){
   ret = alloc_totals(ledger);
   printf("\n----\nRETURN VALUE = %d\n---\n", ret);
 
-  ledger = new_ledger();
+  new_ledger(&ledger);
   ret = alloc_totals(ledger);
   printf("\n----\nRETURN VALUE = %d\n---\n", ret);
   
@@ -29,6 +29,6 @@ int main(){
   ret = alloc_totals(ledger);
   printf("\n----\nRETURN VALUE = %d\n---\n", ret);  
   
-  free_ledger(ledger);
+  free_ledger(&ledger);
   return 0;
 }
