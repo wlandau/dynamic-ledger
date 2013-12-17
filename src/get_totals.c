@@ -18,6 +18,9 @@ err_t get_totals(Ledger *ledger){
 
   if(ledger == NULL)
     return LFAILURE;  
+
+  if(ledger->nrows < 1)
+    return LFAILURE;
   
   if(alloc_totals(ledger) == LFAILURE)
     return LFAILURE;

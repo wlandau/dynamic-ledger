@@ -23,6 +23,9 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
   if(ledger == NULL || bank == NULL || partitions == NULL || 
      amounts_arg == NULL || npartitions < 1)
     return LFAILURE;
+  
+  if(ledger->nrows < 1)
+    return LFAILURE;
     
   if(untotaled(ledger) == LYES)
     return LFAILURE;

@@ -23,8 +23,8 @@ err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto){
   if(ledger->entries == NULL)
     return LFAILURE;
     
-  if(ledger->nrows < 2)
-    return LSUCCESS;
+  if(ledger->nrows < 1)
+    return LFAILURE;
   
   /* ALLOCATE SPACE FOR PERMUTATION ORDER AND CHECK IF MALLOC WORKED */
   

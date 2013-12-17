@@ -21,8 +21,8 @@ err_t permute_rows(Ledger *ledger, int *order){
   if(ledger->entries == NULL)
     return LFAILURE;
   
-  if(ledger->nrows < 2)
-    return LSUCCESS;
+  if(ledger->nrows < 1)
+    return LFAILURE;
   
   /* bubble sort (I expect the ledger to be almost already sorted) */
   for(i = 0; i < ledger->nrows; ++i){

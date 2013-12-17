@@ -17,6 +17,9 @@ err_t condense(Ledger *ledger){
   
   if(ledger == NULL)
     return LFAILURE;
+
+  if(ledger->nrows < 1)
+    return LFAILURE;
     
   if(untotaled(ledger) == LYES)
     return LFAILURE;

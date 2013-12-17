@@ -19,7 +19,7 @@ err_t strip_ledger(Ledger *ledger){
     return LFAILURE;
 
   if(ledger->nrows < 1 || ledger->entries == NULL)
-    return LSUCCESS;
+    return LFAILURE;
 
   for(i = 0; i < NFIELDS; ++i)
     for(j = 0; j < ledger->nrows; ++j)

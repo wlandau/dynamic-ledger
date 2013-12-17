@@ -17,7 +17,7 @@ err_t print_ledger_to_filename(Ledger *ledger, char *filename){
   FILE *fp;
   
   if(ledger == NULL || output_file(filename) == LNO)
-    return LFAILURE;
+    return LFAILURE;  
 
   fp = fopen(filename, "w");
   ret = print_ledger_to_stream(ledger, fp);

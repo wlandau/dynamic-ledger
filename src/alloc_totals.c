@@ -21,6 +21,9 @@ err_t alloc_totals(Ledger *ledger){
   if(ledger == NULL || ledger->credits == NULL || 
      ledger->banks == NULL || ledger->npartitions == NULL)
     return LFAILURE;
+
+  if(ledger->nrows < 1)
+    return LFAILURE;
   
   /* allocate totals */
   

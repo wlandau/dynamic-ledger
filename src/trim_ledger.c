@@ -17,6 +17,9 @@ err_t trim_ledger(Ledger *ledger){
 
   if(ledger == NULL)
     return LFAILURE;
+    
+  if(ledger->nrows < 1 || ledger->entries == NULL)
+    return LFAILURE;  
 
   for(row = 0; row < ledger->nrows; ++row)
     if(small_norm(atof(ledger->entries[AMOUNT][row])) == LYES)

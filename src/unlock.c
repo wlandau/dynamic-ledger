@@ -19,7 +19,7 @@ err_t unlock(Ledger *ledger){
     return LFAILURE;
     
   if(ledger->entries == NULL || ledger->nrows < 1)
-    return LSUCCESS;
+    return LFAILURE;
     
   for(row = 0; row < ledger->nrows; ++row)
     if(str_equal(ledger->entries[STATUS][row], LOCKED))

@@ -47,21 +47,20 @@ err_t remove_rows(Ledger *ledger){
     return LFAILURE;
   }
   free(order);
-
-  if(!row){
-    fprintf(stderr, "Warning: cannot remove all rows. Leaving one blank row instead.\n");
-    for(field = 0; field < NFIELDS; ++field)
-      strcpy(ledger->entries[field][0], NIL);
-    ++row;
-  }
   
   /* FREE THE ROWS AT THE BOTTOM */ 
   
-  for(field = 0; field < NFIELDS; ++field)
-    for(i = row; i < ledger->nrows; ++i)
-      free(ledger->entries[field][i]);
-  ledger->nrows = row;
-
+  if(!row){
+    if(free_entries(ledger) == LFAILURE)
+      return LFAILURE;
+    return LSUCCESS;  
+  } else {
+    for(field = 0; field < NFIELDS; ++field)
+      for(i = row; i < ledger->nrows; ++i)
+        free(ledger->entries[field][i]);
+    ledger->nrows = row;
+  }
+  
   /* RECALCULATE NAMES AND TOTALS */ 
   
   if(free_for_retotal(ledger) == LFAILURE)

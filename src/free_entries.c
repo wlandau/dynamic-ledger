@@ -32,8 +32,9 @@ err_t free_entries(Ledger *ledger){
     }
     free(ledger->entries);
     ledger->entries = NULL;
-    ledger->nrows = 0;
   }
+  
+  ledger->nrows = 0;  
   
   if(free_for_retotal(ledger) == LFAILURE)
     return LFAILURE;

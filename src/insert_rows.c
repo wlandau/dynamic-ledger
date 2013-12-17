@@ -26,7 +26,14 @@ err_t insert_rows(Ledger *ledger, int row, int howmany){
  
   if(ledger == NULL)
     return LFAILURE;
-    
+  
+  if(ledger->nrows < 1){
+    ledger->nrows = howmany;
+    if(alloc_entries(ledger) == LFAILURE)
+      return LFAILURE;
+    return LSUCCESS;
+  }
+  
   if(row < 0 || row > ledger->nrows){
     printf("Error: illegal row index in insert_row().\n");
     return LFAILURE;

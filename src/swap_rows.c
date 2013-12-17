@@ -19,7 +19,7 @@ err_t swap_rows(Ledger *ledger, int row1, int row2){
   if(ledger == NULL)
     return LFAILURE;
     
-  if(ledger->entries == NULL)
+  if(ledger->nrows < 1 || ledger->entries == NULL)
     return LFAILURE;
     
   if(row1 < 0 || row1 >= ledger->nrows || row2 < 0 || row2 >= ledger->nrows){

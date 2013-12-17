@@ -25,8 +25,7 @@ err_t get_entries_from_stream(Ledger *ledger, FILE *fp){
     ++ledger->nrows;
   
   if(ledger->nrows < 1){
-    ledger->nrows = 1;
-    alloc_entries(ledger);
+    ledger->nrows = 0;
     return LSUCCESS;
   }
     

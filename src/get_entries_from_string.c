@@ -19,10 +19,13 @@ err_t get_entries_from_string(Ledger *ledger, char *s){
   if(ledger == NULL || s == NULL)
     return LFAILURE;
 
-  ledger->nrows = 1;
+  ledger->nrows = 0;
   for(i = 0; i < strlen(s); ++i)
     if(row_delim_char(s[i]) == LYES)
       ++ledger->nrows;
+   
+  if(!ledger->nrows)
+    return LFAILURE;   
       
   if(alloc_entries(ledger) == LFAILURE)
     return LFAILURE;

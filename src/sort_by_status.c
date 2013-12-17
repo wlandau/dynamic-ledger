@@ -23,8 +23,8 @@ err_t sort_by_status(Ledger *ledger, int sort_locked){
   if(ledger->entries == NULL)
     return LFAILURE;
     
-  if(ledger->nrows < 2)
-    return LSUCCESS;
+  if(ledger->nrows < 1)
+    return LFAILURE;
   
   /* ALLOCATE SPACE FOR PERMUTATION AND CHECK IF MALLOC WORKED */
   
