@@ -16,13 +16,24 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   int i, j, l0, l1, l2, any = 0, anyp = 0, nullp;
   char norm[64]; 
 
+  /* CHECK FOR NULL INPUT */
+
   if(ledger == NULL)
     return LFAILURE;
  
   if(untotaled(ledger) == LYES)
      return LFAILURE; 
+  
+  /* ALLOCATE SPACE FOR OUTPUT STRING AND CHECK IF MALLOC WORKED */
     
   *s = calloc(ledger->nrows * NFIELDS * ENTRYSIZE, sizeof(char));
+  if(*s == NULL){
+    fprintf(stderr, "Error: malloc failed.\n");
+    return LFAILURE;
+  }
+
+  /* PRINT SUMMARY TO STRING */
+
   strcpy(norm, usecolor ? NORMAL_COLOR : "");
 
   for(i = 0; i < ledger->ncredits; ++i){
