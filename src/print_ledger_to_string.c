@@ -15,6 +15,8 @@
 err_t print_ledger_to_string(Ledger *ledger, char **s){
   int field, row, n = 1;
   
+  /* CHECK FOR NULL INPUT */
+  
   if(ledger == NULL)
     return LFAILURE;
 
@@ -24,8 +26,14 @@ err_t print_ledger_to_string(Ledger *ledger, char **s){
   for(field = 0; field < NFIELDS; ++field)  
     for(row = 0; row < ledger->nrows; ++row)
       n += strlen(ledger->entries[field][row]) + 1;
+
+  /* ALLOCATE SPACE FOR OUTPUT STRING AND CHECK THAT MALLOC WORKED */
   
   *s = calloc(n + LINESIZE, sizeof(char));
+  if(*s == NULL){
+    fprintf(stderr, "Error: malloc failed.\n");
+    return LFAILURE;
+  }
   
   for(field = 0; field < NFIELDS; ++field){
     if(field == AMOUNT)
