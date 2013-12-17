@@ -9,7 +9,7 @@
 int main(){
   Ledger *ledger;
   int ret = new_ledger(&ledger);
-  free_ledger(ledger);
+  free_ledger(&ledger);
   printf("stat = %d\n", ret);
   return 0;
 }

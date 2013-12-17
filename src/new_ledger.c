@@ -15,8 +15,10 @@
 err_t new_ledger(Ledger **ledger){
   *ledger = malloc(sizeof(Ledger));
   
-  if(*ledger == NULL)
+  if(*ledger == NULL){
+    fprintf(stderr, "Error: malloc failed.\n");
     return LFAILURE;
+  }
   
   (*ledger)->nbanks = 0;
   (*ledger)->ncredits = 0;
