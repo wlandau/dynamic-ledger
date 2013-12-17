@@ -73,11 +73,17 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
     strcpy(ledger->entries[BANK][row], bank);       
     strcpy(ledger->entries[DESCRIPTION][row], "repartition");    
   }
-  
-  free_for_retotal(ledger);
-  get_names(ledger);
-  get_totals(ledger); 
 
   free(amounts);   
+  
+  if(free_for_retotal(ledger) == LFAILURE)
+    return LFAILURE;
+    
+  if(get_names(ledger) == LFAILURE)
+    return LFAILURE;
+    
+  if(get_totals(ledger) == LFAILURE)
+    return LFAILURE; 
+  
   return LSUCCESS;
 }
