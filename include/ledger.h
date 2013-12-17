@@ -147,6 +147,7 @@ err_t strip_ledger(Ledger *ledger);
 err_t swap_rows(Ledger *ledger, int row1, int row2);
 err_t repartition(Ledger *ledger, char *bank, char **partitions, 
                   double *amounts, int npartitions, int as_percentages);
+err_t unlock(Ledger *ledger);
 
 
 /*************************************************************************************** 

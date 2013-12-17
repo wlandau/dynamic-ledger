@@ -19,8 +19,7 @@ err_t trim_ledger(Ledger *ledger){
     return LFAILURE;
 
   for(row = 0; row < ledger->nrows; ++row)
-    if((small_norm(atof(ledger->entries[AMOUNT][row])) == LYES) &&
-       !str_equal(ledger->entries[STATUS][row], LOCKED))
+    if(small_norm(atof(ledger->entries[AMOUNT][row])) == LYES)
       strcpy(ledger->entries[STATUS][row], REMOVE);    
    
   if(remove_rows(ledger) == LFAILURE)
