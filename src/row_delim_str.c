@@ -13,6 +13,10 @@
 #include <user_settings.h>
 
 index_t row_delim_str(char *s){
+ 
+  if(s == NULL)
+    return NO_INDEX;
+
   int i, n = strlen(s);
   for(i = 0; i < n; ++i)
     if(row_delim_char(s[i]))
