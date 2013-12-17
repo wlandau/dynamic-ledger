@@ -28,7 +28,9 @@ int main(){
   get_entries_from_filename(ledger, L3); 
   get_names(ledger);
   get_totals(ledger);
+  print_ledger_verbose(ledger, stdout);
   printf("7 RET = %d\n", free_ledger(&ledger));
+  print_ledger_verbose(ledger, stdout);
   printf("8 RET = %d\n", free_ledger(&ledger));
 
   return 0;
