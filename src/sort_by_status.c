@@ -15,6 +15,8 @@
 err_t sort_by_status(Ledger *ledger, int sort_locked){
   int i, *order;
   
+  /* CHECK FOR NULL INPUT */
+  
   if(ledger == NULL)
     return LFAILURE;
     
@@ -24,7 +26,15 @@ err_t sort_by_status(Ledger *ledger, int sort_locked){
   if(ledger->nrows < 2)
     return LSUCCESS;
   
+  /* ALLOCATE SPACE FOR PERMUTATION AND CHECK IF MALLOC WORKED */
+  
   order = calloc(ledger->nrows, sizeof(int));
+  if(order == NULL){
+    fprintf(stderr, "Error: malloc failed.\n");
+    return LFAILURE;
+  }
+  
+  /* COMPUTE THE PERMUTATION */
   
   for(i = 0; i < ledger->nrows; ++i){
     if(str_equal(ledger->entries[STATUS][i], CREDIT_NOT_THERE_YET))
@@ -43,10 +53,14 @@ err_t sort_by_status(Ledger *ledger, int sort_locked){
       order[i] = 6;
   }
   
+  /* CARRY OUT THE PERMUTATION */
+  
   if(permute_rows(ledger, order) == LFAILURE){
     free(order);
     return LFAILURE;
   }
+  
+  /* CLEAN UP AND EXIT */
   
   free(order);
   return LSUCCESS;
