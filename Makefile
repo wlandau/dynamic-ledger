@@ -21,6 +21,7 @@ DEP+=cut_rows
 DEP+=edit_entry
 DEP+=edit_row
 DEP+=filled_partitions
+DEP+=free_entries
 DEP+=free_for_retotal 
 DEP+=free_ledger
 DEP+=get_entries_from_filename

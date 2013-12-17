@@ -11,25 +11,25 @@
 int main(){
   Ledger *ledger = NULL;
   
-  printf("RET = %d\n", free_ledger(NULL));
-  printf("RET = %d\n", free_ledger(&ledger));
-  printf("RET = %d\n", free_ledger(&ledger));
+  printf("1 RET = %d\n", free_ledger(NULL));
+  printf("2 RET = %d\n", free_ledger(&ledger));
+  printf("3 RET = %d\n", free_ledger(&ledger));
     
   new_ledger(&ledger);
-  printf("RET = %d\n", free_ledger(&ledger));
-  printf("RET = %d\n", free_ledger(&ledger));
+  printf("4 RET = %d\n", free_ledger(&ledger));
+  printf("5 RET = %d\n", free_ledger(&ledger));
 
   new_ledger(&ledger);
   get_entries_from_filename(ledger, L3); 
   get_names(ledger);
-  printf("RET = %d\n", free_ledger(&ledger));
+  printf("6 RET = %d\n", free_ledger(&ledger));
 
   new_ledger(&ledger);
   get_entries_from_filename(ledger, L3); 
   get_names(ledger);
   get_totals(ledger);
-  printf("RET = %d\n", free_ledger(&ledger));
-  printf("RET = %d\n", free_ledger(&ledger));
+  printf("7 RET = %d\n", free_ledger(&ledger));
+  printf("8 RET = %d\n", free_ledger(&ledger));
 
   return 0;
 }

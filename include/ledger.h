@@ -114,8 +114,9 @@ err_t usage();
 
 err_t alloc_entries(Ledger*);
 err_t alloc_totals(Ledger*);
-err_t free_ledger(Ledger**); 
+err_t free_entries(Ledger*); 
 err_t free_for_retotal(Ledger*);
+err_t free_ledger(Ledger**); 
 err_t get_names(Ledger *ledger);
 err_t get_totals(Ledger *ledger);
 err_t new_ledger(Ledger **ledger); 

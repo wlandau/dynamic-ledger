@@ -13,8 +13,8 @@
 #include <user_settings.h>
 
 err_t free_ledger(Ledger **ledger){
-  int i, j;
-  err_t ret;
+
+  err_t ret = LSUCCESS;
 
   if(ledger == NULL)
     return LFAILURE;
@@ -27,23 +27,12 @@ err_t free_ledger(Ledger **ledger){
     (*ledger)->filename = NULL;
   }
   
-  if((*ledger)->entries != NULL){
-    for(i = 0; i < NFIELDS; ++i){
-      if((*ledger)->entries[i] != NULL){
-        for(j = 0; j < (*ledger)->nrows; ++j)
-          if((*ledger)->entries[i][j] != NULL){
-            free((*ledger)->entries[i][j]);
-            (*ledger)->entries[i][j] = NULL;
-          }
-        free((*ledger)->entries[i]);
-        (*ledger)->entries[i] = NULL;
-      }
-    }
-    free((*ledger)->entries);
-    (*ledger)->entries = NULL;
-  }
+  if(free_for_retotal(*ledger) == LFAILURE)
+    ret = LFAILURE;
   
-  ret = free_for_retotal(*ledger);
+  if(free_entries(*ledger) == LFAILURE)
+    ret = LFAILURE; 
+
   free(*ledger);
   *ledger = NULL;
   
