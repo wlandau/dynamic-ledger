@@ -18,6 +18,7 @@ int main(){
   new_ledger(&ledger);
   printf("4 RET = %d\n", free_entries(ledger));
   printf("5 RET = %d\n", free_entries(ledger));
+  free_ledger(&ledger);
 
   new_ledger(&ledger);
   get_entries_from_filename(ledger, L3); 
