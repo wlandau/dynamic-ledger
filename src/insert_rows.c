@@ -14,7 +14,10 @@
 
 err_t insert_rows(Ledger *ledger, int row, int howmany){
   int i, j;
+  err_t ret;
   char ***x, ***tmp;
+ 
+  /* CHECK FOR NULL INPUT */
  
   if(howmany < 1){
     printf("Error: number of rows inserted must be positive.\n");
@@ -29,12 +32,49 @@ err_t insert_rows(Ledger *ledger, int row, int howmany){
     return LFAILURE;
   }
 
+  /* ALLOCATE SPACE FOR NEW LEDGER ENTRIES */
+  
   x = malloc(NFIELDS * sizeof(char**));
   for(i = 0; i < NFIELDS; ++i){
     x[i] = malloc((ledger->nrows + howmany) * sizeof(char*));
     for(j = 0; j < (ledger->nrows + howmany); ++j)
       x[i][j] = calloc(ENTRYSIZE, sizeof(char));
   }
+
+  /* CHECK IF MALLOC WORKED */
+
+  ret = LSUCCESS;
+  if(x == NULL){
+    fprintf(stderr, "Error: malloc failed.\n");
+    return LFAILURE;
+  } else {
+    for(i = 0; i < NFIELDS; ++i){
+      if(x[i] == NULL){
+        fprintf(stderr, "Error: malloc failed.\n");
+        ret = LFAILURE;
+        break;
+      }
+      for(j = 0; j < (ledger->nrows + howmany); ++j)
+        if(x[i][j] == NULL){
+          fprintf(stderr, "Error: malloc failed.\n");
+          ret = LFAILURE;
+          break;
+        }
+    }
+  }
+  
+  if(ret == LFAILURE){
+    for(i = 0; i < NFIELDS; ++i){
+      for(j = 0; j < (ledger->nrows + howmany); ++j)
+        if(x[i][j] != NULL)
+          free(x[i][j]);
+      if(x[i] != NULL)
+        free(x[i]);
+    }
+    return LFAILURE;
+  }
+
+  /* GET NEW LEDGER ENTRIES WITH REQUESTED ROWS INSERTED */
 
   for(i = 0; i < NFIELDS; ++i){
     for(j = 0; j < row; ++j)
@@ -45,6 +85,8 @@ err_t insert_rows(Ledger *ledger, int row, int howmany){
     for(j = row + howmany; j < (ledger->nrows + howmany); ++j)
       strcpy(x[i][j], ledger->entries[i][j - howmany]);
   }
+
+  /* CLEAN UP AND RETURN */
 
   tmp = ledger->entries;
   ledger->entries = x;
