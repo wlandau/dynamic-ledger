@@ -68,6 +68,7 @@ DEP+=strip_ledger
 DEP+=swap_rows
 DEP+=trim_ledger  
 DEP+=unique
+DEP+=unlock
 DEP+=untotaled 
 DEP+=usage
 DEP+=which
