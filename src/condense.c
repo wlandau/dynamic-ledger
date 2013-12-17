@@ -20,6 +20,8 @@ err_t condense(Ledger *ledger){
     
   if(untotaled(ledger) == LYES)
     return LFAILURE;
+
+  /* SUBTRACT TRANSACTIONS WITH NONTRIVIAL STATUSES FROM BANK TOTALS, ETC. */
     
   for(row = 0; row < ledger->nrows; ++row){
     if(locked(ledger->entries[STATUS][row]) == LYES){ 
@@ -32,6 +34,9 @@ err_t condense(Ledger *ledger){
       strcpy(ledger->entries[AMOUNT][row], NIL); 
     }
   }
+
+  /* MAKE THE NONZERO "TRANSACTIONS" OF THE LEDGER CONSIST ONLY OF
+   * TRANSACTIONS WITH NONTRIVIAL STATUS AND PARTITION TOTALS */
    
   for(row = 0; row < ledger->nrows; ++row){ 
     if(locked(ledger->entries[STATUS][row]) == LNO){
@@ -47,6 +52,8 @@ err_t condense(Ledger *ledger){
       }                  
     }
   }
+  
+  /* REMOVE THE EMPTY ROWS */
   
   if(trim_ledger(ledger) == LFAILURE)
     return LFAILURE;
