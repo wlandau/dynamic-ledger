@@ -36,20 +36,23 @@ err_t alloc_entries(Ledger *ledger){
   
   /* test if malloc worked */
   ret = LSUCCESS;
-  for(i = 0; i < NFIELDS; ++i){
-    if(ledger->entries[i] == NULL){
-      fprintf(stderr, "Error: malloc failed\n");
-      ret = LFAILURE;
-    }
-    for(j = 0; j < ledger->nrows; ++j)
-      if(ledger->entries[i][j] == NULL){
-        fprintf(stderr,"Error: malloc failed\n");
-        ret = LFAILURE;
-      }
-  }
   if(ledger->entries == NULL){
     fprintf(stderr, "Error: malloc failed\n");
     ret = LFAILURE;
+  } else {
+    for(i = 0; i < NFIELDS; ++i){
+      if(ledger->entries[i] == NULL){
+        fprintf(stderr, "Error: malloc failed\n");
+        ret = LFAILURE;
+        break;
+      }
+      for(j = 0; j < ledger->nrows; ++j)
+        if(ledger->entries[i][j] == NULL){
+          fprintf(stderr,"Error: malloc failed\n");
+          ret = LFAILURE;
+          break;
+        }
+    }
   }
   
   return ret;
