@@ -1,1 +1,1 @@
-This is a dynamic personal accounting software package written in C. See the tutorial for details. 
+This is a dynamic personal accounting software package written in C. See the tutorial for details.
