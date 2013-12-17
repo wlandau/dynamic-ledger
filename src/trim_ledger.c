@@ -22,6 +22,8 @@ err_t trim_ledger(Ledger *ledger){
     if(small_norm(atof(ledger->entries[AMOUNT][row])) == LYES)
       strcpy(ledger->entries[STATUS][row], REMOVE);    
    
-  remove_rows(ledger);
+  if(remove_rows(ledger) == LFAILURE)
+    return LFAILURE;
+
   return LSUCCESS;
 }
