@@ -41,11 +41,12 @@ err_t print_ledger_to_stream(Ledger *ledger, FILE *fp){
       fprintf(fp, "\n");
   }
 
-  for(row = 0; row < ledger->nrows; ++row){
-    for(field = 0; field < NFIELDS - 1; ++field)
-      fprintf(fp, "%s\t", ledger->entries[field][row]);
-    fprintf(fp, "%s\n", ledger->entries[NFIELDS - 1][row]);
-  }
+  if(ledger->entries != NULL)
+    for(row = 0; row < ledger->nrows; ++row){
+      for(field = 0; field < NFIELDS - 1; ++field)
+        fprintf(fp, "%s\t", ledger->entries[field][row]);
+      fprintf(fp, "%s\n", ledger->entries[NFIELDS - 1][row]);
+    }
   
   return LSUCCESS;
 }
