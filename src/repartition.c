@@ -18,6 +18,8 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
   int i, row, ibank, oldnrows;
   double sum, *amounts;
   
+  /* CHECK FOR NULL INPUT */
+  
   if(ledger == NULL || bank == NULL || partitions == NULL || 
      amounts_arg == NULL || npartitions < 1)
     return LFAILURE;
@@ -30,9 +32,18 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
   if(ibank == NO_INDEX)
     return LFAILURE;
     
+  /* ALLOCATE SPACE FOR NEW AMOUNTS AND CHECK IF MALLOC WORKED */
+    
   amounts = malloc(npartitions * sizeof(double));
   for(i = 0; i < npartitions; ++i)
-    amounts[i] = amounts_arg[i];    
+    amounts[i] = amounts_arg[i]; 
+    
+  if(amounts == NULL){
+    fprintf(stderr, "Error: malloc failed.\n");
+    return LFAILURE;
+  }     
+    
+  /* CHECK IF PROPOSED PARTITION TOTALS SUM TO THE CORRECT BANK TOTAL */  
     
   if(as_percentages)
     for(i = 0; i < npartitions; ++i)
@@ -50,6 +61,8 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
     free(amounts);
     return LFAILURE; 
   }
+ 
+  /* DO THE REPARTITIONING BY INSERTING NEW ROWS */  
   
   oldnrows = ledger->nrows;
   if(insert_rows(ledger, ledger->nrows, 
@@ -74,7 +87,7 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
     strcpy(ledger->entries[DESCRIPTION][row], "repartition");    
   }
 
-  free(amounts);   
+  /* RECALCULATE NAMES AND TOTALS */
   
   if(free_for_retotal(ledger) == LFAILURE)
     return LFAILURE;
@@ -84,6 +97,9 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
     
   if(get_totals(ledger) == LFAILURE)
     return LFAILURE; 
-  
+ 
+  /* CLEAN UP AND EXIT */
+ 
+  free(amounts);    
   return LSUCCESS;
 }
