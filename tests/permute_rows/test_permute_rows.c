@@ -14,8 +14,11 @@ int main(){
   Ledger *ledger = NULL;
   printf("1 RET = %d\n", permute_rows(ledger, NULL));
   
-  get_ledger(&ledger, F, NULL, NULL);
-  
+  get_ledger(&ledger, "../data/ledgers/empty.txt", NULL, NULL);
+  printf("1A RET = %d\n", permute_rows(ledger, NULL));
+  free_ledger(&ledger);
+
+  get_ledger(&ledger, F, NULL, NULL);   
   order = malloc(ledger->nrows * sizeof(int));
   
   for(i = 0; i < ledger->nrows; ++i)
@@ -25,7 +28,13 @@ int main(){
   order[6] = 7;  
   order[7] = 8;  
   order[8] = 5;  
+  free_ledger(&ledger);
   
+  get_ledger(&ledger, "../data/ledgers/empty.txt", NULL, NULL);
+  printf("1B RET = %d\n", permute_rows(ledger, order));
+  free_ledger(&ledger);
+  
+  get_ledger(&ledger, F, NULL, NULL);  
   print_ledger_to_stream(ledger, stdout);
   printf("2 RET = %d\n", permute_rows(ledger, order));
   print_ledger_to_stream(ledger, stdout);
