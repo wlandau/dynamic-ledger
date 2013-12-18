@@ -55,10 +55,17 @@ int main(){
   printf("TEST 7 RET = %d\n", edit_row(ledger, entries, 5000));
   print_ledger_to_stream(ledger, stdout);  
   print_summary_to_stream(ledger, stdout, 1);
+  free_ledger(&ledger);
+
+  get_ledger(&ledger, "../data/ledgers/empty.txt", NULL, NULL);
+  printf("TEST 10 RET = %d\n", edit_row(ledger, entries, 0));
+  print_ledger_to_stream(ledger, stdout);  
+  print_summary_to_stream(ledger, stdout, 1);
+  free_ledger(&ledger);
 
   for(field = 0; field < NFIELDS; ++field)
     free(entries[field]);
   free(entries);
-  free_ledger(&ledger);
+
   return 0;
 }

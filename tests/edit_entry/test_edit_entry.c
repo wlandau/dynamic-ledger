@@ -50,7 +50,7 @@ int main(){
   print_summary_to_stream(ledger, stdout, 1);
   free_ledger(&ledger);
   
-  get_ledger(&ledger, "../data/empty.txt", NULL, NULL);
+  get_ledger(&ledger, "../data/ledgers/empty.txt", NULL, NULL);
   printf("TEST 10 RET = %d\n", edit_entry(ledger, "1000", 0, 0));
   print_ledger_to_stream(ledger, stdout);  
   print_summary_to_stream(ledger, stdout, 1);
