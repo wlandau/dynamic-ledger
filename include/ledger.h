@@ -9,7 +9,7 @@
  *** @date December 1, 2013
  *** @license GPL 3.0 (see COPYING.txt)
  *** @about Dynamic Ledger: minimalist personal accounting software. 
- ***        See README.txt for details. 
+ ***        See README.txt for details.
  ***/
 
 #include <errno.h>
