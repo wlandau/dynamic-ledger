@@ -30,6 +30,8 @@ int main(){
   for(test = 0; test < ntests; ++test){
     printf("\n--------\nTEST %d\n", test);
     get_ledger(&ledger, strs[test], NULL, NULL);
+    if(ledger->entries == NULL)
+      printf("NULL ENTRIES\n");
     print_ledger_verbose(ledger, stdout);
     printf("\nret = %d\n", trim_ledger(ledger));
     print_ledger_verbose(ledger, stdout);   
