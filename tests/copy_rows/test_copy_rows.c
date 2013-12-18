@@ -36,5 +36,6 @@ int main(){
   print_ledger_to_stream(clipboard, stdout);  
   
   free_ledger(&clipboard);
+    free_ledger(&ledger);
   return 0;
 }
