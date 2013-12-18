@@ -16,8 +16,18 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){
   int i, j, l0, l1, l2, any = 0, anyp = 0, nullp;
   char norm[64];
 
-  if(ledger == NULL || fp == NULL)
+  if(fp == NULL)
     return LFAILURE;
+    
+  if(ledger == NULL){
+    printf("Ledger is empty.\n");
+    return LFAILURE;
+  }  
+    
+  if(ledger->nrows < 1){
+    printf("Ledger is empty.\n");
+    return LFAILURE;
+  }  
     
   if(untotaled(ledger) == LYES)
      return LFAILURE;  

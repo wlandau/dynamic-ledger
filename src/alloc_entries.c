@@ -13,7 +13,7 @@
 #include <user_settings.h>
 
 err_t alloc_entries(Ledger *ledger){
-  int i, j;
+  int i, j, nrows;
   err_t ret;
   
   /* check for null input */
@@ -26,7 +26,9 @@ err_t alloc_entries(Ledger *ledger){
 
   /* clear previous entries */
   
+  nrows = ledger->nrows;
   free_entries(ledger);
+  ledger->nrows = nrows;
 
   /* allocate entries */
   

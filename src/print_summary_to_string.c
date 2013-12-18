@@ -17,9 +17,16 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   char norm[64]; 
 
   /* CHECK FOR NULL INPUT */
-
-  if(ledger == NULL)
+    
+  if(ledger == NULL){
+    printf("Ledger is empty.\n");
     return LFAILURE;
+  }  
+    
+  if(ledger->nrows < 1){
+    printf("Ledger is empty.\n");
+    return LFAILURE;
+  }
  
   if(untotaled(ledger) == LYES)
      return LFAILURE; 
