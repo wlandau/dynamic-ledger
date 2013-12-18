@@ -36,6 +36,12 @@ int main(){
     print_ledger_to_stream(ledger, stdout);
   printf("EMPTY RET = %d\n", swap_rows(ledger, 0, 0));  
     print_ledger_to_stream(ledger, stdout);
+  free_ledger(&ledger);
+  
+    get_ledger(&ledger, "../data/ledgers/nonnull.txt", NULL, NULL);
+    print_ledger_to_stream(ledger, stdout);
+  printf("NONNULL RET = %d\n", swap_rows(ledger, 0, 0));  
+    print_ledger_to_stream(ledger, stdout);
   free_ledger(&ledger); 
   
   return 0;
