@@ -38,9 +38,15 @@ int main(){
   
   printf("3 RET = %d\n", move_rows(ledger, rows, 3, 0));
     print_ledger_to_stream(ledger, stdout);
+  free_ledger(&ledger); 
+
+  get_ledger(&ledger, "../data/ledgers/empty.txt", NULL, NULL);
+  printf("4 RET = %d\n", move_rows(ledger, rows, 3, 0));  
+  printf("5 RET = %d\n", move_rows(ledger, rows, 3, 4));    
+  free_ledger(&ledger);
   
   free(rows);
-  free_ledger(&ledger); 
+
   
   return 0;
 }
