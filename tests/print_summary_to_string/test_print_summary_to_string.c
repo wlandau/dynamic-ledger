@@ -111,7 +111,7 @@ int main(){
     s = NULL;
   } 
    
-
+  printf("empty..\n");
    new_ledger(&ledger);
   get_entries_from_filename(ledger, "../data/ledgers/empty.txt"); 
   get_names(ledger);
@@ -124,6 +124,18 @@ int main(){
     s = NULL;
   } 
 
+  printf("nonnull..\n");
+   new_ledger(&ledger);
+  get_entries_from_filename(ledger, "../data/ledgers/nonnull.txt"); 
+  get_names(ledger);
+  get_totals(ledger);
+  printf("\n----\nRET = %d L3\n---\n", print_summary_to_string(ledger, &s, 1));
+  free_ledger(&ledger);
+  printf("%s", s);  
+  if(s != NULL){
+    free(s);
+    s = NULL;
+  } 
 
   return 0;
 }
