@@ -18,6 +18,7 @@ err_t standalone(int argc, char **argv){
   if(argc == 2){
 
     if(get_ledger(&ledger, argv[1], NULL, NULL) == LFAILURE){
+      print_summary_to_stream(ledger, stdout, USE_COLOR);
       free_ledger(&ledger);
       return LFAILURE;
     }
