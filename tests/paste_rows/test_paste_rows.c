@@ -37,6 +37,30 @@ int main(){
   printf("\nTEST 5: RET = %d\n", paste_rows(ledger, clipboard, ledger->nrows));
   print_ledger_to_stream(ledger, stdout);
   print_summary_to_stream(ledger, stdout, 1);
+  free_ledger(&ledger);  
+  
+  
+  printf("PRINTING CLIPBOARD...\n");
+  print_ledger_to_stream(clipboard, stdout);
+  
+  new_ledger(&ledger);
+  printf("NEW LEDGER\n");
+    print_ledger_to_stream(ledger, stdout);
+  print_summary_to_stream(ledger, stdout, 1);
+  printf("\nTEST 6: pasting into new ledger: RET = %d\n", paste_rows(ledger, clipboard, ledger->nrows));  
+  print_ledger_to_stream(ledger, stdout);
+  print_summary_to_stream(ledger, stdout, 1);
+  free_ledger(&ledger);    
+  
+  
+  get_ledger(&ledger, "../data/ledgers/empty.txt", NULL, NULL);
+  printf("EMPTY LEDGER\n");
+    print_ledger_to_stream(ledger, stdout);
+  print_summary_to_stream(ledger, stdout, 1);
+  printf("\nTEST 6: pasting into new ledger: RET = %d\n", paste_rows(ledger, clipboard, ledger->nrows));  
+  print_ledger_to_stream(ledger, stdout);
+  print_summary_to_stream(ledger, stdout, 1);
+  free_ledger(&ledger);    
   
   free_ledger(&ledger);
   free_ledger(&clipboard);
