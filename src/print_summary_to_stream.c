@@ -29,8 +29,10 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){
     return LFAILURE;
   }  
     
-  if(untotaled(ledger) == LYES)
-     return LFAILURE;  
+  if(untotaled(ledger) == LYES){
+     printf("Account totals have not been calculated. Ledger may be empty.\n");  
+     return LFAILURE; 
+  } 
 
   strcpy(norm, usecolor ? NORMAL_COLOR : "");
   fprintf(fp, "%s", norm);
@@ -143,6 +145,8 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){
   
   if(any)
     fprintf(fp,"\n");
+  else
+    printf("Ledger is empty.\n");
     
   return LSUCCESS;
 }

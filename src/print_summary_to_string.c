@@ -28,8 +28,10 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
     return LFAILURE;
   }
  
-  if(untotaled(ledger) == LYES)
+  if(untotaled(ledger) == LYES){
+     printf("Account totals have not been calculated. Ledger may be empty.\n");  
      return LFAILURE; 
+  }
   
   /* ALLOCATE SPACE FOR OUTPUT STRING AND CHECK IF MALLOC WORKED */
     
@@ -157,6 +159,8 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   
   if(any)
     sprintf(*s, "%s\n\n", *s);
+  else
+    printf("Ledger is empty.\n");
  
   return LSUCCESS;
 }
