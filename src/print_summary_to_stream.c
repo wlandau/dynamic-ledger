@@ -146,7 +146,7 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){
   if(any)
     fprintf(fp,"\n");
   else
-    printf("Ledger is empty.\n");
+    printf("All accounts are empty.\n");
     
   return LSUCCESS;
 }

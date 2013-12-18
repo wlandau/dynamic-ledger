@@ -160,7 +160,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   if(any)
     sprintf(*s, "%s\n\n", *s);
   else
-    printf("Ledger is empty.\n");
+    printf("All accounts are empty.\n");
  
   return LSUCCESS;
 }
