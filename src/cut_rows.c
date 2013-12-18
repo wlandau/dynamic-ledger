@@ -17,6 +17,9 @@ err_t cut_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany){
 
   if(ledger == NULL || rows == NULL || howmany < 1)
     return LFAILURE;
+
+  if(ledger->entries == NULL)
+    return LFAILURE;
      
   if(copy_rows(ledger, clipboard, rows, howmany) == LFAILURE)
     return LFAILURE;

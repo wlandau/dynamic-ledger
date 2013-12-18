@@ -26,6 +26,15 @@ int main(){
   print_ledger_to_stream(clipboard, stdout);  
   
   free_ledger(&ledger);
+  
+  get_ledger(&ledger, "../data/ledgers/empty.txt", NULL, NULL);
+  printf("\nTEST 3: RET = %d\n", copy_rows(ledger, &clipboard, rows, 5));
+  print_ledger_to_stream(ledger, stdout);
+  print_summary_to_stream(ledger, stdout, 1);
+  
+  printf("PRINTING CLIPBOARD\n");
+  print_ledger_to_stream(clipboard, stdout);  
+  
   free_ledger(&clipboard);
   return 0;
 }
