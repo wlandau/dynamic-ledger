@@ -48,6 +48,12 @@ int main(){
   printf("TEST 9 RET = %d\n", edit_entry(ledger, "hi\thi", 1, 2000));
   print_ledger_to_stream(ledger, stdout);  
   print_summary_to_stream(ledger, stdout, 1);
+  free_ledger(&ledger);
+  
+  get_ledger(&ledger, "../data/empty.txt", NULL, NULL);
+  printf("TEST 10 RET = %d\n", edit_entry(ledger, "1000", 0, 0));
+  print_ledger_to_stream(ledger, stdout);  
+  print_summary_to_stream(ledger, stdout, 1);
 
   free_ledger(&ledger);
   return 0;
