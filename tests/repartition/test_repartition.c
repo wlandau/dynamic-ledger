@@ -38,15 +38,18 @@ int main(){
   
 
   get_ledger(&ledger, F, NULL, NULL);
-  print_ledger_verbose(ledger, stdout);  
+  print_ledger_to_stream(ledger, stdout); 
+  print_summary_to_stream(ledger, stdout, 1);  
  
   printf("TEST 1 RET = %d\n", repartition(ledger, "RABIES", partitions, amounts, npartitions, 1));
   printf("TEST 2 RET = %d\n", repartition(ledger, "cp", partitions, amounts, npartitions, 1));
 
-  print_ledger_verbose(ledger, stdout);
+  print_ledger_to_stream(ledger, stdout); 
+  print_summary_to_stream(ledger, stdout, 1);  
   strcpy(partitions[2], NIL);
   printf("TEST 3 RET = %d\n", repartition(ledger, "cp", partitions, amounts, npartitions, 1));
-  print_ledger_verbose(ledger, stdout);
+  print_ledger_to_stream(ledger, stdout); 
+  print_summary_to_stream(ledger, stdout, 1);  
   
 
 
@@ -62,7 +65,8 @@ int main(){
 
   amounts[2] = 5000;
   printf("TEST 5 RET = %d\n", repartition(ledger, "cps", partitions, amounts, npartitions, 0));
-  print_ledger_verbose(ledger, stdout);
+  print_ledger_to_stream(ledger, stdout); 
+  print_summary_to_stream(ledger, stdout, 1);  
 
   free_ledger(&ledger);
 
@@ -72,10 +76,12 @@ int main(){
   amounts[2] = -15;
 
   printf("TEST 6 RET = %d\n", repartition(ledger, NIL, partitions, amounts, npartitions, 1));
-  print_ledger_verbose(ledger, stdout);
+  print_ledger_to_stream(ledger, stdout); 
+  print_summary_to_stream(ledger, stdout, 1);  
 
   printf("TEST 7 RET = %d\n", repartition(ledger, NIL, partitions, amounts, npartitions, 0));
-  print_ledger_verbose(ledger, stdout);
+  print_ledger_to_stream(ledger, stdout); 
+  print_summary_to_stream(ledger, stdout, 1);  
 
 
   for(i = 0; i < npartitions; ++i)
