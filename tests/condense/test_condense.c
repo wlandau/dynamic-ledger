@@ -34,9 +34,11 @@ int main(){
  for(test = 0; test < ntests; ++test){
     printf("\n--------\nTEST %d\n", test);
     get_ledger(&ledger, strs[test], NULL, NULL);
-    print_ledger_verbose(ledger, stdout);
+    print_ledger_to_stream(ledger, stdout);
+    print_summary_to_stream(ledger, stdout, 1);
     printf("\nret = %d\n", condense(ledger));
-    print_ledger_verbose(ledger, stdout);   
+    print_ledger_to_stream(ledger, stdout);
+    print_summary_to_stream(ledger, stdout, 1);  
     free_ledger(&ledger);
     free(strs[test]);
   }  
