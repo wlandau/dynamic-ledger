@@ -184,6 +184,6 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor);
  *** TOP-LEVEL ROUTINE OF COMMAND LINE INTERFACE VERSION *******************************
  ***************************************************************************************/
 
-err_t standalone(int argc, char **argv);                                       /* NEEDS TESTING */
+err_t standalone(int argc, char **argv);
 
 #endif
