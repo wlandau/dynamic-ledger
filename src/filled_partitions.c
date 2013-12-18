@@ -17,10 +17,10 @@ bool_t filled_partitions(Ledger *ledger, int bank){
   bool_t ret = LNO;
  
   if(ledger == NULL) 
-    return LFAILURE;
+    return LNO;
    
   if(ledger->nrows < 1 || bank < 0 || bank >= ledger->nbanks)
-    return LFAILURE;  
+    return LNO;  
  
   if(untotaled(ledger) == LYES)
     return LNO;
