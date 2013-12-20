@@ -5,7 +5,7 @@
  * @file        ledger.h
  * @author      Will Landau (http://www.will-landau.com/)
  * @date        2013-2014
- * @copyright   GNU General Public License >= 3.0 (See COPYING.txt)
+ * @copyright   GNU General Public License 3.0
  * @brief       Main header file.
  * @details     Includes all typedefs and function declarations, 
  *              along with some of the macros.
@@ -20,7 +20,7 @@
 
 
 /**
- * @defgroup Totals_Macros
+ * @defgroup Totals_Macros Totals Macros
  * @brief Indices for credit and bank totals.
  * 
  * @details Ledger.bank_totals and Ledger.credit_totals are arrays of doubles
@@ -71,7 +71,7 @@
 
 
 /**
- * @defgroup Return_Value_Macros
+ * @defgroup Return_Value_Macros Return Value Macros
  * @brief Return values from various functions.
  * 
  * @details Some functions have return types of err_t, bool_t, or index_t.
@@ -116,7 +116,7 @@
 
  
 /**
- * @defgroup Internal_Macros
+ * @defgroup Internal_Macros Internal Macros
  * @brief Internal macros
  * 
  * @details These macros define internal parameters such the maximum size 
@@ -169,7 +169,7 @@
 
 
 /**
- * @defgroup Return_Types
+ * @defgroup Return_Types Return Types
  * @brief Return types
  * 
  * @details Defines the return types of most functions.
@@ -206,47 +206,46 @@ typedef char* color_t;
 
 /**
  * @brief     Stores an individual ledger.
- * 
  * @details   Stores the spreadsheet associated with the ledger
  *            along with important summaries. This is the core
  *            data type of the program.
  */
 
 typedef struct {
-  char *filename;              /** Name of the file that the ledger came from. */ 
-  char **banks;                /** Array of names of all the bank accounts 
+  char *filename;              /**< Name of the file that the ledger came from. */ 
+  char **banks;                /**< Array of names of all the bank accounts 
                                    in the ledger. */ 
-  char **credits;              /** Array of names of all the credit accounts 
+  char **credits;              /**< Array of names of all the credit accounts 
                                    in the ledger. */ 
-  char ***partitions;          /** Arrays of names of all the partitions of all 
+  char ***partitions;          /**< Arrays of names of all the partitions of all 
                                    the bank accounts in the ledger. */ 
-  char ***entries;             /** The matrix of actual entries in the ledger. 
+  char ***entries;             /**< The matrix of actual entries in the ledger. 
                                    Rows are individual transactions, and columns 
                                    are fields like the amount, status, and bank 
                                    of the transaction.*/
-  int nrows;                   /** Number of rows in the ledger: i.e., 
+  int nrows;                   /**< Number of rows in the ledger: i.e., 
                                    number of transactions.*/
-  int nbanks;                  /** Number of bank accounts 
+  int nbanks;                  /**< Number of bank accounts 
                                    (including an automatic unnamed bank account).*/
-  int ncredits;                /** Number of credit accounts 
+  int ncredits;                /**< Number of credit accounts 
                                    (including an automatic unnamed credit account).*/
-  int *npartitions;            /** Number of credit accounts 
+  int *npartitions;            /**< Number of credit accounts 
                                    (including an automatic unnamed partition).*/
-  double **bank_totals;        /** Stores how much money is in each bank account. 
+  double **bank_totals;        /**< Stores how much money is in each bank account. 
                                    For each bank,
                                    this includes the amount of available money, 
                                    pending money, etc.*/
-  double **credit_totals;      /** Stores how much money is in each credit account. 
+  double **credit_totals;      /**< Stores how much money is in each credit account. 
                                    For each account,
                                    this includes the amount of available money, 
                                    pending money, etc.*/
-  double **partition_totals;   /** Stores how much money will be in each partition
+  double **partition_totals;   /**< Stores how much money will be in each partition
                                    of each bank account after all charges clear */
 } Ledger;
 
 
 /**
- * @defgroup Utility_Functions
+ * @defgroup Utility_Functions Utility Functions
  * @brief Utility functions.
  * 
  * @details These are miscellaneous utility functions.
@@ -443,7 +442,7 @@ err_t usage();
 
 
 /**
- * @defgroup Ledger_Memory_Functions
+ * @defgroup Ledger_Memory_Functions Ledger Memory Functions
  * @brief Ledger memory functions
  * 
  * @details These are functions for creating, initializing, copying,
@@ -520,7 +519,7 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
 
 
 /**
- * @defgroup Ledger_Modify_Functions
+ * @defgroup Ledger_Modify_Functions Ledger Modify Functions
  * @brief Functions for modifying Ledger objects.
  * 
  * @details These are functions for modifying Ledger objects.
@@ -711,7 +710,7 @@ err_t unlock(Ledger *ledger);
 
 
 /**
- * @defgroup Ledger_Input_Functions
+ * @defgroup Ledger_Input_Functions Ledger Input Functions
  * @brief Functions for reading Ledger objects.
  * 
  * @details These are functions for reading Ledger objects from
@@ -770,7 +769,7 @@ err_t get_ledger(Ledger **ledger, char* filename, FILE *fp, char *str);
 
 
 /**
- * @defgroup Ledger_Output_Functions
+ * @defgroup Ledger_Output_Functions Ledger Output Functions
  * @brief Functions to output Ledger objects.
  * 
  * @details These are functions to output Ledger objects to
@@ -815,7 +814,7 @@ err_t print_ledger_verbose(Ledger *ledger, FILE *fp);
 
 
 /**
- * @defgroup Ledger_Summary_Functions
+ * @defgroup Ledger_Summary_Functions Ledger Summary Functions
  * @brief Functions to summarize Ledger objects.
  * 
  * @details These are functions to output \e summaries of Ledger objects to
@@ -855,7 +854,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor);
 
 
 /**
- * @defgroup Top_Level_Functions
+ * @defgroup Top_Level_Functions Top Level Functions
  * @brief Top level functions.
  * 
  * @details These are functions that govern the program at the top leve.

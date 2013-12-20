@@ -13,7 +13,7 @@
  */
 
 /**
- * @defgroup Columns
+ * @defgroup Columns Column Indices
  * @brief Ordering of the columns in the ledger file.
  * 
  * @details These numbers define the ordering of the columns
@@ -65,7 +65,7 @@
 
 
 /**
- * @defgroup Separator_Macros
+ * @defgroup Separator_Macros Separator Macros
  * @brief Row and column separators
  * 
  * @details These macros define which characters are used to separate
@@ -95,7 +95,7 @@
 
 
 /**
- * @defgroup Status_Macros
+ * @defgroup Status_Macros Status Macros
  * @brief Transaction status codes.
  * 
  * @details Transaction status codes tell the program where each transaction
@@ -164,7 +164,7 @@
 
 
 /**
- * @defgroup Printing_Macros
+ * @defgroup Printing_Macros Printing Macros
  * @brief Print formatting macros.
  * 
  * @details These macros define settings for printing summaries of ledgers.
