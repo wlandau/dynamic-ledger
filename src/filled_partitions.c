@@ -1,12 +1,10 @@
 /**
- * @file filled_partitions.c
- * @author Will Landau (http://www.will-landau.com/)
- * @details Loops through all the partitions of a given 
- *          bank account in a Ledger object. Returns LYES
- *          if any partition (including the unnamed partition)
- *          is found to have a nonzero amount. Returns LNO otherwise.
+ * @file        filled_partitions.c
+ * @author      Will Landau (http://www.will-landau.com/)
+ * @date        2013-2014
+ * @copyright   GNU General Public License >= 3.0 (See COPYING.txt)
  */
-
+ 
 #include <errno.h>
 #include <ledger.h>
 #include <stdio.h>
@@ -14,6 +12,12 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Loops through all the partitions of a given 
+ *          bank account in a Ledger object. Returns LYES
+ *          if any partition (including the unnamed partition)
+ *          is found to have a nonzero amount. Returns LNO otherwise.
+ */
 bool_t filled_partitions(Ledger *ledger, int bank){
   int i;
   bool_t ret = LNO;

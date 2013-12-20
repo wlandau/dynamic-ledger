@@ -1,9 +1,9 @@
-/***
- *** @file legal_status_codes.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file        legal_status_codes.c
+ * @author      Will Landau (http://www.will-landau.com/)
+ * @date        2013-2014
+ * @copyright   GNU General Public License >= 3.0 (See COPYING.txt)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -14,12 +14,12 @@
 
 
 /** 
- * @brief Checks if all the character strings in the
- *        STATUS column of the ledger are legal
- *        status codes as defined in the Status_Macros module.
- *        Specifically, it loops through ledger->entries[STATUS]
- *        and calls legal_status_code on every entry.
- *        The empty string, NIL, is also legal.
+ * @details Checks if all the character strings in the
+ *          STATUS column of the ledger are legal
+ *          status codes as defined in the Status_Macros module.
+ *          Specifically, it loops through ledger->entries[STATUS]
+ *          and calls legal_status_code on every entry.
+ *          The empty string, NIL, is also legal.
  */ 
 bool_t legal_status_codes(Ledger *ledger){
   int i;

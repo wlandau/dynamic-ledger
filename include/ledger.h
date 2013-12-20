@@ -7,7 +7,6 @@
  * @date        2013-2014
  * @copyright   GNU General Public License >= 3.0 (See COPYING.txt)
  * @brief       Main header file.
- * 
  * @details     Includes all typedefs and function declarations, 
  *              along with some of the macros.
  *

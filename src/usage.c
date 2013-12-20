@@ -1,6 +1,8 @@
 /**
- * @file usage.c
- * @author Will Landau (http://www.will-landau.com/)
+ * @file        usage.c
+ * @author      Will Landau (http://www.will-landau.com/)
+ * @date        2013-2014
+ * @copyright   GNU General Public License >= 3.0 (See COPYING.txt)
  */
 
 #include <errno.h>

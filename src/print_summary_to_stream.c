@@ -1,6 +1,8 @@
 /**
- * @file print_summary_to_stream.c
- * @author Will Landau (http://www.will-landau.com/)
+ * @file        print_summary_to_stream.c
+ * @author      Will Landau (http://www.will-landau.com/)
+ * @date        2013-2014
+ * @copyright   GNU General Public License >= 3.0 (See COPYING.txt)
  */
 
 #include <errno.h>
