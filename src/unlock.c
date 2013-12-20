@@ -1,9 +1,7 @@
-/***
- *** @file unlock.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file unlock.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,14 +10,24 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Unlocks all cleared transactions. Specifically,
+ *          this function changes the status of all transactions
+ *          with status LOCKED to status NIL:         
+ */
+
 err_t unlock(Ledger *ledger){
   int row;
+
+  /* Check for NULL input */
 
   if(ledger == NULL)
     return LFAILURE;
     
   if(ledger->entries == NULL || ledger->nrows < 1)
     return LFAILURE;
+    
+  /* Change all LOCKED status codes to NIL */  
     
   for(row = 0; row < ledger->nrows; ++row)
     if(str_equal(ledger->entries[STATUS][row], LOCKED))

@@ -1,9 +1,7 @@
-/***
- *** @file insert_rows.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file insert_rows.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,12 +10,17 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Insert blank rows into the "entries" member array of a 
+ *          Ledger object.
+ */
+
 err_t insert_rows(Ledger *ledger, int row, int howmany){
   int i, j;
   err_t ret;
   char ***x, ***tmp;
  
-  /* CHECK FOR NULL INPUT */
+  /* Check for NULL input */
  
   if(howmany < 1){
     printf("Error: number of rows inserted must be positive.\n");
@@ -39,7 +42,7 @@ err_t insert_rows(Ledger *ledger, int row, int howmany){
     return LFAILURE;
   }
 
-  /* ALLOCATE SPACE FOR NEW LEDGER ENTRIES */
+  /* Allocate space for new ledger entries */
   
   x = malloc(NFIELDS * sizeof(char**));
   for(i = 0; i < NFIELDS; ++i){
@@ -48,7 +51,7 @@ err_t insert_rows(Ledger *ledger, int row, int howmany){
       x[i][j] = calloc(ENTRYSIZE, sizeof(char));
   }
 
-  /* CHECK IF MALLOC WORKED */
+  /* Check if malloc worked */
 
   ret = LSUCCESS;
   if(x == NULL){
@@ -81,7 +84,7 @@ err_t insert_rows(Ledger *ledger, int row, int howmany){
     return LFAILURE;
   }
 
-  /* GET NEW LEDGER ENTRIES WITH REQUESTED ROWS INSERTED */
+  /* Get new 2D array of entries with the requested rows inserted */
 
   for(i = 0; i < NFIELDS; ++i){
     for(j = 0; j < row; ++j)
@@ -93,7 +96,7 @@ err_t insert_rows(Ledger *ledger, int row, int howmany){
       strcpy(x[i][j], ledger->entries[i][j - howmany]);
   }
 
-  /* CLEAN UP AND RETURN */
+  /* Clean up and return */
 
   tmp = ledger->entries;
   ledger->entries = x;

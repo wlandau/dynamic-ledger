@@ -1,9 +1,7 @@
-/***
- *** @file permute_rows.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file permute_rows.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,8 +10,17 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Permute the rows (transactions) of a Ledger object. 
+ *          Specifically, bubble sort is applied to the int vector, 
+ *          "order". The same sorting operations on "order" are 
+ *          applied to the rows (transactions) of the Ledger object 
+ *          in ledger->entries.
+ */
 err_t permute_rows(Ledger *ledger, int *order){
   int i, j, tmp, swapped;
+  
+  /* Check for NULL input */
   
   if(ledger == NULL || order == NULL)
     return LFAILURE;
@@ -24,7 +31,8 @@ err_t permute_rows(Ledger *ledger, int *order){
   if(ledger->nrows < 1)
     return LFAILURE;
   
-  /* bubble sort (I expect the ledger to be almost already sorted) */
+  /* Use bubble sort (I expect the ledger to be almost already sorted). */
+  
   for(i = 0; i < ledger->nrows; ++i){
     swapped = 0;
     for(j = ledger->nrows - 1; j > i; --j)

@@ -1,9 +1,7 @@
-/***
- *** @file copy_rows.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file copy_rows.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,8 +10,16 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Copies selected rows (transactions). Specifically, the 
+ *          rows (transactions) whose indices are in "rows" are 
+ *          copied from "ledger" to "clipboard". The clipboard
+ *          is overwritten in this function.
+ */
 err_t copy_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany){
   int row, field;
+
+  /* Check for null input */
 
   if(ledger == NULL || rows == NULL || howmany < 1)
     return LFAILURE;
@@ -27,10 +33,14 @@ err_t copy_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany){
     return LFAILURE;
   }
 
+  /* Clear clipboard */
+
   free_ledger(clipboard);
 
   if(new_ledger(clipboard) == LFAILURE)
     return LFAILURE;
+     
+  /* Fill clipboard with the relevant rows of ledger */
      
   (*clipboard)->nrows = howmany;
   

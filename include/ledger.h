@@ -532,26 +532,180 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
  * @{
  */
 
+/**
+ * @brief  Cleans a ledger object
+ * @param  ledger Pointer to a Ledger object.
+ * @param  sort_locked Set to 1 to bring all locked rows to the top.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t clean(Ledger *ledger, int sort_locked);
+
+/**
+ * @brief  Condenses a ledger object
+ * @param  ledger Pointer to a Ledger object.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t condense(Ledger *ledger);
+
+/**
+ * @brief  Copies selected rows (transactions).
+ * @param  ledger Pointer to a Ledger object.
+ * @param  clipboard Pointer to a pointer to the Ledger object to copy the rows into.
+ * @param  rows The indices of the rows in ledger to be copied.
+ * @param  howmany Number of elements of rows.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t copy_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany);
+
+/**
+ * @brief  Cut selected rows (transactions).
+ * @param  ledger Pointer to a Ledger object.
+ * @param  clipboard Pointer to a pointer to the Ledger object to copy the rows into.
+ * @param  rows The indices of the rows in ledger to be cut.
+ * @param  howmany Number of elements of rows.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t cut_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany);
+
+/**
+ * @brief  Modify a ledger entry and update the Ledger object accordingly.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  entry New entry (character string).
+ * @param  row The row of the entry to overwrite.
+ * @param  field The field (column) of the entry to overwrite.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t edit_entry(Ledger *ledger, char *entry, int row, int field);
+
+/**
+ * @brief  Modify a whole row (transaction) and update the Ledger object accordingly.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  entries New row (array of character string entries).
+ * @param  row The row to overwrite.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t edit_row(Ledger *ledger, char **entries, int row);
+
+/**
+ * @brief  Insert blank rows.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  row Where to insert the rows.
+ * @param  howmany How many blank rows to insert.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t insert_rows(Ledger *ledger, int row, int howmany); 
+
+/**
+ * @brief  Move rows to a specified location.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  rows Array of the indices of the rows to move.
+ * @param  nrows Number of rows to move.
+ * @param  moveto Where to move the rows: i.e., the destination row index.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto);
+
+/**
+ * @brief  Paste rows into a specified location
+ * @param  ledger Pointer to a Ledger object.
+ * @param  clipboard Pointer to a Ledger object containing the rows to paste.
+ * @param  where Where to paste the rows: i.e., the destination row index.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t paste_rows(Ledger *ledger, Ledger *clipboard, int where);
+
+/**
+ * @brief  Permute rows (transactions).
+ * @param  ledger Pointer to a Ledger object.
+ * @param  order Array of indices to sort the rows by.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t permute_rows(Ledger *ledger, int *order);
+
+/**
+ * @brief  Safely renames a bank account.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  from Which bank account to rename.
+ * @param  to New name for the bank account.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t rename_bank(Ledger *ledger, char *from, char *to);
+
+/**
+ * @brief  Safely renames a credit account.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  from Which credit account to rename.
+ * @param  to New name for the credit account.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t rename_credit(Ledger *ledger, char *from, char *to);
+
+/**
+ * @brief  Safely renames a partition bank account.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  bank Bank account of the partition to rename.
+ * @param  from Which partition to rename.
+ * @param  to New name for the partition.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to);
+
+/**
+ * @brief  Removes rows (transactions) marked for removal.
+ * @param  ledger Pointer to a Ledger object.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t remove_rows(Ledger *ledger);
+
+/**
+ * @brief  Removes blank rows.
+ * @param  ledger Pointer to a Ledger object.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t trim_ledger(Ledger *ledger);
+
+/**
+ * @brief  Sorts rows (transactions) by transaction status code.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  sort_locked Set to 1 to send all locked transactions to the top and 0 otherwise.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t sort_by_status(Ledger *ledger, int sort_locked);
+
+/**
+ * @brief  Removes whitespace from the entries of a Ledger object
+ * @param  ledger Pointer to a Ledger object.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t strip_ledger(Ledger *ledger);     
+
+/**
+ * @brief  Interchanges two rows of a ledger object.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  row1 Index of the first row.
+ * @param  row2 Index of the second row.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t swap_rows(Ledger *ledger, int row1, int row2);
+
+/**
+ * @brief  Repartitions a bank account.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  bank Bank account to repartition.
+ * @param  partitions Array of character strings giving the names of the new partitions.
+ * @param  amounts_arg Amount allocated to each partition
+ * @param  npartitions Number of character strings in "partitions"
+ * @param  as_percentages Whether to interpret the entries in amounts_arg as percentages.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t repartition(Ledger *ledger, char *bank, char **partitions, 
-                  double *amounts, int npartitions, int as_percentages);
+                  double *amounts_arg, int npartitions, int as_percentages);
+                  
+/**
+ * @brief  Unlock all cleared transactions.
+ * @param  ledger Pointer to a Ledger object.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t unlock(Ledger *ledger);
 
 /** @{ */
@@ -566,6 +720,7 @@ err_t unlock(Ledger *ledger);
  *
  * @{
  */
+
 
 err_t parse_char(Ledger *ledger, char c, int *char_index, int *field, int *row);
 err_t get_entries_from_filename(Ledger *ledger, char *filename); 

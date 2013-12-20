@@ -1,9 +1,7 @@
-/***
- *** @file edit_entry.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file edit_entry.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,9 +10,18 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Overwrite an entry of a Ledger object with a new entry. 
+ *          Specifically, ledger->entries[field][row] is replaced with 
+ *          "entry", and the other data in the Ledger object is 
+ *          updated with calls to get_names and get_totals.
+ */
+
 err_t edit_entry(Ledger *ledger, char *entry, int row, int field){
   int i;
   char local_entry[ENTRYSIZE];
+
+  /* Check for NULL input */
 
   if(ledger == NULL)
     return LFAILURE;
@@ -43,6 +50,8 @@ err_t edit_entry(Ledger *ledger, char *entry, int row, int field){
     
     return LSUCCESS;
   }
+  
+  /* Sanitize "entry" and then copy it into the ledger */
   
   strcpy(local_entry, entry);
   str_strip(local_entry);
@@ -75,6 +84,8 @@ err_t edit_entry(Ledger *ledger, char *entry, int row, int field){
   }
   
   strcpy(ledger->entries[field][row], local_entry);
+
+  /* Update the rest of the data in the ledger to reflect the change. */
 
   if(free_for_retotal(ledger) == LFAILURE)
     return LFAILURE;

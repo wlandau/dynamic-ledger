@@ -1,9 +1,7 @@
-/***
- *** @file sort_by_status.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file sort_by_status.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,10 +10,18 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Sorts the rows (transactions) of a Ledger object
+ *          such that the transactions that have not completely 
+ *          cleared rise to the top of the ledger. This is useful
+ *          because delayed transactions have status codes that
+ *          will eventually need to be changed. Calls permute_rows
+ *          to do the job.
+ */
 err_t sort_by_status(Ledger *ledger, int sort_locked){
   int i, *order;
   
-  /* CHECK FOR NULL INPUT */
+  /* Check for NULL input */
   
   if(ledger == NULL)
     return LFAILURE;
@@ -26,7 +32,7 @@ err_t sort_by_status(Ledger *ledger, int sort_locked){
   if(ledger->nrows < 1)
     return LFAILURE;
   
-  /* ALLOCATE SPACE FOR PERMUTATION AND CHECK IF MALLOC WORKED */
+  /* Allocate space for permutation and check if malloc worked */
   
   order = calloc(ledger->nrows, sizeof(int));
   if(order == NULL){
@@ -34,7 +40,7 @@ err_t sort_by_status(Ledger *ledger, int sort_locked){
     return LFAILURE;
   }
   
-  /* COMPUTE THE PERMUTATION */
+  /* Compute the permutation */
   
   for(i = 0; i < ledger->nrows; ++i){
     if(str_equal(ledger->entries[STATUS][i], CREDIT_NOT_THERE_YET))
@@ -53,14 +59,14 @@ err_t sort_by_status(Ledger *ledger, int sort_locked){
       order[i] = 6;
   }
   
-  /* CARRY OUT THE PERMUTATION */
+  /* Carry out the permutation */
   
   if(permute_rows(ledger, order) == LFAILURE){
     free(order);
     return LFAILURE;
   }
   
-  /* CLEAN UP AND EXIT */
+  /* Clean up and return */
   
   free(order);
   return LSUCCESS;

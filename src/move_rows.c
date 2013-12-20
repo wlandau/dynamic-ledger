@@ -1,9 +1,7 @@
-/***
- *** @file move_rows.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file move_rows.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,10 +10,15 @@
 #include <string.h>
 #include <user_settings.h>
 
+/** 
+ * @details Move the rows (transactions) of the "entries" member array
+ *          of a Ledger object to another location (row) in the same array.
+ *          The workhorse of this function is permute_rows.
+ */
 err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto){
   int i, *order;
   
-  /* CHECK FOR NULL INPUT */
+  /* Check for NULL input */
   
   if(ledger == NULL || rows == NULL)
     return LFAILURE;
@@ -26,7 +29,7 @@ err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto){
   if(ledger->nrows < 1)
     return LFAILURE;
   
-  /* ALLOCATE SPACE FOR PERMUTATION ORDER AND CHECK IF MALLOC WORKED */
+  /* Allocate space for permutation order and check if malloc worked */
   
   order = calloc(ledger->nrows, sizeof(int));
   if(order == NULL){
@@ -34,7 +37,7 @@ err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto){
     return LFAILURE;
   }
   
-  /* CALCULATE PERMUTATION */
+  /* Calculate permutation */
   
   for(i = moveto; i < ledger->nrows; ++i)
     order[i] = 2;
@@ -42,14 +45,14 @@ err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto){
   for(i = 0; i < nrows; ++i)
     order[rows[i]] = 1;
 
-  /* APPLY PERMUTATION */
+  /* Apply permutation */
   
   if(permute_rows(ledger, order) == LFAILURE){
     free(order);
     return LFAILURE;
   }
   
-  /* CLEAN UP AND RETURN */
+  /* Clean up and return */
   
   free(order);
   return LSUCCESS;

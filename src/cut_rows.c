@@ -1,9 +1,7 @@
-/***
- *** @file cut_rows.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file cut_rows.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,8 +10,15 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Cuts the selected rows (transactions). Specifically, copy_rows
+ *          is called, and then the copied rows are removed from the original
+ *          Ledger object.
+ */
 err_t cut_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany){
   int row;
+
+  /* Check for null input */
 
   if(ledger == NULL || rows == NULL || howmany < 1)
     return LFAILURE;
@@ -21,8 +26,12 @@ err_t cut_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany){
   if(ledger->entries == NULL)
     return LFAILURE;
      
+  /* Call copy_rows */
+     
   if(copy_rows(ledger, clipboard, rows, howmany) == LFAILURE)
     return LFAILURE;
+  
+  /* Remove copied rows from ledger */
   
   for(row = 0; row < howmany; ++row)
     strcpy(ledger->entries[STATUS][rows[row]], REMOVE);

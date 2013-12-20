@@ -1,9 +1,7 @@
-/***
- *** @file edit_row.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file edit_row.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,10 +10,20 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Overwrite a row of a Ledger object with a new row. 
+ *          Specifically, ledger->entries[field][row] is replaced with 
+ *          entries[row] for row = 0, .., NFIELDS.
+ *          The other data in the Ledger object is 
+ *          updated with calls to get_names and get_totals.
+ */
+
 err_t edit_row(Ledger *ledger, char **entries, int row){
 
   int field, i;
   char local_entry[ENTRYSIZE];
+
+  /* Check for NULL input */
 
   if(ledger == NULL || entries == NULL)
     return LFAILURE;
@@ -44,6 +52,8 @@ err_t edit_row(Ledger *ledger, char **entries, int row){
     }
   }
   
+  /* Sanitize entries and then copy them into the Ledger object */
+  
   for(field = 0; field < NFIELDS; ++field){
   
     if(entries[field] == NULL)
@@ -67,6 +77,8 @@ err_t edit_row(Ledger *ledger, char **entries, int row){
     
     strcpy(ledger->entries[field][row], local_entry);  
   } 
+  
+  /* Update the rest of the data in the ledger to reflect the changes. */
   
   if(free_for_retotal(ledger) == LFAILURE)
     return LFAILURE;

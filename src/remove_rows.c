@@ -1,9 +1,7 @@
-/***
- *** @file remove_rows.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file remove_rows.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,10 +10,16 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Remove the rows in a Ledger object with 
+ *          transaction status code REMOVE. The rows with this
+ *          status are sent to the bottom of the "entries" array
+ *          of the Ledger object and then freed. 
+ */
 err_t remove_rows(Ledger *ledger){
   int i, *order, row, field;
 
-  /* CHECK FOR NULL INPUT */
+  /* Check for NULL input */
 
   if(ledger == NULL)
     return LFAILURE;
@@ -23,7 +27,7 @@ err_t remove_rows(Ledger *ledger){
   if(ledger->entries == NULL)
     return LFAILURE;  
     
-  /* ALLOCATE SPACE FOR PERMUTATION AND CHECK IF MALLOC WORKED */
+  /* Allocate space for permutation and check if malloc worked */
     
   order = calloc(ledger->nrows, sizeof(int));
   if(order == NULL){
@@ -31,7 +35,7 @@ err_t remove_rows(Ledger *ledger){
     return LFAILURE;
   }
   
-  /* CALCULATE PERMUTATION */  
+  /* Calculate permutation to send rows marked for removal to the bottom */  
   
   row = ledger->nrows;
   for(i = 0; i < ledger->nrows; ++i)
@@ -40,7 +44,7 @@ err_t remove_rows(Ledger *ledger){
       --row;
     }
 
-  /* PERMUTE ROWS FOR REMOVAL */ 
+  /* Permute rows to bring rows marked for removal to the bottom */ 
 
   if(permute_rows(ledger, order) == LFAILURE){
     free(order);
@@ -48,7 +52,7 @@ err_t remove_rows(Ledger *ledger){
   }
   free(order);
   
-  /* FREE THE ROWS AT THE BOTTOM */ 
+  /* Free rows at the bottom */ 
   
   if(!row){
     if(free_entries(ledger) == LFAILURE)
@@ -61,7 +65,7 @@ err_t remove_rows(Ledger *ledger){
     ledger->nrows = row;
   }
   
-  /* RECALCULATE NAMES AND TOTALS */ 
+  /* Update the Ledger object to reflect the change */ 
   
   if(free_for_retotal(ledger) == LFAILURE)
     return LFAILURE;

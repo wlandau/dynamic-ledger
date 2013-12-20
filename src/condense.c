@@ -1,9 +1,7 @@
-/***
- *** @file condense.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file condense.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,8 +10,16 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Condenses a ledger object. Specifically, this function
+ *          condenses all the cleared and unlocked transactions
+ *          (rows) to make a smaller ledger with the same account 
+ *          and partition totals. 
+ */
 err_t condense(Ledger *ledger){
   int row, bank, partition;
+  
+  /* check for null input */
   
   if(ledger == NULL)
     return LFAILURE;
@@ -24,7 +30,7 @@ err_t condense(Ledger *ledger){
   if(untotaled(ledger) == LYES)
     return LFAILURE;
 
-  /* SUBTRACT TRANSACTIONS WITH NONTRIVIAL STATUSES FROM BANK TOTALS, ETC. */
+  /* Subtract cleared and unlocked transactions from partition totals */
     
   for(row = 0; row < ledger->nrows; ++row){
     if(locked(ledger->entries[STATUS][row]) == LYES){ 
@@ -38,8 +44,9 @@ err_t condense(Ledger *ledger){
     }
   }
 
-  /* MAKE THE NONZERO "TRANSACTIONS" OF THE LEDGER CONSIST ONLY OF
-   * TRANSACTIONS WITH NONTRIVIAL STATUS AND PARTITION TOTALS */
+
+  /* Make the "cleared" part of the ledger consist of either empty rows
+     or the updated partition totals calculated above */
    
   for(row = 0; row < ledger->nrows; ++row){ 
     if(locked(ledger->entries[STATUS][row]) == LNO){
@@ -56,7 +63,7 @@ err_t condense(Ledger *ledger){
     }
   }
   
-  /* REMOVE THE EMPTY ROWS */
+  /* Remove the empty rows */
   
   if(trim_ledger(ledger) == LFAILURE)
     return LFAILURE;
