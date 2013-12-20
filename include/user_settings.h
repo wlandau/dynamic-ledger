@@ -91,7 +91,7 @@
  */
 #define COLUMN_SEPARATORS   "\t"   
 
-/** @{ */
+/** @} */
 
 
 /**
@@ -160,7 +160,7 @@
  */
 #define REMOVE                 "REMOVE"  
 
-/** @{ */
+/** @} */
 
 
 /**
@@ -210,6 +210,6 @@
  */
 #define ZERO_COLOR       "\x1B[34m"   
 
-/** @{ */
+/** @} */
 
 #endif

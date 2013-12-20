@@ -1,9 +1,7 @@
-/***
- *** @file print_ledger_verbose.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file print_ledger_verbose.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,20 +10,31 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Print all the information about a Ledger object
+ *          to a file stream. This function is intended for
+ *          debugging purposes only. The output is ugly.
+ */
 err_t print_ledger_verbose(Ledger *ledger, FILE *fp){
   int i, j, ret;;
+
+  /* Check for bad input */
 
   if(ledger == NULL || fp == NULL)
     return LFAILURE;
     
   if(ledger->filename != NULL)
     fprintf(fp, "filename = %s.\n", ledger->filename);
+
+  /* Print out entries and number of rows */
    
-  fprintf(fp, "%d rows in data\n\n", ledger->nrows);  
+  fprintf(fp, "%d rows in data\n\n", ledger->nrows);
   
   ret = print_ledger_to_stream(ledger, fp);  
   if(ret == LFAILURE)
     return LFAILURE;  
+    
+  /* Print out calculated summaries */
     
   if(untotaled(ledger) == LYES)
     return LSUCCESS;

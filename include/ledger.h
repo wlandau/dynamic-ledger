@@ -68,7 +68,7 @@
 /** Number of entries in Ledger.bank_totals, etc. */  
 #define N_TOTALS          5   
 
-/** @{ */
+/** @} */
 
 
 /**
@@ -113,7 +113,7 @@
  */
 #define NO_INDEX   -1  
 
-/** @{ */
+/** @} */
 
  
 /**
@@ -166,7 +166,7 @@
  */
 #define NIL            "\0"       
 
-/** @{ */
+/** @} */
 
 
 /**
@@ -202,7 +202,7 @@ typedef int index_t;
  */
 typedef char* color_t;   
 
-/** @{ */
+/** @} */
 
 
 /**
@@ -440,7 +440,7 @@ err_t unique(char **a, int n, char ***ret, int *nunique);
  */
 err_t usage();
 
-/** @{ */
+/** @} */
 
 
 /**
@@ -517,7 +517,7 @@ err_t new_ledger(Ledger **ledger);
  */
 err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger);
 
-/** @{ */
+/** @} */
 
 
 /**
@@ -708,7 +708,7 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
  */
 err_t unlock(Ledger *ledger);
 
-/** @{ */
+/** @} */
 
 
 /**
@@ -722,13 +722,52 @@ err_t unlock(Ledger *ledger);
  */
 
 
+/**
+ * @brief  Parse a character while reading a ledger from a file.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  c The character to parse.
+ * @param  char_index The index of the character in the current ledger entry.
+ * @param  field The field (column) of the current ledger entry being read.
+ * @param  row The row (transaction) of the current ledger entry being read.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t parse_char(Ledger *ledger, char c, int *char_index, int *field, int *row);
+
+/**
+ * @brief  Get ledger entries from a file.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  filename Full path of the file to read from.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t get_entries_from_filename(Ledger *ledger, char *filename); 
-err_t get_entries_from_stream(Ledger *ledger, FILE *fp); 
+
+/**
+ * @brief  Get ledger entries from a file stream.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  fp FILE pointer to the file stream to read from.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
+err_t get_entries_from_stream(Ledger *ledger, FILE *fp);
+
+/**
+ * @brief  Get ledger entries from a string.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  s Character string to read from.
+ * @return err_t: LSUCCESS or LFAILURE
+ */ 
 err_t get_entries_from_string(Ledger *ledger, char *s);  
+
+/**
+ * @brief  Recommended way to read in a Ledger object.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  filename Full path of the file to read from.
+ * @param  fp FILE pointer to the file stream to read from.
+ * @param  str Character string to read from.
+ * @return err_t: LSUCCESS or LFAILURE
+ */ 
 err_t get_ledger(Ledger **ledger, char* filename, FILE *fp, char *str);
 
-/** @{ */
+/** @} */
 
 
 /**
@@ -741,12 +780,39 @@ err_t get_ledger(Ledger **ledger, char* filename, FILE *fp, char *str);
  * @{
  */
 
+/**
+ * @brief  Print ledger entries to a file.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  filename Full path of the file to print to.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t print_ledger_to_filename(Ledger *ledger,  char *filename);
+
+/**
+ * @brief  Print ledger entries to a file stream.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  fp FILE pointer to the file stream to print to.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t print_ledger_to_stream(Ledger *ledger, FILE *fp);
+
+/**
+ * @brief  Print ledger entries to a string.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  s Character string to write to.
+ * @return err_t: LSUCCESS or LFAILURE
+ */ 
 err_t print_ledger_to_string(Ledger *ledger, char **s);
+
+/**
+ * @brief  Print out all the information on a Ledger object to a file stream.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  fp FILE pointer to the file stream to print to.
+ * @return err_t: LSUCCESS or LFAILURE
+ */ 
 err_t print_ledger_verbose(Ledger *ledger, FILE *fp);
 
-/** @{ */
+/** @} */
 
 
 /**
@@ -759,11 +825,34 @@ err_t print_ledger_verbose(Ledger *ledger, FILE *fp);
  * @{
  */
 
+/**
+ * @brief  Print out a summary of a Ledger object to a file
+ * @param  ledger Pointer to a Ledger object.
+ * @param  filename Full path of the file to print to.
+ * @param  usecolor Include command line interface color codes?
+ * @return err_t: LSUCCESS or LFAILURE
+ */ 
 err_t print_summary_to_filename(Ledger *ledger,  char *filename, int usecolor);
+
+/**
+ * @brief  Print out a summary of a Ledger object to a file
+ * @param  ledger Pointer to a Ledger object.
+ * @param  fp FILE pointer of file stream to print to.
+ * @param  usecolor Include command line interface color codes?
+ * @return err_t: LSUCCESS or LFAILURE
+ */ 
 err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor);                     
+
+/**
+ * @brief  Print out a summary of a Ledger object to a file
+ * @param  ledger Pointer to a Ledger object.
+ * @param  s Character string to print to.
+ * @param  usecolor Include command line interface color codes?
+ * @return err_t: LSUCCESS or LFAILURE
+ */ 
 err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor);
 
-/** @{ */
+/** @} */
 
 
 /**
@@ -777,8 +866,14 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor);
  * @{
  */
 
+/**
+ * @brief  Top level function of the standalone command line interface version
+ * @param  argc Number of arguments to int main.
+ * @param  argv Arguments to int main.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
 err_t standalone(int argc, char **argv);
 
-/** @{ */
+/** @} */
 
 #endif

@@ -1,9 +1,7 @@
-/***
- *** @file print_summary_to_string.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file print_summary_to_string.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,11 +10,17 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Print a summary of a Ledger object to a file stream.
+ *          Set usecolor to 1 to print with command line interface 
+ *          color codes defined in the Printing_Macros module. 
+ *          Set usecolor to 0 to not use these color codes.
+ */
 err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
   int i, j, l0, l1, l2, any = 0, anyp = 0, nullp;
   char norm[64]; 
 
-  /* CHECK FOR NULL INPUT */
+  /* Check for bad input */
     
   if(ledger == NULL){
     printf("Ledger is empty.\n");
@@ -33,7 +37,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
      return LFAILURE; 
   }
   
-  /* ALLOCATE SPACE FOR OUTPUT STRING AND CHECK IF MALLOC WORKED */
+  /* Allocate space for string and test if malloc worked */
     
   *s = calloc(ledger->nrows * NFIELDS * ENTRYSIZE, sizeof(char));
   if(*s == NULL){
@@ -41,9 +45,11 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
     return LFAILURE;
   }
 
-  /* PRINT SUMMARY TO STRING */
+  /* Print summary to string */
 
   strcpy(norm, usecolor ? NORMAL_COLOR : "");
+
+  /* Print summaries of credit accounts */
 
   for(i = 0; i < ledger->ncredits; ++i){
     l0 = (small_norm(ledger->credit_totals[i][I_NOT_THERE_YET]) == LNO);
@@ -90,7 +96,9 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
       }
     }
   }     
-          
+
+  /* Print summaries of bank accounts */
+        
   for(i = 0; i < ledger->nbanks; ++i){
     l0 = (small_norm(ledger->bank_totals[i][I_NOT_THERE_YET]) == LNO);
     l1 = (small_norm(ledger->bank_totals[i][I_PENDING]) == LNO);
@@ -154,8 +162,12 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
                   ledger->partition_totals[i][nullp], norm);
   }
   
+  /* Strip the output string of trailing whitespace */
+  
   if(str_strip(*s) == LFAILURE)
     return LFAILURE;
+  
+  /* If all accounts are empty, say so */
   
   if(any)
     sprintf(*s, "%s\n\n", *s);
