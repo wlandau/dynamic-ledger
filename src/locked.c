@@ -1,9 +1,7 @@
-/***
- *** @file locked.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file locked.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,12 @@
 #include <string.h>
 #include <user_settings.h>
 
+/** 
+ * @details  Checks if a status code "locks" a transaction.
+ *           Any transaction with a legal status code not equal to
+ *           NIL or REMOVE is "locked": that is, it will be ignored 
+ *           by the trim_ledger, condense, and clean functions.        
+ */  
 bool_t locked(char *status){
   bool_t ret;
   

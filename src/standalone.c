@@ -13,7 +13,7 @@
 #include <user_settings.h>
 
 err_t standalone(int argc, char **argv){
-  Ledger *ledger;
+  Ledger *ledger = NULL;
 
   if(argc == 2){
 

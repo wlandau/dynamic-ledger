@@ -1,9 +1,7 @@
-/***
- *** @file legal_status_code.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file legal_status_code.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,11 @@
 #include <string.h>
 #include <user_settings.h>
 
+/** 
+ * @details Checks if a character string is one of the legal
+ *          status codes defined in the Status_Macros module.
+ *          The empty string NIL is also acceptable.
+ */ 
 bool_t legal_status_code(char *s){
   int ret;
 

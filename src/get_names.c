@@ -1,9 +1,7 @@
-/***
- *** @file get_names.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file get_names.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,12 +10,17 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Gets the account names of a ledger object.
+ *          Specifically, fills the banks, credits, and partitions
+ *          member arrays of the Ledger object.
+ */
 err_t get_names(Ledger *ledger){
   int i, j;
   err_t ret;
   char **s;
   
-  /* CHECK FOR NULL INPUT */
+  /* Check for null input */
   
   if(ledger == NULL) 
     return LFAILURE;
@@ -41,25 +44,25 @@ err_t get_names(Ledger *ledger){
     return LFAILURE;  
   }
   
-  /* ALLOCATE ARRAYS FOR PARTITION NAMES */
+  /* Allocate arrays for partition names */
   
   ledger->npartitions = calloc(ledger->nbanks, sizeof(int*));
   ledger->partitions = malloc(ledger->nbanks * sizeof(char***));
 
-  /* CHECK IF MALLOC WORKED */
+  /* Check if malloc worked */
 
   if(ledger->partitions == NULL || ledger->npartitions == NULL){
     fprintf(stderr, "Error: malloc failed\n");
     return LFAILURE;
   }
 
-  /* ALLOCATE ARRAY FOR SORTED PARTITION NAMES */
+  /* Allocate array for sorted partition names */
   
   s = malloc(ledger->nrows * sizeof(char*));
   for(i = 0; i < ledger->nrows; ++i)
     s[i] = calloc(ENTRYSIZE, sizeof(char));
 
-  /* CHECK IF MALLOC WORKED */
+  /* Check if malloc worked */
 
   ret = LSUCCESS;
   if(s == NULL){
@@ -83,7 +86,7 @@ err_t get_names(Ledger *ledger){
     return LFAILURE;
   }
   
-  /* GET PARTITION NAMES */
+  /* Get partition names */
         
   for(i = 0; i < ledger->nbanks; ++i){
     for(j = 0; j < ledger->nrows; ++j){    
@@ -105,7 +108,7 @@ err_t get_names(Ledger *ledger){
     }
   }
   
-  /* CLEAN UP AND RETURN */
+  /* Clean up and return */
   
   for(i = 0; i < ledger->nrows; ++i)
     free(s[i]);

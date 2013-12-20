@@ -1,9 +1,7 @@
-/***
- *** @file row_delim_char.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file row_delim_char.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
  
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,11 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Tests if the given character is one of the legal
+ *          row separators given in the character string
+ *          macro, ROW_SEPARATORS.
+ */
 bool_t row_delim_char(char c){
   int i;
   char delims[] = ROW_SEPARATORS;

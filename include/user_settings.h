@@ -25,22 +25,40 @@
  * @{
  */
  
-/** Column index for transaction amounts in the ledger file.  */
+/** 
+ * @brief   Amount index.
+ * @details Column index for transaction amounts in the ledger file.  
+ */
 #define AMOUNT        0  
 
-/** Column index for transaction status codes in the ledger file. */
+/** 
+ * @brief   Status index.
+ * @details Column index for transaction status codes in the ledger file. 
+ */
 #define STATUS        1   
 
-/** Column index for credit account names in the ledger file. */
+/** 
+ * @brief   Credit index.
+ * @details Column index for credit account names in the ledger file. 
+ */
 #define CREDIT        2   
 
-/** Column index for bank account names in the ledger file. */
+/** 
+ * @brief   Bank index. 
+ * @details Column index for bank account names in the ledger file. 
+ */
 #define BANK          3  
  
-/** Column index for bank partition names in the ledger file. */
+/** 
+ * @brief   Partition index.
+ * @details Column index for bank partition names in the ledger file. 
+ */
 #define PARTITION     4   
 
-/** Column index for transaction descriptions in the ledger file. */
+/** 
+ * @brief   Description index.
+ * @details Column index for transaction descriptions in the ledger file. 
+ */
 #define DESCRIPTION   5   
 
 /** @} */
@@ -61,10 +79,16 @@
  */
 
 
-/** Characters that encode the end of a row in the ledger file */
+/** 
+ * @brief   Row separators.
+ * @details Characters that encode the end of a row in the ledger file 
+ */
 #define ROW_SEPARATORS      "\n\r" 
 
-/** Characters that encode the end of a column in the ledger file */
+/** 
+ * @brief Column separators.
+ * @details Characters that encode the end of a column in the ledger file 
+ */
 #define COLUMN_SEPARATORS   "\t"   
 
 /** @{ */
@@ -83,35 +107,57 @@
  * @{
  */
 
-/** Use this status if you make a transaction with a 
-    credit account and the transaction hasn't shown up
-    yet on the credit account's website. */
+/** 
+ * @brief   Made with a credit account, but not arrived online.
+ * @details Use this status if you make a transaction with a 
+ *          credit account and the transaction hasn't shown up
+ *          yet on the credit account's website. 
+ */
 #define CREDIT_NOT_THERE_YET   "cn"      
 
-/** Transactions that show up as "pending" 
-    on credit accounts */
+/** 
+ * @brief   Pending in a credit account.
+ * @details Transactions that show up as "pending" 
+ *          on credit accounts 
+ */
 #define CREDIT_PENDING         "cp"    
 
-/** Transactions that show up as "cleared" 
-    but not paid on credit accounts. */  
+/** 
+ * @brief   Charged to a credit account.
+ * @details Transactions that show up as "cleared" 
+ *          in a credit account, but for which no 
+ *          payment from a bank has been made. 
+ */  
 #define CREDIT_CHARGED         "c" 
 
-/** Use this status for a transaction that has cleared 
-    the credit account (if applicable), but the transaction
-    or associated credit card payment hasn't shown up 
-    yet on the bank account's website. */
+/** 
+ * @brief   Not yet arrived at the bank.
+ * @details The transaction has cleared the credit account
+ *          (if applicable), but the transaction
+ *          or associated credit card payment hasn't shown up 
+ *          yet on the bank account's website. 
+ */
 #define NOT_THERE_YET          "n" 
 
-/** Transactions that show up as "pending" 
-    on bank accounts */
+/** 
+ * @brief   Pending in a bank.
+ * @details Transactions that show up as "pending" 
+ *          in bank accounts.
+ */
 #define PENDING                "p" 
 
-/** Cleared, but protected: that is, if a transaction is
- * locked and has a nonzero amount, then the condense() 
- * and trim_ledger() functions will not remove it. */
+/** 
+ * @brief   Locked status.
+ * @details Cleared, but protected: that is, if a transaction is
+ *          locked and has a nonzero amount, then the trim_ledger,
+ *          condense, and clean functions will not remove it. 
+ */
 #define LOCKED                 "l"      
 
-/** Marked to be removed in remove_rows().*/
+/** 
+ * @brief   Pending removal from the ledger.
+ * @details About to be removed from the ledger by remove_rows.
+ */
 #define REMOVE                 "REMOVE"  
 
 /** @{ */
@@ -126,24 +172,42 @@
  * @{
  */
 
-/** Set to 1 to include empty named accounts in summaries. 
- * Set to 0 to ignore accounts with balances of $0.00 */
+/** 
+ * @brief   Option to print empty accounts in summaries.
+ * @details Set to 1 to include empty named accounts in summaries. 
+ *          Set to 0 to ignore accounts with balances of $0.00.
+ */
 #define PRINT_EMPTY_ACCOUNTS 0  
 
-/** Set to 1 to enable color-coded printing to the terminal 
-  * in summaries. Set to 0 for no coloring */
+/** 
+ * @brief   Option to use color-coded printing in summaries.
+ * @details Set to 1 to enable color-coded printing to the terminal 
+ *          in summaries. Set to 0 for no coloring.
+ */
 #define USE_COLOR   1  
 
-/** Terminal color code for regular text. */
+/** 
+ * @brief   Normal text color code.
+ * @details Terminal color code for regular text. 
+ */
 #define NORMAL_COLOR     "\x1B[0m"    
 
-/** Terminal color code for negative totals. */
+/** 
+ * @brief   Negative text color code. 
+ * @details Terminal color code for negative totals. 
+ */
 #define NEGATIVE_COLOR   "\x1B[31m"   
 
-/** Terminal color code for positive totals. */
+/** 
+ * @brief   Positive text color code. 
+ * @details Terminal color code for positive totals. 
+ */
 #define POSITIVE_COLOR   "\x1B[32m"   
 
-/** Terminal color code for empty totals. */
+/** 
+ * @brief   Zero text color code. 
+ * @details Terminal color code for empty totals. 
+ */
 #define ZERO_COLOR       "\x1B[34m"   
 
 /** @{ */

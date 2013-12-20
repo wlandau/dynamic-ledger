@@ -12,6 +12,15 @@
 #include <string.h>
 #include <user_settings.h>
 
+
+/** 
+ * @brief Checks if all the character strings in the
+ *        STATUS column of the ledger are legal
+ *        status codes as defined in the Status_Macros module.
+ *        Specifically, it loops through ledger->entries[STATUS]
+ *        and calls legal_status_code on every entry.
+ *        The empty string, NIL, is also legal.
+ */ 
 bool_t legal_status_codes(Ledger *ledger){
   int i;
 

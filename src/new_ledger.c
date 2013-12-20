@@ -1,9 +1,7 @@
-/***
- *** @file new_ledger.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file new_ledger.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,7 +10,15 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Creates a new Ledger object. Pointers are initialized
+ *          to NULL so that the program knows that they do not point
+ *          to any meaningful memory. ledger should point to NULL
+ *          if it is empty.
+ */
 err_t new_ledger(Ledger **ledger){
+  free_ledger(ledger);
+
   *ledger = malloc(sizeof(Ledger));
   
   if(*ledger == NULL){

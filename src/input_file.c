@@ -1,9 +1,7 @@
-/***
- *** @file input_file.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file input_file.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,12 @@
 #include <string.h>
 #include <user_settings.h>
 
+
+/**
+ * @details Checks if the input file with the given full path name
+ *          is usable. That is, it tries to open the file for reading
+ *          and returns LYES on success and LNO on failure.
+ */
 bool_t input_file(char *filename){
   FILE *fp;
 

@@ -1,9 +1,7 @@
-/***
- *** @file str_strip.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file str_strip.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,9 @@
 #include <string.h>
 #include <user_settings.h>
 
+/** 
+ * @details Strips leading and trailing whitespace from a character string.
+ */
 err_t str_strip(char *s){ /* taken from a stackoverflow forum */
   char *start;
   char *end;

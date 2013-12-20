@@ -1,9 +1,7 @@
-/***
- *** @file unique.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file unique.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,17 +10,22 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Finds all the unique elements in an array of character strings.
+ *          You can treat "a" and "n" as the arguments, and ret and nunique
+ *          as the return values (passed by reference). ret and nunique should
+ *          be unallocated and uninitialized when unique is called.
+ */
 err_t unique(char **a, int n, char ***ret, int *nunique){
   int i, j, k;
   char **s;
   
-  /* CHECK FOR NULL INPUT */
+  /* Check for null input */
   
   if(a == NULL || n < 1)
     return LFAILURE;
 
-
-  /* MAKE A SANITIZED LOCAL COPY OF INPUT AND CHECK IF MALLOC WORKED */
+  /* Make a sanitized local copy of input and check if malloc worked */
   
   s = malloc((n + 1) * sizeof(char*));
   if(s == NULL){
@@ -73,8 +76,7 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
     }
   }
 
-
-  /* SORT LOCAL COPY OF INPUT */
+  /* Sort a local copy of the input array of strings */
 
   qsort(s, n + 1, sizeof(char*), qcmp);
 
@@ -88,7 +90,7 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
       ++(*nunique);
     }  
 
-  /* ALLOCATE SPACE FOR NEW STRINGS AND CHECK IF MALLOC WORKED */
+  /* Allocate space for the array of unique strings and check if malloc worked */
     
   *ret = malloc(*nunique * sizeof(char*));
   if(*ret == NULL){
@@ -113,7 +115,7 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
   i = 0;
   k = 0;
 
-  /* GET UNIQUE STRINGS AND SORT THEM */
+  /* Get unique strings and sort them */
  
   strcpy((*ret)[0], s[0]);
   for(j = 1; j < n + 1; ++j)
@@ -125,7 +127,7 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
 
   qsort(*ret, *nunique, sizeof(char*), qcmp);
 
-  /* CLEAN UP AND RETURN */
+  /* Clean up and return */
     
   for(j = 0; j < n + 1; ++j)
     free(s[j]);

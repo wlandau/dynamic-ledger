@@ -1,4 +1,41 @@
+###########
+## ABOUT ##
+###########
+#
+# This is the Makefile for Dynamic Ledger. To compile, just open 
+# a command line interface program like Terminal, change directories
+# to the folder that this Makefile is in, type “make”, and hit Enter.
+#
+# Requirements:
+#
+# - C compiler such as gcc or clang. Set the compiler in the User 
+#   Settings section below.
+# - The following header files:
+#   - errno.h
+#   - stdio.h
+#   - stdlib.h
+#   - string.h
+# 
+# Linux and Unix users should know where to get a C compiler. 
+# Mac users can install gcc or clang by installing Xcode command line tools.
+# Windows users can install gcc through Cygwin or MinGW.
+# 
+# 
+###################
+## USER SETTINGS ##
+###################
+
+# CC is the C compiler. The default is gcc. If you don’t have gcc,
+# change CC to clang or some other C compiler.
+
 CC=gcc
+# CC=clang
+
+
+#############################
+## CHANGE AT YOUR OWN RISK ##
+#############################
+
 CCFLAGS=-c -Wall -pedantic -Iinclude/ 
 
 SRCDIR=src/

@@ -1,9 +1,7 @@
-/***
- *** @file alloc_totals.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file alloc_totals.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,11 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Allocates space for the numerical summaries of the ledger.
+ *          These include the bank_totals, credit_totals, and partition_totals
+ *          members of a Ledger object.
+ */ 
 err_t alloc_totals(Ledger *ledger){
   int i;
   err_t ret;
@@ -25,7 +28,7 @@ err_t alloc_totals(Ledger *ledger){
   if(ledger->nrows < 1)
     return LFAILURE;
   
-  /* allocate totals */
+  /* allocate space for the numerical summaries (totals) */
   
   if(ledger->credit_totals == NULL){
     ledger->credit_totals = malloc(ledger->ncredits * sizeof(double*));

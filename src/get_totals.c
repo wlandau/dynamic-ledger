@@ -1,9 +1,7 @@
-/***
- *** @file get_totals.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file get_totals.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,11 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Compute numerical summaries on a Ledger object.
+ *          These summaries are stored in bank_totals, credit_totals,
+ *          and partition_totals.
+ */
 err_t get_totals(Ledger *ledger){
   int row, bank, credit, partition, bank_total, credit_total;
   double amount;

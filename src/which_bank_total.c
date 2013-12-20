@@ -1,9 +1,7 @@
-/***
- *** @file which_bank_total.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file which_bank_total.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,13 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Given a status code, this function finds the correct index in 
+ *          the bank_totals array member of the Ledger type. bank_totals
+ *          is an array indexed by the transaction status given in the
+ *          Status_Macros module. If no index is found for the given
+ *          status code, NO_INDEX is returned.
+ */
 index_t which_bank_total(char *status){
   if(status == NULL)
     return NO_INDEX;

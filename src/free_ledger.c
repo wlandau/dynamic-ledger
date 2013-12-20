@@ -1,9 +1,7 @@
-/***
- *** @file free_ledger.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file free_ledger.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,10 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Frees a whole ledger object and sets the pointer to NULL.
+ *          so that the program knows that it is freed.
+ */
 err_t free_ledger(Ledger **ledger){
 
   err_t ret = LSUCCESS;

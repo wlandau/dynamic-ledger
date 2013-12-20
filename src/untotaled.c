@@ -1,9 +1,7 @@
-/***
- *** @file untotaled.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file untotaled.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,7 +10,12 @@
 #include <string.h>
 #include <user_settings.h>
 
-
+/** 
+ * @details  Checks if account totals have been calculated for a Ledger object.
+ *           If not calculated, pointers to these totals should have already
+ *           been initialized to NULL by new_ledger. Returns LYES if totals have
+ *           been calculated and LNO otherwise.
+ */ 
 bool_t untotaled(Ledger *ledger){
   if(ledger == NULL)
     return LYES;

@@ -1,9 +1,7 @@
-/***
- *** @file color.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file color.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,14 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Finds the correct color code for an amount in summary output.
+ *          Printing amounts in color to the terminal window
+ *          makes the output prettier than otherwise. Negative amounts
+ *          are printed in one color, positive amounts in another,
+ *          and zeroes in a third color. Colors are defined in the
+ *          Printing_Macros module.
+ */
 color_t color(double d, int usecolor){ 
   if(!usecolor)
     return "";

@@ -1,9 +1,7 @@
-/***
- *** @file free_for_retotal.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file free_for_retotal.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,12 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details  Frees the account names and numerical summaries of a Ledger object.
+ *           bank_totals, credit_totals, partition_totals, banks, credits, etc.
+ *           are freed. This is so that the numerical summaries and account names
+ *           can be recomputed after a change to the Ledger object.
+ */
 err_t free_for_retotal(Ledger *ledger){
   int i, j;
 

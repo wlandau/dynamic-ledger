@@ -1,9 +1,7 @@
-/***
- *** @file which.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file which.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h>
@@ -12,6 +10,11 @@
 #include <string.h>
 #include <user_settings.h>
 
+/** 
+ * @details Finds the first occurrence of the character string, "find",
+ *          in the array of character strings, "s". Returns NO_INDEX
+ *          if find is not an element of s.
+ */ 
 index_t which(char **s, char *find, int n){
   int low = 0, high = n - 1, mid, c;
   

@@ -1,9 +1,7 @@
-/***
- *** @file alloc_entries.c
- *** @author Will Landau
- *** @email will.landau@gmail.com
- *** @web http://www.will-landau.com/
- ***/
+/**
+ * @file alloc_entries.c
+ * @author Will Landau (http://www.will-landau.com/)
+ */
 
 #include <errno.h>
 #include <ledger.h> 
@@ -12,6 +10,12 @@
 #include <string.h>
 #include <user_settings.h>
 
+/**
+ * @details Allocate the "entries" member of a Ledger object.
+ *          "entries" stores the entries of the Ledger spreadsheet
+ *          with rows representing transactions and columns
+ *          representing features of the transactions.
+ */
 err_t alloc_entries(Ledger *ledger){
   int i, j, nrows;
   err_t ret;
