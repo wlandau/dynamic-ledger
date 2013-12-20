@@ -48,7 +48,7 @@ int main(){
     printf("\n--------\nTEST %d\n", test);
     new_ledger(&ledger);
     printf("ret = %d\n", get_entries_from_string(ledger, strs[test]));
-    
+    printf("nrows = %d\n", ledger->nrows);    
     printf("\nENTRIES %d\n\n", test);
  
  
