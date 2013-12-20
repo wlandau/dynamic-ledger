@@ -20,7 +20,7 @@
 
 int main(){
   int i, j, test, ntests = 10;
-  Ledger *ledger;
+  Ledger *ledger = NULL;
   char **strs;
 
   strs = malloc(ntests * sizeof(char*));
