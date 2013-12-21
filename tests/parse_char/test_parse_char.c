@@ -22,7 +22,7 @@
 
 int main(){
   int i, j, char_index, field, row, test, ntests = 10;
-  Ledger *ledger;
+  Ledger *ledger = NULL;
   char **strs;
 
   strs = malloc(ntests * sizeof(char*));
