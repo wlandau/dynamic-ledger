@@ -15,12 +15,15 @@ int main(){
   
   get_ledger(&ledger, F, NULL, NULL);
   
-  print_ledger_verbose(ledger, stdout);
+  print_ledger_to_stream(ledger, stdout);
+  print_summary_to_stream(ledger, stdout, 1);
   printf("\nTEST 2 RET = %d\n", rename_credit(ledger, "hi", "ho"));
 
-  print_ledger_verbose(ledger, stdout);
+  print_ledger_to_stream(ledger, stdout);
+  print_summary_to_stream(ledger, stdout, 1);
   printf("\nTEST 3 RET = %d\n", rename_credit(ledger, "2nd", "hi"));
-  print_ledger_verbose(ledger, stdout);
+  print_ledger_to_stream(ledger, stdout);
+  print_summary_to_stream(ledger, stdout, 1);
 
   free_ledger(&ledger);
   return 0;

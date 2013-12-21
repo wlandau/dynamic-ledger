@@ -16,7 +16,11 @@
  * @details Finds all the unique elements in an array of character strings.
  *          You can treat "a" and "n" as the arguments, and ret and nunique
  *          as the return values (passed by reference). ret and nunique should
- *          be unallocated and uninitialized when unique is called.
+ *          be unallocated and uninitialized when unique is called. IMPORTANT
+ *          NOTE: unique adds a blank character string to the list of unique
+ *          character strings if one is not already present. This is so that
+ *          every ledger automatically has an unnamed bank account, an unnamed
+ *          credit account, and an unnamed bank partition for every bank account.
  */
 err_t unique(char **a, int n, char ***ret, int *nunique){
   int i, j, k;

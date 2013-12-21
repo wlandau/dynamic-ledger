@@ -39,7 +39,7 @@ int main(){
     
   for(test = 0; test < ntests; ++test){
     printf("\n--------\nTEST %d\n", test);
-    ledger = new_ledger();
+    new_ledger(&ledger);
     ledger->nrows = 1;
     for(i = 0; i < strlen(strs[test]); ++i)
       if(strs[test][i] == '\n' || strs[test][i] == '\r')
@@ -67,7 +67,7 @@ int main(){
     
     printf("\nSTATUS CODES %d, STATUS = %d\n\n", test, legal_status_codes(ledger));
     
-    free_ledger(ledger);
+    free_ledger(&ledger);
   }  
 
   for(test = 0; test < ntests; ++test)

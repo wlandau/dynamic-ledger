@@ -24,9 +24,12 @@ int main(){
   get_entries_from_filename(ledger, L3); 
   get_names(ledger);
   get_totals(ledger);
-  print_ledger_verbose(ledger, stdout);
+  print_ledger_to_stream(ledger, stdout);
+  print_summary_to_stream(ledger, stdout, 1);
   printf("6 RET = %d\n", free_entries(ledger));
-  print_ledger_verbose(ledger, stdout);
+  print_ledger_to_stream(ledger, stdout);
+  printf("nrows = %d\n", ledger->nrows);
+  print_summary_to_stream(ledger, stdout, 1);
   free_ledger(&ledger);
 
   return 0;

@@ -22,6 +22,7 @@ int main(){
   printf("%d\n", space('v'));  
   printf("%d\n", space('.'));
   printf("%d\n", space('s'));    
+  printf("%d\n", space('\0'));    
   
   return 0;
 }

@@ -13,7 +13,7 @@
 #define L4 "../data/ledgers/condensed.txt"
 #define L5 "../data/ledgers/empty.txt"
 #define L6 "../data/ledgers/example_ledger.txt"
-#define L7 "../data/ledgers/just_bank.txt"
+#define L7 "../data/ledgers/justbank.txt"
 #define L8 "../data/ledgers/justcredit.txt"
 #define L9 "../data/ledgers/nonnull.txt"
 #define L10 "../data/ledgers/small.txt"

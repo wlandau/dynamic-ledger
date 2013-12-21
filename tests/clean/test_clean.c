@@ -32,9 +32,11 @@ int main(){
  for(test = 0; test < 3; ++test){
     printf("\n--------\nTEST %d", test);
     get_ledger(&ledger, strs[test], NULL, NULL);
-    print_ledger_verbose(ledger, stdout);
+    print_ledger_to_stream(ledger, stdout);
+    print_summary_to_stream(ledger, stdout, 1);
     printf("\nret = %d\n", clean(ledger, 1));
-    print_ledger_verbose(ledger, stdout);   
+    print_ledger_to_stream(ledger, stdout);
+    print_summary_to_stream(ledger, stdout, 1);
     free_ledger(&ledger);
     free(strs[test]);
   }  

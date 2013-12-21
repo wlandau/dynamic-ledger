@@ -31,10 +31,12 @@ int main(){
     printf("\n--------\nTEST %d\n", test);
     get_ledger(&ledger, strs[test], NULL, NULL);
     if(ledger->entries == NULL)
-      printf("NULL ENTRIES\n");
-    print_ledger_verbose(ledger, stdout);
+    printf("NULL ENTRIES\n");
+    printf("nrows = %d\n", ledger->nrows);
+    print_ledger_to_stream(ledger, stdout);
     printf("\nret = %d\n", trim_ledger(ledger));
-    print_ledger_verbose(ledger, stdout);   
+    printf("nrows = %d\n", ledger->nrows);
+    print_ledger_to_stream(ledger, stdout); 
     free_ledger(&ledger);
     free(strs[test]);
   }  

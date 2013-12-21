@@ -11,15 +11,15 @@ int main(){
   Ledger *ledger = NULL;
   
   ret = alloc_entries(ledger);
-  printf("\n----\nRETURN VALUE = %d\n---\n", ret);
+  printf("\n----\n1 RETURN VALUE = %d\n---\n", ret);
 
   new_ledger(&ledger);
   ret = alloc_entries(ledger);
-  printf("\n----\nRETURN VALUE = %d\n---\n", ret);
+  printf("\n----\n2 RETURN VALUE = %d\n---\n", ret);
   
   ledger->nrows = 4;
   ret = alloc_entries(ledger);
-  printf("\n----\nRETURN VALUE = %d\n---\n", ret);
+  printf("\n----\n3 RETURN VALUE = %d\n---\n", ret);
   
   for(i = 0; i < NFIELDS; ++i){
     for(j = 0; j < ledger->nrows; ++j)

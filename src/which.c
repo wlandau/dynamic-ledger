@@ -13,9 +13,11 @@
 #include <user_settings.h>
 
 /** 
- * @details Finds the first occurrence of the character string, "find",
- *          in the array of character strings, "s". Returns NO_INDEX
- *          if find is not an element of s.
+ * @details Finds an occurrence of the character string, "find",
+ *          in the array of character strings, "s", using binary
+ *          search. The index returned need not be the index of 
+ *          the first occurrence. Returns NO_INDEX if "find"
+ *          is not an element of s.
  */ 
 index_t which(char **s, char *find, int n){
   int low = 0, high = n - 1, mid, c;

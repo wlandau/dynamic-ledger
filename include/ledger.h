@@ -106,7 +106,7 @@
 
 /**
  * For functions returning an index_t type (usually array
- * lookup functions like which()), this is the return value 
+ * lookup functions like which), this is the return value 
  * indicating that the index of a candidate entry was not 
  * found in the respective array. 
  */
@@ -383,7 +383,7 @@ index_t col_delim_str(char *s);
 index_t row_delim_str(char *s);
 
 /** 
- * @brief  Finds the first occurrence of "find" in "s".
+ * @brief  Finds an occurrence of "find" in "s".
  * @param  s Array of character strings.
  * @param  find Character string to find.
  * @param  n Int: how many elements in s.
