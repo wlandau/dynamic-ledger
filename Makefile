@@ -42,7 +42,7 @@ SRCDIR=src/
 OBJDIR=obj/
 TESTDIR=tests/
 TUTORIALDIR=tutorial/
-BIN=ledger
+BIN=dl
 
 DEP=main
 DEP+=alloc_entries 

@@ -10,6 +10,6 @@ fi
 for l in `ls $DIR/../data/ledgers/*.txt`
 do
   f=`basename $l`
-  valgrind $DIR/../../ledger $DIR/../data/ledgers/$f 1> $DIR/summaries/$f 2>> $DIR/stderr.txt
-  valgrind $DIR/../../ledger $DIR/../data/ledgers/$f $DIR/condensed/$f 2>> $DIR/stderr.txt
+  valgrind $DIR/../../dl $DIR/../data/ledgers/$f 1> $DIR/summaries/$f 2>> $DIR/stderr.txt
+  valgrind $DIR/../../dl $DIR/../data/ledgers/$f $DIR/condensed/$f 2>> $DIR/stderr.txt
 done

@@ -1,0 +1,157 @@
+.\"-
+.\" Will Landau (http://www.will-landau.com)
+.\"	2013-2014
+.\" License: GPL 3.0
+.\"
+.Dd 2013
+.Dt DL 1
+.Os
+.Sh NAME
+.Nm dl
+.Nd Dynamic Ledger, a minimalist dynamic personal accounting software package
+.Sh SYNOPSIS
+.Nm
+.Op Ar input_ledger
+.Op Ar output_ledger
+.Sh OVERVIEW
+.Pp
+.Nm
+is a program that tells you your exact true account balances
+even when several financial transactions are pending. It also
+takes into account that transactions may pass through credit 
+accounts before they finally clear in bank accounts.
+.Sh SUMMARIZING LEDGERS
+.Nm
+.Op Ar input_ledger
+.Pp
+This usage reads the ledger file whose full path is input_ledger
+and prints a summary to the screen.
+.Sh CLEANING LEDGERS
+.Nm
+.Op Ar input_ledger 
+.Op Ar output_ledger
+.Pp
+This usage creates output_ledger from input_ledger. 
+output_ledger is the path to a shortened, cleaned-up 
+version of input_ledger with the same
+summary information. All cleared transactions are condensed,
+and all pending and locked transactions are left alone. You may
+clean your ledger every so often to prevent it from getting too big.
+.Sh THE LEDGER FILE FORMAT
+.Pp
+Ledger files are tab-delimited
+flat files with rows as transactions and columns as fields. Here is
+the content of an example ledger file.
+.Pp
+AMOUNT	STATUS	CREDIT    BANK       PARTITION    DESCRIPTION
+.br 
+-12       cn                  mybank     food	    groceries 12/13/13
+.br
+-10       cp                  mybank     fuel         fuel for the car
+.br
+-500      c	     mycard    mybank     rent	    December '13 rent payment
+.br
+-2.12  			mycard    mybank        	         coffee
+.br
+800   			          mybank     rent	    December paycheck
+.br
+400   			          mybank     food	    December paycheck
+.br
+100   		               mybank                  December paycheck
+.br
+100   		                                       December paycheck
+
+.Pp
+The first line is the header. The header is assumed to 
+be for the user only, so you can write whatever you want in it as long
+as you remember what each of the columns means. The program will ignore it
+and begin processing the ledger at the second row. 
+
+.Pp
+Each of the six columns has a specific, hard-coded meaning. You cannot interchange
+the columns without editing the macros in include/user_settings.h to change
+the expected column order. The columns are explained in the COLUMS section.
+
+.Sh COLUMNS
+.Bl -tag -width flag
+.It AMOUNT 
+The amount of each transaction. Each amount must be a floating point number. 
+Negative amounts represent payments and charges, while positive amounts
+represent deposits and income.
+.It STATUS
+The transaction status of each transaction. These codes reflect the
+delay status of the transactions. For example, if a transaction is pending
+in a bank account, write "cp". See the TRANSACTION STATUS CODES section
+for more details.
+.It CREDIT
+The name of the credit account associated with the transaction. Leave
+blank if there is no credit account or you do not wish to provide a name
+for your credit account.
+.It BANK
+The name of the bank account associated with the transaction.
+Leave blank if you do not wish to provide a name.
+.It PARTITION
+The bank account partition associated with the transaction.
+Use this column to divide your bank account into partitions:
+i.e., money for food, money for rent, ect.
+.It DESCRIPTION
+A short description of the transaction. This column is 
+for the user only, and the program will not process it.
+
+.Sh TRANSACTION STATUS CODES
+.Bl -tag -width flag
+.It cn
+You charged this transaction to a credit account, but
+when you go online and check you credit account's balance,
+the transaction does not show up yet.
+.It cp
+When you go online and check your credit account's balance,
+the transaction shows as "pending".
+.It c
+When you go online and check your credit account's balance,
+the transaction shows as "cleared". However, you have not
+paid this transaction in a credit card payment yet.
+.It p
+When you go online and check your bank account's balance,
+the transaction (or the credit card payment that
+paid for the transaction) shows as "pending".
+.It <BLANK>
+Blank status code: when you go online and check your bank account's balance,
+the transaction (or the credit card payment that
+paid for the transaction) shows as "cleared".
+.It l
+Locked: same as the blank status code, but when the ledger is cleaned
+as explained in the CLEANING LEDGERS section, this transaction will
+not be condensed. It will be preserved.
+
+.Sh EXAMPLES
+Save the example ledger in the LEDGER FILE FORMAT section to ledger.txt. Make
+sure fields are tab delimited. (Spaces may have been generated in copy-paste.)
+Then, run:
+.Pp
+$ .Nm ledger.txt
+.Pp
+A summary should print to the screen. Next, make a condensed version of ledger.txt
+with:
+.Pp
+$ .Nm ledger.txt out.txt
+.Pp
+Check that out.txt is a condensed version of ledger.txt. Since ledger.txt was
+not very big, only a couple transactions are actually condensed. However,
+for enormous ledgers, the cleaning feature of this program may save a lot 
+of space.
+
+.Sh BUGS
+If you find a bug, please write to will.landau@gmail.com. 
+Send a description of the error and a minimal working example
+that reproduces it.
+
+.Sh AUTHOR
+.br
+Will Landau
+.br
+http://www.will-landau.com/
+.br
+will.landau@gmail.com
+.Sh COPYRIGHT
+You may copy the source under the terms of the GNU General Public License version 3.0.
