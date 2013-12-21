@@ -5,11 +5,11 @@
  * @copyright   GNU General Public License 3.0
  */
 #include <errno.h>
-#include <ledger.h>
+#include "ledger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <user_settings.h>
+#include "user_settings.h"
 
 /** 
  * @details Strips leading and trailing whitespace from a character string.
