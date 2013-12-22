@@ -607,8 +607,20 @@ err_t edit_row(Ledger *ledger, char **entries, int row, int append);
  * @param  append Append option.
  * @return err_t: LSUCCESS or LFAILURE
  */
-err_t map_to_coords_1(Ledger *ledger, char *entry, int *rows, 
+err_t map_to_coords(Ledger *ledger, char *entry, int *rows, 
                      int *fields, int howmany, int append);
+
+/**
+ * @brief  Map a character string multiple entries.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  entry Character string to map.
+ * @param  coords Coordinates of entries to map to in column major order.
+ * @param  howmany Number of elements of rows and fields.
+ * @param  append Append option.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
+err_t map_to_coords_colmajor(Ledger *ledger, char *entry, int **coords,
+                             int howmany, int append);
 
 /**
  * @brief  Map a character string multiple entries.
