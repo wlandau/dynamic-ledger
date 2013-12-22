@@ -56,11 +56,11 @@ err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field, int 
     strlcpy(local_entry, entry, (ENTRYSIZE - 1) * sizeof(char));
   } else if(append == 1){
     strlcpy(local_entry, entry, (ENTRYSIZE - 1) * sizeof(char));
-    strlcat(local_entry, ledger->entries[field][row], 
+    strncat(local_entry, ledger->entries[field][row], 
            (ENTRYSIZE - strlen(local_entry) - 1) * sizeof(char));
   } else if(append == 2){
     strlcpy(local_entry, ledger->entries[field][row], (ENTRYSIZE - 1) * sizeof(char));
-    strlcat(local_entry, entry,  
+    strncat(local_entry, entry,  
             (ENTRYSIZE - strlen(local_entry) - 1) * sizeof(char));
   } else{
     fprintf(stderr, "Warning: bad \"append\" option. Overwriting entries.\n");

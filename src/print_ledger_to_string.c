@@ -47,33 +47,33 @@ err_t print_ledger_to_string(Ledger *ledger, char **s){
   
   for(field = 0; field < NFIELDS; ++field){
     if(field == AMOUNT)
-      strlcat(*s, "amount", (ENTRYSIZE - 1) * sizeof(char));
+      strncat(*s, "amount", (ENTRYSIZE - 1) * sizeof(char));
     else if(field == STATUS)
-      strlcat(*s, "status", (ENTRYSIZE - 1) * sizeof(char));
+      strncat(*s, "status", (ENTRYSIZE - 1) * sizeof(char));
     else if(field == CREDIT)
-      strlcat(*s, "credit", (ENTRYSIZE - 1) * sizeof(char));
+      strncat(*s, "credit", (ENTRYSIZE - 1) * sizeof(char));
     else if(field == BANK)
-      strlcat(*s, "bank", (ENTRYSIZE - 1) * sizeof(char));
+      strncat(*s, "bank", (ENTRYSIZE - 1) * sizeof(char));
     else if(field == PARTITION)
-      strlcat(*s, "partition", (ENTRYSIZE - 1) * sizeof(char));
+      strncat(*s, "partition", (ENTRYSIZE - 1) * sizeof(char));
     else if(field == DESCRIPTION)
-      strlcat(*s, "description", (ENTRYSIZE - 1) * sizeof(char));
+      strncat(*s, "description", (ENTRYSIZE - 1) * sizeof(char));
       
     if(field < NFIELDS - 1)
-      strlcat(*s, "\t", (ENTRYSIZE - 1) * sizeof(char));
+      strncat(*s, "\t", (ENTRYSIZE - 1) * sizeof(char));
     else
-      strlcat(*s, "\n", (ENTRYSIZE - 1) * sizeof(char));
+      strncat(*s, "\n", (ENTRYSIZE - 1) * sizeof(char));
   }  
 
   /* Print the actual ledger entries */
   
   for(row = 0; row < ledger->nrows; ++row){
     for(field = 0; field < NFIELDS - 1; ++field){
-      strlcat(*s, ledger->entries[field][row], (ENTRYSIZE - 1) * sizeof(char));
-      strlcat(*s, "\t", (ENTRYSIZE - 1) * sizeof(char));
+      strncat(*s, ledger->entries[field][row], (ENTRYSIZE - 1) * sizeof(char));
+      strncat(*s, "\t", (ENTRYSIZE - 1) * sizeof(char));
     }
-    strlcat(*s, ledger->entries[NFIELDS - 1][row], (ENTRYSIZE - 1) * sizeof(char));
-    strlcat(*s, "\n", (ENTRYSIZE - 1) * sizeof(char));
+    strncat(*s, ledger->entries[NFIELDS - 1][row], (ENTRYSIZE - 1) * sizeof(char));
+    strncat(*s, "\n", (ENTRYSIZE - 1) * sizeof(char));
   }
 
   /* Remove extra whitespace from the tail of the output string */
