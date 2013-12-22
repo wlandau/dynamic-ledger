@@ -27,7 +27,7 @@ err_t get_names(Ledger *ledger){
   if(ledger == NULL) 
     return LFAILURE;
     
-  if(ledger->nrows < 1)
+  if(ledger->nrows < 1 || ledger->entries == NULL)
     return LFAILURE;
 
   if(unique(ledger->entries[CREDIT], 
