@@ -609,6 +609,20 @@ err_t map_to_column(Ledger *ledger, char *entry, int *rows,
                     int nrows, int field, int append);
 
 /**
+ * @brief  Map a character string multiple entries.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  entry Character string to map.
+ * @param  rows Rows of entries to map to.
+ * @param  fields Columns of entries to map to.
+ * @param  howmany Number of elements of rows and fields.
+ * @param  append Append option.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
+err_t map_to_multiple(Ledger *ledger, char *entry, int *rows, 
+                    int *fields, int howmany, int append);
+
+
+/**
  * @brief  Insert blank rows.
  * @param  ledger Pointer to a Ledger object.
  * @param  row Where to insert the rows.
