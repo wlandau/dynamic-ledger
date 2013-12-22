@@ -19,7 +19,7 @@ int main(){
   free_ledger(&ledger);
 
   if(get_ledger(&ledger, F, NULL, NULL) == LFAILURE){
-    free_ledger(ledger);
+    free_ledger(&ledger);
     return 1;
   }
   
