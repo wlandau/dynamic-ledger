@@ -21,6 +21,9 @@ bool_t legal_double(char *s){
   int e = 0;
   char *testbufref, testbuf[ENTRYSIZE];
   
+  if(strlen(s) >= ENTRYSIZE)
+    return LNO;
+  
   str_strip(s);
   strcpy(testbuf, s);
   testbufref = testbuf;
