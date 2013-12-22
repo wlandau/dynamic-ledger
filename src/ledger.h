@@ -585,6 +585,19 @@ err_t edit_entry(Ledger *ledger, char *entry, int row, int field);
 err_t edit_row(Ledger *ledger, char **entries, int row);
 
 /**
+ * @brief  Map a character string to part of a column.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  entry Character string to map.
+ * @param  rows The rows to map to.
+ * @param  nrows Number of elements of rows.
+ * @param  field Column to map to.
+ * @param  append Append option.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
+err_t map_to_column(Ledger *ledger, char *entry, int *rows, 
+                    int nrows, int field, int append);
+
+/**
  * @brief  Insert blank rows.
  * @param  ledger Pointer to a Ledger object.
  * @param  row Where to insert the rows.
