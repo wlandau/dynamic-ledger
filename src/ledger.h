@@ -583,8 +583,7 @@ err_t edit_entry(Ledger *ledger, char *entry, int row, int field);
  * @param  field The field (column) of the entry to overwrite.
  * @return err_t: LSUCCESS or LFAILURE
  */
-err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field);
-
+err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field, int append);
 
 /**
  * @brief  Modify a whole row (transaction) and update the Ledger object accordingly.

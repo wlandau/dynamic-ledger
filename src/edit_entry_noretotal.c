@@ -16,10 +16,12 @@
  * @details Overwrite an entry of a Ledger object with a new entry. 
  *          Specifically, ledger->entries[field][row] is replaced with 
  *          "entry", and the other data in the Ledger object is 
- *          NOT updated.
+ *          NOT updated. Set "append" to 0 to overwrite
+ *          each entry, 1 to append to the head of each entry,
+ *          and 2 to append to the tail of each entry. 
  */
 
-err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field){
+err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field, int append){
   int i;
   char local_entry[ENTRYSIZE];
 
@@ -48,7 +50,20 @@ err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field){
   
   /* Sanitize "entry" and then copy it into the ledger */
   
-  strcpy(local_entry, entry);
+  if(!append){ 
+    strcpy(local_entry, entry);
+  } else if(append == 1){
+    strcpy(local_entry, entry);
+    strncat(local_entry, ledger->entries[field][row], ENTRYSIZE - strlen(local_entry) - 1);
+  } else if(append == 2){
+    if(strlen(ledger->entries[field][row]) < ENTRYSIZE)
+      strcpy(local_entry, ledger->entries[field][row]);
+    strncat(local_entry, entry,  ENTRYSIZE - strlen(local_entry) - 1);
+  } else{
+    fprintf(stderr, "Warning: bad \"append\" option. Overwriting entries.\n");
+    strcpy(local_entry, entry);
+  }
+    
   str_strip(local_entry);
   
   if(field == AMOUNT){
