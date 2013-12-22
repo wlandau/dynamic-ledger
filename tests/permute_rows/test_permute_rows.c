@@ -18,7 +18,10 @@ int main(){
   printf("1A RET = %d\n", permute_rows(ledger, NULL));
   free_ledger(&ledger);
 
-  get_ledger(&ledger, F, NULL, NULL);   
+  get_ledger(&ledger, F, NULL, NULL);  
+  if(ledger == NULL)
+    return;
+  
   order = malloc(ledger->nrows * sizeof(int));
   
   for(i = 0; i < ledger->nrows; ++i)
