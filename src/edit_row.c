@@ -25,10 +25,16 @@ err_t edit_row(Ledger *ledger, char **entries, int row){
   int field, i;
   char local_entry[ENTRYSIZE];
 
-  /* Check for NULL input */
+  /* Check for bad input */
 
   if(ledger == NULL || entries == NULL)
     return LFAILURE;
+    
+  for(field = 0; field < NFIELDS; ++field)
+    if(strlen(entries[field]) >= ENTRYSIZE){
+      fprintf(stderr, "Error: entries[field] too big.\n");
+      return LFAILURE;
+    }  
 
   if(row < 0 || row >= ledger->nrows){
     fprintf(stderr, "Error: illegal row index \"%d\" in edit_row().\n", row);
