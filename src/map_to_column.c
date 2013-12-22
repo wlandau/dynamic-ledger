@@ -1,5 +1,5 @@
 /**
- * @file        map_column.c
+ * @file        map_to_column.c
  * @author      Will Landau (http://www.will-landau.com/)
  * @date        2013-2014
  * @copyright   GNU General Public License 3.0

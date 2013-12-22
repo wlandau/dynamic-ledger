@@ -608,6 +608,21 @@ err_t edit_row(Ledger *ledger, char **entries, int row);
 err_t map_to_column(Ledger *ledger, char *entry, int *rows, 
                     int nrows, int field, int append);
 
+
+/**
+ * @brief  Map a character string a region of the spreadsheet.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  entry Character string to map.
+ * @param  rows Rows of entries to map to.
+ * @param  nrows Number of elements of rows.
+ * @param  fields Columns of entries to map to.
+ * @param  nfields Number of elements of fields.
+ * @param  append Append option.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
+err_t map_to_grid(Ledger *ledger, char *entry, int *rows, int nrows,
+                  int *fields, int nfields, int append);
+
 /**
  * @brief  Map a character string multiple entries.
  * @param  ledger Pointer to a Ledger object.
@@ -620,7 +635,6 @@ err_t map_to_column(Ledger *ledger, char *entry, int *rows,
  */
 err_t map_to_multiple(Ledger *ledger, char *entry, int *rows, 
                     int *fields, int howmany, int append);
-
 
 /**
  * @brief  Insert blank rows.
