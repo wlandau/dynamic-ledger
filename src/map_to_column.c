@@ -64,10 +64,10 @@ err_t map_to_column(Ledger *ledger, char *entry, int *rows, int nrows, int field
       strcpy(local_entry, entry);
     } else if(append == 1){
       strcpy(local_entry, entry);
-      strcat(local_entry, ledger->entries[field][rows[i]]);
+      strncat(local_entry, ledger->entries[field][rows[i]], ENTRYSIZE - strlen(local_entry) - 1);
     } else if(append == 2){
       strcpy(local_entry, ledger->entries[field][rows[i]]);
-      strcat(local_entry, entry);
+      strncat(local_entry, entry,  ENTRYSIZE - strlen(local_entry) - 1);
     } else{
       fprintf(stderr, "Warning: bad \"append\" option. Overwriting entries.\n");
       strcpy(local_entry, entry);
