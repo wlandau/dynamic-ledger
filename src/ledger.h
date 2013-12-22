@@ -680,6 +680,13 @@ err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to);
 err_t remove_rows(Ledger *ledger);
 
 /**
+ * @brief  Recalculate names and totals.
+ * @param  ledger Pointer to a Ledger object.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
+err_t retotal(Ledger *ledger);
+
+/**
  * @brief  Removes blank rows.
  * @param  ledger Pointer to a Ledger object.
  * @return err_t: LSUCCESS or LFAILURE

@@ -70,6 +70,7 @@ dl_SOURCES+=src/rename_bank.c
 dl_SOURCES+=src/rename_credit.c 
 dl_SOURCES+=src/rename_partition.c 
 dl_SOURCES+=src/repartition.c
+dl_SOURCES+=src/retotal.c
 dl_SOURCES+=src/row_delim_char.c
 dl_SOURCES+=src/row_delim_str.c
 dl_SOURCES+=src/small_norm.c
