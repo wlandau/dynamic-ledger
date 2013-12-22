@@ -26,9 +26,6 @@ err_t get_entries_from_filename(Ledger *ledger, char *filename){
   
   if(input_file(filename) == LNO)
     return LFAILURE;
-    
-  if(strlen(filename) >= FILENAMESIZE)
-    return LFAILURE;
 
   /* Open file and store file location in the Ledger object */
     
@@ -38,7 +35,7 @@ err_t get_entries_from_filename(Ledger *ledger, char *filename){
   
   if(ledger->filename == NULL)
     ledger->filename = malloc(FILENAMESIZE * sizeof(char));
-  strcpy(ledger->filename, filename);
+  strlcpy(ledger->filename, filename, (ENTRYSIZE - 1) * sizeof(char));
   
   /* Check if malloc worked */
   

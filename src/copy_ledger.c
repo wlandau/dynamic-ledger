@@ -41,9 +41,8 @@ err_t copy_ledger(Ledger **out_ledger, Ledger *in_ledger){
   
   for(field = 0; field < NFIELDS; ++field)
     for(row = 0; row < in_ledger->nrows; ++row) 
-      if(strlen(in_ledger->entries[field][row]) < ENTRYSIZE) 
-        strcpy((*out_ledger)->entries[field][row],
-               in_ledger->entries[field][row]);
+      strlcpy((*out_ledger)->entries[field][row],
+             in_ledger->entries[field][row], (ENTRYSIZE - 1) * sizeof(char));
  
  /* Compute account names and summaries of out_ledger */
   

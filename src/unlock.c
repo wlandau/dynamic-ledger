@@ -33,7 +33,7 @@ err_t unlock(Ledger *ledger){
     
   for(row = 0; row < ledger->nrows; ++row)
     if(str_equal(ledger->entries[STATUS][row], LOCKED))
-      strcpy(ledger->entries[STATUS][row], NIL);
+      strlcpy(ledger->entries[STATUS][row], NIL, (ENTRYSIZE - 1) * sizeof(char));
 
   return LSUCCESS;
 }

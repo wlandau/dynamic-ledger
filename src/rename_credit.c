@@ -20,16 +20,19 @@
 err_t rename_credit(Ledger *ledger, char *from, char *to){
   int i;
 
-  /* Check for NULL input */
+  /* Check for bad input */
 
-  if(ledger == NULL)
+  if(ledger == NULL || from == NULL || to == NULL)
+    return LFAILURE;
+
+  if(strlen(from) >= ENTRYSIZE || strlen(to) >= ENTRYSIZE)
     return LFAILURE;
 
   /* Rename the credit account */
 
   for(i = 0; i < ledger->nrows; ++i)
     if(str_equal(ledger->entries[CREDIT][i], from))
-      strcpy(ledger->entries[CREDIT][i], to);
+      strlcpy(ledger->entries[CREDIT][i], to, (ENTRYSIZE - 1) * sizeof(char));
 
   /* Update the rest of the data in the Ledger object to reflect the change */
       

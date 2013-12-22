@@ -20,9 +20,12 @@
 err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to){
   int i;
 
-  /* Check for NULL input */
+  /* Check for bad input */
   
-  if(ledger == NULL)
+  if(ledger == NULL || from == NULL || to == NULL || bank == NULL)
+    return LFAILURE;
+  
+  if(strlen(from) >= ENTRYSIZE || strlen(to) >= ENTRYSIZE || strlen(bank) >= ENTRYSIZE)
     return LFAILURE;
   
   /* Rename the partition */
@@ -30,7 +33,7 @@ err_t rename_partition(Ledger *ledger, char *bank, char *from, char *to){
   for(i = 0; i < ledger->nrows; ++i)
     if(str_equal(ledger->entries[BANK][i], bank) && 
        str_equal(ledger->entries[PARTITION][i], from))
-      strcpy(ledger->entries[PARTITION][i], to);
+      strlcpy(ledger->entries[PARTITION][i], to, (ENTRYSIZE - 1) * sizeof(char));
 
   /* Update the rest of the data in the Ledger object to reflect the change */
       

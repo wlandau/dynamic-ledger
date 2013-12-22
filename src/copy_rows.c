@@ -51,8 +51,8 @@ err_t copy_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany){
 
   for(field = 0; field < NFIELDS; ++field)
     for(row = 0; row < howmany; ++row)
-      if(strlen(ledger->entries[field][rows[row]]) < ENTRYSIZE)
-        strcpy((*clipboard)->entries[field][row], ledger->entries[field][rows[row]]);
+      strlcpy((*clipboard)->entries[field][row], ledger->entries[field][rows[row]], 
+             (ENTRYSIZE - 1) * sizeof(char));
   
   return LSUCCESS; 
 }

@@ -42,7 +42,7 @@ err_t condense(Ledger *ledger){
 
       ledger->partition_totals[bank][partition] -= atof(ledger->entries[AMOUNT][row]);
     } else {
-      strcpy(ledger->entries[AMOUNT][row], NIL); 
+      strlcpy(ledger->entries[AMOUNT][row], NIL, (ENTRYSIZE - 1) * sizeof(char)); 
     }
   }
 
@@ -57,9 +57,10 @@ err_t condense(Ledger *ledger){
                         ledger->npartitions[bank]);
                         
       if(ledger->partition_totals[bank][partition] > EPS){
-        sprintf(ledger->entries[AMOUNT][row], "%0.2f", 
-                ledger->partition_totals[bank][partition]);
-        strcpy(ledger->entries[DESCRIPTION][row], "condensed");
+        snprintf(ledger->entries[AMOUNT][row], (ENTRYSIZE - 1) * sizeof(char),
+                "%0.2f", ledger->partition_totals[bank][partition]);
+        strlcpy(ledger->entries[DESCRIPTION][row], "condensed", 
+                (ENTRYSIZE - 1) * sizeof(char));
         ledger->partition_totals[bank][partition] = 0.0;
       }                  
     }

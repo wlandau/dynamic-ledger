@@ -47,33 +47,33 @@ err_t print_ledger_to_string(Ledger *ledger, char **s){
   
   for(field = 0; field < NFIELDS; ++field){
     if(field == AMOUNT)
-      strncat(*s, "amount", ENTRYSIZE);
+      strlcat(*s, "amount", (ENTRYSIZE - 1) * sizeof(char));
     else if(field == STATUS)
-      strncat(*s, "status", ENTRYSIZE);
+      strlcat(*s, "status", (ENTRYSIZE - 1) * sizeof(char));
     else if(field == CREDIT)
-      strncat(*s, "credit", ENTRYSIZE);
+      strlcat(*s, "credit", (ENTRYSIZE - 1) * sizeof(char));
     else if(field == BANK)
-      strncat(*s, "bank", ENTRYSIZE);
+      strlcat(*s, "bank", (ENTRYSIZE - 1) * sizeof(char));
     else if(field == PARTITION)
-      strncat(*s, "partition", ENTRYSIZE);
+      strlcat(*s, "partition", (ENTRYSIZE - 1) * sizeof(char));
     else if(field == DESCRIPTION)
-      strncat(*s, "description", ENTRYSIZE);
+      strlcat(*s, "description", (ENTRYSIZE - 1) * sizeof(char));
       
     if(field < NFIELDS - 1)
-      strncat(*s, "\t", ENTRYSIZE);
+      strlcat(*s, "\t", (ENTRYSIZE - 1) * sizeof(char));
     else
-      strncat(*s, "\n", ENTRYSIZE);
+      strlcat(*s, "\n", (ENTRYSIZE - 1) * sizeof(char));
   }  
 
   /* Print the actual ledger entries */
   
   for(row = 0; row < ledger->nrows; ++row){
     for(field = 0; field < NFIELDS - 1; ++field){
-      strncat(*s, ledger->entries[field][row], ENTRYSIZE);
-      strncat(*s, "\t", ENTRYSIZE);
+      strlcat(*s, ledger->entries[field][row], (ENTRYSIZE - 1) * sizeof(char));
+      strlcat(*s, "\t", (ENTRYSIZE - 1) * sizeof(char));
     }
-    strncat(*s, ledger->entries[NFIELDS - 1][row], ENTRYSIZE);
-    strncat(*s, "\n", ENTRYSIZE);
+    strlcat(*s, ledger->entries[NFIELDS - 1][row], (ENTRYSIZE - 1) * sizeof(char));
+    strlcat(*s, "\n", (ENTRYSIZE - 1) * sizeof(char));
   }
 
   /* Remove extra whitespace from the tail of the output string */

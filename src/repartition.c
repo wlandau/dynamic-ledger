@@ -88,20 +88,22 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
     
   for(i = 0; i < ledger->npartitions[ibank]; ++i){
     row = i + oldnrows;
-    sprintf(ledger->entries[AMOUNT][row], "%0.2f", -ledger->partition_totals[ibank][i]);
-    strcpy(ledger->entries[PARTITION][row], ledger->partitions[ibank][i]);
-    strcpy(ledger->entries[BANK][row], bank);
-    strcpy(ledger->entries[DESCRIPTION][row], "repartition");
+    snprintf(ledger->entries[AMOUNT][row], (ENTRYSIZE - 1) * sizeof(char), 
+             "%0.2f", -ledger->partition_totals[ibank][i]);
+    strlcpy(ledger->entries[PARTITION][row], ledger->partitions[ibank][i], (ENTRYSIZE - 1));
+    strlcpy(ledger->entries[BANK][row], bank, (ENTRYSIZE - 1));
+    strlcpy(ledger->entries[DESCRIPTION][row], "repartition", (ENTRYSIZE - 1));
   }
   
   /* Insert new rows giving the new partition totals */  
   
   for(i = 0; i < npartitions; ++i){
     row = i + oldnrows + ledger->npartitions[ibank];
-    sprintf(ledger->entries[AMOUNT][row], "%0.2f", amounts[i]);    
-    strcpy(ledger->entries[PARTITION][row], partitions[i]); 
-    strcpy(ledger->entries[BANK][row], bank);       
-    strcpy(ledger->entries[DESCRIPTION][row], "repartition");    
+    snprintf(ledger->entries[AMOUNT][row], (ENTRYSIZE - 1) * sizeof(char),
+             "%0.2f", amounts[i]);    
+    strlcpy(ledger->entries[PARTITION][row], partitions[i], (ENTRYSIZE - 1)); 
+    strlcpy(ledger->entries[BANK][row], bank, (ENTRYSIZE - 1));       
+    strlcpy(ledger->entries[DESCRIPTION][row], "repartition", (ENTRYSIZE - 1));    
   }
 
   /* Update the Ledger object to reflect the changes */

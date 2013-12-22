@@ -36,7 +36,7 @@ err_t cut_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany){
   /* Remove copied rows from ledger */
   
   for(row = 0; row < howmany; ++row)
-    strcpy(ledger->entries[STATUS][rows[row]], REMOVE);
+    strlcpy(ledger->entries[STATUS][rows[row]], REMOVE, (ENTRYSIZE - 1) * sizeof(char));
     
   if(remove_rows(ledger) == LFAILURE)
     return LFAILURE;

@@ -93,10 +93,10 @@ err_t get_names(Ledger *ledger){
   for(i = 0; i < ledger->nbanks; ++i){
     for(j = 0; j < ledger->nrows; ++j){    
       if(str_equal(ledger->banks[i], ledger->entries[BANK][j])){     
-        if(strlen(ledger->entries[PARTITION][j]) < ENTRYSIZE)
-          strcpy(s[j], ledger->entries[PARTITION][j]);
+        strlcpy(s[j], ledger->entries[PARTITION][j], 
+                (ENTRYSIZE - 1) * sizeof(char));
       } else{
-        strcpy(s[j], NIL);
+        strlcpy(s[j], NIL, (ENTRYSIZE - 1) * sizeof(char));
       }  
     }
      

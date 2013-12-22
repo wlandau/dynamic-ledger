@@ -44,26 +44,27 @@ err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field, int 
   }
   
   if(entry == NULL){
-    strcpy(ledger->entries[field][row], NIL);
+    strlcpy(ledger->entries[field][row], NIL, (ENTRYSIZE - 1) * sizeof(char));
     return LSUCCESS;
   }
   
   /* Sanitize "entry" and then copy it into the ledger */
   
   if(entry == NULL){
-    strcpy(local_entry, NIL);
+    strlcpy(local_entry, NIL, (ENTRYSIZE - 1) * sizeof(char));
   } else if(!append){ 
-    strcpy(local_entry, entry);
+    strlcpy(local_entry, entry, (ENTRYSIZE - 1) * sizeof(char));
   } else if(append == 1){
-    strcpy(local_entry, entry);
-    strncat(local_entry, ledger->entries[field][row], ENTRYSIZE - strlen(local_entry) - 1);
+    strlcpy(local_entry, entry, (ENTRYSIZE - 1) * sizeof(char));
+    strlcat(local_entry, ledger->entries[field][row], 
+           (ENTRYSIZE - strlen(local_entry) - 1) * sizeof(char));
   } else if(append == 2){
-    if(strlen(ledger->entries[field][row]) < ENTRYSIZE)
-      strcpy(local_entry, ledger->entries[field][row]);
-    strncat(local_entry, entry,  ENTRYSIZE - strlen(local_entry) - 1);
+    strlcpy(local_entry, ledger->entries[field][row], (ENTRYSIZE - 1) * sizeof(char));
+    strlcat(local_entry, entry,  
+            (ENTRYSIZE - strlen(local_entry) - 1) * sizeof(char));
   } else{
     fprintf(stderr, "Warning: bad \"append\" option. Overwriting entries.\n");
-    strcpy(local_entry, entry);
+    strlcpy(local_entry, entry, (ENTRYSIZE - 1) * sizeof(char));
   }
     
   str_strip(local_entry);
@@ -95,7 +96,7 @@ err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field, int 
     local_entry[i] = '\0';
   }
   
-  strcpy(ledger->entries[field][row], local_entry);
+  strlcpy(ledger->entries[field][row], local_entry, ENTRYSIZE * sizeof(char));
       
   return LSUCCESS;
 }

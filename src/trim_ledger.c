@@ -34,7 +34,7 @@ err_t trim_ledger(Ledger *ledger){
 
   for(row = 0; row < ledger->nrows; ++row)
     if(small_norm(atof(ledger->entries[AMOUNT][row])) == LYES)
-      strcpy(ledger->entries[STATUS][row], REMOVE);    
+      strlcpy(ledger->entries[STATUS][row], REMOVE, (ENTRYSIZE - 1) * sizeof(char));    
    
   /* Remove rows with transaction amounts of zero */ 
    
