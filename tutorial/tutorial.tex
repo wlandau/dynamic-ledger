@@ -134,9 +134,173 @@ Copyright \copyright ~Will Landau 2013.
 
 \section{Introduction}
 
-\paragraph{} Dynamic Ledger is a program for managing personal finances. Unlike most other accounting programs, it gives you control over your finances even when you have several delayed transactions. With it, you can be exactly as frugal as you need to be, and you can easily avoid spending more money than you actually have. In addition, you can use the program to clean and condense your ledgers to save space.
+\paragraph{} Dynamic Ledger is a program for managing personal finances. Unlike most other accounting programs, it gives you control over your finances even when you have several delayed transactions. With it, you can be exactly as frugal as you need to be, and you can easily avoid spending more than you actually have. In addition, you can use the program to clean and condense your ledgers to save space.
 
-\section{Maintaining a ledger file}
+
+\section{Installation}
+
+\paragraph{} See {\tt INSTALL} for the standard installation instructions for any Linux/Unix package that uses GNU {\tt autotools}. Although standard, these instructions are cryptic and verbose, so I attempt to provide a simplified version below. 
+
+\subsection{Requirements}
+\begin{enumerate}
+\item Make sure you have a C compiler on your system. Linux users can download and install gcc, the GNU Compiler Collection, at \url{http://gcc.gnu.org/}. Mac users can install gcc or clang through Xcode. Just open Xcode, go to Preferences $>$ Downloads, and look under the ``Compnents" tab. There you should be able to install the ``command line tools". Windows users should install Cygwin (cygwin.com) or MinGW (mingw.com) and get gcc during the installation.
+\item Open a command line interface tool. Linux users should already be familiar with this Mac users should go open Applications $>$ Utilities $>$ Terminal. Windows users should open Cygwin (cygwin.com) or MinGW (mingw.com). You should have a basic familiarity with the Linux/Unix command line interface before you begin. If not, watch the tutorial at \url{http://www.youtube.com/watch?v=2FiQSLdnBqA} or any other linux command line tutorial and follow along with your own command line. At minimum, you should know the commands, {\tt cd}, {\tt ls}, and {\tt pwd}.
+\end{enumerate}
+
+
+\subsection{Installation}
+\begin{enumerate}
+\item Download and unzip the tarball, {\tt dl-0.0.tar.gz}, if you have not done so already. To unzip, ``cd" into the directory containing the tarball and enter into the command line,
+
+\begin{lstlisting}
+$ tar -zxvf dl-0.0.tar.gz
+\end{lstlisting}
+
+A directory called {\tt dl-0.0} should have been created.
+
+\item ``cd" into {\tt dl-0.0} and enter the following into the command line.
+
+\begin{lstlisting}
+$ ./configure
+$ sudo make install
+\end{lstlisting}
+
+You may have to type in your computer's password.
+\end{enumerate}
+
+\subsection{Check your installation}
+
+At this point, your program should be ready to use. To test, type
+
+\begin{lstlisting}
+$ dl
+\end{lstlisting}
+
+{\tt dl} is the command you will type into the command line to use Dynamic Ledger. \q
+
+For quick usage information, just type
+
+\begin{lstlisting}
+$ man dl
+\end{lstlisting}
+
+Use the up and down arrow keys to browse the documentation, and type ``q" to quit. 
+
+\subsection{View source code documentation}
+
+\paragraph{} Optionally, to view the documentation of the source code, use {\tt doxygen} (\url{http://www.stack.nl/~dimitri/doxygen/}). First, download and install {\tt doxygen}. Then open your command line interface program, ``cd" into the main directory of this package, and run
+
+\begin{lstlisting}
+$ doxygen Doxyfile
+\end{lstlisting}
+
+Standard {\tt doxygen} documentation is output to the {\tt html/}, {\tt latex/}, and {\tt rtf/} folders.
+
+
+\section{Program usage}
+
+\paragraph{} Let's use the ledger file, {\tt ledger.txt}, in the {\tt tutorial/} folder:
+
+\begin{lstlisting}[title=ledger.txt]
+amount    status  credit     bank        partition    description
+-30.14    cp      card       checking    gas          gas
+-15.36            card       checking    food         food
+-5                card       checking                 paper
+400                          checking
+300                          checking    food
+300                          checking    food
+350                          checking    food
+100                          checking    gas
+800                          checking    gas
+200                          checking    gas
+400                          checking
+440                          checking
+\end{lstlisting} \q
+ 
+You can type {\tt man dl} into the command line to learn what everything in this ledger file means, and you can read Section \ref{sec:file} to see an extended example. For now, let's just say that {\tt ledger.txt} is a tab-delimited spreadsheet where you record your financial transactions.
+
+\subsection{Summarizing ledgers}
+
+\paragraph{} To summarize {\tt ledger.txt}, open your command line interface program, ``cd" (change directories) into the directory containing {\tt ledger.txt}, and type
+
+\begin{lstlisting}
+$ dl ledger.txt
+\end{lstlisting} 
+
+\paragraph{} The following summary should print to your screen.
+
+\begin{center}
+\includegraphics[scale=.45]{fig/usage0.png}
+\end{center} 
+
+\paragraph{} As Section \ref{sec:file} explains, this summary shows the balances of all the accounts in the ledger. Specifically, it predicts the balances that you should see when access your credit and bank accounts online (the ``available" balances), along with what your account balances \emph{will be} once all your delayed transactions have cleared (the true balances). 
+
+\paragraph{} This feature is the real power of Dynamic Ledger. Just by looking at the summary, you can
+
+\begin{enumerate}
+\item Check that your ledger file is correct: i.e., verify that the ``available" and pending balances in the summary agree with the balances you see online.
+\item Look at the true balances to see exactly how much \emph{real money} you have left to spend. That way, you can be sure to only spend money that you actually have.
+\end{enumerate}
+
+\clearpage
+
+\subsection{Cleaning ledger files}
+
+\paragraph{} Sometimes, ledger files get long and messy. With Dynamic Ledger, you can condense and clean them up. Let's say {\tt ledger.txt} looks like this: 
+
+\begin{lstlisting}[title=ledger.txt]
+amount    status  credit     bank        partition    description
+-15.36    cp      card       checking    food         food
+
+-5                card       checking                 paper
+400                          checking
+-30.14    cn      card       checking    gas          gas
+300       l                  checking    food
+300                          checking    food
+
+
+350                          checking    food
+100                          checking    gas
+800                          checking    gas
+200                          checking    gas
+400                          checking
+
+440                          checking
+\end{lstlisting} \q
+
+To output a condensed, clean version of this ledger to {\tt out.txt}, just type \q
+
+\begin{lstlisting}
+$ dl ledger.txt out.txt
+\end{lstlisting} 
+
+The condensed ledger looks like
+
+\begin{lstlisting}[title=out.txt]
+amount    status  credit     bank        partition    description
+-30.14    cn      card       checking    gas          gas
+-15.36    cp      card       checking    food         food
+1235.00           card       checking                 condensed
+300       l                  checking    food    
+650.00                       checking    food         condensed
+1100.00                      checking    gas          condensed
+\end{lstlisting} 
+
+\paragraph{} If you have read Section \ref{sec:file}, you will see that this operation summed up all the transaction amounts of the cleared transactions within each bank account partition and stored these sums as individual rows. The upshot is that you have a new, condensed ledger with your delayed and locked transactions still visible. You can verify that the summary of {\tt ledger.txt} is the same as the summary of {\tt out.txt} by typing \q
+
+\begin{lstlisting}
+$ dl ledger.txt
+$ dl ledger.txt out.txt
+$ dl out.txt
+\end{lstlisting} 
+
+\paragraph{} Type {\tt man dl} into the command line and read Section \ref{sec:file} to understand delayed transactions. You can specify the kind of delay of each transaction by entering ``cn", ``cp", ``c", ``p", or ``n" in the ``status" column of the ledger file. The condense/clean operation will leave these transactions alone. 
+
+\paragraph{} In addition, you can lock any cleared transaction that you want preserved. Just enter ``l" into the status column. Then, the condense/clean operation will ignore it even though it is cleared.
+
+
+
+\section{How to write and maintain a ledger file} \label{sec:file}
 
 \paragraph{} Dynamic Ledger requires you to keep your ledger in a tab-delimited spreadsheet file. This section shows you how to keep track of your transactions in this ledger file when you're using the program to balance your checkbook.
 
@@ -302,16 +466,6 @@ amount    status	credit     bank        partition    description
 \end{center} \q
 
 \paragraph{} Notice that only the true final balances for the partitions are shown. In other words, partition balances are calculated as if all transactions have completely cleared. This feature encourages you to avoid spending more money than you actually have.
-
-
-
-\section{Installing the program}
-
-\section{Using the program}
-
-
-
-
 
 \end{flushleft}
 %\newpage 
