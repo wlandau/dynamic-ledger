@@ -49,31 +49,31 @@ err_t get_names(Ledger *ledger){
   /* Allocate arrays for partition names */
   
   ledger->npartitions = calloc(ledger->nbanks, sizeof(int*));
-  ledger->partitions = malloc(ledger->nbanks * sizeof(char***));
+  ledger->partitions = calloc(ledger->nbanks, sizeof(char***));
 
-  /* Check if malloc worked */
+  /* Check if calloc worked */
 
   if(ledger->partitions == NULL || ledger->npartitions == NULL){
-    fprintf(stderr, "Error: malloc failed\n");
+    fprintf(stderr, "Error: calloc failed\n");
     return LFAILURE;
   }
 
   /* Allocate array for sorted partition names */
   
-  s = malloc(ledger->nrows * sizeof(char*));
+  s = calloc(ledger->nrows, sizeof(char*));
   for(i = 0; i < ledger->nrows; ++i)
     s[i] = calloc(ENTRYSIZE, sizeof(char));
 
-  /* Check if malloc worked */
+  /* Check if calloc worked */
 
   ret = LSUCCESS;
   if(s == NULL){
-    fprintf(stderr, "Error: malloc failed\n");
+    fprintf(stderr, "Error: calloc failed\n");
     ret = LFAILURE;
   } else {
     for(i = 0; i < ledger->nrows; ++i)
       if(s[i] == NULL){
-        fprintf(stderr, "Error: malloc failed\n");
+        fprintf(stderr, "Error: calloc failed\n");
         ret = LFAILURE;
       }
   }

@@ -34,11 +34,11 @@ err_t sort_by_status(Ledger *ledger, int sort_locked){
   if(ledger->nrows < 1)
     return LFAILURE;
   
-  /* Allocate space for permutation and check if malloc worked */
+  /* Allocate space for permutation and check if calloc worked */
   
   order = calloc(ledger->nrows, sizeof(int));
   if(order == NULL){
-    fprintf(stderr, "Error: malloc failed.\n");
+    fprintf(stderr, "Error: calloc failed.\n");
     return LFAILURE;
   }
   

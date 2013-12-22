@@ -46,29 +46,29 @@ err_t insert_rows(Ledger *ledger, int row, int howmany){
 
   /* Allocate space for new ledger entries */
   
-  x = malloc(NFIELDS * sizeof(char**));
+  x = calloc(NFIELDS, sizeof(char**));
   for(i = 0; i < NFIELDS; ++i){
-    x[i] = malloc((ledger->nrows + howmany) * sizeof(char*));
+    x[i] = calloc((ledger->nrows + howmany), sizeof(char*));
     for(j = 0; j < (ledger->nrows + howmany); ++j)
       x[i][j] = calloc(ENTRYSIZE, sizeof(char));
   }
 
-  /* Check if malloc worked */
+  /* Check if calloc worked */
 
   ret = LSUCCESS;
   if(x == NULL){
-    fprintf(stderr, "Error: malloc failed.\n");
+    fprintf(stderr, "Error: calloc failed.\n");
     return LFAILURE;
   } else {
     for(i = 0; i < NFIELDS; ++i){
       if(x[i] == NULL){
-        fprintf(stderr, "Error: malloc failed.\n");
+        fprintf(stderr, "Error: calloc failed.\n");
         ret = LFAILURE;
         break;
       }
       for(j = 0; j < (ledger->nrows + howmany); ++j)
         if(x[i][j] == NULL){
-          fprintf(stderr, "Error: malloc failed.\n");
+          fprintf(stderr, "Error: calloc failed.\n");
           ret = LFAILURE;
           break;
         }

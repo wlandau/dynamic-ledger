@@ -34,13 +34,13 @@ err_t get_entries_from_filename(Ledger *ledger, char *filename){
     return LFAILURE;
   
   if(ledger->filename == NULL)
-    ledger->filename = malloc(FILENAMESIZE * sizeof(char));
+    ledger->filename = calloc(FILENAMESIZE, sizeof(char));
   strncpy(ledger->filename, filename, (ENTRYSIZE - 1) * sizeof(char));
   
-  /* Check if malloc worked */
+  /* Check if calloc worked */
   
   if(ledger->filename == NULL){
-    fprintf(stderr, "Error: malloc failed\n");
+    fprintf(stderr, "Error: calloc failed\n");
     if(fp != NULL)
       fclose(fp);
     return LFAILURE;

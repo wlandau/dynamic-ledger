@@ -45,14 +45,14 @@ err_t repartition(Ledger *ledger, char *bank, char **partitions,
   if(ibank == NO_INDEX)
     return LFAILURE;
     
-  /* Allocate space for new amounts and check if malloc worked */
+  /* Allocate space for new amounts and check if calloc worked */
     
-  amounts = malloc(npartitions * sizeof(double));
+  amounts = calloc(npartitions, sizeof(double));
   for(i = 0; i < npartitions; ++i)
     amounts[i] = amounts_arg[i]; 
     
   if(amounts == NULL){
-    fprintf(stderr, "Error: malloc failed.\n");
+    fprintf(stderr, "Error: calloc failed.\n");
     return LFAILURE;
   }     
     

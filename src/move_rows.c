@@ -31,11 +31,11 @@ err_t move_rows(Ledger *ledger, int *rows, int nrows, int moveto){
   if(ledger->nrows < 1)
     return LFAILURE;
   
-  /* Allocate space for permutation order and check if malloc worked */
+  /* Allocate space for permutation order and check if calloc worked */
   
   order = calloc(ledger->nrows, sizeof(int));
   if(order == NULL){
-    fprintf(stderr, "Error: malloc failed.\n");
+    fprintf(stderr, "Error: calloc failed.\n");
     return LFAILURE;
   }
   

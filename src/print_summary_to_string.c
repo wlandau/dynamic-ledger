@@ -39,11 +39,11 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
      return LFAILURE; 
   }
   
-  /* Allocate space for string and test if malloc worked */
+  /* Allocate space for string and test if calloc worked */
     
   *s = calloc((ledger->nrows + 1) * NFIELDS * LINESIZE, sizeof(char));
   if(*s == NULL){
-    fprintf(stderr, "Error: malloc failed.\n");
+    fprintf(stderr, "Error: calloc failed.\n");
     return LFAILURE;
   }
 

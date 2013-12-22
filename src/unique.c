@@ -31,17 +31,17 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
   if(a == NULL || n < 1)
     return LFAILURE;
 
-  /* Make a sanitized local copy of input and check if malloc worked */
+  /* Make a sanitized local copy of input and check if calloc worked */
   
-  s = malloc((n + 1) * sizeof(char*));
+  s = calloc((n + 1), sizeof(char*));
   if(s == NULL){
-    fprintf(stderr, "Error: malloc failed.\n");
+    fprintf(stderr, "Error: calloc failed.\n");
     return LFAILURE;
   }
   
   s[0] = calloc(ENTRYSIZE, sizeof(char));
   if(s[0] == NULL){
-    fprintf(stderr, "Error: malloc failed.\n");
+    fprintf(stderr, "Error: calloc failed.\n");
     return LFAILURE;
   }
   
@@ -51,7 +51,7 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
     s[j] = calloc(ENTRYSIZE, sizeof(char));
     
     if(s[j] == NULL){
-      fprintf(stderr, "Error: malloc failed.\n");
+      fprintf(stderr, "Error: calloc failed.\n");
       
       for(k = 0; k < j; ++k)
         if(s[k] != NULL)
@@ -66,7 +66,7 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
       a[j - 1] = calloc(ENTRYSIZE, sizeof(char));
       
       if(a[j - 1] == NULL){
-        fprintf(stderr, "Error: malloc failed.\n");
+        fprintf(stderr, "Error: calloc failed.\n");
         for(k = 0; k < n + 1; ++k)
         if(s[k] != NULL)
           free(s[k]);
@@ -96,18 +96,18 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
       ++(*nunique);
     }  
 
-  /* Allocate space for the array of unique strings and check if malloc worked */
+  /* Allocate space for the array of unique strings and check if calloc worked */
     
-  *ret = malloc(*nunique * sizeof(char*));
+  *ret = calloc(*nunique, sizeof(char*));
   if(*ret == NULL){
-    fprintf(stderr, "Error: malloc failed.\n");
+    fprintf(stderr, "Error: calloc failed.\n");
     return LFAILURE;
   }
   
   for(i = 0; i < *nunique; ++i){
     (*ret)[i] = calloc(ENTRYSIZE, sizeof(char));
     if(*ret == NULL){
-      fprintf(stderr, "Error: malloc failed.\n");
+      fprintf(stderr, "Error: calloc failed.\n");
       
       for(k = 0; k < i; ++k)
         if((*ret)[k] != NULL)

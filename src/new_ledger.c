@@ -21,10 +21,10 @@
 err_t new_ledger(Ledger **ledger){
   free_ledger(ledger);
 
-  *ledger = malloc(sizeof(Ledger));
+  *ledger = calloc(1, sizeof(Ledger));
   
   if(*ledger == NULL){
-    fprintf(stderr, "Error: malloc failed.\n");
+    fprintf(stderr, "Error: calloc failed.\n");
     return LFAILURE;
   }
   

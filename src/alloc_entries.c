@@ -38,29 +38,29 @@ err_t alloc_entries(Ledger *ledger){
 
   /* allocate entries */
   
-  ledger->entries = malloc(NFIELDS * sizeof(char**));
+  ledger->entries = calloc(NFIELDS, sizeof(char**));
   for(i = 0; i < NFIELDS; ++i){
-    ledger->entries[i] = malloc(ledger->nrows * sizeof(char*));
+    ledger->entries[i] = calloc(ledger->nrows, sizeof(char*));
     for(j = 0; j < ledger->nrows; ++j)
       ledger->entries[i][j] = calloc(ENTRYSIZE, sizeof(char));
   }
   
-  /* test if malloc worked */
+  /* test if calloc worked */
   
   ret = LSUCCESS;
   if(ledger->entries == NULL){
-    fprintf(stderr, "Error: malloc failed\n");
+    fprintf(stderr, "Error: calloc failed\n");
     ret = LFAILURE;
   } else {
     for(i = 0; i < NFIELDS; ++i){
       if(ledger->entries[i] == NULL){
-        fprintf(stderr, "Error: malloc failed\n");
+        fprintf(stderr, "Error: calloc failed\n");
         ret = LFAILURE;
         break;
       }
       for(j = 0; j < ledger->nrows; ++j)
         if(ledger->entries[i][j] == NULL){
-          fprintf(stderr,"Error: malloc failed\n");
+          fprintf(stderr,"Error: calloc failed\n");
           ret = LFAILURE;
           break;
         }

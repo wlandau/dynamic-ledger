@@ -33,35 +33,35 @@ err_t alloc_totals(Ledger *ledger){
   /* allocate space for the numerical summaries (totals) */
   
   if(ledger->credit_totals == NULL){
-    ledger->credit_totals = malloc(ledger->ncredits * sizeof(double*));
+    ledger->credit_totals = calloc(ledger->ncredits, sizeof(double*));
     for(i = 0; i < ledger->ncredits; ++i)
       ledger->credit_totals[i] = calloc(N_TOTALS, sizeof(double));
   }
     
   if(ledger->bank_totals == NULL){
-    ledger->bank_totals = malloc(ledger->nbanks * sizeof(double*));  
+    ledger->bank_totals = calloc(ledger->nbanks, sizeof(double*));  
     for(i = 0; i < ledger->nbanks; ++i)
       ledger->bank_totals[i] = calloc(N_TOTALS, sizeof(double));
   }
   
   if(ledger->partition_totals == NULL){
-    ledger->partition_totals = malloc(ledger->nbanks * sizeof(double*));
+    ledger->partition_totals = calloc(ledger->nbanks, sizeof(double*));
     for(i = 0; i < ledger->nbanks; ++i)
       ledger->partition_totals[i] = calloc(ledger->npartitions[i], sizeof(double));
   }
   
-  /* check if malloc worked */
+  /* check if calloc worked */
   
   ret = LSUCCESS;
   if(ledger->credit_totals == NULL || 
      ledger->bank_totals == NULL || 
      ledger->partition_totals == NULL){
-    fprintf(stderr, "Error: malloc failed\n"); 
+    fprintf(stderr, "Error: calloc failed\n"); 
     ret = LFAILURE; 
   } else {
     for(i = 0; i < ledger->ncredits; ++i){
       if(ledger->credit_totals[i] == NULL){
-        fprintf(stderr, "Error: malloc failed\n"); 
+        fprintf(stderr, "Error: calloc failed\n"); 
         ret = LFAILURE;
         break;
       }
@@ -69,7 +69,7 @@ err_t alloc_totals(Ledger *ledger){
   
     for(i = 0; i < ledger->nbanks; ++i){
       if(ledger->bank_totals[i] == NULL || ledger->partition_totals[i] == NULL){
-        fprintf(stderr, "Error: malloc failed\n"); 
+        fprintf(stderr, "Error: calloc failed\n"); 
         ret = LFAILURE;
         break;
       }  
