@@ -644,6 +644,16 @@ err_t map_to_coords_rowmajor(Ledger *ledger, char *entry, int **coords,
 err_t insert_rows(Ledger *ledger, int row, int howmany); 
 
 /**
+ * @brief  Insert filled rows.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  entries Content of the new row to insert multiple times.
+ * @param  row Where to insert the rows.
+ * @param  howmany How many blank rows to insert.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
+err_t insert_filled_rows(Ledger *ledger, char **entries, int row, int howmany); 
+
+/**
  * @brief  Move rows to a specified location.
  * @param  ledger Pointer to a Ledger object.
  * @param  rows Array of the indices of the rows to move.

@@ -45,6 +45,7 @@ dl_SOURCES+=src/get_names.c
 dl_SOURCES+=src/get_totals.c 
 dl_SOURCES+=src/input_file.c 
 dl_SOURCES+=src/insert_rows.c
+dl_SOURCES+=src/insert_filled_rows.c
 dl_SOURCES+=src/legal_amounts.c 
 dl_SOURCES+=src/legal_double.c
 dl_SOURCES+=src/legal_status_code.c
