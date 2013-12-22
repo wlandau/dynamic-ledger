@@ -24,9 +24,12 @@ err_t map_to_column(Ledger *ledger, char *entry, int *rows, int nrows, int field
   int i, j;
   char local_entry[ENTRYSIZE];
 
-  /* Check for NULL input */
+  /* Check for bad input */
 
-  if(ledger == NULL || rows == NULL || nrows < 1)
+  if(ledger == NULL || rows == NULL || nrows < 1 || entry == NULL)
+    return LFAILURE;
+  
+  if(strlen(entry) >= ENTRYSIZE)
     return LFAILURE;
   
   if(field < 0 || field >= NFIELDS){
@@ -66,7 +69,8 @@ err_t map_to_column(Ledger *ledger, char *entry, int *rows, int nrows, int field
       strcpy(local_entry, entry);
       strncat(local_entry, ledger->entries[field][rows[i]], ENTRYSIZE - strlen(local_entry) - 1);
     } else if(append == 2){
-      strcpy(local_entry, ledger->entries[field][rows[i]]);
+      if(strlen(ledger->entries[field][rows[i]]) < ENTRYSIZE)
+        strcpy(local_entry, ledger->entries[field][rows[i]]);
       strncat(local_entry, entry,  ENTRYSIZE - strlen(local_entry) - 1);
     } else{
       fprintf(stderr, "Warning: bad \"append\" option. Overwriting entries.\n");

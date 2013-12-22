@@ -23,9 +23,12 @@ err_t edit_entry(Ledger *ledger, char *entry, int row, int field){
   int i;
   char local_entry[ENTRYSIZE];
 
-  /* Check for NULL input */
+  /* Check for bad input */
 
-  if(ledger == NULL)
+  if(ledger == NULL || entry == NULL)
+    return LFAILURE;
+    
+  if(ledger->entries == NULL || strlen(entry) >= ENTRYSIZE)
     return LFAILURE;
 
   if(row < 0 || row >= ledger->nrows){

@@ -90,12 +90,14 @@ err_t insert_rows(Ledger *ledger, int row, int howmany){
 
   for(i = 0; i < NFIELDS; ++i){
     for(j = 0; j < row; ++j)
-      strcpy(x[i][j], ledger->entries[i][j]);
+      if(strlen(ledger->entries[i][j]) < ENTRYSIZE)
+        strcpy(x[i][j], ledger->entries[i][j]);
 
     strcpy(x[i][row], NIL);
 
     for(j = row + howmany; j < (ledger->nrows + howmany); ++j)
-      strcpy(x[i][j], ledger->entries[i][j - howmany]);
+      if(strlen(ledger->entries[i][j - howmany]) < ENTRYSIZE) 
+        strcpy(x[i][j], ledger->entries[i][j - howmany]);
   }
 
   /* Clean up and return */

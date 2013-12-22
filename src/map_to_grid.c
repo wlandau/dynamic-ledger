@@ -26,9 +26,12 @@ err_t map_to_grid(Ledger *ledger, char *entry, int *rows, int nrows,
   int i, j, k;
   char local_entry[ENTRYSIZE];
 
-  /* Check for NULL input */
+  /* Check for bad input */
 
-  if(ledger == NULL || rows == NULL || fields == NULL || nrows < 1 || nfields < 1)
+  if(ledger == NULL || rows == NULL || nrows < 1 || entry == NULL)
+    return LFAILURE;
+  
+  if(strlen(entry) >= ENTRYSIZE)
     return LFAILURE;
   
   if(entry == NULL){
@@ -67,7 +70,8 @@ err_t map_to_grid(Ledger *ledger, char *entry, int *rows, int nrows,
         strcpy(local_entry, entry);
         strncat(local_entry, ledger->entries[fields[i]][rows[j]], ENTRYSIZE - strlen(local_entry) - 1);
       } else if(append == 2){
-        strcpy(local_entry, ledger->entries[fields[i]][rows[j]]);
+        if(strlen(ledger->entries[fields[i]][rows[j]]) < ENTRYSIZE)
+          strcpy(local_entry, ledger->entries[fields[i]][rows[j]]);
         strncat(local_entry, entry,  ENTRYSIZE - strlen(local_entry) - 1);
       } else{
         fprintf(stderr, "Warning: bad \"append\" option. Overwriting entries.\n");

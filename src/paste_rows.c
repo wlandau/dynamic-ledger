@@ -38,7 +38,8 @@ err_t paste_rows(Ledger *ledger, Ledger *clipboard, int where){
   
   for(field = 0; field < NFIELDS; ++field)
     for(row = 0; row < clipboard->nrows; ++row)
-      strcpy(ledger->entries[field][row + where], clipboard->entries[field][row]);
+      if(strlen(clipboard->entries[field][row]) < ENTRYSIZE)
+        strcpy(ledger->entries[field][row + where], clipboard->entries[field][row]);
 
   /* Update the rest of the data in ledger to reflect the changes */
   

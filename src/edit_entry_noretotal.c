@@ -25,7 +25,10 @@ err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field){
 
   /* Check for NULL input */
 
-  if(ledger == NULL)
+  if(ledger == NULL || entry == NULL)
+    return LFAILURE;
+
+  if(ledger->entries == NULL || strlen(entry) >= ENTRYSIZE)
     return LFAILURE;
 
   if(row < 0 || row >= ledger->nrows){
