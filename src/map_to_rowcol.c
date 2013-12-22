@@ -20,7 +20,7 @@
  *          and 2 to append to the tail of each entry. 
  */
 
-err_t map_to_multiple(Ledger *ledger, char *entry, int *rows, int *fields, 
+err_t map_to_rowcol(Ledger *ledger, char *entry, int *rows, int *fields, 
                     int howmany, int append){
   int i, j;
   char local_entry[ENTRYSIZE];
