@@ -17,10 +17,11 @@
  *          Specifically, ledger->entries[field][row] is replaced with 
  *          entries[row] for row = 0, .., NFIELDS.
  *          The other data in the Ledger object is 
- *          updated with calls to get_names and get_totals.
+ *          updated with calls to get_names and get_totals. APPEND
+ *          works as in edit_entry_noretotal.
  */
 
-err_t edit_row(Ledger *ledger, char **entries, int row){
+err_t edit_row(Ledger *ledger, char **entries, int row, int append){
 
   int field, i;
   char local_entry[ENTRYSIZE];
@@ -41,61 +42,12 @@ err_t edit_row(Ledger *ledger, char **entries, int row){
     return LFAILURE;
   }
   
-  if(entries[AMOUNT] != NULL)
-    if(legal_double(entries[AMOUNT]) == LNO){
-      fprintf(stderr, 
-              "Error: illegal transaction amount \"%s\" in edit_row().\n", 
-              entries[AMOUNT]);
-      return LFAILURE;
-    }
-
-  if(entries[STATUS] != NULL){
-    strcpy(local_entry, entries[STATUS]);
-    str_strip(local_entry);
-    if(legal_status_code(local_entry) == LNO){
-      fprintf(stderr, 
-              "Error: illegal transaction status code \"%s\" in edit_row().\n", 
-              local_entry);
-      return LFAILURE;
-    }
-  }
+  for(field = 0; field < NFIELDS; ++field)
+    if(edit_entry_noretotal(ledger, entries[field], row, field, append) == LFAILURE)
+      continue;
   
-  /* Sanitize entries and then copy them into the Ledger object */
-  
-  for(field = 0; field < NFIELDS; ++field){
-  
-    if(entries[field] == NULL)
-      strcpy(local_entry, NIL);
-    else
-      strcpy(local_entry, entries[field]);
-
-    str_strip(local_entry);
-    
-    if((i = col_delim_str(local_entry)) != NO_INDEX){
-      fprintf(stderr, 
-              "Warning: entries must not contain column delimiters. Truncating input.\n");
-      local_entry[i] = '\0';
-    }
-
-    if((i = row_delim_str(entries[field])) != NO_INDEX){
-      fprintf(stderr, 
-              "Warning: entries must not contain row delimiters. Truncating input.\n");
-      local_entry[i] = '\0';
-    }
-    
-    strcpy(ledger->entries[field][row], local_entry);  
-  } 
-  
-  /* Update the rest of the data in the ledger to reflect the changes. */
-  
-  if(free_for_retotal(ledger) == LFAILURE)
+  if(retotal(ledger) == LFAILURE)
     return LFAILURE;
-      
-  if(get_names(ledger) == LFAILURE)
-    return LFAILURE;
-        
-  if(get_totals(ledger) == LFAILURE)
-    return LFAILURE; 
   
   return LSUCCESS;
 }

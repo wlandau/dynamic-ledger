@@ -592,9 +592,10 @@ err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field, int 
  * @param  ledger Pointer to a Ledger object.
  * @param  entries New row (array of character string entries).
  * @param  row The row to overwrite.
+ * @param  append Append option.
  * @return err_t: LSUCCESS or LFAILURE
  */
-err_t edit_row(Ledger *ledger, char **entries, int row);
+err_t edit_row(Ledger *ledger, char **entries, int row, int append);
 
 /**
  * @brief  Map a character string to part of a column.
