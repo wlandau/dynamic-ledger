@@ -1,14 +1,8 @@
 amount	status	credit	bank	partition	description
--15.36	cp	card	checking	food	food
--5		card	checking		paper
-400			checking
 -30.14	cn	card	checking	gas	gas
-300	l		checking	food
-300			checking	food
-350			checking	food
-100			checking	gas
-800			checking	gas
-200			checking	gas
-400			checking
-440			checking
-
+-15.36	cp	card	checking	food	food
+-5		card	checking		
+400			checking		
+300			checking	food	food fund
+200			checking	gas	gas fund
+440			checking		
