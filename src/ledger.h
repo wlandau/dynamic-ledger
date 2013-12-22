@@ -607,7 +607,7 @@ err_t edit_row(Ledger *ledger, char **entries, int row, int append);
  * @param  append Append option.
  * @return err_t: LSUCCESS or LFAILURE
  */
-err_t map_to_rowcol(Ledger *ledger, char *entry, int *rows, 
+err_t map_by_col(Ledger *ledger, char *entry, int *rows, 
                     int *fields, int howmany, int append);
 
 /**
