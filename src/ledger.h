@@ -598,34 +598,6 @@ err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field, int 
 err_t edit_row(Ledger *ledger, char **entries, int row, int append);
 
 /**
- * @brief  Map a character string to part of a column.
- * @param  ledger Pointer to a Ledger object.
- * @param  entry Character string to map.
- * @param  rows The rows to map to.
- * @param  nrows Number of elements of rows.
- * @param  field Column to map to.
- * @param  append Append option.
- * @return err_t: LSUCCESS or LFAILURE
- */
-err_t map_to_column(Ledger *ledger, char *entry, int *rows, 
-                    int nrows, int field, int append);
-
-
-/**
- * @brief  Map a character string a region of the spreadsheet.
- * @param  ledger Pointer to a Ledger object.
- * @param  entry Character string to map.
- * @param  rows Rows of entries to map to.
- * @param  nrows Number of elements of rows.
- * @param  fields Columns of entries to map to.
- * @param  nfields Number of elements of fields.
- * @param  append Append option.
- * @return err_t: LSUCCESS or LFAILURE
- */
-err_t map_to_grid(Ledger *ledger, char *entry, int *rows, int nrows,
-                  int *fields, int nfields, int append);
-
-/**
  * @brief  Map a character string multiple entries.
  * @param  ledger Pointer to a Ledger object.
  * @param  entry Character string to map.
@@ -635,7 +607,7 @@ err_t map_to_grid(Ledger *ledger, char *entry, int *rows, int nrows,
  * @param  append Append option.
  * @return err_t: LSUCCESS or LFAILURE
  */
-err_t map_to_multiple(Ledger *ledger, char *entry, int *rows, 
+err_t map_to_rowcol(Ledger *ledger, char *entry, int *rows, 
                     int *fields, int howmany, int append);
 
 /**

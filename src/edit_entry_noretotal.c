@@ -27,7 +27,7 @@ err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field, int 
 
   /* Check for NULL input */
 
-  if(ledger == NULL || entry == NULL)
+  if(ledger == NULL)
     return LFAILURE;
 
   if(ledger->entries == NULL || strlen(entry) >= ENTRYSIZE)
@@ -50,7 +50,9 @@ err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field, int 
   
   /* Sanitize "entry" and then copy it into the ledger */
   
-  if(!append){ 
+  if(entry == NULL){
+    strcpy(local_entry, NIL);
+  } else if(!append){ 
     strcpy(local_entry, entry);
   } else if(append == 1){
     strcpy(local_entry, entry);
