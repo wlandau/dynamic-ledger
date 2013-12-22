@@ -79,14 +79,14 @@ err_t map_to_column(Ledger *ledger, char *entry, int *rows, int nrows, int field
       if(legal_double(local_entry) == LNO){
         fprintf(stderr, 
                 "Error: illegal transaction amount \"%s\" in map_to_column().\n", entry);
-        return LFAILURE;
+        continue;
       }
     } else if(field == STATUS){
       if(legal_status_code(local_entry) == LNO){
         fprintf(stderr, 
                 "Error: illegal transaction status code \"%s\" in map_to_column().\n", 
                 entry);
-        return LFAILURE;
+        continue;
       }
     }
   
