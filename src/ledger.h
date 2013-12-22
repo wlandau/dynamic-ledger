@@ -576,6 +576,17 @@ err_t cut_rows(Ledger *ledger, Ledger **clipboard, int *rows, int howmany);
 err_t edit_entry(Ledger *ledger, char *entry, int row, int field);
 
 /**
+ * @brief  Modify a ledger entry and DO NOT update the Ledger object accordingly.
+ * @param  ledger Pointer to a Ledger object.
+ * @param  entry New entry (character string).
+ * @param  row The row of the entry to overwrite.
+ * @param  field The field (column) of the entry to overwrite.
+ * @return err_t: LSUCCESS or LFAILURE
+ */
+err_t edit_entry_noretotal(Ledger *ledger, char *entry, int row, int field);
+
+
+/**
  * @brief  Modify a whole row (transaction) and update the Ledger object accordingly.
  * @param  ledger Pointer to a Ledger object.
  * @param  entries New row (array of character string entries).

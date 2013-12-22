@@ -31,6 +31,7 @@ dl_SOURCES+=src/copy_ledger.c
 dl_SOURCES+=src/copy_rows.c
 dl_SOURCES+=src/cut_rows.c
 dl_SOURCES+=src/edit_entry.c
+dl_SOURCES+=src/edit_entry_noretotal.c
 dl_SOURCES+=src/edit_row.c
 dl_SOURCES+=src/filled_partitions.c
 dl_SOURCES+=src/free_entries.c
