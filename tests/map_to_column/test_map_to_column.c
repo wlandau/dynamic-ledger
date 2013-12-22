@@ -51,6 +51,8 @@ int main(){
   printf("7 RET = %d\n", map_to_column(ledger, entrystr, rows, 9, 2, 1));
   print_ledger_to_stream(ledger, stdout);
   print_summary_to_stream(ledger, stdout, 1);
+  
+  free_ledger(&ledger);
 
   return 0;
 }
