@@ -1,10 +1,10 @@
 TEST=test_col_delim_str
 
 CC=gcc
-CCFLAGS=-c -Wall -pedantic -I../../include/
+CCFLAGS=-c -Wall -pedantic -I../../src/
 LDFLAGS=-lm
-ALLOBJ=$(wildcard ../../obj/*.o)
-OBJ=$(filter-out ../../obj/main.o, $(ALLOBJ))
+ALLOBJ=$(wildcard ../../src/*.o)
+OBJ=$(filter-out ../../src/main.o, $(ALLOBJ))
 
 all: test
 

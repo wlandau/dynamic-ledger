@@ -1,10 +1,10 @@
 TEST=test_get_entries_from_stream
 
 CC=gcc
-CCFLAGS=-c -Wall -pedantic -I../../include/
+CCFLAGS=-c -Wall -pedantic -I../../src/
 LDFLAGS=-lm
-ALLOBJ=$(wildcard ../../obj/*.o)
-OBJ=$(filter-out ../../obj/main.o, $(ALLOBJ))
+ALLOBJ=$(wildcard ../../src/*.o)
+OBJ=$(filter-out ../../src/main.o, $(ALLOBJ))
 
 all: test
 
