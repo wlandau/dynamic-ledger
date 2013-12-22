@@ -26,6 +26,9 @@ err_t get_entries_from_filename(Ledger *ledger, char *filename){
   
   if(input_file(filename) == LNO)
     return LFAILURE;
+    
+  if(strlen(filename) >= FILENAMESIZE)
+    return LFAILURE;
 
   /* Open file and store file location in the Ledger object */
     
