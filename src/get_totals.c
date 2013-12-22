@@ -24,7 +24,7 @@ err_t get_totals(Ledger *ledger){
   if(ledger == NULL)
     return LFAILURE;  
 
-  if(ledger->nrows < 1)
+  if(ledger->nrows < 1 || ledger->entries == NULL)
     return LFAILURE;
   
   if(alloc_totals(ledger) == LFAILURE)
