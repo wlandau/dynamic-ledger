@@ -20,7 +20,7 @@ int main(){
 
   get_ledger(&ledger, F, NULL, NULL);  
   if(ledger == NULL)
-    return;
+    return 0;
   
   order = malloc(ledger->nrows * sizeof(int));
   
