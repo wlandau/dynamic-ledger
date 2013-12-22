@@ -14,7 +14,7 @@ ACLOCAL_AMFLAGS = ${ACLOCAL_FLAGS}
 bin_PROGRAMS = dl
 
 ## things to keep in the tarball
-dist_data_DATA = man/dl.1 tutorial/tutorial.pdf tutorial/ledger.txt
+dist_data_DATA = doc/source.pdf man/dl.1 tutorial/tutorial.pdf tutorial/ledger.txt
 
 ## Define the list of source files for the "dl" target.
 dl_SOURCES=src/ledger.h
