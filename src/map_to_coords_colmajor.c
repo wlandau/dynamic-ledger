@@ -26,11 +26,13 @@ err_t map_to_coords_colmajor(Ledger *ledger, char *entry, int **coords,
   
   if(coords == NULL)
     return LFAILURE;
+
+  if(coords[0] == NULL || coords[1] == NULL)
+    return LFAILURE;
   
   for(i = 0; i < howmany; ++i)
-    if(coords[i] != NULL)
-      if(edit_entry_noretotal(ledger, entry, coords[0][1], coords[1][i], append) == LFAILURE) 
-        continue;
+    if(edit_entry_noretotal(ledger, entry, coords[0][i], coords[1][i], append) == LFAILURE) 
+      continue;
       
   if(retotal(ledger) == LFAILURE)
     return LFAILURE; 
