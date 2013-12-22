@@ -45,7 +45,7 @@ err_t print_summary_to_stream(Ledger *ledger, FILE *fp, int usecolor){
 
   /* Print summary to file stream */
 
-  strlcpy(norm, usecolor ? NORMAL_COLOR : "", 63 * sizeof(char));
+  strncpy(norm, usecolor ? NORMAL_COLOR : "", 63 * sizeof(char));
   fprintf(fp, "%s", norm);
   
   /* Print summaries of credit accounts */

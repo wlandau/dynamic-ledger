@@ -49,7 +49,7 @@ err_t print_summary_to_string(Ledger *ledger, char **s, int usecolor){
 
   /* Print summary to string */
 
-  strlcpy(norm, usecolor ? NORMAL_COLOR : "", 63 * sizeof(char));
+  strncpy(norm, usecolor ? NORMAL_COLOR : "", 63 * sizeof(char));
 
   /* Print summaries of credit accounts */
 

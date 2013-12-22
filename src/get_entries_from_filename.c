@@ -35,7 +35,7 @@ err_t get_entries_from_filename(Ledger *ledger, char *filename){
   
   if(ledger->filename == NULL)
     ledger->filename = malloc(FILENAMESIZE * sizeof(char));
-  strlcpy(ledger->filename, filename, (ENTRYSIZE - 1) * sizeof(char));
+  strncpy(ledger->filename, filename, (ENTRYSIZE - 1) * sizeof(char));
   
   /* Check if malloc worked */
   

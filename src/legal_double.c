@@ -22,7 +22,7 @@ bool_t legal_double(char *s){
   char *testbufref, testbuf[ENTRYSIZE];
   
   str_strip(s);
-  strlcpy(testbuf, s, (ENTRYSIZE - 1) * sizeof(char));
+  strncpy(testbuf, s, (ENTRYSIZE - 1) * sizeof(char));
   testbufref = testbuf;
 
   errno = 0;

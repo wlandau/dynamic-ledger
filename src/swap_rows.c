@@ -40,9 +40,9 @@ err_t swap_rows(Ledger *ledger, int row1, int row2){
     return LSUCCESS;
     
   for(i = 0; i < NFIELDS; ++i){
-    strlcpy(tmp, ledger->entries[i][row1], (ENTRYSIZE - 1) * sizeof(char));
-    strlcpy(ledger->entries[i][row1], ledger->entries[i][row2], (ENTRYSIZE - 1) * sizeof(char));
-    strlcpy(ledger->entries[i][row2], tmp, (ENTRYSIZE - 1) * sizeof(char));  
+    strncpy(tmp, ledger->entries[i][row1], (ENTRYSIZE - 1) * sizeof(char));
+    strncpy(ledger->entries[i][row1], ledger->entries[i][row2], (ENTRYSIZE - 1) * sizeof(char));
+    strncpy(ledger->entries[i][row2], tmp, (ENTRYSIZE - 1) * sizeof(char));  
   }
   
   return LSUCCESS;

@@ -32,7 +32,7 @@ err_t rename_bank(Ledger *ledger, char *from, char *to){
   
   for(i = 0; i < ledger->nrows; ++i)
     if(str_equal(ledger->entries[BANK][i], from))
-      strlcpy(ledger->entries[BANK][i], to, (ENTRYSIZE - 1) * sizeof(char));
+      strncpy(ledger->entries[BANK][i], to, (ENTRYSIZE - 1) * sizeof(char));
 
   /* Update the rest of the data in the Ledger object to reflect the change */
       

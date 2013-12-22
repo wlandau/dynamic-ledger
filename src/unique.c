@@ -45,7 +45,7 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
     return LFAILURE;
   }
   
-  strlcpy(s[0], NIL, (ENTRYSIZE - 1) * sizeof(char));
+  strncpy(s[0], NIL, (ENTRYSIZE - 1) * sizeof(char));
   for(j = 1; j < n + 1; ++j){
     str_strip(a[j - 1]);
     s[j] = calloc(ENTRYSIZE, sizeof(char));
@@ -76,9 +76,9 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
         return LFAILURE;
       }
       
-      strlcpy(s[j], NIL, (ENTRYSIZE - 1) * sizeof(char));
+      strncpy(s[j], NIL, (ENTRYSIZE - 1) * sizeof(char));
     } else {
-      strlcpy(s[j], a[j - 1], (ENTRYSIZE - 1) * sizeof(char));
+      strncpy(s[j], a[j - 1], (ENTRYSIZE - 1) * sizeof(char));
     }
   }
 
@@ -123,11 +123,11 @@ err_t unique(char **a, int n, char ***ret, int *nunique){
 
   /* Get unique strings and sort them */
  
-  strlcpy((*ret)[0], s[0], (ENTRYSIZE - 1) * sizeof(char));
+  strncpy((*ret)[0], s[0], (ENTRYSIZE - 1) * sizeof(char));
   for(j = 1; j < n + 1; ++j)
     if(!str_equal(s[i], s[j])){
       i = j;
-      strlcpy((*ret)[k], s[j], (ENTRYSIZE - 1) * sizeof(char));
+      strncpy((*ret)[k], s[j], (ENTRYSIZE - 1) * sizeof(char));
       ++k;
     }  
 
