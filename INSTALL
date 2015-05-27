@@ -9,7 +9,7 @@ Inc.
 
   1A. `cd' to the directory containing the package's source code using your Linux/Mac/Unix command line utility.
 
-  1B. Type `./autogen.sh` go generate the configuration files.
+  1B. Type `./autogen.sh` go generate the configuration files. Alternatively, just open the .tar.gz file in this GitHub repo, `cd` into it, and move to the next step.
   
   1C. Type `./configure' to configure the package for your system.
 
